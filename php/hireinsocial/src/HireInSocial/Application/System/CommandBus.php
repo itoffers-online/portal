@@ -24,7 +24,7 @@ final class CommandBus
     {
         $handler = $this->handlers[$command->name()] ?? null;
         
-        if (null === $handler)
+        if ($handler === null)
         {
             throw new Exception(sprintf('Unknown command "%s"', $command->name()));
         }
