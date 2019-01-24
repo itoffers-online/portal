@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Tests\Application\Unit\System;
 
@@ -69,8 +69,7 @@ final class CommandBusTest extends TestCase
             }
         );
 
-        $command = new class implements Command
-        {
+        $command = new class implements Command {
             public $handled = false;
 
             public function name(): string

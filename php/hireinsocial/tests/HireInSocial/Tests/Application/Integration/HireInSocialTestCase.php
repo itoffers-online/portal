@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Tests\Application\Integration;
 
@@ -28,7 +28,7 @@ class HireInSocialTestCase extends TestCase
         $config = bootstrap(ROOT_DIR);
 
         if ($config->getString(Config::ENV) !== 'test') {
-            $this->fail(sprintf('Expected environment "test" but got "%s"', $config->getString(Config::ENV) ));
+            $this->fail(sprintf('Expected environment "test" but got "%s"', $config->getString(Config::ENV)));
         }
 
         $this->systemContext = new \HireInSocial\Tests\Application\Context\SystemContext(system($config));

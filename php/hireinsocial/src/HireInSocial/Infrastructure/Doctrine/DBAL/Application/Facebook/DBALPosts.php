@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Infrastructure\Doctrine\DBAL\Application\Facebook;
 
@@ -32,7 +32,7 @@ final class DBALPosts implements Posts
             [
                 self::FIELD_FB_ID => $post->fbId(),
                 self::FIELD_FB_AUTHOR_ID => $post->authorId(),
-                self::FIELD_JOB_OFFER_ID => $post->jobOfferId()
+                self::FIELD_JOB_OFFER_ID => $post->jobOfferId(),
             ]
         );
     }

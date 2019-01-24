@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Application\Facebook;
 
@@ -20,7 +20,7 @@ final class FacebookFormatter implements OfferFormatter
     public function format(Offer $offer): string
     {
         return $this->twig->render('/offer/facebook/page/group/offer.txt.twig', [
-            'offer' => $offer
+            'offer' => $offer,
         ]);
     }
 }

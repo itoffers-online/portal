@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Infrastructure\Facbook;
 
@@ -40,7 +40,7 @@ final class FacebookGraphSDK implements Facebook
         try {
             $response = $this->post(sprintf('/%s/feed', $group->fbId()), [
                 'message' => (string)$post,
-                'link' => $post->link()
+                'link' => $post->link(),
             ], $page->accessToken());
 
             return $response->getDecodedBody()['id'];
@@ -56,7 +56,7 @@ final class FacebookGraphSDK implements Facebook
             'app_secret' => mb_substr($this->facebook->getApp()->getSecret(), 0, 4) . '############',
             'url' => $url,
             'graph_version' => $this->facebook->getDefaultGraphVersion(),
-            'access_token' => $accessToken
+            'access_token' => $accessToken,
         ]);
 
         try {
@@ -67,7 +67,7 @@ final class FacebookGraphSDK implements Facebook
                 'app_secret' => mb_substr($this->facebook->getApp()->getSecret(), 0, 4) . '############',
                 'url' => $url,
                 'graph_version' => $this->facebook->getDefaultGraphVersion(),
-                'response' => $response->getBody()
+                'response' => $response->getBody(),
             ]);
 
             return $response;
@@ -86,7 +86,7 @@ final class FacebookGraphSDK implements Facebook
             'url' => $url,
             'parameters' => $parameters,
             'graph_version' => $this->facebook->getDefaultGraphVersion(),
-            'access_token' => $accessToken
+            'access_token' => $accessToken,
         ]);
 
         try {
@@ -98,7 +98,7 @@ final class FacebookGraphSDK implements Facebook
                 'url' => $url,
                 'parameters' => $parameters,
                 'graph_version' => $this->facebook->getDefaultGraphVersion(),
-                'response' => $response->getBody()
+                'response' => $response->getBody(),
             ]);
 
             return $response;
@@ -119,7 +119,7 @@ final class FacebookGraphSDK implements Facebook
             'access_token' => $accessToken,
             'exception' => \get_class($exception),
             'message' => $exception->getMessage(),
-            'code' => $exception->getCode()
+            'code' => $exception->getCode(),
         ]);
     }
 }

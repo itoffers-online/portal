@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Controller;
 
@@ -13,7 +13,7 @@ final class LayoutController extends AbstractController
     public function navbarAction(Request $request) : Response
     {
         return $this->render('layout/navbar.html.twig', [
-            'facebook_logged_in' => (bool) $request->getSession()->get(FacebookController::FACEBOOK_ID_SESSION_KEY, false)
+            'facebook_logged_in' => (bool) $request->getSession()->get(FacebookController::FACEBOOK_ID_SESSION_KEY, false),
         ]);
     }
 }

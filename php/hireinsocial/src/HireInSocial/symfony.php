@@ -16,23 +16,23 @@ function symfony(Config $config, System $system) : SymfonyKernel
             ],
             'session' => [
                 'cookie_samesite' => 'strict',
-                'save_path' => '/var/lib/php/sessions'
+                'save_path' => '/var/lib/php/sessions',
             ],
             'default_locale' => $config->getString(Config::LOCALE),
             'translator' => [
-                'fallbacks' => [$config->getString(Config::LOCALE)]
-            ]
+                'fallbacks' => [$config->getString(Config::LOCALE)],
+            ],
         ],
         'twig' => [
             'paths' => [
-                $config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE) . '/ui' => '__main__'
+                $config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE) . '/ui' => '__main__',
             ],
             'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/twig',
             'globals' => [
                 'facebook' => [
                     'app_id' => $config->getString(Config::FB_APP_ID),
-                    'group_id' => $config->getString(Config::FB_GROUP_ID)
-                ]
+                    'group_id' => $config->getString(Config::FB_GROUP_ID),
+                ],
             ],
             'auto_reload' => $config->getString(Config::ENV) !== 'prod',
         ],
@@ -43,15 +43,15 @@ function symfony(Config $config, System $system) : SymfonyKernel
                     'path'  => '%kernel.logs_dir%/%kernel.environment%_symfony.log',
                     'level' => 'debug',
                     'channels' => [
-                        '!event', '!console', '!request', '!security'
-                    ]
-                ]
+                        '!event', '!console', '!request', '!security',
+                    ],
+                ],
             ],
         ],
         'facebook' => [
             'app_id' => $config->getString(Config::FB_APP_ID),
             'app_secret' => $config->getString(Config::FB_APP_SECRET),
-        ]
+        ],
     ];
 
     if ($config->getString(Config::ENV) === 'test') {

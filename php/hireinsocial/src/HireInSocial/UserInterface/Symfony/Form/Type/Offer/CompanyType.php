@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Form\Type\Offer;
 
@@ -19,19 +19,19 @@ final class CompanyType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'constraints' => [
-                    new Length(['min' => 3, 'max' => 255])
-                ]
+                    new Length(['min' => 3, 'max' => 255]),
+                ],
             ])
             ->add('url', TextType::class, [
                 'constraints' => [
                     new Url(),
-                    new NotBlank()
-                ]
+                    new NotBlank(),
+                ],
             ])
             ->add('description', TextareaType::class, [
                 'constraints' => [
-                    new Length(['min' => 10, 'max' => 512])
-                ]
+                    new Length(['min' => 10, 'max' => 512]),
+                ],
             ])
         ;
     }

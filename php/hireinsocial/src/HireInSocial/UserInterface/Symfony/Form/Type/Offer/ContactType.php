@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Form\Type\Offer;
 
@@ -18,20 +18,20 @@ final class ContactType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'constraints' => [
-                    new Length(['min' => 3, 'max' => 255])
-                ]
+                    new Length(['min' => 3, 'max' => 255]),
+                ],
             ])
             ->add('email', TextType::class, [
                 'constraints' => [
                     new Email(),
-                    new NotBlank()
-                ]
+                    new NotBlank(),
+                ],
             ])
             ->add('phone', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Length(['max' => 16])
-                ]
+                    new Length(['max' => 16]),
+                ],
             ])
         ;
     }

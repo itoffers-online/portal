@@ -4,7 +4,8 @@ namespace HireInSocial;
 
 use Symfony\Component\Dotenv\Dotenv;
 
-function bootstrap(string $projectRootPath) : Config {
+function bootstrap(string $projectRootPath) : Config
+{
     if (!\file_exists($projectRootPath)) {
         die(sprintf('Invalid project root path: %s', $projectRootPath));
     }

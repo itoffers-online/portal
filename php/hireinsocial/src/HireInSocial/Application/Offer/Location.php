@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Application\Offer;
 
@@ -30,5 +30,4 @@ final class Location
     {
         return $this->name;
     }
-
 }

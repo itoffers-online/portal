@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Controller;
 
@@ -30,7 +30,6 @@ final class FacebookController extends AbstractController
     public function loginAction(Request $request) : Response
     {
         if ($request->getSession()->has(self::FACEBOOK_ID_SESSION_KEY)) {
-
             return $this->redirectToRoute('home');
         }
 
@@ -39,7 +38,7 @@ final class FacebookController extends AbstractController
         return $this->render('facebook/login.html.twig', [
             'facebook_login_url' => $this->facebook->getRedirectLoginHelper()->getLoginUrl(
                 $this->generateUrl('facebook_login_success', [], UrlGeneratorInterface::ABSOLUTE_URL)
-            )
+            ),
         ]);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer;
 
@@ -64,12 +64,12 @@ final class DBALOffers implements Offers
                 self::FIELD_DESCRIPTION_BENEFITS => $offer->description()->benefits(),
                 self::FIELD_CONTACT_EMAIL => $offer->contact()->email(),
                 self::FIELD_CONTACT_NAME => $offer->contact() ->name(),
-                self::FIELD_CONTACT_PHONE => $offer->contact()->phone()
+                self::FIELD_CONTACT_PHONE => $offer->contact()->phone(),
             ],
             [
                 self::FIELD_CREATED_AT => 'datetime_immutable',
                 self::FIELD_SALARY_NET => 'boolean',
-                self::FIELD_LOCATION_REMOTE => 'boolean'
+                self::FIELD_LOCATION_REMOTE => 'boolean',
             ]
         );
     }

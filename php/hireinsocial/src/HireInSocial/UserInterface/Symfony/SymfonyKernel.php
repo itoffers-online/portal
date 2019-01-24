@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony;
 
@@ -42,11 +42,11 @@ final class SymfonyKernel extends Kernel
 
     public function registerBundles()
     {
-        return array(
+        return [
             new FrameworkBundle(),
             new TwigBundle(),
-            new MonologBundle()
-        );
+            new MonologBundle(),
+        ];
     }
 
     protected function initializeContainer()
@@ -65,7 +65,7 @@ final class SymfonyKernel extends Kernel
         $c->autowire(Facebook::class)
             ->addArgument([
                 'app_id' => $this->frameworkConfig['facebook']['app_id'],
-                'app_secret' => $this->frameworkConfig['facebook']['app_secret']
+                'app_secret' => $this->frameworkConfig['facebook']['app_secret'],
             ]);
 
         $c->autowire(IndexController::class)->addTag('controller.service_arguments');

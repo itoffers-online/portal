@@ -8,7 +8,8 @@ use Doctrine\DBAL\DriverManager;
 
 function dbal(Config $config) : Connection
 {
-    return DriverManager::getConnection([
+    return DriverManager::getConnection(
+        [
             'dbname' => $config->getString(Config::DB_NAME),
             'user' => $config->getString(Config::DB_USER),
             'password' => $config->getString(Config::DB_USER_PASS),

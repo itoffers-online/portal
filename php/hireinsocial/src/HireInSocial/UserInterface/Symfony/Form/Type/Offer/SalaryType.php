@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Form\Type\Offer;
 
@@ -21,8 +21,8 @@ final class SalaryType extends AbstractType
         $builder
             ->add('min', IntegerType::class, [
                 'constraints' => [
-                    new GreaterThan(['value' => 0])
-                ]
+                    new GreaterThan(['value' => 0]),
+                ],
             ])
             ->add('max', IntegerType::class, [
                 'constraints' => [
@@ -36,23 +36,23 @@ final class SalaryType extends AbstractType
                                 if ((int) $form->get('salary')->get('min')->getData() >= (int) $value) {
                                     $context->addViolation('This value should be greater than {{ compared_value }}.', ['{{ compared_value }}' => $value]);
                                 }
-                            }
+                            },
                         ]
-                    )
-                ]
+                    ),
+                ],
             ])
             ->add('currency', ChoiceType::class, [
                 'choices' => [
                     'PLN' => 'PLN',
                     'EUR' => 'EUR',
-                    'USD' => 'USD'
+                    'USD' => 'USD',
                 ],
                 'constraints' => [
-                    new NotBlank()
-                ]
+                    new NotBlank(),
+                ],
             ])
             ->add('net', CheckboxType::class, [
-                'required' => false
+                'required' => false,
             ])
         ;
     }

@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Form\Type;
 
@@ -27,8 +27,8 @@ final class OfferType extends AbstractType
                 'choices' => [
                     'B2B' => 'B2B',
                     'Umowa o Pracę' => 'Umowa o Pracę',
-                    'Umowa Zlecenie' => 'Umowa Zlecenie'
-                ]
+                    'Umowa Zlecenie' => 'Umowa Zlecenie',
+                ],
             ])
             ->add('location', LocationType::class)
             ->add('description', DescriptionType::class)

@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Controller;
 
@@ -17,22 +17,15 @@ use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Application\System;
 use HireInSocial\UserInterface\Symfony\Form\Type\OfferType;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class OfferController extends AbstractController
 {
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
     public function newAction(Request $request) : Response
     {
         if (!$request->getSession()->has(FacebookController::FACEBOOK_ID_SESSION_KEY)) {
-
             return $this->redirectToRoute('facebook_login');
         }
 
@@ -67,7 +60,7 @@ final class OfferController extends AbstractController
 
         return $this->render('/offer/new.html.twig', [
             'form' => $form->createView(),
-            'throttled' => $this->get(System::class)->query(OfferThrottleQuery::class)->isThrottled($fbUserId)
+            'throttled' => $this->get(System::class)->query(OfferThrottleQuery::class)->isThrottled($fbUserId),
         ]);
     }
 

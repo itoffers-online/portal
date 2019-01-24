@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Form\Type\Offer;
 
@@ -16,13 +16,13 @@ final class LocationType extends AbstractType
     {
         $builder
             ->add('remote', CheckboxType::class, [
-                'required' => false
+                'required' => false,
             ])
             ->add('name', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Length(['max' => 255])
-                ]
+                    new Length(['max' => 255]),
+                ],
             ])
         ;
     }

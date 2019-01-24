@@ -61,6 +61,7 @@ function system(Config $config) : System
                 ]),
                 $facebookLogger
             );
+
             break;
         case 'test':
             $offerThrottle = new InMemoryThrottle();
@@ -94,4 +95,3 @@ function system(Config $config) : System
         $systemLogger
     );
 }
-
