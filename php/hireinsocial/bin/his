@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Application;
+use HireInSocial\UserInterface\Symfony\Command\Facebook\Page\PostTestOfferToFacebookGroup;
+
+$projectRootPath = dirname(__DIR__);
+
+require $projectRootPath . '/src/autoload.php';
+
+$config = \HireInSocial\bootstrap($projectRootPath);
+
+$system = \HireInSocial\system($config);
+
+$application = new Application('Hire in Social');
+
+$application->add(new PostTestOfferToFacebookGroup($system));
+
+$application->run();

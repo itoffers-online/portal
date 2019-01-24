@@ -1,0 +1,19 @@
+<header class="blog-header py-3">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarsExample07">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url('home') }}">Hire in Social</a>
+                    </li>
+
+                </ul>
+                {% if facebook_logged_in %}
+                    <a class="btn btn-secondary" href="{{ url('facebook_logout') }}">Wyloguj</a>
+                {% else %}
+                    <a class="btn btn-primary" href="{{ url('facebook_login') }}"><i class="fab fa-facebook-f"></i> Connect</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</header>

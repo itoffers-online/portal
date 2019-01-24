@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    {% if throttled %}
+    <div class="alert alert-warning" role="alert">
+        Nie możesz jeszcze dodać kolejnego ogłoszenia, musisz odczekać co najmniej 12 godzin.
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+            <h3 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Zasady</span>
+            </h3>
+            <ul>
+                <li>Maksymalnie jedno ogłoszenie na 6 godzin.</li>
+                <li>W ogłoszeniu <strong>musi</strong> być informacja o docelowym pracodawcy.</li>
+                <li>Widełki wynagrodzenia mogą być szerokie, jednak musza być realne.</li>
+                <li>Duplikaty ogłoszenia będą usuwane, jeśli chcesz dodać to samo ogłoszenie musisz odczekać co najmniej 30 dni.</li>
+            </ul>
+            <h5>Masz Pytania?</h5>
+            <p>
+                Odwiedź dział <a href="{{ url('faq') }}">FAQ</a>.
+            </p>
+        </div>
+        <div class="col-md-8 order-md-1">
+            <h3 class="mb-3">Dodaj nową ofertę</h3>
+            {{ form_start(form) }}
+            <h5>Firma</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.company.name, {label: "Nazwa Firmy"}) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.company.url, {label: "Strona Firmowa", attr:{placeholder:"Strona główna firmy"}}) }}
+                </div>
+            </div>
+            {{ form_row(form.company.description, {label: "Opis Firmy", attr:{rows: 5, placeholder: "od 10 do 512 znaków..."}}) }}
+            <hr />
+            <h5>Stanowisko</h5>
+            {{ form_row(form.position.name, {label: "Nazwa Stanowiska", attr:{placeholder: "PHP Developer"}}) }}
+            {{ form_row(form.position.description, {label: "Opis Stanowiska", attr:{rows: 5, placeholder: "od 50 do 1024 znaków..."}}) }}
+            <hr />
+            <h5>Wynagrodzenie</h5>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    {{ form_row(form.salary.min, {label: false, attr:{placeholder:"Od"}}) }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    {{ form_row(form.salary.max, {label: false, attr:{placeholder:"Do"}}) }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    {{ form_row(form.salary.currency, {label: false}) }}
+                </div>
+            </div>
+            {{ form_row(form.salary.net, {label: "Kwota netto"}) }}
+            {{ form_row(form.contract, {label: "Forma Zatrudnienia"}) }}
+            <hr />
+            <h5>Lokalizacja</h5>
+            {{ form_row(form.location.remote, {label: "Możliwość pracy zdalnej"}) }}
+            {{ form_row(form.location.name, {label:"Lokalizacja (opcjonalne)", attr:{placeholder:"Polska, Kraków..."}}) }}
+            <hr/>
+            <h5>Opis Stanowiska</h5>
+            {{ form_row(form.description.requirements, {label: "Wymagania", attr:{rows: 5, placeholder: "od 100 do 1024 znaków..."}}) }}
+            {{ form_row(form.description.benefits, {label: "Benefity", attr:{rows: 5, placeholder: "od 100 do 1024 znaków..."}}) }}
+            <hr />
+            <h5>Kontakt</h5>
+            {{ form_row(form.contact.name, {label: "Imię i nazwisko osoby do kontaktu (rekturetera)"}) }}
+            {{ form_row(form.contact.email, {label: "Adres email na który należy wysyłać CV"}) }}
+            {{ form_row(form.contact.phone, {label: "Numer telefonu (opcjonalny)"}) }}
+
+            {% if throttled %}
+                {{ form_row(form.submit, {label: "poczekaj", attr:{disabled:disabled}}) }}
+            {% else %}
+                {{ form_row(form.submit, {label: "Wyślij"}) }}
+            {% endif %}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,62 @@
+<?php
+
+declare (strict_types=1);
+
+namespace HireInSocial\Tests\Application\Unit\System;
+
+use HireInSocial\Application\Exception\Exception;
+use HireInSocial\Application\System\Queries;
+use HireInSocial\Application\System\Query;
+use HireInSocial\Tests\Application\Double\Dummy\DummyQuery;
+use HireInSocial\Tests\Application\Double\Fake\FakeQueryInterface;
+use PHPUnit\Framework\TestCase;
+
+final class QueriesTest extends TestCase
+{
+    public function test_accessing_queries()
+    {
+        $queries = new Queries();
+        $queries->register(new DummyQuery());
+
+        $this->assertInstanceOf(
+            DummyQuery::class,
+            $queries->get(DummyQuery::class)
+        );
+    }
+
+    public function test_attempt_to_access_query_by_generic_query_interface()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Using generic Query interface in order to access specific query is impossible.');
+
+        $queries = new Queries();
+        $queries->get(Query::class);
+    }
+
+
+    public function test_accessing_not_registered_query()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Query "\DateTime" does not exists. Available Query: "\HireInSocial\Tests\Application\Double\Dummy\DummyQuery"');
+
+        $queries = new Queries();
+        $queries->register(new DummyQuery());
+
+        $queries->get(\DateTime::class);
+    }
+
+    public function test_registering_two_implementations_of_the_same_query()
+    {
+        $query1 = new class implements FakeQueryInterface {
+        };
+        $query2 = new class implements FakeQueryInterface {
+        };
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage(sprintf('Query %s that implements same interfaces as %s is already registered.', get_class($query1), get_class($query2)));
+
+        $queries = new Queries();
+        $queries->register($query1);
+        $queries->register($query2);
+    }
+}

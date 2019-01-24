@@ -1,0 +1,26 @@
+𝐊𝐭𝐨: {{ offer.company.name }} ({{ offer.company.url }})
+{{ offer.company.description }}
+
+𝐊𝐨𝐠𝐨: {{ offer.position.name }}
+{{ offer.position.description }}
+
+𝐅𝐨𝐫𝐦𝐚 𝐙𝐚𝐭𝐫𝐮𝐝𝐧𝐢𝐞𝐧𝐢𝐚: {{ offer.contract.type }}
+
+
+𝐖𝐲𝐧𝐚𝐠𝐫𝐨𝐝𝐳𝐞𝐧𝐢𝐞: {{ offer.salary.min }} - {{ offer.salary.max }} ({{ offer.salary.currencyCode }}) {% if offer.salary.isNet %}Netto{% else %}Brutto{% endif %}
+
+
+𝐋𝐨𝐤𝐚𝐥𝐢𝐳𝐚𝐜𝐣𝐚: {% if offer.location.isRemote %}Zdalnie{% endif %} {% if offer.location.name %}- {{ offer.location.name }}{% endif %}
+
+
+𝐖𝐲𝐦𝐚𝐠𝐚𝐧𝐢𝐚:
+{{ offer.description.requirements }}
+
+𝐁𝐞𝐧𝐞𝐟𝐢𝐭𝐲:
+{{ offer.description.benefits }}
+
+CV wyślij na adres: {{ offer.contact.name }} <{{ offer.contact.email }}>
+{% if offer.contact.phone %}
+Ewentualne pytania kieruj na powyższy adres email lub telefonicznie: {{ offer.contact.phone }}
+{% endif %}
+{# bold font generated with: https://yaytext.com/bold-italic/ #}

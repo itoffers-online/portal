@@ -1,0 +1,30 @@
+---
+- name: iroquoisorg.env
+  version: "1.0.0"
+
+- name: iroquoisorg.tools
+  version: "1.0.0"
+
+- name: iroquoisorg.openssl
+  version: "1.0.0"
+
+- name: iroquoisorg.composer
+  version: "1.0.0"
+
+- name: iroquoisorg.nginx
+  version: "1.0.0"
+
+- name: iroquoisorg.php_fpm
+  version: "1.0.0"
+
+- name: iroquoisorg.blackfire
+  version: "1.0.1"
+
+- name: iroquoisorg.nginx_vhost
+  version: "1.0.1"
+
+- name: iroquoisorg.redis
+  version: "1.0.0"
+
+- name: iroquoisorg.postgresql
+  version: "1.0.0"

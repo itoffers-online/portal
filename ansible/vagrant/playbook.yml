@@ -1,0 +1,111 @@
+---
+- name: Configure hireinsocial vagrant dev env
+  hosts: all
+  become: yes
+  remote_user: vagrant
+  vars:
+    env_timezone: "UTC"
+    env_hostname: "hireinsocial-dev-vagrant"
+
+    nginx_vhost_host: "hireinsocial.local"
+    nginx_vhost_php: true
+    nginx_vhost:
+      servers:
+        - server_name: hireinsocial.local
+          port: 80
+          error_log: false
+          access_log: false
+          web_root: "/var/www/hireinsocial/public"
+          locations:
+            - path: "~ ^.*$"
+              content: |
+                return 301 https://$server_name$request_uri;
+        - server_name: hireinsocial.local
+          port: 443
+          ssl: true
+          ssl_cert: /etc/ssl/hireinsocial.local.crt
+          ssl_key: /etc/ssl/hireinsocial.local.key
+          error_log: true
+          access_log: true
+          web_root: "/var/www/hireinsocial/public"
+          locations:
+            - path: /
+              content: |
+                try_files $uri /index.php$is_args$args;
+            - path: "~ ^/(index)\\.php(/|$)"
+              content: |
+                fastcgi_pass unix:{{ php_fpm_socket }};
+                fastcgi_split_path_info ^(.+\.php)(/.*)$;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+                fastcgi_param HTTPS on;
+                fastcgi_buffer_size 128k;
+                fastcgi_buffers 256 4k;
+                fastcgi_busy_buffers_size 256k;
+                fastcgi_temp_file_write_size 256k;
+                fastcgi_read_timeout 240;
+                fastcgi_intercept_errors on;
+
+    php_ini_lines:
+      - 'date.timezone = "UTC"'
+      - 'display_errors = On'
+      - 'error_reporting = -1'
+      - 'short_open_tag = 0'
+
+    php_http_connector: fpm
+    php_version: "7.2"
+    php_extensions:
+      - "php{{ php7_version }}-cli"
+      - "php{{ php7_version }}-gd"
+      - "php{{ php7_version }}-pgsql"
+      - "php{{ php7_version }}-curl"
+      - "php{{ php7_version }}-intl"
+      - "php{{ php7_version }}-dev"
+      - "php{{ php7_version }}-xml"
+      - "php{{ php7_version }}-mbstring"
+      - "php{{ php7_version }}-bcmath"
+      - "php{{ php7_version }}-fpm"
+      - "php{{ php7_version }}-soap"
+      - php-pear
+
+    openssl_cert_common_name: "hireinsocial.local"
+    openssl_cert_alternate_names:
+      - "hireinsocial.local"
+      - "localhost"
+    openssl_cert_ips:
+      - "127.0.0.1"
+
+    openssl_ca_name: "HireInSocial Development CA"
+    openssl_cert_email: "contact@hireinsocial.local"
+    openssl_cert_name: "hireinsocial.local"
+    openssl_generate_ca: true
+
+    pg_version: 9.6
+    pg_users:
+      - { name: "hireinsocial", password: "hireinsocial", permissions: "LOGIN"}
+    pg_databases:
+      - { name: "hireinsocial_prod", owner: "hireinsocial" }
+      - { name: "hireinsocial_test", owner: "hireinsocial" }
+      - { name: "hireinsocial_dev", owner: "hireinsocial" }
+
+    pg_cfg_srv_shared_buffers: 128MB
+    pg_cfg_srv_work_mem: 64MB
+    pg_cfg_srv_fsync: 'off'
+
+    blackfire_install_cli: true
+    blackfire_install_agent: true
+    blackfire_php_module_service: 'php{{ php_version }}-fpm'
+
+  roles:
+    - { role: "iroquoisorg.env" }
+    - { role: "iroquoisorg.tools" }
+    - { role: "iroquoisorg.openssl" }
+    - { role: "iroquoisorg.php7" }
+    - { role: "iroquoisorg.php_fpm" }
+    - { role: "iroquoisorg.composer" }
+    - { role: "iroquoisorg.nginx" }
+    - { role: "iroquoisorg.nginx_vhost" }
+    - { role: "iroquoisorg.blackfire" }
+    - { role: "iroquoisorg.redis" }
+    - { role: "iroquoisorg.postgresql" }

@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+use Doctrine\DBAL\Migrations\Configuration\Configuration as MigrationConfiguration;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
+use Doctrine\DBAL\Tools\Console\ConsoleRunner;
+use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
+use HireInSocial\Infrastructure\Doctrine\DBAL\Schema\HireInSocialSchemaProvider;
+use HireInSocial\Config;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
+
+$projectRootPath = dirname(__DIR__);
+
+require $projectRootPath . '/src/autoload.php';
+
+$config = \HireInSocial\bootstrap($projectRootPath);
+
+$connection = \HireInSocial\dbal($config);
+
+$migrationsConfig = new MigrationConfiguration($connection);
+$migrationsConfig->setMigrationsNamespace(\HireInSocial\Application\System::class . '\\Doctrine\\DBAL\\Migrations');
+$migrationsConfig->setMigrationsTableName('his_db_migration');
+$migrationsConfig->setMigrationsDirectory($config->getString(Config::ROOT_PATH) . '/db/migrations');
+$migrationsConfig->registerMigrationsFromDirectory($config->getString(Config::ROOT_PATH) . '/db/migrations');
+$migrationsConfig->setMigrationsAreOrganizedByYearAndMonth(true);
+
+$migrateCommand = new MigrateCommand();
+$migrateCommand->setMigrationConfiguration($migrationsConfig);
+$diffCommand = new DiffCommand(
+    new HireInSocialSchemaProvider()
+);
+$diffCommand->setMigrationConfiguration($migrationsConfig);
+
+$helperSet = new HelperSet([
+    'db' => new ConnectionHelper($connection),
+    'question' => new QuestionHelper(),
+]);
+
+ConsoleRunner::run($helperSet, [
+    $migrateCommand,
+    $diffCommand
+]);

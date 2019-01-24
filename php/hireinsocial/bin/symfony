@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+$projectRootPath = dirname(__DIR__);
+
+require $projectRootPath . '/src/autoload.php';
+
+$config = \HireInSocial\bootstrap($projectRootPath);
+
+$kernel = \HireInSocial\symfony(
+    $config,
+    \HireInSocial\system($config)
+);
+
+$application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+$application->run();
+
+

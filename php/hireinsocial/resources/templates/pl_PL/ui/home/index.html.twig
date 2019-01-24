@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="card-deck col-md-4 text-center align-self-center">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Szukam Pracownika</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">Darmowe</h1>
+                    <a href="{{ url('offer_new') }}" class="btn btn-lg btn-block btn-primary">Napisz ogłoszenie</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+{% endblock %}
