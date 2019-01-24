@@ -22,10 +22,13 @@ final class CommandBus
 
     public function handle(Command $command) : void
     {
-        if (\array_key_exists($command->name(), $this->handlers)) {
-            $this->handlers[$command->name()]($command);
-        } else {
+        $handler = $this->handlers[$command->name()] ?? null;
+        
+        if (null === $handler)
+        {
             throw new Exception(sprintf('Unknown command "%s"', $command->name()));
         }
+        
+        $handler($command);
     }
 }
