@@ -77,7 +77,7 @@ final class Config
 
         $this->config[$key] = $value;
     }
-    
+
     private function assertConfigKey(string $key): void
     {
         if (false === isset($this->config[$key])) {
