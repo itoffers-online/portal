@@ -59,33 +59,30 @@ final class Config
 
     public function getString(string $key): string
     {
-        if (!$this->has($key)) {
-            throw new \RuntimeException(sprintf('Missing config key: %s', $key));
-        }
+        $this->assertConfigKey($key);
 
         return (string) $this->config[$key];
     }
 
     public function getInt(string $key): int
     {
-        if (!$this->has($key)) {
-            throw new \RuntimeException(sprintf('Missing config key: %s', $key));
-        }
+        $this->assertConfigKey($key);
 
         return (int) $this->config[$key];
     }
 
     public function override(string $key, string $value) : void
     {
-        if (!$this->has($key)) {
-            throw new \RuntimeException(sprintf('Missing config key: %s', $key));
-        }
+        $this->assertConfigKey($key);
 
         $this->config[$key] = $value;
     }
-
-    private function has(string $key) : bool
+    
+    private function assertConfigKey(string $key): void
     {
-        return \array_key_exists($key, $this->config);
+        if (false === isset($this->config[$key])) {
+        {
+            throw new \RuntimeException(\sprintf('Missing config key: %s', $key));
+        }
     }
 }
