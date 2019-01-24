@@ -80,7 +80,7 @@ final class Config
 
     private function assertConfigKey(string $key): void
     {
-        if (false === isset($this->config[$key])) {
+        if (isset($this->config[$key]) === false) {
         {
             throw new \RuntimeException(\sprintf('Missing config key: %s', $key));
         }
