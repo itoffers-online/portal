@@ -12,7 +12,7 @@ final class InMemoryThrottle implements Throttle
 
     public function isThrottled(string $id): bool
     {
-        return \array_key_exists($id, $this->throttles);
+        return isset($this->throttles[$id]);
     }
 
     public function throttle(string $id): void
