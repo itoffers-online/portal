@@ -20,6 +20,5 @@ final class ORMPosts implements Posts
     public function add(Post $post): void
     {
         $this->entityManager->persist($post);
-        $this->entityManager->flush();
     }
 }

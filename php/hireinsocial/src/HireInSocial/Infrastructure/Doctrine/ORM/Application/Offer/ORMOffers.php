@@ -20,6 +20,5 @@ final class ORMOffers implements Offers
     public function add(Offer $offer): void
     {
         $this->entityManager->persist($offer);
-        $this->entityManager->flush();
     }
 }
