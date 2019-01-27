@@ -26,14 +26,15 @@ final class CommandBus
     {
         if (\array_key_exists($command->name(), $this->handlers)) {
             $this->transactionManager->begin();
+
             try {
                 $this->handlers[$command->name()]($command);
                 $this->transactionManager->commit();
             } catch (\Throwable $exception) {
                 $this->transactionManager->rollback();
+
                 throw $exception;
             }
-
         } else {
             throw new Exception(sprintf('Unknown command "%s"', $command->name()));
         }
