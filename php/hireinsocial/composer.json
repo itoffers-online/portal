@@ -10,11 +10,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "": "src"
+            "": "src",
+            "DoctrineProxy\\": "var/cache/orm"
         },
         "files": [
             "src/HireInSocial/bootstrap.php",
             "src/HireInSocial/dbal.php",
+            "src/HireInSocial/orm.php",
             "src/HireInSocial/symfony.php",
             "src/HireInSocial/system.php"
         ]
@@ -30,6 +32,7 @@
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
+        "ext-apcu": "*",
         "facebook/graph-sdk": "^5.7",
         "psr/log": "^1.1",
         "symfony/dotenv": "^4.2",
@@ -51,7 +54,9 @@
         "symfony/yaml": "^4.2",
         "doctrine/migrations": "^1.8",
         "ramsey/uuid": "^3.8",
-        "symfony/monolog-bundle": "^3.3"
+        "symfony/monolog-bundle": "^3.3",
+        "doctrine/orm": "^2.6",
+        "symfony/stopwatch": "^4.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5",
@@ -63,6 +68,7 @@
         "build": [
             "@test",
             "@composer:install:prod",
+            "HIS_ENV=PROD bin/db orm:generate-proxies -n",
             "composer archive --no-interaction --dir=build --file=hireinsocial-archive",
             "composer install"
         ],
@@ -84,11 +90,13 @@
         ],
         "db:reset": [
             "@db:drop",
-            "@db:migrate"
+            "@db:migrate",
+            "bin/db orm:generate-proxies -n"
         ],
         "db:reset:test": [
             "@db:drop:test",
-            "@db:migrate:test"
+            "@db:migrate:test",
+            "HIS_ENV=test bin/db orm:generate-proxies -n"
         ],
         "db:drop": "bin/db-drop -n",
         "db:migrate": "bin/db migrations:migrate -n",

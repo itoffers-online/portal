@@ -10,8 +10,8 @@ use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
 use HireInSocial\Application\Facebook\Group;
 use HireInSocial\Application\Facebook\Page;
-use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Facebook\DBALPosts;
-use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DBALOffers;
+use HireInSocial\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
+use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
 use HireInSocial\Infrastructure\Facbook\FacebookGraphSDK;
 use HireInSocial\Infrastructure\InMemory\InMemoryThrottle;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
@@ -73,13 +73,14 @@ function system(Config $config) : System
     }
 
     $dbalConnection = dbal($config);
+    $entityManager = orm($config, $dbalConnection);
 
     return new System(
         new CommandBus(
             new PostToGroupHandler(
                 $calendar,
-                new DBALOffers($dbalConnection),
-                new DBALPosts($dbalConnection),
+                new ORMOffers($entityManager),
+                new ORMPosts($entityManager),
                 new FacebookGroupService(
                     $facebookGraphSDK,
                     $offerThrottle

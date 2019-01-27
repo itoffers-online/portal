@@ -6,6 +6,10 @@ use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\DBAL\Tools\Console\ConsoleRunner;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
+use Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand;
+use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand;
+use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
+use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Schema\HireInSocialSchemaProvider;
 use HireInSocial\Config;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -18,6 +22,7 @@ require $projectRootPath . '/src/autoload.php';
 $config = \HireInSocial\bootstrap($projectRootPath);
 
 $connection = \HireInSocial\dbal($config);
+$entityManager = \HireInSocial\orm($config, $connection);
 
 $migrationsConfig = new MigrationConfiguration($connection);
 $migrationsConfig->setMigrationsNamespace(\HireInSocial\Application\System::class . '\\Doctrine\\DBAL\\Migrations');
@@ -28,17 +33,22 @@ $migrationsConfig->setMigrationsAreOrganizedByYearAndMonth(true);
 
 $migrateCommand = new MigrateCommand();
 $migrateCommand->setMigrationConfiguration($migrationsConfig);
+
 $diffCommand = new DiffCommand(
-    new HireInSocialSchemaProvider()
+    new HireInSocialSchemaProvider($entityManager)
 );
 $diffCommand->setMigrationConfiguration($migrationsConfig);
 
 $helperSet = new HelperSet([
     'db' => new ConnectionHelper($connection),
+    'em' => new EntityManagerHelper($entityManager),
     'question' => new QuestionHelper(),
 ]);
 
 ConsoleRunner::run($helperSet, [
     $migrateCommand,
-    $diffCommand
+    $diffCommand,
+    new GenerateProxiesCommand(),
+    new MetadataCommand(),
+    new QueryCommand()
 ]);

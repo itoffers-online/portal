@@ -27,6 +27,8 @@ Read [Vagrant Readme](vagrant/README.md)
 
 Vagrant environment is setup by ansible playbooks developed under [Iroquois organization](https://github.com/iroquoisorg)
 
+Read [PHP Readme](php/hireinsocial/README.md)
+
 ## Facebook 
 
 In order to use Facebook as a social media destination channel you need to meet following requirements:
