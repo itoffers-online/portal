@@ -71,6 +71,14 @@
     - name: Warmup symfony cache
       shell: php {{ release_path }}/bin/symfony ca:wa --env=prod
 
+    - name: Clear metadata cache
+      shell: php {{ release_path }}/bin/db orm:clear-cache:metadata --flush
+      register: migrations
+
+    - name: Clear query cache
+      shell: php {{ release_path }}/bin/db orm:clear-cache:query --flush
+      register: migrations
+
     - name: Execute migrations
       shell: php {{ release_path }}/bin/db migrations:migrate -n
       register: migrations

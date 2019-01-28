@@ -7,17 +7,17 @@ namespace HireInSocial\Application\Facebook;
 use HireInSocial\Application\Offer\Offer;
 use Ramsey\Uuid\UuidInterface;
 
-final class Post
+class Post
 {
     private $fbId;
     private $jobOfferId;
-    private $post;
+    private $fbAuthorId;
 
     public function __construct(string $fbId, Offer $offer, Draft $post)
     {
         $this->fbId = $fbId;
         $this->jobOfferId = $offer->id();
-        $this->post = $post;
+        $this->fbAuthorId = $post->authorFbId();
     }
 
     public function fbId(): string
@@ -27,7 +27,7 @@ final class Post
 
     public function authorId() : string
     {
-        return $this->post->authorFbId();
+        return $this->fbAuthorId;
     }
 
     public function jobOfferId(): UuidInterface

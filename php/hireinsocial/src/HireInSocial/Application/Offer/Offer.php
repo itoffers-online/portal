@@ -8,7 +8,7 @@ use HireInSocial\Application\System\Calendar;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-final class Offer
+class Offer
 {
     private $id;
     private $createdAt;
