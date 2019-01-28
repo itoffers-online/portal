@@ -20,6 +20,7 @@ use HireInSocial\Application\Offer\OfferFormatter;
 use HireInSocial\Application\Offer\Offers;
 use HireInSocial\Application\Offer\Position;
 use HireInSocial\Application\Offer\Salary;
+use HireInSocial\Application\Specialization\Specializations;
 use HireInSocial\Application\System\Calendar;
 use HireInSocial\Application\System\Handler;
 
@@ -28,10 +29,9 @@ final class PostToGroupHandler implements Handler
     private $calendar;
     private $offers;
     private $facebookGroupService;
-    private $group;
-    private $page;
     private $formatter;
     private $posts;
+    private $specializations;
 
     public function __construct(
         Calendar $calendar,
@@ -39,16 +39,14 @@ final class PostToGroupHandler implements Handler
         Posts $posts,
         FacebookGroupService $facebookGroupService,
         OfferFormatter $formatter,
-        Group $group,
-        Page $page
+        Specializations $specializations
     ) {
         $this->calendar = $calendar;
         $this->facebookGroupService = $facebookGroupService;
-        $this->group = $group;
-        $this->page = $page;
         $this->formatter = $formatter;
         $this->offers = $offers;
         $this->posts = $posts;
+        $this->specializations = $specializations;
     }
 
     public function handles(): string
@@ -58,6 +56,8 @@ final class PostToGroupHandler implements Handler
 
     public function __invoke(PostToGroup $command) : void
     {
+        $specialization = $this->specializations->get($command->specialization());
+
         $offer = $this->createOffer($command);
 
         $draft = new Draft(
@@ -69,12 +69,10 @@ final class PostToGroupHandler implements Handler
         );
         $postId = $this->facebookGroupService->postAtGroupAs(
             $draft,
-            $this->group,
-            $this->page
+            $specialization->facebookChannel()->group(),
+            $specialization->facebookChannel()->page()
         );
-
         $this->posts->add(new Post($postId, $offer, $draft));
-
         $this->offers->add($offer);
     }
 

@@ -14,8 +14,11 @@ use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Query\DbalOfferQuery;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
+use HireInSocial\Application\Specialization\FacebookChannel;
+use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Infrastructure\Facbook\FacebookGraphSDK;
-use HireInSocial\Infrastructure\InMemory\InMemoryThrottle;
+use HireInSocial\Infrastructure\InMemory\Application\InMemoryThrottle;
+use HireInSocial\Infrastructure\InMemory\Application\Specialization\InMemorySpecializations;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Infrastructure\Predis\PredisThrottle;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
@@ -77,6 +80,17 @@ function system(Config $config) : System
     $dbalConnection = dbal($config);
     $entityManager = orm($config, $dbalConnection);
 
+    $specializations = new InMemorySpecializations(
+        new Specialization(
+            'php',
+            'PHP',
+            new FacebookChannel(
+                new Page($config->getString(Config::FB_PAGE_ID), $config->getString(Config::FB_PAGE_TOKEN)),
+                new Group($config->getString(Config::FB_GROUP_ID))
+            )
+        )
+    );
+
     return new System(
         new CommandBus(
             new ORMTransactionManager($entityManager),
@@ -89,8 +103,7 @@ function system(Config $config) : System
                     $offerThrottle
                 ),
                 new FacebookFormatter($twig),
-                new Group($config->getString(Config::FB_GROUP_ID)),
-                new Page($config->getString(Config::FB_PAGE_ID), $config->getString(Config::FB_PAGE_TOKEN))
+                $specializations
             )
         ),
         new Queries(

@@ -12,15 +12,23 @@ final class PostToGroup implements Command
 {
     use ClassCommand;
 
+    private $specialization;
     private $fbUserId;
     private $offer;
 
     public function __construct(
+        string $specialization,
         string $fbUserId,
         Offer $offer
     ) {
         $this->fbUserId = $fbUserId;
         $this->offer = $offer;
+        $this->specialization = $specialization;
+    }
+
+    public function specialization(): string
+    {
+        return $this->specialization;
     }
 
     public function fbUserId(): string
