@@ -113,6 +113,12 @@
             "build",
             "!vendor",
             "var/*",
+            "tests",
+            "README.md",
+            "phpunit.xml",
+            ".php_cs",
+            ".env.dist",
+            ".env.test",
             "phpunit.xml.dist"
         ]
     }
