@@ -6,5 +6,5 @@ namespace HireInSocial\Application\System;
 
 interface Command
 {
-    public function name() : string;
+    public function commandName() : string;
 }

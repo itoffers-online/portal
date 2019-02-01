@@ -6,13 +6,16 @@ use Facebook\Facebook;
 
 
 use HireInSocial\Application\Command\Facebook\Page\PostToGroupHandler;
+use HireInSocial\Application\Command\Specialization\CreateSpecializationHandler;
 use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
 use HireInSocial\Application\Facebook\Group;
 use HireInSocial\Application\Facebook\Page;
-use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Query\DbalOfferQuery;
+use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
+use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization\DBALSpecializationQuery;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
+use HireInSocial\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSpecializations;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
 use HireInSocial\Application\Specialization\FacebookChannel;
 use HireInSocial\Application\Specialization\Specialization;
@@ -94,6 +97,9 @@ function system(Config $config) : System
     return new System(
         new CommandBus(
             new ORMTransactionManager($entityManager),
+            new CreateSpecializationHandler(
+                new ORMSpecializations($entityManager)
+            ),
             new PostToGroupHandler(
                 $calendar,
                 new ORMOffers($entityManager),
@@ -108,7 +114,8 @@ function system(Config $config) : System
         ),
         new Queries(
             new OfferThrottleQuery($offerThrottle),
-            new DbalOfferQuery($dbalConnection)
+            new DbalOfferQuery($dbalConnection),
+            new DBALSpecializationQuery($dbalConnection)
         ),
         $systemLogger
     );

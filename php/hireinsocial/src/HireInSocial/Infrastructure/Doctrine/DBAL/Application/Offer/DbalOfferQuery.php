@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HireInSocial\Infrastructure\Doctrine\DBAL\Application\Query;
+namespace HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer;
 
 use Doctrine\DBAL\Connection;
 use HireInSocial\Application\Query\Offer\OfferQuery;

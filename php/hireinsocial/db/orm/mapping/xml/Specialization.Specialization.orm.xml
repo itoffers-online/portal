@@ -1,0 +1,16 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="HireInSocial\Application\Specialization\Specialization" table="his_specialization">
+
+        <id name="slug" type="string">
+            <generator strategy="NONE" />
+        </id>
+
+        <field name="name" />
+
+        <embedded name="facebookChannel" class="HireInSocial\Application\Specialization\FacebookChannel" />
+
+    </entity>
+</doctrine-mapping>

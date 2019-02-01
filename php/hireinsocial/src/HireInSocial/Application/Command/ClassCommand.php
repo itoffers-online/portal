@@ -6,7 +6,7 @@ namespace HireInSocial\Application\Command;
 
 trait ClassCommand
 {
-    public function name() : string
+    public function commandName() : string
     {
         return self::class;
     }

@@ -13,4 +13,6 @@ interface SpecializationQuery extends Query
      * @return Specialization[]
      */
     public function all() : array;
+
+    public function findBySlug(string $slug) : ?Specialization;
 }

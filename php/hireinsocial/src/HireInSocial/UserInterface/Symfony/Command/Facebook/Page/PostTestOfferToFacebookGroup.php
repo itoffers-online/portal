@@ -38,6 +38,7 @@ final class PostTestOfferToFacebookGroup extends Command
     {
         $this
             ->setDescription('<info>[Facebook]</info> Post test job offer at Facebook group as a page.')
+            ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
             ->addArgument('fb-user-id', InputArgument::REQUIRED, 'Facebook User ID of job offer author.');
         ;
     }
@@ -50,6 +51,7 @@ final class PostTestOfferToFacebookGroup extends Command
 
         try {
             $this->system->handle(new PostToGroup(
+                $input->getArgument('specialization'),
                 $input->getArgument('fb-user-id'),
                 new Offer(
                     new Company('Test sp. z o.o', 'https://test.com', 'Firma Test jest największa a zarazem najmniejsza firmą na świecie. Zatrudnia okolo 250 osób.'),

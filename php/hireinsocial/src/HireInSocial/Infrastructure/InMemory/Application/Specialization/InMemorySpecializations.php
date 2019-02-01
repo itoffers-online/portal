@@ -30,4 +30,9 @@ final class InMemorySpecializations implements Specializations
 
         throw new Exception(sprintf('Specialization "%s" does not exists', $slug));
     }
+
+    public function add(Specialization $specialization): void
+    {
+        $this->specializations[] = $specialization;
+    }
 }

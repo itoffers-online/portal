@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace HireInSocial\Application\Command\Facebook\Page;
 
 use HireInSocial\Application\Facebook\FacebookGroupService;
-use HireInSocial\Application\Facebook\Group;
-use HireInSocial\Application\Facebook\Page;
 use HireInSocial\Application\Facebook\Draft;
 use HireInSocial\Application\Facebook\Post;
 use HireInSocial\Application\Facebook\Posts;
