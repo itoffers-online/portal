@@ -27,11 +27,13 @@ function symfony(Config $config, System $system) : SymfonyKernel
             'paths' => [
                 $config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE) . '/ui' => '__main__',
             ],
+            'date' => [
+                'timezone' => $config->getString(Config::TIMEZONE),
+            ],
             'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/twig',
             'globals' => [
                 'facebook' => [
                     'app_id' => $config->getString(Config::FB_APP_ID),
-                    'group_id' => $config->getString(Config::FB_GROUP_ID),
                 ],
             ],
             'auto_reload' => $config->getString(Config::ENV) !== 'prod',

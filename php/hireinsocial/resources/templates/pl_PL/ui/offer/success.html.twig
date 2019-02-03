@@ -3,7 +3,7 @@
 {% block body %}
     <div class="alert alert-success text-center" role="alert">
         <h4 class="alert-heading">Dobra robota!</h4>
-        <p>Twoje ogłoszenie przeszło poprawnie proces walidacji i wkrótce pojawi się na grupie na <a href="https://www.facebook.com/groups/{{ facebook.group_id }}" target="_blank">Facebooku.</a></p>
+        <p>Twoje ogłoszenie przeszło poprawnie proces walidacji i wkrótce pojawi się na grupie na <a href="{{ specialization.facebookChannel.groupId|fb_group_url }}" target="_blank">Facebooku.</a></p>
         <hr>
         <p class="mb-0">Jeżeli masz jakiekolwiek pytania zajrzyj najpierw do sekcji <a href="{{ url('faq') }}">FAQ</a>.</p>
     </div>

@@ -1,0 +1,21 @@
+<div class="col-md-4">
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <div class="card-title text-center">
+                <h1>PHP Devloper</h1>
+            </div>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Ilość ogłoszeń: {{ specialization.offers.count }}</li>
+            <li class="list-group-item">Data ostatniego: {% if specialization.offers.count > 0 %}{{ specialization.offers.latestOfferDate|date('Y-m-d H:i:s') }}{% endif %}</li>
+        </ul>
+        <div class="card-body text-center">
+            <p class="card-text">
+                <a href="{{ specialization.facebookChannel.groupId|fb_group_url }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fab fa-facebook-f"></i> zobacz na Facebooku</a>
+            </p>
+        </div>
+        <div class="card-footer">
+            <a href="{{ url('offer_new', {'specialization' : specialization.slug}) }}" class="btn btn-lg btn-block btn-primary">Napisz ogłoszenie</a>
+        </div>
+    </div>
+</div>

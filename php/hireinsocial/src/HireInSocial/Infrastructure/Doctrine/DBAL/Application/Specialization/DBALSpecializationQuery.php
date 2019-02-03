@@ -1,11 +1,13 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization;
 
 use Doctrine\DBAL\Connection;
+use HireInSocial\Application\Query\Specialization\Model\Specialization\FacebookChannel;
 use HireInSocial\Application\Query\Specialization\Model\Specialization;
+use HireInSocial\Application\Query\Specialization\Model\Specializations;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 
 final class DBALSpecializationQuery implements SpecializationQuery
@@ -20,17 +22,41 @@ final class DBALSpecializationQuery implements SpecializationQuery
         $this->connection = $connection;
     }
 
-    public function all(): array
+    public function all(): Specializations
     {
-        return \array_map(
-            [$this, 'hydrateSpecialization'],
-            $this->connection->fetchAll('SELECT * FROM his_specialization ORDER BY slug')
+        return new Specializations(
+            ...\array_map(
+                [$this, 'hydrateSpecialization'],
+                $this->connection->fetchAll(
+                    <<<SQL
+                  SELECT 
+                     s.id,
+                     s.slug, 
+                     s.facebook_channel_page_fb_id as 
+                     fb_page_id, s.facebook_channel_group_fb_id as fb_group_id 
+                  FROM his_specialization s 
+                  ORDER BY s.slug
+SQL
+                )
+            )
         );
     }
 
     public function findBySlug(string $slug): ?Specialization
     {
-        $specialization = $this->connection->fetchAssoc('SELECT * FROM his_specialization WHERE slug = :slug', ['slug' => $slug]);
+        $specialization = $this->connection->fetchAssoc(
+            <<<SQL
+            SELECT 
+               s.id,
+               s.slug, 
+               s.facebook_channel_page_fb_id as fb_page_id, 
+               s.facebook_channel_group_fb_id as fb_group_id
+            FROM his_specialization s
+            WHERE s.slug = :slug
+SQL
+            ,
+            ['slug' => $slug]
+        );
 
         if (!$specialization) {
             return null;
@@ -39,11 +65,36 @@ final class DBALSpecializationQuery implements SpecializationQuery
         return $this->hydrateSpecialization($specialization);
     }
 
-    function hydrateSpecialization(array $data): Specialization
+    public function hydrateSpecialization(array $data): Specialization
     {
+        // TODO: Optimize this, maybe try to merge this into main query or migrate to projections
+        $offersData = $this->connection->fetchAssoc(
+            <<<SQL
+            SELECT 
+               (SELECT COUNT(*) FROM his_job_offer) as total_count,
+               o.created_at
+            FROM his_job_offer o 
+            WHERE o.specialization_id = :specializationId
+            ORDER BY o.created_at DESC LIMIT 1
+SQL
+            ,
+            ['specializationId' => $data['id']]
+        );
+
+        $offers = $offersData
+            ?  Specialization\Offers::create(
+                $offersData['total_count'],
+                new \DateTimeImmutable($offersData['created_at'])
+            )
+            : Specialization\Offers::noOffers();
+
         return new Specialization(
             $data['slug'],
-            $data['name']
+            $offers,
+            new FacebookChannel(
+                $data['fb_page_id'],
+                $data['fb_group_id']
+            )
         );
     }
 }

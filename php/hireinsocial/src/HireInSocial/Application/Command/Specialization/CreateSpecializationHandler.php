@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Application\Command\Specialization;
 
@@ -32,7 +32,6 @@ final class CreateSpecializationHandler implements Handler
     {
         $this->specializations->add(new Specialization(
             $command->slug(),
-            $command->name(),
             new FacebookChannel(
                 new Page(
                     $command->facebookPageId(),

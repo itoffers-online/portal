@@ -11,6 +11,7 @@ use Ramsey\Uuid\UuidInterface;
 class Offer
 {
     private $id;
+    private $specializationId;
     private $createdAt;
     private $company;
     private $position;
@@ -21,16 +22,18 @@ class Offer
     private $contact;
 
     public function __construct(
-        Calendar $calendar,
+        UuidInterface $specializationId,
         Company $company,
         Position $position,
         Location $location,
         Salary $salary,
         Contract $contract,
         Description $description,
-        Contact $contact
+        Contact $contact,
+        Calendar $calendar
     ) {
-        $this->id = Uuid::uuid4();
+        $this->id = (string) Uuid::uuid4();
+        $this->specializationId = $specializationId;
         $this->createdAt = $calendar->currentTime();
         $this->company = $company;
         $this->position = $position;
@@ -43,7 +46,7 @@ class Offer
 
     public function id(): UuidInterface
     {
-        return $this->id;
+        return Uuid::fromString($this->id);
     }
 
     public function createdAt(): \DateTimeImmutable

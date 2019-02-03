@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Command\Specialization;
 
@@ -32,7 +32,6 @@ final class CreateSpecialization extends Command
         $this
             ->setDescription('<info>[Specialization]</info> Create new specialization.')
             ->addArgument('slug', InputArgument::REQUIRED, 'Specialization slug')
-            ->addArgument('name', InputArgument::REQUIRED, 'Specialization name')
             ->addArgument('facebook_page_id', InputArgument::REQUIRED, 'Facebook page id that will post offers into group')
             ->addArgument('facebook_page_token', InputArgument::REQUIRED, 'Facebook page id access token with publish_to_groups permission')
             ->addArgument('facebook_group_id', InputArgument::REQUIRED, 'Facebook group id where page will post offers')
@@ -64,12 +63,10 @@ final class CreateSpecialization extends Command
         try {
             $this->system->handle(new SystemCreateSpecializationCommand(
                 $input->getArgument('slug'),
-                $input->getArgument('name'),
                 $input->getArgument('facebook_page_id'),
                 $input->getArgument('facebook_page_token'),
                 $input->getArgument('facebook_group_id')
             ));
-
         } catch (\Throwable $e) {
             $io->error('Can\'t crete specialization, check logs for more details.');
 
@@ -80,5 +77,4 @@ final class CreateSpecialization extends Command
 
         return 0;
     }
-
 }

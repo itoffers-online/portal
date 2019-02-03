@@ -35,7 +35,7 @@ class System
                 'code' => $exception->getCode(),
             ]);
 
-            throw new Exception($exception->getMessage(), $exception->getCode());
+            throw new Exception($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 

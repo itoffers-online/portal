@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Tests\Application\Unit\Specialization;
 
@@ -20,13 +20,13 @@ final class SpecializationTest extends TestCase
     {
         $this->expectException(InvalidAssertionException::class);
 
-        new Specialization($slug, 'name', new FacebookChannel(PageMother::random(), GroupMother::random()));
+        new Specialization($slug, new FacebookChannel(PageMother::random(), GroupMother::random()));
     }
 
     public function test_that_slug_belongs_to_the_organization()
     {
         $this->assertTrue(
-            (new Specialization('php-developers', 'name', new FacebookChannel(PageMother::random(), GroupMother::random())))->is('PHP-Developers')
+            (new Specialization('php-developers', new FacebookChannel(PageMother::random(), GroupMother::random())))->is('PHP-Developers')
         );
     }
 

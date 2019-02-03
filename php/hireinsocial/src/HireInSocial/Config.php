@@ -9,6 +9,7 @@ final class Config
     public const ROOT_PATH = 'root_path';
     public const ENV = 'env';
     public const LOCALE = 'locale';
+    public const TIMEZONE = 'timezone';
 
     public const SYMFONY_SECRET = 'symfony_secret';
 
@@ -22,9 +23,6 @@ final class Config
 
     public const FB_APP_ID = 'facebook_app_id';
     public const FB_APP_SECRET = 'facebook_app_secret';
-    public const FB_PAGE_ID = 'facebook_page_id';
-    public const FB_PAGE_TOKEN = 'facebook_page_token';
-    public const FB_GROUP_ID = 'facebook_group_id';
 
     public const THROTTLE_DURATION = 'throttle_duration';
 
@@ -41,13 +39,11 @@ final class Config
             self::ROOT_PATH => $projectRootPath,
             self::ENV => getenv('HIS_ENV'),
             self::LOCALE => getenv('HIS_LOCALE'),
+            self::TIMEZONE => getenv('HIS_TIMEZONE'),
             self::SYMFONY_SECRET => getenv('HIS_SYMFONY_SECRET'),
             self::REDIS_DSN => getenv('HIS_REDIS_DSN'),
             self::FB_APP_ID => getenv('HIS_FB_APP_ID'),
             self::FB_APP_SECRET => getenv('HIS_FB_APP_SECRET'),
-            self::FB_PAGE_ID => getenv('HIS_FB_PAGE_ID'),
-            self::FB_PAGE_TOKEN => getenv('HIS_FB_PAGE_ACCESS_TOKEN'),
-            self::FB_GROUP_ID => getenv('HIS_FB_GROUP_ID'),
             self::THROTTLE_DURATION => getenv('HIS_THROTTLE_DURATION'),
             self::DB_HOST => getenv('HIS_DB_HOST'),
             self::DB_PORT => getenv('HIS_DB_PORT'),

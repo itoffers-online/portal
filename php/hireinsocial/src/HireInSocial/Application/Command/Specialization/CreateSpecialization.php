@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Application\Command\Specialization;
 
@@ -12,15 +12,13 @@ final class CreateSpecialization implements Command
     use ClassCommand;
 
     private $slug;
-    private $name;
     private $facebookPageId;
     private $facebookPageToken;
     private $facebookGroupId;
 
-    public function __construct(string $slug, string $name, string $facebookPageId, string $facebookPageToken, string $facebookGroupId)
+    public function __construct(string $slug, string $facebookPageId, string $facebookPageToken, string $facebookGroupId)
     {
         $this->slug = $slug;
-        $this->name = $name;
         $this->facebookPageId = $facebookPageId;
         $this->facebookPageToken = $facebookPageToken;
         $this->facebookGroupId = $facebookGroupId;
@@ -29,11 +27,6 @@ final class CreateSpecialization implements Command
     public function slug(): string
     {
         return $this->slug;
-    }
-
-    public function name(): string
-    {
-        return $this->name;
     }
 
     public function facebookPageId(): string

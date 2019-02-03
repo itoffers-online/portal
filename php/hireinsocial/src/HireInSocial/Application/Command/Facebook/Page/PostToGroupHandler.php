@@ -18,6 +18,7 @@ use HireInSocial\Application\Offer\OfferFormatter;
 use HireInSocial\Application\Offer\Offers;
 use HireInSocial\Application\Offer\Position;
 use HireInSocial\Application\Offer\Salary;
+use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\Specialization\Specializations;
 use HireInSocial\Application\System\Calendar;
 use HireInSocial\Application\System\Handler;
@@ -56,7 +57,7 @@ final class PostToGroupHandler implements Handler
     {
         $specialization = $this->specializations->get($command->specialization());
 
-        $offer = $this->createOffer($command);
+        $offer = $this->createOffer($command, $specialization);
 
         $draft = new Draft(
             $command->fbUserId(),
@@ -74,10 +75,10 @@ final class PostToGroupHandler implements Handler
         $this->offers->add($offer);
     }
 
-    private function createOffer(PostToGroup $command): Offer
+    private function createOffer(PostToGroup $command, Specialization $specialization): Offer
     {
         return new Offer(
-            $this->calendar,
+            $specialization->id(),
             new Company(
                 $command->offer()->company()->name(),
                 $command->offer()->company()->url(),
@@ -105,7 +106,8 @@ final class PostToGroupHandler implements Handler
                 $command->offer()->contact()->email(),
                 $command->offer()->contact()->name(),
                 $command->offer()->contact()->phone()
-            )
+            ),
+            $this->calendar
         );
     }
 }
