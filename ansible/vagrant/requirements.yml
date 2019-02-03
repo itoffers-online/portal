@@ -18,7 +18,7 @@
   version: "1.0.0"
 
 - name: iroquoisorg.blackfire
-  version: "1.0.1"
+  version: "1.0.3"
 
 - name: iroquoisorg.nginx_vhost
   version: "1.0.1"
