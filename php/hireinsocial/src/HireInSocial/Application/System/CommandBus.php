@@ -24,11 +24,11 @@ final class CommandBus
 
     public function handle(Command $command) : void
     {
-        if (\array_key_exists($command->name(), $this->handlers)) {
+        if (\array_key_exists($command->commandName(), $this->handlers)) {
             $this->transactionManager->begin();
 
             try {
-                $this->handlers[$command->name()]($command);
+                $this->handlers[$command->commandName()]($command);
                 $this->transactionManager->commit();
             } catch (\Throwable $exception) {
                 $this->transactionManager->rollback();
@@ -36,7 +36,7 @@ final class CommandBus
                 throw $exception;
             }
         } else {
-            throw new Exception(sprintf('Unknown command "%s"', $command->name()));
+            throw new Exception(sprintf('Unknown command "%s"', $command->commandName()));
         }
     }
 }

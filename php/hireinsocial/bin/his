@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use HireInSocial\UserInterface\Symfony\Command\Specialization\CreateSpecialization;
 use HireInSocial\UserInterface\Symfony\Command\System\PerformanceCheckCommand;
 use Symfony\Component\Console\Application;
 use HireInSocial\UserInterface\Symfony\Command\Facebook\Page\PostTestOfferToFacebookGroup;
@@ -16,6 +17,7 @@ $system = \HireInSocial\system($config);
 $application = new Application('Hire in Social');
 
 $application->add(new PostTestOfferToFacebookGroup($system));
+$application->add(new CreateSpecialization($system));
 $application->add(new PerformanceCheckCommand($system, $config));
 
 $application->run();

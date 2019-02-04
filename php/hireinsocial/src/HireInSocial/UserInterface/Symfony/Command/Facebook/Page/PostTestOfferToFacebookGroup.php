@@ -13,6 +13,7 @@ use HireInSocial\Application\Command\Offer\Location;
 use HireInSocial\Application\Command\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Position;
 use HireInSocial\Application\Command\Offer\Salary;
+use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,6 +39,7 @@ final class PostTestOfferToFacebookGroup extends Command
     {
         $this
             ->setDescription('<info>[Facebook]</info> Post test job offer at Facebook group as a page.')
+            ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
             ->addArgument('fb-user-id', InputArgument::REQUIRED, 'Facebook User ID of job offer author.');
         ;
     }
@@ -48,8 +50,17 @@ final class PostTestOfferToFacebookGroup extends Command
 
         $io->note('Job offer posted');
 
+        $specialization = $this->system->query(SpecializationQuery::class)->findBySlug($input->getArgument('specialization'));
+
+        if (!$specialization) {
+            $io->error('Specialization does not exists.');
+
+            return 1;
+        }
+
         try {
             $this->system->handle(new PostToGroup(
+                $specialization->slug(),
                 $input->getArgument('fb-user-id'),
                 new Offer(
                     new Company('Test sp. z o.o', 'https://test.com', 'Firma Test jest największa a zarazem najmniejsza firmą na świecie. Zatrudnia okolo 250 osób.'),

@@ -6,16 +6,17 @@ use Facebook\Facebook;
 
 
 use HireInSocial\Application\Command\Facebook\Page\PostToGroupHandler;
+use HireInSocial\Application\Command\Specialization\CreateSpecializationHandler;
 use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
-use HireInSocial\Application\Facebook\Group;
-use HireInSocial\Application\Facebook\Page;
-use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Query\DbalOfferQuery;
+use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
+use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization\DBALSpecializationQuery;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
+use HireInSocial\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSpecializations;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
 use HireInSocial\Infrastructure\Facbook\FacebookGraphSDK;
-use HireInSocial\Infrastructure\InMemory\InMemoryThrottle;
+use HireInSocial\Infrastructure\InMemory\Application\InMemoryThrottle;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Infrastructure\Predis\PredisThrottle;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
@@ -80,6 +81,9 @@ function system(Config $config) : System
     return new System(
         new CommandBus(
             new ORMTransactionManager($entityManager),
+            new CreateSpecializationHandler(
+                new ORMSpecializations($entityManager)
+            ),
             new PostToGroupHandler(
                 $calendar,
                 new ORMOffers($entityManager),
@@ -89,13 +93,13 @@ function system(Config $config) : System
                     $offerThrottle
                 ),
                 new FacebookFormatter($twig),
-                new Group($config->getString(Config::FB_GROUP_ID)),
-                new Page($config->getString(Config::FB_PAGE_ID), $config->getString(Config::FB_PAGE_TOKEN))
+                new ORMSpecializations($entityManager)
             )
         ),
         new Queries(
             new OfferThrottleQuery($offerThrottle),
-            new DbalOfferQuery($dbalConnection)
+            new DbalOfferQuery($dbalConnection),
+            new DBALSpecializationQuery($dbalConnection)
         ),
         $systemLogger
     );

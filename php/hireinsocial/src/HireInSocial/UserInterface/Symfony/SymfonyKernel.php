@@ -10,6 +10,7 @@ use HireInSocial\UserInterface\Symfony\Controller\FacebookController;
 use HireInSocial\UserInterface\Symfony\Controller\IndexController;
 use HireInSocial\UserInterface\Symfony\Controller\LayoutController;
 use HireInSocial\UserInterface\Symfony\Controller\OfferController;
+use HireInSocial\UserInterface\Twig\Extension\FacebookExtension;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\MonologBundle\MonologBundle;
@@ -68,6 +69,8 @@ final class SymfonyKernel extends Kernel
                 'app_secret' => $this->frameworkConfig['facebook']['app_secret'],
             ]);
 
+        $c->register(FacebookExtension::class)->addTag('twig.extension');
+
         $c->autowire(IndexController::class)->addTag('controller.service_arguments');
         $c->autowire(FacebookController::class)->addTag('controller.service_arguments');
         $c->autowire(OfferController::class)->addTag('controller.service_arguments');
@@ -96,7 +99,7 @@ final class SymfonyKernel extends Kernel
         $routes->add('/facebook/login', [FacebookController::class, 'loginAction'], 'facebook_login');
         $routes->add('/facebook/logout', [FacebookController::class, 'logoutAction'], 'facebook_logout');
         $routes->add('/facebook/login/success', [FacebookController::class, 'loginSuccessAction'], 'facebook_login_success');
-        $routes->add('/offer', [OfferController::class, 'newAction'], 'offer_new');
-        $routes->add('/offer/success', [OfferController::class, 'successAction'], 'offer_success');
+        $routes->add('/{specialization}/offer', [OfferController::class, 'newAction'], 'offer_new');
+        $routes->add('/{specialization}/offer/success', [OfferController::class, 'successAction'], 'offer_success');
     }
 }

@@ -16,9 +16,10 @@ use HireInSocial\Application\Command\Offer\Salary;
 
 final class PostToGroupMother
 {
-    public static function postAs(string $fbUserId) : PostToGroup
+    public static function postAs(string $fbUserId, string $specialization) : PostToGroup
     {
         return new PostToGroup(
+            $specialization,
             $fbUserId,
             new Offer(
                 new Company('Test sp. z o.o', 'https://test.com', 'Firma Test jest największa a zarazem najmniejsza firmą na świecie. Zatrudnia okolo 250 osób.'),

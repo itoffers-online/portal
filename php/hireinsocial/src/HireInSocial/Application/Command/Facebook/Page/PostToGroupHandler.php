@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace HireInSocial\Application\Command\Facebook\Page;
 
 use HireInSocial\Application\Facebook\FacebookGroupService;
-use HireInSocial\Application\Facebook\Group;
-use HireInSocial\Application\Facebook\Page;
 use HireInSocial\Application\Facebook\Draft;
 use HireInSocial\Application\Facebook\Post;
 use HireInSocial\Application\Facebook\Posts;
@@ -20,6 +18,8 @@ use HireInSocial\Application\Offer\OfferFormatter;
 use HireInSocial\Application\Offer\Offers;
 use HireInSocial\Application\Offer\Position;
 use HireInSocial\Application\Offer\Salary;
+use HireInSocial\Application\Specialization\Specialization;
+use HireInSocial\Application\Specialization\Specializations;
 use HireInSocial\Application\System\Calendar;
 use HireInSocial\Application\System\Handler;
 
@@ -28,10 +28,9 @@ final class PostToGroupHandler implements Handler
     private $calendar;
     private $offers;
     private $facebookGroupService;
-    private $group;
-    private $page;
     private $formatter;
     private $posts;
+    private $specializations;
 
     public function __construct(
         Calendar $calendar,
@@ -39,16 +38,14 @@ final class PostToGroupHandler implements Handler
         Posts $posts,
         FacebookGroupService $facebookGroupService,
         OfferFormatter $formatter,
-        Group $group,
-        Page $page
+        Specializations $specializations
     ) {
         $this->calendar = $calendar;
         $this->facebookGroupService = $facebookGroupService;
-        $this->group = $group;
-        $this->page = $page;
         $this->formatter = $formatter;
         $this->offers = $offers;
         $this->posts = $posts;
+        $this->specializations = $specializations;
     }
 
     public function handles(): string
@@ -58,7 +55,9 @@ final class PostToGroupHandler implements Handler
 
     public function __invoke(PostToGroup $command) : void
     {
-        $offer = $this->createOffer($command);
+        $specialization = $this->specializations->get($command->specialization());
+
+        $offer = $this->createOffer($command, $specialization);
 
         $draft = new Draft(
             $command->fbUserId(),
@@ -69,19 +68,17 @@ final class PostToGroupHandler implements Handler
         );
         $postId = $this->facebookGroupService->postAtGroupAs(
             $draft,
-            $this->group,
-            $this->page
+            $specialization->facebookChannel()->group(),
+            $specialization->facebookChannel()->page()
         );
-
         $this->posts->add(new Post($postId, $offer, $draft));
-
         $this->offers->add($offer);
     }
 
-    private function createOffer(PostToGroup $command): Offer
+    private function createOffer(PostToGroup $command, Specialization $specialization): Offer
     {
         return new Offer(
-            $this->calendar,
+            $specialization->id(),
             new Company(
                 $command->offer()->company()->name(),
                 $command->offer()->company()->url(),
@@ -109,7 +106,8 @@ final class PostToGroupHandler implements Handler
                 $command->offer()->contact()->email(),
                 $command->offer()->contact()->name(),
                 $command->offer()->contact()->phone()
-            )
+            ),
+            $this->calendar
         );
     }
 }

@@ -15,6 +15,7 @@ use HireInSocial\Application\Command\Offer\Position;
 use HireInSocial\Application\Command\Offer\Salary;
 use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
+use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
 use HireInSocial\UserInterface\Symfony\Form\Type\OfferType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,10 +24,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class OfferController extends AbstractController
 {
-    public function newAction(Request $request) : Response
+    public function newAction(string $specialization, Request $request) : Response
     {
         if (!$request->getSession()->has(FacebookController::FACEBOOK_ID_SESSION_KEY)) {
             return $this->redirectToRoute('facebook_login');
+        }
+
+        if (!$this->get(System::class)->query(SpecializationQuery::class)->findBySlug($specialization)) {
+            throw $this->createNotFoundException();
         }
 
         $fbUserId = $request->getSession()->get(FacebookController::FACEBOOK_ID_SESSION_KEY);
@@ -40,6 +45,7 @@ final class OfferController extends AbstractController
 
             try {
                 $this->container->get(System::class)->handle(new PostToGroup(
+                    $specialization,
                     $fbUserId,
                     new Offer(
                         new Company($offer['company']['name'], $offer['company']['url'], $offer['company']['description']),
@@ -52,7 +58,7 @@ final class OfferController extends AbstractController
                     )
                 ));
 
-                return $this->redirectToRoute('offer_success');
+                return $this->redirectToRoute('offer_success', ['specialization' => $specialization]);
             } catch (Exception $exception) {
                 throw $exception;
             }
@@ -64,8 +70,16 @@ final class OfferController extends AbstractController
         ]);
     }
 
-    public function successAction() : Response
+    public function successAction(string $specialization) : Response
     {
-        return $this->render('/offer/success.html.twig');
+        $specialization = $this->get(System::class)->query(SpecializationQuery::class)->findBySlug($specialization);
+
+        if (!$specialization) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('/offer/success.html.twig', [
+            'specialization' => $specialization,
+        ]);
     }
 }

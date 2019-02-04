@@ -49,7 +49,7 @@ final class CommandBusTest extends TestCase
         $this->expectExceptionMessage('Unknown command "FancyClassName"');
 
         $commandBus->handle(new class implements Command {
-            public function name(): string
+            public function commandName(): string
             {
                 return 'FancyClassName';
             }
@@ -76,7 +76,7 @@ final class CommandBusTest extends TestCase
         $command = new class implements Command {
             public $handled = false;
 
-            public function name(): string
+            public function commandName(): string
             {
                 return 'Command';
             }

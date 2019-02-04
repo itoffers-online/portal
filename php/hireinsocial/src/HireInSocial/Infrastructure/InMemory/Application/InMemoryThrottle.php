@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HireInSocial\Infrastructure\InMemory;
+namespace HireInSocial\Infrastructure\InMemory\Application;
 
 use HireInSocial\Application\Offer\Throttle;
 
