@@ -89,12 +89,14 @@ final class PostToGroupHandler implements Handler
                 $command->offer()->position()->description()
             ),
             new Location($command->offer()->location()->remote(), $command->offer()->location()->name()),
-            new Salary(
-                $command->offer()->salary()->min(),
-                $command->offer()->salary()->max(),
-                $command->offer()->salary()->currencyCode(),
-                $command->offer()->salary()->isNet()
-            ),
+            $command->offer()->salary()
+                ? new Salary(
+                    $command->offer()->salary()->min(),
+                    $command->offer()->salary()->max(),
+                    $command->offer()->salary()->currencyCode(),
+                    $command->offer()->salary()->isNet()
+                )
+                : null,
             new Contract(
                 $command->offer()->contract()->type()
             ),

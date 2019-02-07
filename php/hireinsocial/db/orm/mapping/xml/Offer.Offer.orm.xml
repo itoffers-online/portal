@@ -9,10 +9,11 @@
         </id>
         <field name="specializationId" type="guid" />
         <field name="createdAt" type="datetime_immutable" />
+        <field name="salary" type="his_offer_salary" nullable="true"/>
+
         <embedded name="company" class="HireInSocial\Application\Offer\Company" />
         <embedded name="position" class="HireInSocial\Application\Offer\Position" />
         <embedded name="location" class="HireInSocial\Application\Offer\Location" />
-        <embedded name="salary" class="HireInSocial\Application\Offer\Salary" />
         <embedded name="contract" class="HireInSocial\Application\Offer\Contract" />
         <embedded name="description" class="HireInSocial\Application\Offer\Description" />
         <embedded name="contact" class="HireInSocial\Application\Offer\Contact" />

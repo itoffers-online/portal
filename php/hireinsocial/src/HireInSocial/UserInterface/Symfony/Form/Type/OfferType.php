@@ -22,7 +22,7 @@ final class OfferType extends AbstractType
         $builder
             ->add('company', CompanyType::class)
             ->add('position', PositionType::class)
-            ->add('salary', SalaryType::class)
+            ->add('salary', SalaryType::class, ['required' => false])
             ->add('contract', ChoiceType::class, [
                 'choices' => [
                     'B2B' => 'B2B',

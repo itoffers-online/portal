@@ -26,7 +26,7 @@ class Offer
         Company $company,
         Position $position,
         Location $location,
-        Salary $salary,
+        ?Salary $salary,
         Contract $contract,
         Description $description,
         Contact $contact,
@@ -69,7 +69,7 @@ class Offer
         return $this->location;
     }
 
-    public function salary(): Salary
+    public function salary(): ?Salary
     {
         return $this->salary;
     }
