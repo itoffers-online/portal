@@ -6,9 +6,12 @@
 
 𝐅𝐨𝐫𝐦𝐚 𝐙𝐚𝐭𝐫𝐮𝐝𝐧𝐢𝐞𝐧𝐢𝐚: {{ offer.contract.type }}
 
-
+{% if offer.salary %}
 𝐖𝐲𝐧𝐚𝐠𝐫𝐨𝐝𝐳𝐞𝐧𝐢𝐞: {{ offer.salary.min }} - {{ offer.salary.max }} ({{ offer.salary.currencyCode }}) {% if offer.salary.isNet %}Netto{% else %}Brutto{% endif %}
-
+{% else %}
+𝐖𝐲𝐧𝐚𝐠𝐫𝐨𝐝𝐳𝐞𝐧𝐢𝐞: Pracodawca nie podał wynagrodzenia, pamiętaj że możesz zacząć rozmowę od ustalenia czy Twoje wymagania są dla pracodawcy akceptowalne.
+Brak wynagrodzenia nie musi oznaczać złej woli, czasami polityka firmy nie pozwala ujawniać takich informacji, pamiętaj że wynagrodzenie to kwestia bardzo indywidualna.
+{% endif %}
 
 𝐋𝐨𝐤𝐚𝐥𝐢𝐳𝐚𝐜𝐣𝐚: {% if offer.location.isRemote %}Zdalnie{% endif %} {% if offer.location.name %}- {{ offer.location.name }}{% endif %}
 

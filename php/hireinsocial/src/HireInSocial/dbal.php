@@ -5,9 +5,13 @@ namespace HireInSocial;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Types\Type;
+use HireInSocial\Infrastructure\Doctrine\DBAL\Types\Offer\SalaryType;
 
 function dbal(Config $config) : Connection
 {
+    Type::addType(SalaryType::NAME, SalaryType::class);
+
     return DriverManager::getConnection(
         [
             'dbname' => $config->getString(Config::DB_NAME),

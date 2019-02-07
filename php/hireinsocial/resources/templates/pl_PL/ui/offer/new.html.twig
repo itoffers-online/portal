@@ -43,6 +43,12 @@
             {{ form_row(form.position.description, {label: "Opis Stanowiska", attr:{rows: 5, placeholder: "od 50 do 1024 znaków..."}}) }}
             <hr />
             <h5>Wynagrodzenie</h5>
+            <div class="alert alert-warning" role="alert">
+                Podawanie wyngarodzenia nie jest obowiązkowe, pamiętaj jednak że w ten sposób możesz znacząco zredukować
+                potencjalną liczbę kandydatów. Ludzie nie lubią marnować czasu na skomplikowane procesy rekrutacji, po których
+                dowiadują się, że oferowane zarobki nie są dla nich zadowalające. Jeżeli decydujesz się nie podać widełek
+                postara się wyjaśnić w opisie stanowiska jaka jest tego przyczyna.
+            </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
                     {{ form_row(form.salary.min, {label: false, attr:{placeholder:"Od"}}) }}

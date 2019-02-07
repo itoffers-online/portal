@@ -51,7 +51,9 @@ final class OfferController extends AbstractController
                         new Company($offer['company']['name'], $offer['company']['url'], $offer['company']['description']),
                         new Position($offer['position']['name'], $offer['position']['description']),
                         new Location((bool)$offer['location']['remote'], $offer['location']['name']),
-                        new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool)$offer['salary']['net']),
+                        (null === $offer['salary']['min'] && null === $offer['salary']['max'])
+                            ? null
+                            : new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool)$offer['salary']['net']),
                         new Contract($offer['contract']),
                         new Description($offer['description']['requirements'], $offer['description']['benefits']),
                         new Contact($offer['contact']['email'], $offer['contact']['name'], $offer['contact']['phone'])

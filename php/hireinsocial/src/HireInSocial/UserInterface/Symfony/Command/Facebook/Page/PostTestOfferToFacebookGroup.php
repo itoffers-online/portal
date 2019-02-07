@@ -18,6 +18,7 @@ use HireInSocial\Application\System;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -40,7 +41,8 @@ final class PostTestOfferToFacebookGroup extends Command
         $this
             ->setDescription('<info>[Facebook]</info> Post test job offer at Facebook group as a page.')
             ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
-            ->addArgument('fb-user-id', InputArgument::REQUIRED, 'Facebook User ID of job offer author.');
+            ->addArgument('fb-user-id', InputArgument::REQUIRED, 'Facebook User ID of job offer author.')
+            ->addOption('no-salary', null, InputOption::VALUE_OPTIONAL, 'Pass this option when you want to test offer without salary', false);
         ;
     }
 
@@ -58,6 +60,8 @@ final class PostTestOfferToFacebookGroup extends Command
             return 1;
         }
 
+        $noSalary = $input->getOption('no-salary') !== false;
+
         try {
             $this->system->handle(new PostToGroup(
                 $specialization->slug(),
@@ -66,7 +70,7 @@ final class PostTestOfferToFacebookGroup extends Command
                     new Company('Test sp. z o.o', 'https://test.com', 'Firma Test jest największa a zarazem najmniejsza firmą na świecie. Zatrudnia okolo 250 osób.'),
                     new Position('PHP Developer', 'Osoba na tym stanowisku będzie zajmować się developmentem php'),
                     new Location(false, 'Poland'),
-                    new Salary(1000, 5000, 'PLN', true),
+                    $noSalary ? null : new Salary(1000, 5000, 'PLN', true),
                     new Contract('B2B'),
                     new Description(
                         'To są testowe wymagania na stanowisko w testowej firmie, dodane w celu sprawdzenia poprawności działania systemu.',

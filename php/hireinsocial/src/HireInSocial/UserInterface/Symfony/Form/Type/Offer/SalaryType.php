@@ -20,11 +20,13 @@ final class SalaryType extends AbstractType
     {
         $builder
             ->add('min', IntegerType::class, [
+                'required' => false,
                 'constraints' => [
                     new GreaterThan(['value' => 0]),
                 ],
             ])
             ->add('max', IntegerType::class, [
+                'required' => false,
                 'constraints' => [
                     new GreaterThan(['value' => 0]),
                     new Callback(
@@ -32,6 +34,11 @@ final class SalaryType extends AbstractType
                             'callback' => function ($value, ExecutionContextInterface $context, $payload) {
                                 /** @var \Symfony\Component\Form\Form $form */
                                 $form = $context->getRoot();
+
+                                if (null === $value && null == $form->get('salary')->get('min')->getData()) {
+
+                                    return ;
+                                }
 
                                 if ((int) $form->get('salary')->get('min')->getData() >= (int) $value) {
                                     $context->addViolation('This value should be greater than {{ compared_value }}.', ['{{ compared_value }}' => $value]);
@@ -42,6 +49,7 @@ final class SalaryType extends AbstractType
                 ],
             ])
             ->add('currency', ChoiceType::class, [
+                'required' => false,
                 'choices' => [
                     'PLN' => 'PLN',
                     'EUR' => 'EUR',
