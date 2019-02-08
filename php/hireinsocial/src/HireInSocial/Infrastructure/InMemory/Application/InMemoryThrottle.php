@@ -19,4 +19,11 @@ final class InMemoryThrottle implements Throttle
     {
         $this->throttles[$id] = true;
     }
+
+    public function remove(string $id): void
+    {
+        if (\array_key_exists($id, $this->throttles)) {
+            unset($this->throttles[$id]);
+        }
+    }
 }

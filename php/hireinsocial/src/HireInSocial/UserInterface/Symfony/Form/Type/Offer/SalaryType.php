@@ -36,7 +36,6 @@ final class SalaryType extends AbstractType
                                 $form = $context->getRoot();
 
                                 if (null === $value && null == $form->get('salary')->get('min')->getData()) {
-
                                     return ;
                                 }
 

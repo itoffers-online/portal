@@ -10,7 +10,9 @@ use HireInSocial\Infrastructure\Doctrine\DBAL\Types\Offer\SalaryType;
 
 function dbal(Config $config) : Connection
 {
-    Type::addType(SalaryType::NAME, SalaryType::class);
+    if (!Type::hasType(SalaryType::NAME)) {
+        Type::addType(SalaryType::NAME, SalaryType::class);
+    }
 
     return DriverManager::getConnection(
         [

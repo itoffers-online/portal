@@ -39,6 +39,11 @@ final class PredisThrottle implements Throttle
         );
     }
 
+    public function remove(string $id): void
+    {
+        $this->client->del([$this->cacheKey($id)]);
+    }
+
     private function cacheKey(string $id): string
     {
         return sprintf('%s%s', $this->throttlePrefix, $id);

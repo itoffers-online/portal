@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Tests\Infrastructure\Unit\Doctrine\DBAL\Types\Offer;
 
@@ -24,7 +24,7 @@ final class SalaryTypeTest extends TypeTestCase
     {
         return [
             [null],
-            [SalaryMother::netPLN(1000, 5000)]
+            [SalaryMother::netPLN(1000, 5000)],
         ];
     }
 }
