@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HireInSocial;
+namespace HireInSocial\Application;
 
 final class Config
 {

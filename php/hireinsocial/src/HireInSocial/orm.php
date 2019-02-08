@@ -7,6 +7,7 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\ORM\Proxy\ProxyFactory;
+use HireInSocial\Application\Config;
 
 function orm(Config $config, Connection $connection) : EntityManager
 {

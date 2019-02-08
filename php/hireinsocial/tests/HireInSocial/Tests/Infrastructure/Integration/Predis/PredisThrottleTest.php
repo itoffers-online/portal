@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Infrastructure\Integration\Predis;
 
 use function HireInSocial\bootstrap;
-use HireInSocial\Config;
+use HireInSocial\Application\Config;
 use HireInSocial\Infrastructure\Predis\PredisThrottle;
 use HireInSocial\Tests\Application\MotherObject\Facebook\CalendarMother;
 use PHPUnit\Framework\TestCase;

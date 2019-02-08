@@ -4,10 +4,10 @@ namespace HireInSocial;
 
 use Facebook\Facebook;
 
-
 use HireInSocial\Application\Command\Facebook\Page\PostToGroupHandler;
 use HireInSocial\Application\Command\Specialization\CreateSpecializationHandler;
 use HireInSocial\Application\Command\Throttle\RemoveThrottleHandler;
+use HireInSocial\Application\Config;
 use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;

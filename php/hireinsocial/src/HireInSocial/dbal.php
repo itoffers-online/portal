@@ -6,6 +6,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
+use HireInSocial\Application\Config;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Types\Offer\SalaryType;
 
 function dbal(Config $config) : Connection

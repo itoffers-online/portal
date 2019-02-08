@@ -2,6 +2,7 @@
 
 namespace HireInSocial;
 
+use HireInSocial\Application\Config;
 use Symfony\Component\Dotenv\Dotenv;
 
 function bootstrap(string $projectRootPath) : Config

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace HireInSocial\UserInterface\Symfony\Command\System;
 
 use HireInSocial\Application\System;
-use HireInSocial\Config;
+use HireInSocial\Application\Config;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

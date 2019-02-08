@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Application\Functional;
 
 use HireInSocial\Application\System;
-use HireInSocial\Config;
+use HireInSocial\Application\Config;
 use function HireInSocial\symfony;
 use HireInSocial\Tests\Application\Context\DatabaseContext;
 use function HireInSocial\bootstrap;
