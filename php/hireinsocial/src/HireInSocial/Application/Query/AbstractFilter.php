@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Application\Query;
 
@@ -8,7 +8,7 @@ use HireInSocial\Application\Assertion;
 
 abstract class AbstractFilter
 {
-    protected $limit = 20;
+    protected $limit = 50;
     protected $offset = 0;
     protected $order;
 

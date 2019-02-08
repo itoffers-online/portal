@@ -31,7 +31,7 @@ final class Salary
 
     public function currencyCode(): string
     {
-        return $this->currencyCode;
+        return \mb_strtoupper($this->currencyCode);
     }
 
     public function isNet(): bool

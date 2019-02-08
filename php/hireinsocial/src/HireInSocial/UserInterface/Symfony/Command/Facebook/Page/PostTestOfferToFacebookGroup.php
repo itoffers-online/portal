@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Command\Facebook\Page;
 
+use Faker\Factory;
 use HireInSocial\Application\Command\Facebook\Page\PostToGroup;
 use HireInSocial\Application\Command\Offer\Company;
 use HireInSocial\Application\Command\Offer\Contact;
@@ -13,6 +14,7 @@ use HireInSocial\Application\Command\Offer\Location;
 use HireInSocial\Application\Command\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Position;
 use HireInSocial\Application\Command\Offer\Salary;
+use HireInSocial\Application\Command\Throttle\RemoveThrottle;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
 use Symfony\Component\Console\Command\Command;
@@ -28,12 +30,14 @@ final class PostTestOfferToFacebookGroup extends Command
     protected static $defaultName = self::NAME;
 
     private $system;
+    private $locale;
 
-    public function __construct(System $system)
+    public function __construct(System $system, string $locale)
     {
         parent::__construct();
 
         $this->system = $system;
+        $this->locale = $locale;
     }
 
     protected function configure() : void
@@ -42,7 +46,8 @@ final class PostTestOfferToFacebookGroup extends Command
             ->setDescription('<info>[Facebook]</info> Post test job offer at Facebook group as a page.')
             ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
             ->addArgument('fb-user-id', InputArgument::REQUIRED, 'Facebook User ID of job offer author.')
-            ->addOption('no-salary', null, InputOption::VALUE_OPTIONAL, 'Pass this option when you want to test offer without salary', false);
+            ->addOption('no-salary', null, InputOption::VALUE_OPTIONAL, 'Pass this option when you want to test offer without salary', false)
+            ->addOption('remove-throttle', null, InputOption::VALUE_OPTIONAL, 'Remove throttle after posting offer to a group in order to repeat command quickly', false)
         ;
     }
 
@@ -61,25 +66,28 @@ final class PostTestOfferToFacebookGroup extends Command
         }
 
         $noSalary = $input->getOption('no-salary') !== false;
+        $removeThrottle = $input->getOption('remove-throttle') !== false;
 
         try {
+            $faker = Factory::create($this->locale);
+
             $this->system->handle(new PostToGroup(
                 $specialization->slug(),
                 $input->getArgument('fb-user-id'),
                 new Offer(
-                    new Company('Test sp. z o.o', 'https://test.com', 'Firma Test jest największa a zarazem najmniejsza firmą na świecie. Zatrudnia okolo 250 osób.'),
-                    new Position('PHP Developer', 'Osoba na tym stanowisku będzie zajmować się developmentem php'),
-                    new Location(false, 'Poland'),
-                    $noSalary ? null : new Salary(1000, 5000, 'PLN', true),
+                    new Company($faker->company, $faker->url, $faker->text(512)),
+                    new Position('PHP Developer', $faker->text(1024)),
+                    new Location($faker->boolean, $faker->country),
+                    $noSalary ? null : new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean),
                     new Contract('B2B'),
                     new Description(
-                        'To są testowe wymagania na stanowisko w testowej firmie, dodane w celu sprawdzenia poprawności działania systemu.',
-                        'To są testowe benefity do stanowiska w testowej firmie, dodane w celu sprawdzenia poprawności działania systemu.'
+                        $faker->text(1024),
+                        $faker->text(1024)
                     ),
                     new Contact(
-                        'contact@test.com',
-                        'Test HR Guy',
-                        '+48999999999'
+                        $faker->email,
+                        $faker->name,
+                        trim($faker->phoneNumber)
                     )
                 )
             ));
@@ -87,6 +95,10 @@ final class PostTestOfferToFacebookGroup extends Command
             $io->error('Can\'t post job offer at facebook group as a page. Please check logs for more details.');
 
             return 1;
+        }
+
+        if ($removeThrottle) {
+            $this->system->handle(new RemoveThrottle($input->getArgument('fb-user-id')));
         }
 
         return 0;

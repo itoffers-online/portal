@@ -9,6 +9,7 @@ use HireInSocial\Application\Query\Offer\Model\Offer;
 use HireInSocial\Application\Query\Offer\Model\Offers;
 use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Application\Query\Offer\OfferQuery;
+use Ramsey\Uuid\Uuid;
 
 final class DbalOfferQuery implements OfferQuery
 {
@@ -21,7 +22,7 @@ final class DbalOfferQuery implements OfferQuery
 
     public function total(): int
     {
-        return (int) $this->connection->fetchColumn('SELECT COUNT(*) FROM his_job_offer')->fetchColumn();
+        return (int) $this->connection->fetchColumn('SELECT COUNT(*) FROM his_job_offer');
     }
 
     public function find(OfferFilter $filter): Offers
@@ -52,11 +53,32 @@ SQL;
         ));
     }
 
+    public function count(OfferFilter $filter): int
+    {
+        $query = <<<SQL
+            SELECT 
+                COUNT(o.id)
+            FROM his_job_offer o
+            LEFT JOIN his_specialization s ON o.specialization_id = s.id
+            WHERE s.slug = :specializationSlug
+SQL;
+
+        return (int) $this->connection->fetchColumn(
+            $query,
+            [
+                'specializationSlug' => $filter->specialization(),
+            ]
+        );
+    }
+
+
     private function hydrateOffer(array $offerData) : Offer
     {
         $salary = $offerData['salary'] ? \json_decode($offerData['salary'], true) : null;
 
         return new Offer(
+            Uuid::fromString($offerData['id']),
+            new \DateTimeImmutable($offerData['created_at']),
             new Offer\Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),
             new Offer\Contact($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),
             new Offer\Contract($offerData['contract_type']),

@@ -20,6 +20,8 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Twig\Extensions\IntlExtension;
+use Twig\Extensions\TextExtension;
 
 final class SymfonyKernel extends Kernel
 {
@@ -71,6 +73,8 @@ final class SymfonyKernel extends Kernel
             ]);
 
         $c->register(FacebookExtension::class)->addTag('twig.extension');
+        $c->register(IntlExtension::class)->addTag('twig.extension');
+        $c->register(TextExtension::class)->addTag('twig.extension');
 
         $c->autowire(IndexController::class)->addTag('controller.service_arguments');
         $c->autowire(FacebookController::class)->addTag('controller.service_arguments');

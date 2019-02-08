@@ -10,6 +10,6 @@ use HireInSocial\Application\System\Query;
 interface OfferQuery extends Query
 {
     public function total() : int;
-
+    public function count(OfferFilter $filter) : int;
     public function find(OfferFilter $filter) : Offers;
 }
