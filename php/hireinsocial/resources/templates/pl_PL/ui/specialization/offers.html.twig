@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Oferty - {{ specialization.slug }}</h1>
+
+    {% for offer in offers %}
+        Stanowisko: {{ offer.position.name }}
+    {% endfor %}
+{% endblock %}

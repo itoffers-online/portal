@@ -10,6 +10,7 @@ use HireInSocial\UserInterface\Symfony\Controller\FacebookController;
 use HireInSocial\UserInterface\Symfony\Controller\IndexController;
 use HireInSocial\UserInterface\Symfony\Controller\LayoutController;
 use HireInSocial\UserInterface\Symfony\Controller\OfferController;
+use HireInSocial\UserInterface\Symfony\Controller\SpecializationController;
 use HireInSocial\UserInterface\Twig\Extension\FacebookExtension;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -75,6 +76,7 @@ final class SymfonyKernel extends Kernel
         $c->autowire(FacebookController::class)->addTag('controller.service_arguments');
         $c->autowire(OfferController::class)->addTag('controller.service_arguments');
         $c->autowire(LayoutController::class)->addTag('controller.service_arguments');
+        $c->autowire(SpecializationController::class)->addTag('controller.service_arguments');
     }
 
     public function getProjectDir()
@@ -101,5 +103,6 @@ final class SymfonyKernel extends Kernel
         $routes->add('/facebook/login/success', [FacebookController::class, 'loginSuccessAction'], 'facebook_login_success');
         $routes->add('/{specialization}/offer', [OfferController::class, 'newAction'], 'offer_new');
         $routes->add('/{specialization}/offer/success', [OfferController::class, 'successAction'], 'offer_success');
+        $routes->add('/{slug}', [SpecializationController::class, 'offersAction'], 'specialization_offers');
     }
 }

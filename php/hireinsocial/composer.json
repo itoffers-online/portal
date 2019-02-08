@@ -110,6 +110,7 @@
             ".*",
             "bin/db-drop",
             "bin/redis-flush",
+            "bin/his-dev",
             "build",
             "!vendor",
             "var/*",

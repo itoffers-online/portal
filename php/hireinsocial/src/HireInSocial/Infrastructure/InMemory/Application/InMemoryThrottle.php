@@ -26,4 +26,9 @@ final class InMemoryThrottle implements Throttle
             unset($this->throttles[$id]);
         }
     }
+
+    public function flush() : void
+    {
+        $this->throttles = [];
+    }
 }

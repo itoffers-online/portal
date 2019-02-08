@@ -18,6 +18,6 @@ final class DummyFacebook implements Facebook
 
     public function postToGroupAsPage(Draft $post, Group $group, Page $page): string
     {
-        return 'facebook_post_id_123456';
+        return \md5(\uniqid('facebook_post_id'));
     }
 }
