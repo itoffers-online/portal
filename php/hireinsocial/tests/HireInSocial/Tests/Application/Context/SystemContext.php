@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Tests\Application\Context;
 
+use HireInSocial\Application\Command\Throttle\RemoveThrottle;
 use HireInSocial\Application\Query\Specialization\Model\Specialization;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
@@ -37,5 +38,10 @@ final class SystemContext
         $this->system->handle($createSpecialization);
 
         $this->system->handle(PostToGroupMother::postAs($fbUserId, $createSpecialization->slug()));
+    }
+
+    public function removeThrottle(string $fbUserId) : void
+    {
+        $this->system->handle(new RemoveThrottle($fbUserId));
     }
 }

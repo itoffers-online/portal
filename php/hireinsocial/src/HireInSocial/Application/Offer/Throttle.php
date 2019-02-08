@@ -8,4 +8,5 @@ interface Throttle
 {
     public function isThrottled(string $id) : bool;
     public function throttle(string $id) : void;
+    public function remove(string $id) : void;
 }

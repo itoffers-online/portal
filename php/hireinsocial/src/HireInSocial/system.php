@@ -7,6 +7,7 @@ use Facebook\Facebook;
 
 use HireInSocial\Application\Command\Facebook\Page\PostToGroupHandler;
 use HireInSocial\Application\Command\Specialization\CreateSpecializationHandler;
+use HireInSocial\Application\Command\Throttle\RemoveThrottleHandler;
 use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
@@ -55,8 +56,18 @@ function system(Config $config) : System
 
     switch ($config->getString(Config::ENV)) {
         case 'prod':
+            $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-prod-');
+            $facebookGraphSDK = new FacebookGraphSDK(
+                new Facebook([
+                    'app_id' => $config->getString(Config::FB_APP_ID),
+                    'app_secret' => $config->getString(Config::FB_APP_SECRET),
+                ]),
+                $facebookLogger
+            );
+
+            break;
         case 'dev':
-            $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-');
+            $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-dev-');
             $facebookGraphSDK = new FacebookGraphSDK(
                 new Facebook([
                     'app_id' => $config->getString(Config::FB_APP_ID),
@@ -67,7 +78,7 @@ function system(Config $config) : System
 
             break;
         case 'test':
-            $offerThrottle = new InMemoryThrottle();
+            $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-test-');
             $facebookGraphSDK = new DummyFacebook();
 
             break;
@@ -94,6 +105,9 @@ function system(Config $config) : System
                 ),
                 new FacebookFormatter($twig),
                 new ORMSpecializations($entityManager)
+            ),
+            new RemoveThrottleHandler(
+                $offerThrottle
             )
         ),
         new Queries(

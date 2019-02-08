@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace HireInSocial\Tests\Infrastructure\Unit\Doctrine\DBAL\Types;
 
@@ -30,8 +30,8 @@ abstract class TypeTestCase extends TestCase
         $this->type     = Type::getType($this->getTypename());
     }
 
-    protected abstract function getTypeName() : string;
-    protected abstract function getTypeClass() : string;
+    abstract protected function getTypeName() : string;
+    abstract protected function getTypeClass() : string;
 
 
     /**

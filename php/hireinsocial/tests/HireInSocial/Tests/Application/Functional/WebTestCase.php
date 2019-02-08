@@ -11,8 +11,9 @@ use HireInSocial\Tests\Application\Context\DatabaseContext;
 use function HireInSocial\bootstrap;
 use function HireInSocial\dbal;
 use function HireInSocial\system;
+use HireInSocial\Tests\Application\Context\ThrottleContext;
 use HireInSocial\UserInterface\Symfony\SymfonyKernel;
-use phpDocumentor\Reflection\Types\Static_;
+use Predis\Client;
 
 class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 {
@@ -28,6 +29,11 @@ class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
      * @var DatabaseContext
      */
     protected $databaseContext;
+
+    /**
+     * @var ThrottleContext
+     */
+    protected $throttleContext;
 
     protected static function getKernelClass()
     {
@@ -67,6 +73,7 @@ class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 
         $this->systemContext = new \HireInSocial\Tests\Application\Context\SystemContext(static::system());
         $this->databaseContext = new DatabaseContext(dbal($config));
+        $this->throttleContext = new ThrottleContext(new Client($config->getString(Config::REDIS_DSN)));
 
         $this->databaseContext->purgeDatabase();
     }
