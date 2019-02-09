@@ -32,12 +32,9 @@ final class SystemContext
         return $this->system->query(SpecializationQuery::class)->findBySlug($slug);
     }
 
-    public function postToFacebookGroup(string $fbUserId) : void
+    public function postToFacebookGroup(string $fbUserId, string $specialization) : void
     {
-        $createSpecialization = CreateSpecializationMother::random();
-        $this->system->handle($createSpecialization);
-
-        $this->system->handle(PostToGroupMother::postAs($fbUserId, $createSpecialization->slug()));
+        $this->system->handle(PostToGroupMother::postAs($fbUserId, $specialization));
     }
 
     public function removeThrottle(string $fbUserId) : void

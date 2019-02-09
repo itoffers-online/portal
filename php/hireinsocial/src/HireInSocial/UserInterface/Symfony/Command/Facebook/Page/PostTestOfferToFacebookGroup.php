@@ -87,7 +87,7 @@ final class PostTestOfferToFacebookGroup extends Command
                     new Contact(
                         $faker->email,
                         $faker->name,
-                        trim($faker->phoneNumber)
+                        '+1 333333333'
                     )
                 )
             ));

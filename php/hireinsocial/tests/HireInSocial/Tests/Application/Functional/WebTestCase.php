@@ -76,5 +76,6 @@ class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         $this->throttleContext = new ThrottleContext(new Client($config->getString(Config::REDIS_DSN)));
 
         $this->databaseContext->purgeDatabase();
+        $this->throttleContext->purgeThrottles();
     }
 }

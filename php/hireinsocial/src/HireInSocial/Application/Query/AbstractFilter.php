@@ -14,7 +14,7 @@ abstract class AbstractFilter
 
     public function changeSlice(int $limit, int $offset) : self
     {
-        Assertion::greaterThan($offset, 0);
+        Assertion::greaterOrEqualThan($offset, 0);
         Assertion::greaterThan($limit, 0);
 
         $this->limit = $limit;

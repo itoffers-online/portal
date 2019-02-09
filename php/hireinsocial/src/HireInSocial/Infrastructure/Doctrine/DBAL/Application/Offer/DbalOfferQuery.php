@@ -27,25 +27,22 @@ final class DbalOfferQuery implements OfferQuery
 
     public function find(OfferFilter $filter): Offers
     {
-        $query = <<<SQL
-            SELECT 
-                *
-            FROM his_job_offer o
-            LEFT JOIN his_specialization s ON o.specialization_id = s.id
-            WHERE s.slug = :specializationSlug
-            ORDER BY o.created_at DESC
-            OFFSET :offset
-            LIMIT :limit
-SQL;
-
-        $offersData = $this->connection->fetchAll(
-            $query,
-            [
-                'specializationSlug' => $filter->specialization(),
-                'offset' => $filter->offset(),
-                'limit' => $filter->limit(),
-            ]
-        );
+        $offersData = $this->connection->createQueryBuilder()
+            ->select('o.*')
+            ->from('his_job_offer', 'o')
+            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->where('s.slug = :specializationSlug AND o.created_at >= :sinceDate AND o.created_at <= :tillDate')
+            ->orderBy('o.created_at', 'DESC')
+            ->setMaxResults($filter->limit())
+            ->setFirstResult($filter->offset())
+            ->setParameters(
+                [
+                    'specializationSlug' => $filter->specialization(),
+                    'sinceDate' => $filter->sinceDate()->format('Y-m-d H:i:s'),
+                    'tillDate' => $filter->tillDate()->format('Y-m-d H:i:s'),
+                ]
+            )->execute()
+            ->fetchAll();
 
         return new Offers(...\array_map(
             [$this, 'hydrateOffer'],
@@ -55,20 +52,20 @@ SQL;
 
     public function count(OfferFilter $filter): int
     {
-        $query = <<<SQL
-            SELECT 
-                COUNT(o.id)
-            FROM his_job_offer o
-            LEFT JOIN his_specialization s ON o.specialization_id = s.id
-            WHERE s.slug = :specializationSlug
-SQL;
-
-        return (int) $this->connection->fetchColumn(
-            $query,
-            [
-                'specializationSlug' => $filter->specialization(),
-            ]
-        );
+        return (int) $this->connection->createQueryBuilder()
+            ->select('COUNT(o.id)')
+            ->from('his_job_offer', 'o')
+            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->where('s.slug = :specializationSlug AND o.created_at >= :sinceDate AND o.created_at <= :tillDate')
+            ->setParameters(
+                [
+                    'specializationSlug' => $filter->specialization(),
+                    'sinceDate' => $filter->sinceDate()->format('Y-m-d H:i:s'),
+                    'tillDate' => $filter->tillDate()->format('Y-m-d H:i:s'),
+                ]
+            )
+            ->execute()
+            ->fetchColumn();
     }
 
 

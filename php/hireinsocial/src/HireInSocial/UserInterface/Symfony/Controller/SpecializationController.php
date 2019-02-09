@@ -21,7 +21,8 @@ final class SpecializationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $offerFilter = OfferFilter::allFor($specialization->slug());
+        $offerFilter = OfferFilter::allFor($specialization->slug())
+            ->changeSlice(50, 0);
 
         $offers = $this->get(System::class)
             ->query(OfferQuery::class)

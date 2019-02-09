@@ -7,7 +7,7 @@
         Domyślnie nie wyświetlamy ofert starszych niż 2 tygodnie, najciekawsze oferty po tym czasie przeważnie i tak przestają być aktualne.
     </p>
     {% for offer in offers %}
-        <div>
+        <div class="job-offer">
             <h3>{{ offer.position.name }} <span class="text-muted">w</span> {{ offer.company.name }}</h3>
 
             <div class="row">
@@ -30,9 +30,6 @@
                 <div class="col-12">
                     <p>
                         {{ offer.position.description|truncate(300) }}
-                    </p>
-                    <p class="text-right">
-                        <a href="#" class="btn btn-primary">Więcej</a>
                     </p>
                 </div>
             </div>
