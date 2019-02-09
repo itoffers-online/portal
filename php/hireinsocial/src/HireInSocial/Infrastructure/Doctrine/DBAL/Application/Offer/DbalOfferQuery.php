@@ -25,12 +25,13 @@ final class DbalOfferQuery implements OfferQuery
         return (int) $this->connection->fetchColumn('SELECT COUNT(*) FROM his_job_offer');
     }
 
-    public function find(OfferFilter $filter): Offers
+    public function findAll(OfferFilter $filter): Offers
     {
         $offersData = $this->connection->createQueryBuilder()
-            ->select('o.*')
+            ->select('o.*, os.slug')
             ->from('his_job_offer', 'o')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
             ->where('s.slug = :specializationSlug AND o.created_at >= :sinceDate AND o.created_at <= :tillDate')
             ->orderBy('o.created_at', 'DESC')
             ->setMaxResults($filter->limit())
@@ -48,6 +49,27 @@ final class DbalOfferQuery implements OfferQuery
             [$this, 'hydrateOffer'],
             $offersData
         ));
+    }
+
+    public function findBySlug(string $slug): ?Offer
+    {
+        $offerData = $this->connection->createQueryBuilder()
+            ->select('o.*, os.slug')
+            ->from('his_job_offer_slug', 'os')
+            ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
+            ->where('os.slug = :offerSlug')
+            ->setParameters(
+                [
+                    'offerSlug' => $slug,
+                ]
+            )->execute()
+            ->fetch();
+
+        if (!$offerData) {
+            return null;
+        }
+
+        return $this->hydrateOffer($offerData);
     }
 
     public function count(OfferFilter $filter): int
@@ -68,12 +90,12 @@ final class DbalOfferQuery implements OfferQuery
             ->fetchColumn();
     }
 
-
     private function hydrateOffer(array $offerData) : Offer
     {
         $salary = $offerData['salary'] ? \json_decode($offerData['salary'], true) : null;
 
         return new Offer(
+            $offerData['slug'],
             Uuid::fromString($offerData['id']),
             new \DateTimeImmutable($offerData['created_at']),
             new Offer\Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),

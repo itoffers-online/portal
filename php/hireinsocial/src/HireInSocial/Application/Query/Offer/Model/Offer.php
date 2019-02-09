@@ -17,6 +17,7 @@ use Ramsey\Uuid\UuidInterface;
 final class Offer
 {
     private $id;
+    private $slug;
     private $createdAt;
     private $company;
     private $contact;
@@ -27,6 +28,7 @@ final class Offer
     private $salary;
 
     public function __construct(
+        string $slug,
         UuidInterface $id,
         \DateTimeImmutable $createdAt,
         Company $company,
@@ -37,6 +39,7 @@ final class Offer
         Position $position,
         ?Salary $salary
     ) {
+        $this->slug = $slug;
         $this->id = $id;
         $this->createdAt = $createdAt;
         $this->company = $company;
@@ -46,6 +49,11 @@ final class Offer
         $this->location = $location;
         $this->position = $position;
         $this->salary = $salary;
+    }
+
+    public function slug(): string
+    {
+        return $this->slug;
     }
 
     public function id(): UuidInterface

@@ -105,6 +105,7 @@ final class SymfonyKernel extends Kernel
         $routes->add('/facebook/login', [FacebookController::class, 'loginAction'], 'facebook_login');
         $routes->add('/facebook/logout', [FacebookController::class, 'logoutAction'], 'facebook_logout');
         $routes->add('/facebook/login/success', [FacebookController::class, 'loginSuccessAction'], 'facebook_login_success');
+        $routes->add('/offer/{slug}', [OfferController::class, 'offerAction'], 'offer');
         $routes->add('/{specialization}/offer', [OfferController::class, 'newAction'], 'offer_new');
         $routes->add('/{specialization}/offer/success', [OfferController::class, 'successAction'], 'offer_success');
         $routes->add('/{slug}', [SpecializationController::class, 'offersAction'], 'specialization_offers');

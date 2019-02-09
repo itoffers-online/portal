@@ -14,6 +14,7 @@ use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization\DBALSpecializationQuery;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
+use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMSlugs;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSpecializations;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
 use HireInSocial\Infrastructure\Facbook\FacebookGraphSDK;
@@ -98,7 +99,8 @@ function system(Config $config) : System
                     $offerThrottle
                 ),
                 new FacebookFormatter($twig),
-                new ORMSpecializations($entityManager)
+                new ORMSpecializations($entityManager),
+                new ORMSlugs($entityManager)
             ),
             new RemoveThrottleHandler(
                 $offerThrottle

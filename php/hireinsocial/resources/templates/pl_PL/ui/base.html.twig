@@ -16,6 +16,7 @@
 {{ render(controller('HireInSocial\\UserInterface\\Symfony\\Controller\\LayoutController::navbarAction')) }}
 
 <div class="container">
+    {% block hero_block %}
     <div class="py-5 text-center">
         <h2><a href="{{ url('home') }}">Hire in Social!</a></h2>
         <p class="lead">
@@ -25,6 +26,7 @@
             Ten prosty system ma na celu automatyzację procesu dodawania ofert pracy na portalu społecznościowym Facebook.
         </p>
     </div>
+    {% endblock %}
     {% block body %}{% endblock %}
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
