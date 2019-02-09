@@ -11,7 +11,7 @@ use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Schema\HireInSocialSchemaProvider;
-use HireInSocial\Config;
+use HireInSocial\Application\Config;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 

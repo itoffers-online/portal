@@ -4,10 +4,10 @@ namespace HireInSocial;
 
 use Facebook\Facebook;
 
-
 use HireInSocial\Application\Command\Facebook\Page\PostToGroupHandler;
 use HireInSocial\Application\Command\Specialization\CreateSpecializationHandler;
 use HireInSocial\Application\Command\Throttle\RemoveThrottleHandler;
+use HireInSocial\Application\Config;
 use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
@@ -68,13 +68,7 @@ function system(Config $config) : System
             break;
         case 'dev':
             $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-dev-');
-            $facebookGraphSDK = new FacebookGraphSDK(
-                new Facebook([
-                    'app_id' => $config->getString(Config::FB_APP_ID),
-                    'app_secret' => $config->getString(Config::FB_APP_SECRET),
-                ]),
-                $facebookLogger
-            );
+            $facebookGraphSDK = $facebookGraphSDK = new DummyFacebook();
 
             break;
         case 'test':

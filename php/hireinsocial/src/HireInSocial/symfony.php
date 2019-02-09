@@ -2,6 +2,7 @@
 
 namespace HireInSocial;
 
+use HireInSocial\Application\Config;
 use HireInSocial\Application\System;
 use HireInSocial\UserInterface\Symfony\SymfonyKernel;
 

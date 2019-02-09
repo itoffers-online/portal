@@ -11,6 +11,7 @@
         </ul>
         <div class="card-body text-center">
             <p class="card-text">
+                <a href="{{ url('specialization_offers', {'slug' : specialization.slug}) }}" class="btn btn-primary btn-sm">Najnowsze Oferty</a>
                 <a href="{{ specialization.facebookChannel.groupId|fb_group_url }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fab fa-facebook-f"></i> zobacz na Facebooku</a>
             </p>
         </div>

@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use HireInSocial\Config;
+use HireInSocial\Application\Config;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

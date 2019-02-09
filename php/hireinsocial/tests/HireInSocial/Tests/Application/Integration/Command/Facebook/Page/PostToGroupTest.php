@@ -12,9 +12,10 @@ final class PostToGroupTest extends HireInSocialTestCase
 {
     public function test_posting_to_facebook_group_as_a_page()
     {
-        $this->systemContext->postToFacebookGroup('FB_USER_ID');
+        $this->systemContext->createSpecialization($specialization = 'spec');
+        $this->systemContext->postToFacebookGroup('FB_USER_ID', $specialization);
 
         $this->assertTrue($this->systemContext->system()->query(OfferThrottleQuery::class)->isThrottled('FB_USER_ID'));
-        $this->assertEquals(1, $this->systemContext->system()->query(OfferQuery::class)->count());
+        $this->assertEquals(1, $this->systemContext->system()->query(OfferQuery::class)->total());
     }
 }

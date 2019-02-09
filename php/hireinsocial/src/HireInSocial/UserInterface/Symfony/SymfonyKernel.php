@@ -10,6 +10,7 @@ use HireInSocial\UserInterface\Symfony\Controller\FacebookController;
 use HireInSocial\UserInterface\Symfony\Controller\IndexController;
 use HireInSocial\UserInterface\Symfony\Controller\LayoutController;
 use HireInSocial\UserInterface\Symfony\Controller\OfferController;
+use HireInSocial\UserInterface\Symfony\Controller\SpecializationController;
 use HireInSocial\UserInterface\Twig\Extension\FacebookExtension;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -19,6 +20,8 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Twig\Extensions\IntlExtension;
+use Twig\Extensions\TextExtension;
 
 final class SymfonyKernel extends Kernel
 {
@@ -70,11 +73,14 @@ final class SymfonyKernel extends Kernel
             ]);
 
         $c->register(FacebookExtension::class)->addTag('twig.extension');
+        $c->register(IntlExtension::class)->addTag('twig.extension');
+        $c->register(TextExtension::class)->addTag('twig.extension');
 
         $c->autowire(IndexController::class)->addTag('controller.service_arguments');
         $c->autowire(FacebookController::class)->addTag('controller.service_arguments');
         $c->autowire(OfferController::class)->addTag('controller.service_arguments');
         $c->autowire(LayoutController::class)->addTag('controller.service_arguments');
+        $c->autowire(SpecializationController::class)->addTag('controller.service_arguments');
     }
 
     public function getProjectDir()
@@ -101,5 +107,6 @@ final class SymfonyKernel extends Kernel
         $routes->add('/facebook/login/success', [FacebookController::class, 'loginSuccessAction'], 'facebook_login_success');
         $routes->add('/{specialization}/offer', [OfferController::class, 'newAction'], 'offer_new');
         $routes->add('/{specialization}/offer/success', [OfferController::class, 'successAction'], 'offer_success');
+        $routes->add('/{slug}', [SpecializationController::class, 'offersAction'], 'specialization_offers');
     }
 }

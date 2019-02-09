@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Application\Integration;
 
 use HireInSocial\Tests\Application\Context\DatabaseContext;
-use HireInSocial\Config;
 use HireInSocial\Tests\Application\Context\ThrottleContext;
+use HireInSocial\Application\Config;
 use PHPUnit\Framework\TestCase;
+use Predis\Client;
 use function HireInSocial\bootstrap;
 use function HireInSocial\dbal;
 use function HireInSocial\system;
-use Predis\Client;
 
 class HireInSocialTestCase extends TestCase
 {

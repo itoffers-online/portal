@@ -6,9 +6,9 @@ namespace HireInSocial\Application\Query\Specialization\Model;
 
 final class Specializations extends \ArrayObject
 {
-    public function __construct(Specialization ...$specializations)
+    public function __construct(Specialization ...$offers)
     {
-        parent::__construct($specializations);
+        parent::__construct($offers);
     }
 
     public function has(string $slug) : bool
