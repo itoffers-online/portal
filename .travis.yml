@@ -9,7 +9,7 @@ services:
 
 install:
   - cd php/hireinsocial
-  - composer intsall
+  - composer install
 
 script:
   - composer run test
