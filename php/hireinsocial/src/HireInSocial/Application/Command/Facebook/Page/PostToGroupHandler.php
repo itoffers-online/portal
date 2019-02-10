@@ -18,6 +18,8 @@ use HireInSocial\Application\Offer\OfferFormatter;
 use HireInSocial\Application\Offer\Offers;
 use HireInSocial\Application\Offer\Position;
 use HireInSocial\Application\Offer\Salary;
+use HireInSocial\Application\Offer\Slug;
+use HireInSocial\Application\Offer\Slugs;
 use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\Specialization\Specializations;
 use HireInSocial\Application\System\Calendar;
@@ -31,6 +33,7 @@ final class PostToGroupHandler implements Handler
     private $formatter;
     private $posts;
     private $specializations;
+    private $slugs;
 
     public function __construct(
         Calendar $calendar,
@@ -38,7 +41,8 @@ final class PostToGroupHandler implements Handler
         Posts $posts,
         FacebookGroupService $facebookGroupService,
         OfferFormatter $formatter,
-        Specializations $specializations
+        Specializations $specializations,
+        Slugs $slugs
     ) {
         $this->calendar = $calendar;
         $this->facebookGroupService = $facebookGroupService;
@@ -46,6 +50,7 @@ final class PostToGroupHandler implements Handler
         $this->offers = $offers;
         $this->posts = $posts;
         $this->specializations = $specializations;
+        $this->slugs = $slugs;
     }
 
     public function handles(): string
@@ -73,6 +78,7 @@ final class PostToGroupHandler implements Handler
         );
         $this->posts->add(new Post($postId, $offer, $draft));
         $this->offers->add($offer);
+        $this->slugs->add(Slug::from($offer, $this->calendar));
     }
 
     private function createOffer(PostToGroup $command, Specialization $specialization): Offer

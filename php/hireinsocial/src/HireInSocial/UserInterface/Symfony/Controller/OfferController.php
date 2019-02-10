@@ -14,6 +14,7 @@ use HireInSocial\Application\Command\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Position;
 use HireInSocial\Application\Command\Offer\Salary;
 use HireInSocial\Application\Exception\Exception;
+use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
@@ -82,6 +83,19 @@ final class OfferController extends AbstractController
 
         return $this->render('/offer/success.html.twig', [
             'specialization' => $specialization,
+        ]);
+    }
+
+    public function offerAction(string $slug) : Response
+    {
+        $offer = $this->get(System::class)->query(OfferQuery::class)->findBySlug($slug);
+
+        if (!$offer) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('offer/offer.html.twig', [
+            'offer' => $offer,
         ]);
     }
 }

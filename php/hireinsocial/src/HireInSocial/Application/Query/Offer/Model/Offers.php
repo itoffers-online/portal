@@ -10,4 +10,9 @@ final class Offers extends \ArrayObject
     {
         parent::__construct($offers);
     }
+
+    public function first() : Offer
+    {
+        return \current((array) $this);
+    }
 }
