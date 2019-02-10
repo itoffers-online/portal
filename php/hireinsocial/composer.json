@@ -87,8 +87,7 @@
             "@test:php:cs",
             "@db:reset:test",
             "@symfony:cache:clear:test",
-            "phpunit",
-            "bin/his system:performance:check"
+            "phpunit"
         ],
         "test:php:cs": [
             "phpstan analyse src tests bin",
