@@ -8,6 +8,8 @@ services:
   - redis-server
 
 before_install:
+  - psql -c 'create database hireinsocial_test;' -U postgres
+  - psql -c "CREATE USER hireinsocial WITH PASSWORD 'hireinsocial';" -U postgres
   - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
