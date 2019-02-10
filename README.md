@@ -2,6 +2,12 @@
 
 Main goal of this system is to allow people to post job offers on your social media channels without moderation. 
 
+## Roadmap
+
+[Hire in Social - development](https://github.com/norzechowicz/hire-in-social/projects/1)
+
+Roadmap of the project and todo list is hosted on Github Projects in this repository. 
+
 ## Supported channels 
 
  * Facebook 
