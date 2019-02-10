@@ -1,12 +1,21 @@
 # Hire In Social
 
-Main goal of this system is to allow people to post job offers on your social media channels without moderation. 
+Hire in Social focuses mostly on posting quick job offers for IT talents (but not only) and propagate everything
+over social media. No hidden fees, transparent rules, everything to save precious time of candidates.
+
+Transparency is the key to quality, that's why this project is developed and published as an open source. 
 
 ## Roadmap
 
+If you want to help, please check the project roadmap.
+
 [Hire in Social - development](https://github.com/norzechowicz/hire-in-social/projects/1)
 
-Roadmap of the project and todo list is hosted on Github Projects in this repository. 
+## Releases
+
+*There was no stable release yet, things might still be changed* 
+
+* [![Build Status](https://travis-ci.org/norzechowicz/hire-in-social.svg?branch=master)](https://travis-ci.org/norzechowicz/hire-in-social) - development (master)
 
 ## Supported channels 
 

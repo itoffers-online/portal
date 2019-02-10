@@ -1,0 +1,24 @@
+language: php
+php:
+  - '7.2'
+dist: xenial
+
+services:
+  - postgresql
+  - redis-server
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+before_install:
+  - psql -c 'create database hireinsocial_test;' -U postgres
+  - psql -c "CREATE USER hireinsocial WITH PASSWORD 'hireinsocial';" -U postgres
+  - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
+install:
+  - cd php/hireinsocial
+  - composer install
+
+script:
+  - composer run test
