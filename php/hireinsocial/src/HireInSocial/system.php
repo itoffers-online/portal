@@ -4,7 +4,7 @@ namespace HireInSocial;
 
 use Facebook\Facebook;
 
-use HireInSocial\Application\Command\Facebook\Page\PostToGroupHandler;
+use HireInSocial\Application\Command\Facebook\Page\PostOfferHandler;
 use HireInSocial\Application\Command\Specialization\CreateSpecializationHandler;
 use HireInSocial\Application\Command\Throttle\RemoveThrottleHandler;
 use HireInSocial\Application\Config;
@@ -90,7 +90,7 @@ function system(Config $config) : System
             new CreateSpecializationHandler(
                 new ORMSpecializations($entityManager)
             ),
-            new PostToGroupHandler(
+            new PostOfferHandler(
                 $calendar,
                 new ORMOffers($entityManager),
                 new ORMPosts($entityManager),

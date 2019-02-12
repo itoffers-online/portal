@@ -8,7 +8,7 @@ use HireInSocial\Application\Command\ClassCommand;
 use HireInSocial\Application\Command\Offer\Offer;
 use HireInSocial\Application\System\Command;
 
-final class PostToGroup implements Command
+final class PostOffer implements Command
 {
     use ClassCommand;
 

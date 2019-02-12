@@ -13,6 +13,7 @@ final class Offer
     private $contract;
     private $description;
     private $contact;
+    private $channels;
 
     public function __construct(
         Company $company,
@@ -21,7 +22,8 @@ final class Offer
         ?Salary $salary,
         Contract $contract,
         Description $description,
-        Contact $contact
+        Contact $contact,
+        Channels $channels
     ) {
         $this->company = $company;
         $this->position = $position;
@@ -30,6 +32,7 @@ final class Offer
         $this->contract = $contract;
         $this->description = $description;
         $this->contact = $contact;
+        $this->channels = $channels;
     }
 
     public function company(): Company
@@ -65,5 +68,10 @@ final class Offer
     public function contact(): Contact
     {
         return $this->contact;
+    }
+
+    public function channels(): Channels
+    {
+        return $this->channels;
     }
 }
