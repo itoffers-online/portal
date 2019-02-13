@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Form\Type;
 
+use HireInSocial\UserInterface\Symfony\Form\Type\Offer\ChannelsType;
 use HireInSocial\UserInterface\Symfony\Form\Type\Offer\CompanyType;
 use HireInSocial\UserInterface\Symfony\Form\Type\Offer\ContactType;
 use HireInSocial\UserInterface\Symfony\Form\Type\Offer\DescriptionType;
@@ -33,6 +34,7 @@ final class OfferType extends AbstractType
             ->add('location', LocationType::class)
             ->add('description', DescriptionType::class)
             ->add('contact', ContactType::class)
+            ->add('channels', ChannelsType::class)
             ->add('submit', SubmitType::class)
         ;
     }

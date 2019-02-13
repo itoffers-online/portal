@@ -6,15 +6,16 @@ namespace HireInSocial\UserInterface\Symfony\Controller;
 
 use Facebook\Authentication\AccessToken;
 use Facebook\Facebook;
-use HireInSocial\Application\Command\Facebook\Page\PostToGroup;
-use HireInSocial\Application\Command\Offer\Company;
-use HireInSocial\Application\Command\Offer\Contact;
-use HireInSocial\Application\Command\Offer\Contract;
-use HireInSocial\Application\Command\Offer\Description;
-use HireInSocial\Application\Command\Offer\Location;
-use HireInSocial\Application\Command\Offer\Offer;
-use HireInSocial\Application\Command\Offer\Position;
-use HireInSocial\Application\Command\Offer\Salary;
+use HireInSocial\Application\Command\Offer\PostOffer;
+use HireInSocial\Application\Command\Offer\Offer\Channels;
+use HireInSocial\Application\Command\Offer\Offer\Company;
+use HireInSocial\Application\Command\Offer\Offer\Contact;
+use HireInSocial\Application\Command\Offer\Offer\Contract;
+use HireInSocial\Application\Command\Offer\Offer\Description;
+use HireInSocial\Application\Command\Offer\Offer\Location;
+use HireInSocial\Application\Command\Offer\Offer\Offer;
+use HireInSocial\Application\Command\Offer\Offer\Position;
+use HireInSocial\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
@@ -68,7 +69,7 @@ final class OfferController extends AbstractController
             $offer = $form->getData();
 
             try {
-                $this->container->get(System::class)->handle(new PostToGroup(
+                $this->container->get(System::class)->handle(new PostOffer(
                     $specialization,
                     $fbUserId,
                     new Offer(
@@ -80,12 +81,14 @@ final class OfferController extends AbstractController
                             : new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool)$offer['salary']['net']),
                         new Contract($offer['contract']),
                         new Description($offer['description']['requirements'], $offer['description']['benefits']),
-                        new Contact($offer['contact']['email'], $offer['contact']['name'], $offer['contact']['phone'])
+                        new Contact($offer['contact']['email'], $offer['contact']['name'], $offer['contact']['phone']),
+                        new Channels((bool) $offer['channels']['facebook_group'])
                     )
                 ));
 
                 return $this->redirectToRoute('offer_success', ['specialization' => $specialization]);
             } catch (Exception $exception) {
+                // TODO: Show some user friendly error message in UI.
                 throw $exception;
             }
         }

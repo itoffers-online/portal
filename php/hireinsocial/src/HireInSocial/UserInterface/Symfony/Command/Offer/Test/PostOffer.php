@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace HireInSocial\UserInterface\Symfony\Command\Facebook\Page;
+namespace HireInSocial\UserInterface\Symfony\Command\Offer\Test;
 
 use Faker\Factory;
-use HireInSocial\Application\Command\Facebook\Page\PostToGroup;
-use HireInSocial\Application\Command\Offer\Company;
-use HireInSocial\Application\Command\Offer\Contact;
-use HireInSocial\Application\Command\Offer\Contract;
-use HireInSocial\Application\Command\Offer\Description;
-use HireInSocial\Application\Command\Offer\Location;
-use HireInSocial\Application\Command\Offer\Offer;
-use HireInSocial\Application\Command\Offer\Position;
-use HireInSocial\Application\Command\Offer\Salary;
+use HireInSocial\Application\Command\Offer\PostOffer as SystemPostOffer;
+use HireInSocial\Application\Command\Offer\Offer\Channels;
+use HireInSocial\Application\Command\Offer\Offer\Company;
+use HireInSocial\Application\Command\Offer\Offer\Contact;
+use HireInSocial\Application\Command\Offer\Offer\Contract;
+use HireInSocial\Application\Command\Offer\Offer\Description;
+use HireInSocial\Application\Command\Offer\Offer\Location;
+use HireInSocial\Application\Command\Offer\Offer\Offer;
+use HireInSocial\Application\Command\Offer\Offer\Position;
+use HireInSocial\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Application\Command\Throttle\RemoveThrottle;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
@@ -24,9 +25,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class PostTestOfferToFacebookGroup extends Command
+final class PostOffer extends Command
 {
-    public const NAME = 'post:test:facebook:group:page';
+    public const NAME = 'post:offer:test';
     protected static $defaultName = self::NAME;
 
     private $system;
@@ -43,11 +44,12 @@ final class PostTestOfferToFacebookGroup extends Command
     protected function configure() : void
     {
         $this
-            ->setDescription('<info>[Facebook]</info> Post test job offer at Facebook group as a page.')
+            ->setDescription('<info>[Offer]</info> Test posting job offer with automatically generated fake data.')
             ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
             ->addArgument('fb-user-id', InputArgument::REQUIRED, 'Facebook User ID of job offer author.')
             ->addOption('no-salary', null, InputOption::VALUE_OPTIONAL, 'Pass this option when you want to test offer without salary', false)
             ->addOption('remove-throttle', null, InputOption::VALUE_OPTIONAL, 'Remove throttle after posting offer to a group in order to repeat command quickly', false)
+            ->addOption('post-facebook-group', null, InputOption::VALUE_OPTIONAL, 'Post offer to facebook group assigned to the specialization', false)
         ;
     }
 
@@ -67,11 +69,12 @@ final class PostTestOfferToFacebookGroup extends Command
 
         $noSalary = $input->getOption('no-salary') !== false;
         $removeThrottle = $input->getOption('remove-throttle') !== false;
+        $postFacebookGroup = $input->getOption('post-facebook-group') !== false;
 
         try {
             $faker = Factory::create($this->locale);
 
-            $this->system->handle(new PostToGroup(
+            $this->system->handle(new SystemPostOffer(
                 $specialization->slug(),
                 $input->getArgument('fb-user-id'),
                 new Offer(
@@ -88,7 +91,8 @@ final class PostTestOfferToFacebookGroup extends Command
                         $faker->email,
                         $faker->name,
                         '+1 333333333'
-                    )
+                    ),
+                    new Channels($postFacebookGroup)
                 )
             ));
         } catch (\Throwable $e) {

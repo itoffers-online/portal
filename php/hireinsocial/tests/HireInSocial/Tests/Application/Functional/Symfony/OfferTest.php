@@ -20,7 +20,7 @@ final class OfferTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function test_offer_accessing_offer_page()
+    public function test_offer_details_page()
     {
         $specialization = 'spec';
         $client = static::createClient();

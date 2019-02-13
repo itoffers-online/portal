@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 final class SalaryType extends AbstractType
@@ -53,9 +52,6 @@ final class SalaryType extends AbstractType
                     'PLN' => 'PLN',
                     'EUR' => 'EUR',
                     'USD' => 'USD',
-                ],
-                'constraints' => [
-                    new NotBlank(),
                 ],
             ])
             ->add('net', CheckboxType::class, [

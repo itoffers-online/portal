@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HireInSocial\Application\Command\Offer;
+namespace HireInSocial\Application\Command\Offer\Offer;
 
 final class Contact
 {
