@@ -5,7 +5,7 @@ use HireInSocial\Application\Config;
 use HireInSocial\UserInterface\Symfony\Command\Specialization\CreateSpecialization;
 use HireInSocial\UserInterface\Symfony\Command\System\PerformanceCheckCommand;
 use Symfony\Component\Console\Application;
-use HireInSocial\UserInterface\Symfony\Command\Test\PostOffer;
+use HireInSocial\UserInterface\Symfony\Command\Offer\Test\PostOffer;
 
 $projectRootPath = dirname(__DIR__);
 

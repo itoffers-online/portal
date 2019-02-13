@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Application\MotherObject\Command\Offer;
 
 use Faker\Factory;
-use HireInSocial\Application\Command\Facebook\Page\PostOffer;
-use HireInSocial\Application\Command\Offer\Channels;
-use HireInSocial\Application\Command\Offer\Company;
-use HireInSocial\Application\Command\Offer\Contact;
-use HireInSocial\Application\Command\Offer\Contract;
-use HireInSocial\Application\Command\Offer\Description;
-use HireInSocial\Application\Command\Offer\Location;
-use HireInSocial\Application\Command\Offer\Offer;
-use HireInSocial\Application\Command\Offer\Position;
-use HireInSocial\Application\Command\Offer\Salary;
+use HireInSocial\Application\Command\Offer\PostOffer;
+use HireInSocial\Application\Command\Offer\Offer\Channels;
+use HireInSocial\Application\Command\Offer\Offer\Company;
+use HireInSocial\Application\Command\Offer\Offer\Contact;
+use HireInSocial\Application\Command\Offer\Offer\Contract;
+use HireInSocial\Application\Command\Offer\Offer\Description;
+use HireInSocial\Application\Command\Offer\Offer\Location;
+use HireInSocial\Application\Command\Offer\Offer\Offer;
+use HireInSocial\Application\Command\Offer\Offer\Position;
+use HireInSocial\Application\Command\Offer\Offer\Salary;
 
 final class PostOfferMother
 {
-    public static function postAs(string $fbUserId, string $specialization) : PostOffer
+    public static function postAs(string $fbUserId, string $specialization) : \HireInSocial\Application\Command\Offer\PostOffer
     {
         $faker = Factory::create();
 
-        return new PostOffer(
+        return new \HireInSocial\Application\Command\Offer\PostOffer(
             $specialization,
             $fbUserId,
             new Offer(
@@ -47,7 +47,7 @@ final class PostOfferMother
         );
     }
 
-    public static function postAsOnFB(string $fbUserId, string $specialization) : PostOffer
+    public static function postAsOnFB(string $fbUserId, string $specialization) : \HireInSocial\Application\Command\Offer\PostOffer
     {
         $faker = Factory::create();
 

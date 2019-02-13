@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace HireInSocial\Application\Command\Facebook\Page;
+namespace HireInSocial\Application\Command\Offer;
 
+use HireInSocial\Application\Command\Offer\PostOffer;
 use HireInSocial\Application\Facebook\FacebookGroupService;
 use HireInSocial\Application\Facebook\Draft;
 use HireInSocial\Application\Facebook\Post;

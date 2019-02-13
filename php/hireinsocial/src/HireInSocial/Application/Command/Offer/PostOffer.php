@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace HireInSocial\Application\Command\Facebook\Page;
+namespace HireInSocial\Application\Command\Offer;
 
 use HireInSocial\Application\Command\ClassCommand;
-use HireInSocial\Application\Command\Offer\Offer;
+use HireInSocial\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Application\System\Command;
 
 final class PostOffer implements Command

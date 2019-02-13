@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace HireInSocial\UserInterface\Symfony\Command\Test;
+namespace HireInSocial\UserInterface\Symfony\Command\Offer\Test;
 
 use Faker\Factory;
-use HireInSocial\Application\Command\Facebook\Page\PostOffer as SystemPostOffer;
-use HireInSocial\Application\Command\Offer\Channels;
-use HireInSocial\Application\Command\Offer\Company;
-use HireInSocial\Application\Command\Offer\Contact;
-use HireInSocial\Application\Command\Offer\Contract;
-use HireInSocial\Application\Command\Offer\Description;
-use HireInSocial\Application\Command\Offer\Location;
-use HireInSocial\Application\Command\Offer\Offer;
-use HireInSocial\Application\Command\Offer\Position;
-use HireInSocial\Application\Command\Offer\Salary;
+use HireInSocial\Application\Command\Offer\PostOffer as SystemPostOffer;
+use HireInSocial\Application\Command\Offer\Offer\Channels;
+use HireInSocial\Application\Command\Offer\Offer\Company;
+use HireInSocial\Application\Command\Offer\Offer\Contact;
+use HireInSocial\Application\Command\Offer\Offer\Contract;
+use HireInSocial\Application\Command\Offer\Offer\Description;
+use HireInSocial\Application\Command\Offer\Offer\Location;
+use HireInSocial\Application\Command\Offer\Offer\Offer;
+use HireInSocial\Application\Command\Offer\Offer\Position;
+use HireInSocial\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Application\Command\Throttle\RemoveThrottle;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;

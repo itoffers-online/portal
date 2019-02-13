@@ -4,7 +4,7 @@ namespace HireInSocial;
 
 use Facebook\Facebook;
 
-use HireInSocial\Application\Command\Facebook\Page\PostOfferHandler;
+use HireInSocial\Application\Command\Offer\PostOfferHandler;
 use HireInSocial\Application\Command\Specialization\CreateSpecializationHandler;
 use HireInSocial\Application\Command\Throttle\RemoveThrottleHandler;
 use HireInSocial\Application\Config;
@@ -18,7 +18,6 @@ use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMSlugs;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSpecializations;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
 use HireInSocial\Infrastructure\Facbook\FacebookGraphSDK;
-use HireInSocial\Infrastructure\InMemory\Application\InMemoryThrottle;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Infrastructure\Predis\PredisThrottle;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
