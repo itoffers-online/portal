@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HireInSocial\Infrastructure\Facbook;
+namespace HireInSocial\Infrastructure\Facebook;
 
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\FacebookResponse;
