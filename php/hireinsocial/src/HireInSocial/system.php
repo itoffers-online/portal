@@ -12,7 +12,7 @@ use HireInSocial\Application\Facebook\Group;
 use HireInSocial\Application\Facebook\Page;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Facebook\DBALPosts;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DBALOffers;
-use HireInSocial\Infrastructure\Facbook\FacebookGraphSDK;
+use HireInSocial\Infrastructure\Facebook\FacebookGraphSDK;
 use HireInSocial\Infrastructure\InMemory\InMemoryThrottle;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Infrastructure\Predis\PredisThrottle;
