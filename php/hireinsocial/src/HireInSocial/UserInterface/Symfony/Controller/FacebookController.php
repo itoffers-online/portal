@@ -13,7 +13,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class FacebookController extends AbstractController
 {
-    public const FACEBOOK_ID_SESSION_KEY = 'his_user_fb_id';
+    use FacebookAccess;
+
+    public const FACEBOOK_USER_TOKEN_SESSION_KEY = 'his_user_fb_user_auth_token';
 
     private $facebook;
     /**
@@ -29,7 +31,7 @@ final class FacebookController extends AbstractController
 
     public function loginAction(Request $request) : Response
     {
-        if ($request->getSession()->has(self::FACEBOOK_ID_SESSION_KEY)) {
+        if ($request->getSession()->has(self::FACEBOOK_USER_TOKEN_SESSION_KEY)) {
             return $this->redirectToRoute('home');
         }
 
@@ -55,18 +57,17 @@ final class FacebookController extends AbstractController
             $this->generateUrl('facebook_login_success', [], UrlGeneratorInterface::ABSOLUTE_URL)
         );
 
-        $facebookResponse = $this->facebook->get('me', $accessToken);
-        $this->logger->debug('Facebook /me response', ['body' => $facebookResponse->getBody()]);
+        $this->getUserId($this->facebook, $accessToken, $this->logger);
 
-        $request->getSession()->set(self::FACEBOOK_ID_SESSION_KEY, $facebookResponse->getDecodedBody()['id']);
+        $request->getSession()->set(self::FACEBOOK_USER_TOKEN_SESSION_KEY, (string) $accessToken);
 
         return $this->redirectToRoute('home');
     }
 
     public function logoutAction(Request $request) : Response
     {
-        if ($request->getSession()->has(self::FACEBOOK_ID_SESSION_KEY)) {
-            $request->getSession()->remove(self::FACEBOOK_ID_SESSION_KEY);
+        if ($request->getSession()->has(self::FACEBOOK_USER_TOKEN_SESSION_KEY)) {
+            $request->getSession()->remove(self::FACEBOOK_USER_TOKEN_SESSION_KEY);
         }
 
         return $this->redirectToRoute('home');
