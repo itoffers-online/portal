@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HireInSocial\Tests\Application\Integration\Command\Facebook\Page;
+namespace HireInSocial\Tests\Application\Integration\Command\Offer;
 
 use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
@@ -10,7 +10,7 @@ use HireInSocial\Tests\Application\Integration\HireInSocialTestCase;
 
 final class PostToGroupTest extends HireInSocialTestCase
 {
-    public function test_posting_to_facebook_group_as_a_page()
+    public function test_posting_offer()
     {
         $this->systemContext->createSpecialization($specialization = 'spec');
         $this->systemContext->postToFacebookGroup('FB_USER_ID', $specialization);

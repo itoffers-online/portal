@@ -8,7 +8,7 @@ use HireInSocial\Application\Command\Throttle\RemoveThrottle;
 use HireInSocial\Application\Query\Specialization\Model\Specialization;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
-use HireInSocial\Tests\Application\MotherObject\Command\Facebook\Page\PostToGroupMother;
+use HireInSocial\Tests\Application\MotherObject\Command\Offer\PostOfferMother;
 use HireInSocial\Tests\Application\MotherObject\Command\Specialization\CreateSpecializationMother;
 
 final class SystemContext
@@ -34,7 +34,7 @@ final class SystemContext
 
     public function postToFacebookGroup(string $fbUserId, string $specialization) : void
     {
-        $this->system->handle(PostToGroupMother::postAs($fbUserId, $specialization));
+        $this->system->handle(PostOfferMother::postAs($fbUserId, $specialization));
     }
 
     public function removeThrottle(string $fbUserId) : void

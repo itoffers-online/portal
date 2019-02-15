@@ -8,25 +8,28 @@
         Nie możesz jeszcze dodać kolejnego ogłoszenia, musisz odczekać co najmniej 12 godzin.
     </div>
     {% endif %}
+    {{ form_start(form) }}
+    <h3 class="mb-3">Dodaj nową ofertę</h3>
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
-            <h3 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-muted">Zasady</span>
-            </h3>
-            <ul>
-                <li>Maksymalnie jedno ogłoszenie na 6 godzin.</li>
-                <li>W ogłoszeniu <strong>musi</strong> być informacja o docelowym pracodawcy.</li>
-                <li>Widełki wynagrodzenia mogą być szerokie, jednak musza być realne.</li>
-                <li>Duplikaty ogłoszenia będą usuwane, jeśli chcesz dodać to samo ogłoszenie musisz odczekać co najmniej 30 dni.</li>
-            </ul>
-            <h5>Masz Pytania?</h5>
-            <p>
-                Odwiedź dział <a href="{{ url('faq') }}">FAQ</a>.
-            </p>
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Zasady</span>
+                    </h3>
+                    <ul>
+                        <li>W ogłoszeniu <strong>musi</strong> być informacja o docelowym pracodawcy.</li>
+                        <li>Widełki wynagrodzenia mogą być szerokie, jednak musza być realne.</li>
+                        <li>Duplikaty ogłoszenia będą usuwane, jeśli chcesz dodać to samo ogłoszenie musisz odczekać co najmniej 30 dni.</li>
+                    </ul>
+                    <h5>Masz Pytania?</h5>
+                    <p>
+                        Odwiedź dział <a href="{{ url('faq') }}">FAQ</a>.
+                    </p>
+                </div>
+            </div>
         </div>
         <div class="col-md-8 order-md-1">
-            <h3 class="mb-3">Dodaj nową ofertę</h3>
-            {{ form_start(form) }}
             <h5>Firma</h5>
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -76,12 +79,21 @@
             {{ form_row(form.contact.email, {label: "Adres email na który należy wysyłać CV"}) }}
             {{ form_row(form.contact.phone, {label: "Numer telefonu (opcjonalny)"}) }}
 
+            <h5 class="mb-3">Na których kanałach opublikować ogłoszenie</h5>
+            <div class="form-group">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input disabled" checked disabled value="1">
+                    <label class="form-check-label" for="offer_post_at_facebook">Wrzuć na stronę główną portalu</label>
+                </div>
+            </div>
+            {{ form_row(form.channels.facebook_group, {label: "Wrzuć ogłoszenie na grupę na Facebooku", attr: {checked:"checked"}}) }}
+
             {% if throttled %}
                 {{ form_row(form.submit, {label: "poczekaj", attr:{disabled:disabled}}) }}
             {% else %}
                 {{ form_row(form.submit, {label: "Wyślij"}) }}
             {% endif %}
-            {{ form_end(form) }}
         </div>
+        {{ form_end(form) }}
     </div>
 {% endblock %}
