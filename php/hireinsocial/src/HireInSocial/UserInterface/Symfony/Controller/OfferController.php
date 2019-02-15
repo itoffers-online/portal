@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class OfferController extends AbstractController
 {
     use FacebookAccess;
+    use RedirectAfterLogin;
 
     private $facebook;
     /**
@@ -53,6 +54,8 @@ final class OfferController extends AbstractController
             );
         } catch (\Throwable $exception) {
             $this->logger->debug('Not authenticated, redirecting to facebook login.', ['exception' => $exception->getMessage()]);
+
+            $this->redirectAfterLogin($request->getSession(), 'offer_new', ['specialization' => $specialization]);
 
             return $this->redirectToRoute('facebook_login');
         }

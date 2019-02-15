@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 final class FacebookController extends AbstractController
 {
     use FacebookAccess;
+    use RedirectAfterLogin;
 
     public const FACEBOOK_USER_TOKEN_SESSION_KEY = 'his_user_fb_user_auth_token';
 
@@ -60,6 +61,10 @@ final class FacebookController extends AbstractController
         $this->getUserId($this->facebook, $accessToken, $this->logger);
 
         $request->getSession()->set(self::FACEBOOK_USER_TOKEN_SESSION_KEY, (string) $accessToken);
+
+        if ($this->hasRedirection($request->getSession())) {
+            return $this->generateRedirection($request->getSession(), $this->get('router'));
+        }
 
         return $this->redirectToRoute('home');
     }
