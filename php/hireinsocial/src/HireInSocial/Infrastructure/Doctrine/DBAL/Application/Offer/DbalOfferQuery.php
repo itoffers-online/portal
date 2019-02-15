@@ -28,7 +28,7 @@ final class DbalOfferQuery implements OfferQuery
     public function findAll(OfferFilter $filter): Offers
     {
         $offersData = $this->connection->createQueryBuilder()
-            ->select('o.*, os.slug')
+            ->select('o.*, os.slug, s.slug as specialization_slug')
             ->from('his_job_offer', 'o')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
@@ -54,13 +54,64 @@ final class DbalOfferQuery implements OfferQuery
     public function findBySlug(string $slug): ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
-            ->select('o.*, os.slug')
+            ->select('o.*, os.slug, s.slug as specialization_slug')
             ->from('his_job_offer_slug', 'os')
             ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
+            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->where('os.slug = :offerSlug')
             ->setParameters(
                 [
                     'offerSlug' => $slug,
+                ]
+            )->execute()
+            ->fetch();
+
+        if (!$offerData) {
+            return null;
+        }
+
+        return $this->hydrateOffer($offerData);
+    }
+
+    public function findOneAfter(\DateTimeImmutable $createdAt, string $specialization): ?Offer
+    {
+        $offerData = $this->connection->createQueryBuilder()
+            ->select('o.*, os.slug, s.slug as specialization_slug')
+            ->from('his_job_offer', 'o')
+            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
+            ->where('s.slug = :specializationSlug AND o.created_at < :sinceDate')
+            ->orderBy('o.created_at', 'DESC')
+            ->setMaxResults(1)
+            ->setParameters(
+                [
+                    'specializationSlug' => $specialization,
+                    'sinceDate' => $createdAt->format('Y-m-d H:i:s'),
+                ]
+            )->execute()
+            ->fetch();
+
+        if (!$offerData) {
+            return null;
+        }
+
+        return $this->hydrateOffer($offerData);
+    }
+
+    public function findOneBefore(\DateTimeImmutable $createdAt, string $specialization): ?Offer
+    {
+        $offerData = $this->connection->createQueryBuilder()
+            ->select('o.*, os.slug, s.slug as specialization_slug')
+            ->from('his_job_offer', 'o')
+            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
+            ->where('s.slug = :specializationSlug AND o.created_at > :beforeDate')
+            ->orderBy('o.created_at', 'ASC')
+            ->setMaxResults(1)
+            ->setParameters(
+                [
+                    'specializationSlug' => $specialization,
+                    'beforeDate' => $createdAt->format('Y-m-d H:i:s'),
                 ]
             )->execute()
             ->fetch();
@@ -96,6 +147,7 @@ final class DbalOfferQuery implements OfferQuery
 
         return new Offer(
             $offerData['slug'],
+            $offerData['specialization_slug'],
             Uuid::fromString($offerData['id']),
             new \DateTimeImmutable($offerData['created_at']),
             new Offer\Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),

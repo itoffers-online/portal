@@ -3,6 +3,18 @@
 {% block hero_block %}{% endblock %}
 
 {% block body %}
+    <div class="row">
+        <div class="col-6">
+            {% if previousOffer %}
+                <a href="{{ url('offer', {'slug': previousOffer.slug}) }}" class="btn btn-outline-secondary">Poprzednia Oferta</a>
+            {% endif %}
+        </div>
+        <div class="col-6 text-right">
+            {% if nextOffer %}
+                <a href="{{ url('offer', {'slug': nextOffer.slug}) }}" class="btn btn-outline-secondary">Następna Oferta</a>
+            {% endif %}
+        </div>
+    </div>
     <h1>{{ offer.position.name }} <span class="text-muted">w</span> {{ offer.company.name }}</strong></h1>
     <div class="row">
         <div class="col-6">
