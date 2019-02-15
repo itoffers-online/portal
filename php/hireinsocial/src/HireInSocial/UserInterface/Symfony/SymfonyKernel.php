@@ -105,9 +105,24 @@ final class SymfonyKernel extends Kernel
         $routes->add('/facebook/login', [FacebookController::class, 'loginAction'], 'facebook_login');
         $routes->add('/facebook/logout', [FacebookController::class, 'logoutAction'], 'facebook_logout');
         $routes->add('/facebook/login/success', [FacebookController::class, 'loginSuccessAction'], 'facebook_login_success');
-        $routes->add('/offer/{slug}', [OfferController::class, 'offerAction'], 'offer');
-        $routes->add('/{specialization}/offer', [OfferController::class, 'newAction'], 'offer_new');
-        $routes->add('/{specialization}/offer/success', [OfferController::class, 'successAction'], 'offer_success');
-        $routes->add('/{slug}', [SpecializationController::class, 'offersAction'], 'specialization_offers');
+
+        switch ($this->frameworkConfig['framework']['default_locale']) {
+            case 'pl_PL':
+                $routes->add('/oferty/{specSlug}/dodaj', [OfferController::class, 'newAction'], 'offer_new');
+                $routes->add('/oferty/{specSlug}/dodaj/sukces', [OfferController::class, 'successAction'], 'offer_success');
+                $routes->add('/oferty/{specSlug}', [SpecializationController::class, 'offersAction'], 'specialization_offers');
+                $routes->add('/oferta-pracy/{offerSlug}', [OfferController::class, 'offerAction'], 'offer');
+
+                break;
+            case 'en_US':
+                $routes->add('/offers//{specSlug}/new', [OfferController::class, 'newAction'], 'offer_new');
+                $routes->add('/offers//{specSlug}/new/success', [OfferController::class, 'successAction'], 'offer_success');
+                $routes->add('/offers/{specSlug}', [SpecializationController::class, 'offersAction'], 'specialization_offers');
+                $routes->add('/job-offer/{slug}', [OfferController::class, 'offerAction'], 'offer');
+
+                break;
+            default:
+                throw new \RuntimeException(sprintf('Unrecognized locale %s', $this->frameworkConfig['framework']['default_locale']));
+        }
     }
 }

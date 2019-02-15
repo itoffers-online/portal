@@ -13,9 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class SpecializationController extends AbstractController
 {
-    public function offersAction(string $slug) : Response
+    public function offersAction(string $specSlug) : Response
     {
-        $specialization = $this->get(System::class)->query(SpecializationQuery::class)->findBySlug($slug);
+        $specialization = $this->get(System::class)->query(SpecializationQuery::class)->findBySlug($specSlug);
 
         if (!$specialization) {
             throw $this->createNotFoundException();

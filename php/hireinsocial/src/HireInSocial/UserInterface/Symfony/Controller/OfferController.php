@@ -43,7 +43,7 @@ final class OfferController extends AbstractController
         $this->logger = $logger;
     }
 
-    public function newAction(string $specialization, Request $request) : Response
+    public function newAction(string $specSlug, Request $request) : Response
     {
         try {
             $fbUserId = $this->getUserId(
@@ -57,7 +57,7 @@ final class OfferController extends AbstractController
             return $this->redirectToRoute('facebook_login');
         }
 
-        if (!$this->get(System::class)->query(SpecializationQuery::class)->findBySlug($specialization)) {
+        if (!$this->get(System::class)->query(SpecializationQuery::class)->findBySlug($specSlug)) {
             throw $this->createNotFoundException();
         }
 
@@ -70,7 +70,7 @@ final class OfferController extends AbstractController
 
             try {
                 $this->container->get(System::class)->handle(new PostOffer(
-                    $specialization,
+                    $specSlug,
                     $fbUserId,
                     new Offer(
                         new Company($offer['company']['name'], $offer['company']['url'], $offer['company']['description']),
@@ -86,7 +86,7 @@ final class OfferController extends AbstractController
                     )
                 ));
 
-                return $this->redirectToRoute('offer_success', ['specialization' => $specialization]);
+                return $this->redirectToRoute('offer_success', ['specialization' => $specSlug]);
             } catch (Exception $exception) {
                 // TODO: Show some user friendly error message in UI.
                 throw $exception;
@@ -99,22 +99,22 @@ final class OfferController extends AbstractController
         ]);
     }
 
-    public function successAction(string $specialization) : Response
+    public function successAction(string $specSlug) : Response
     {
-        $specialization = $this->get(System::class)->query(SpecializationQuery::class)->findBySlug($specialization);
+        $specSlug = $this->get(System::class)->query(SpecializationQuery::class)->findBySlug($specSlug);
 
-        if (!$specialization) {
+        if (!$specSlug) {
             throw $this->createNotFoundException();
         }
 
         return $this->render('/offer/success.html.twig', [
-            'specialization' => $specialization,
+            'specialization' => $specSlug,
         ]);
     }
 
-    public function offerAction(string $slug) : Response
+    public function offerAction(string $offerSlug) : Response
     {
-        $offer = $this->get(System::class)->query(OfferQuery::class)->findBySlug($slug);
+        $offer = $this->get(System::class)->query(OfferQuery::class)->findBySlug($offerSlug);
 
         if (!$offer) {
             throw $this->createNotFoundException();
