@@ -73,7 +73,7 @@ final class DbalOfferQuery implements OfferQuery
         return $this->hydrateOffer($offerData);
     }
 
-    public function findOneAfter(\DateTimeImmutable $createdAt, string $specialization): ?Offer
+    public function findOneAfter(Offer $offer): ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
             ->select('o.*, os.slug, s.slug as specialization_slug')
@@ -85,8 +85,8 @@ final class DbalOfferQuery implements OfferQuery
             ->setMaxResults(1)
             ->setParameters(
                 [
-                    'specializationSlug' => $specialization,
-                    'sinceDate' => $createdAt->format('Y-m-d H:i:s'),
+                    'specializationSlug' => $offer->specializationSlug(),
+                    'sinceDate' => $offer->createdAt()->format('Y-m-d H:i:s')
                 ]
             )->execute()
             ->fetch();
@@ -98,7 +98,7 @@ final class DbalOfferQuery implements OfferQuery
         return $this->hydrateOffer($offerData);
     }
 
-    public function findOneBefore(\DateTimeImmutable $createdAt, string $specialization): ?Offer
+    public function findOneBefore(Offer $offer): ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
             ->select('o.*, os.slug, s.slug as specialization_slug')
@@ -110,8 +110,8 @@ final class DbalOfferQuery implements OfferQuery
             ->setMaxResults(1)
             ->setParameters(
                 [
-                    'specializationSlug' => $specialization,
-                    'beforeDate' => $createdAt->format('Y-m-d H:i:s'),
+                    'specializationSlug' => $offer->specializationSlug(),
+                    'beforeDate' => $offer->createdAt()->format('Y-m-d H:i:s'),
                 ]
             )->execute()
             ->fetch();

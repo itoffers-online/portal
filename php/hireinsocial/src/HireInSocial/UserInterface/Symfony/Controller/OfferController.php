@@ -123,8 +123,8 @@ final class OfferController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $nextOffer = $this->get(System::class)->query(OfferQuery::class)->findOneAfter($offer->createdAt(), $offer->specializationSlug());
-        $previousOffer = $this->get(System::class)->query(OfferQuery::class)->findOneBefore($offer->createdAt(), $offer->specializationSlug());
+        $nextOffer = $this->get(System::class)->query(OfferQuery::class)->findOneAfter($offer);
+        $previousOffer = $this->get(System::class)->query(OfferQuery::class)->findOneBefore($offer);
 
         return $this->render('offer/offer.html.twig', [
             'offer' => $offer,
