@@ -17,7 +17,7 @@ use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMSlugs;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSpecializations;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
-use HireInSocial\Infrastructure\Facbook\FacebookGraphSDK;
+use HireInSocial\Infrastructure\Facebook\FacebookGraphSDK;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Infrastructure\Predis\PredisThrottle;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
