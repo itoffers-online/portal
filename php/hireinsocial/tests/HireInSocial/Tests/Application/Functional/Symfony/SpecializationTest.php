@@ -17,7 +17,7 @@ final class SpecializationTest extends WebTestCase
         $this->systemContext->postToFacebookGroup('FB_USER_ID_1', $specialization);
         $this->systemContext->postToFacebookGroup('FB_USER_ID_2', $specialization);
 
-        $crawler = $client->request('GET', $client->getContainer()->get('router')->generate('specialization_offers', ['slug' => $specialization]));
+        $crawler = $client->request('GET', $client->getContainer()->get('router')->generate('specialization_offers', ['specSlug' => $specialization]));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertCount(2, $crawler->filter('.job-offer'));

@@ -16,7 +16,7 @@ final class OfferTest extends WebTestCase
         $client = static::createClient();
         $this->systemContext->createSpecialization($specialization);
 
-        $client->request('GET', $client->getContainer()->get('router')->generate('offer_success', ['specialization' => $specialization]));
+        $client->request('GET', $client->getContainer()->get('router')->generate('offer_success', ['specSlug' => $specialization]));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
@@ -29,7 +29,7 @@ final class OfferTest extends WebTestCase
 
         $offer = $this->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor($specialization))->first();
 
-        $client->request('GET', $client->getContainer()->get('router')->generate('offer', ['slug' => $offer->slug()]));
+        $client->request('GET', $client->getContainer()->get('router')->generate('offer', ['offerSlug' => $offer->slug()]));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }

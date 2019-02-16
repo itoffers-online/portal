@@ -32,7 +32,7 @@
                         {{ offer.position.description|truncate(300) }}
                     </p>
                     <p class="text-right">
-                        <a href="{{ url('offer', {slug : offer.slug}) }}" class="btn btn-primary btn-sm">Więcej</a>
+                        <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" class="btn btn-primary btn-sm">Więcej</a>
                     </p>
                 </div>
             </div>
