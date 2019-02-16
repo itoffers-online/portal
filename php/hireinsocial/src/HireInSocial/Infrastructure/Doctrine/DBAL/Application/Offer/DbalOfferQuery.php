@@ -86,7 +86,7 @@ final class DbalOfferQuery implements OfferQuery
             ->setParameters(
                 [
                     'specializationSlug' => $offer->specializationSlug(),
-                    'sinceDate' => $offer->createdAt()->format('Y-m-d H:i:s')
+                    'sinceDate' => $offer->createdAt()->format('Y-m-d H:i:s'),
                 ]
             )->execute()
             ->fetch();
