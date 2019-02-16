@@ -11,13 +11,13 @@ use HireInSocial\Application\Query\Offer\Model\Offer\Description;
 use HireInSocial\Application\Query\Offer\Model\Offer\Location;
 use HireInSocial\Application\Query\Offer\Model\Offer\Position;
 use HireInSocial\Application\Query\Offer\Model\Offer\Salary;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 final class Offer
 {
-    private $id;
     private $slug;
+    private $specializationSlug;
+    private $id;
     private $createdAt;
     private $company;
     private $contact;
@@ -29,6 +29,7 @@ final class Offer
 
     public function __construct(
         string $slug,
+        string $specializationSlug,
         UuidInterface $id,
         \DateTimeImmutable $createdAt,
         Company $company,
@@ -49,11 +50,17 @@ final class Offer
         $this->location = $location;
         $this->position = $position;
         $this->salary = $salary;
+        $this->specializationSlug = $specializationSlug;
     }
 
     public function slug(): string
     {
         return $this->slug;
+    }
+
+    public function specializationSlug(): string
+    {
+        return $this->specializationSlug;
     }
 
     public function id(): UuidInterface
