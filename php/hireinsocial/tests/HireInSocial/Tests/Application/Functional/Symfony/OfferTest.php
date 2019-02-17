@@ -7,6 +7,7 @@ namespace HireInSocial\Tests\Application\Functional\Symfony;
 use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Tests\Application\Functional\WebTestCase;
+use Ramsey\Uuid\Uuid;
 
 final class OfferTest extends WebTestCase
 {
@@ -24,8 +25,9 @@ final class OfferTest extends WebTestCase
     {
         $specialization = 'spec';
         $client = static::createClient();
+        $user = $this->systemContext->createUser();
         $this->systemContext->createSpecialization($specialization);
-        $this->systemContext->postToFacebookGroup('FB_USER_ID', $specialization);
+        $this->systemContext->postToFacebookGroup($user->id(), $specialization);
 
         $offer = $this->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor($specialization))->first();
 

@@ -7,16 +7,23 @@ namespace HireInSocial\Tests\Application\MotherObject\Offer;
 use Faker\Factory;
 use HireInSocial\Application\Offer;
 use HireInSocial\Tests\Application\MotherObject\Facebook\CalendarMother;
-use Ramsey\Uuid\Uuid;
+use HireInSocial\Tests\Application\MotherObject\Specialization\SpecializationMother;
+use HireInSocial\Tests\Application\MotherObject\User\UserMother;
 
 final class OfferMother
 {
-    public static function withName(string $positionName, string $companyName)
+    public static function random() : Offer\Offer
+    {
+        return self::withName('position', 'company');
+    }
+
+    public static function withName(string $positionName, string $companyName) : Offer\Offer
     {
         $faker = Factory::create();
 
-        return new Offer\Offer(
-            Uuid::uuid4(),
+        return Offer\Offer::postIn(
+            SpecializationMother::random(),
+            UserMother::random(),
             new Offer\Company($companyName, $faker->url, $faker->text(512)),
             new Offer\Position($positionName, $faker->text(1024)),
             new Offer\Location($faker->boolean, $faker->country),

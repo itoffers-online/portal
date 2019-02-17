@@ -13,15 +13,15 @@ final class PostOffer implements Command
     use ClassCommand;
 
     private $specialization;
-    private $fbUserId;
+    private $userId;
     private $offer;
 
     public function __construct(
         string $specialization,
-        string $fbUserId,
+        string $userId,
         Offer $offer
     ) {
-        $this->fbUserId = $fbUserId;
+        $this->userId = $userId;
         $this->offer = $offer;
         $this->specialization = $specialization;
     }
@@ -31,9 +31,9 @@ final class PostOffer implements Command
         return $this->specialization;
     }
 
-    public function fbUserId(): string
+    public function userId(): string
     {
-        return $this->fbUserId;
+        return $this->userId;
     }
 
     public function offer(): Offer

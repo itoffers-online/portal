@@ -11,13 +11,15 @@ final class RemoteThrottleTest extends HireInSocialTestCase
 {
     public function test_removing_throttle_from_job_offer_author()
     {
+        $user = $this->systemContext->createUser();
+
         $this->systemContext->createSpecialization($specialization = 'spec');
-        $this->systemContext->postToFacebookGroup('FB_USER_ID', $specialization);
+        $this->systemContext->postToFacebookGroup($user->id(), $specialization);
 
-        $this->assertTrue($this->systemContext->system()->query(OfferThrottleQuery::class)->isThrottled('FB_USER_ID'));
+        $this->assertTrue($this->systemContext->system()->query(OfferThrottleQuery::class)->isThrottled($user->id()));
 
-        $this->systemContext->removeThrottle('FB_USER_ID');
+        $this->systemContext->removeThrottle($user->id());
 
-        $this->assertFalse($this->systemContext->system()->query(OfferThrottleQuery::class)->isThrottled('FB_USER_ID'));
+        $this->assertFalse($this->systemContext->system()->query(OfferThrottleQuery::class)->isThrottled($user->id()));
     }
 }

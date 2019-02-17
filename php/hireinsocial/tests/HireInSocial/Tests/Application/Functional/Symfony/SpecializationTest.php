@@ -14,8 +14,11 @@ final class SpecializationTest extends WebTestCase
         $client = static::createClient();
         $this->systemContext->createSpecialization($specialization);
 
-        $this->systemContext->postToFacebookGroup('FB_USER_ID_1', $specialization);
-        $this->systemContext->postToFacebookGroup('FB_USER_ID_2', $specialization);
+        $user1 = $this->systemContext->createUser();
+        $user2 = $this->systemContext->createUser();
+
+        $this->systemContext->postToFacebookGroup($user1->id(), $specialization);
+        $this->systemContext->postToFacebookGroup($user2->id(), $specialization);
 
         $crawler = $client->request('GET', $client->getContainer()->get('router')->generate('specialization_offers', ['specSlug' => $specialization]));
 

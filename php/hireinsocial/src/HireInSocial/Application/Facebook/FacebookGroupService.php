@@ -6,6 +6,7 @@ namespace HireInSocial\Application\Facebook;
 
 use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\Offer\Throttle;
+use HireInSocial\Application\Specialization\Specialization;
 
 final class FacebookGroupService
 {
@@ -21,18 +22,14 @@ final class FacebookGroupService
     /**
      * @throws Exception
      */
-    public function postAtGroupAs(Draft $draft, Group $group, Page $page) : string
+    public function pagePostAtGroup(Draft $draft, Specialization $specialization) : string
     {
-        if (!$this->facebook->userExists($draft->authorFbId())) {
-            throw new Exception(sprintf('"%s" is not valid Facebook author id', $draft->authorFbId()));
+        if ($this->throttle->isThrottled((string) $draft->userId())) {
+            throw new Exception(sprintf('User "%s" throttled, can\'t post job offer.', $draft->userId()));
         }
 
-        if ($this->throttle->isThrottled($draft->authorFbId())) {
-            throw new Exception(sprintf('User "%s" throttled, can\'t post job offer.', $draft->authorFbId()));
-        }
-
-        $postId = $this->facebook->postToGroupAsPage($draft, $group, $page);
-        $this->throttle->throttle($draft->authorFbId());
+        $postId = $this->facebook->postToGroupAsPage($draft, $specialization->facebookChannel()->group(), $specialization->facebookChannel()->page());
+        $this->throttle->throttle((string) $draft->userId());
 
         return $postId;
     }

@@ -16,7 +16,9 @@ use HireInSocial\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Offer\Position;
 use HireInSocial\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Application\Command\Throttle\RemoveThrottle;
+use HireInSocial\Application\Command\User\FacebookConnect;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
+use HireInSocial\Application\Query\User\UserQuery;
 use HireInSocial\Application\System;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -44,9 +46,8 @@ final class PostOffer extends Command
     protected function configure() : void
     {
         $this
-            ->setDescription('<info>[Offer]</info> Test posting job offer with automatically generated fake data.')
+            ->setDescription('<info>[Offer]</info> Test posting job offer with automatically generated fake data. This offer also generate fake user.')
             ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
-            ->addArgument('fb-user-id', InputArgument::REQUIRED, 'Facebook User ID of job offer author.')
             ->addOption('no-salary', null, InputOption::VALUE_OPTIONAL, 'Pass this option when you want to test offer without salary', false)
             ->addOption('remove-throttle', null, InputOption::VALUE_OPTIONAL, 'Remove throttle after posting offer to a group in order to repeat command quickly', false)
             ->addOption('post-facebook-group', null, InputOption::VALUE_OPTIONAL, 'Post offer to facebook group assigned to the specialization', false)
@@ -74,9 +75,15 @@ final class PostOffer extends Command
         try {
             $faker = Factory::create($this->locale);
 
+            $fbUserAppId = $faker->uuid;
+
+            $this->system->handle(new FacebookConnect($fbUserAppId));
+
+            $user = $this->system->query(UserQuery::class)->findByFacebook($fbUserAppId);
+
             $this->system->handle(new SystemPostOffer(
                 $specialization->slug(),
-                $input->getArgument('fb-user-id'),
+                $user->id(),
                 new Offer(
                     new Company($faker->company, $faker->url, $faker->text(512)),
                     new Position('PHP Developer', $faker->text(1024)),
@@ -102,7 +109,7 @@ final class PostOffer extends Command
         }
 
         if ($removeThrottle) {
-            $this->system->handle(new RemoveThrottle($input->getArgument('fb-user-id')));
+            $this->system->handle(new RemoveThrottle($user->id()));
         }
 
         return 0;

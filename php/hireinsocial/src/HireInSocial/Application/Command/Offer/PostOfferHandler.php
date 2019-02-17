@@ -25,20 +25,25 @@ use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\Specialization\Specializations;
 use HireInSocial\Application\System\Calendar;
 use HireInSocial\Application\System\Handler;
+use HireInSocial\Application\User\User;
+use HireInSocial\Application\User\Users;
+use Ramsey\Uuid\Uuid;
 
 final class PostOfferHandler implements Handler
 {
     private $calendar;
     private $offers;
+    private $users;
+    private $posts;
     private $facebookGroupService;
     private $formatter;
-    private $posts;
     private $specializations;
     private $slugs;
 
     public function __construct(
         Calendar $calendar,
         Offers $offers,
+        Users $users,
         Posts $posts,
         FacebookGroupService $facebookGroupService,
         OfferFormatter $formatter,
@@ -46,10 +51,11 @@ final class PostOfferHandler implements Handler
         Slugs $slugs
     ) {
         $this->calendar = $calendar;
+        $this->offers = $offers;
+        $this->users = $users;
+        $this->posts = $posts;
         $this->facebookGroupService = $facebookGroupService;
         $this->formatter = $formatter;
-        $this->offers = $offers;
-        $this->posts = $posts;
         $this->specializations = $specializations;
         $this->slugs = $slugs;
     }
@@ -61,35 +67,39 @@ final class PostOfferHandler implements Handler
 
     public function __invoke(PostOffer $command) : void
     {
+        $user = $this->users->getById(Uuid::fromString($command->userId()));
+
         $specialization = $this->specializations->get($command->specialization());
 
-        $offer = $this->createOffer($command, $specialization);
+        $offer = $this->createOffer($command, $user, $specialization);
 
         if ($command->offer()->channels()->facebookGroup()) {
-            $draft = new Draft(
-                $command->fbUserId(),
-                $this->formatter->format(
-                    $offer
-                ),
-                $command->offer()->company()->url()
+            $draft = Draft::createFor(
+                $user,
+                $this->formatter,
+                $offer
             );
 
-            $postId = $this->facebookGroupService->postAtGroupAs(
-                $draft,
-                $specialization->facebookChannel()->group(),
-                $specialization->facebookChannel()->page()
+            $this->posts->add(
+                new Post(
+                    $this->facebookGroupService->pagePostAtGroup(
+                        $draft,
+                        $specialization
+                    ),
+                    $offer
+                )
             );
-            $this->posts->add(new Post($postId, $offer, $draft));
         }
 
         $this->offers->add($offer);
         $this->slugs->add(Slug::from($offer, $this->calendar));
     }
 
-    private function createOffer(PostOffer $command, Specialization $specialization): Offer
+    private function createOffer(PostOffer $command, User $user, Specialization $specialization): Offer
     {
-        return new Offer(
-            $specialization->id(),
+        return Offer::postIn(
+            $specialization,
+            $user,
             new Company(
                 $command->offer()->company()->name(),
                 $command->offer()->company()->url(),
