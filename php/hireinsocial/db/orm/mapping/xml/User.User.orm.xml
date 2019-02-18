@@ -2,12 +2,15 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="HireInSocial\Application\Facebook\Post" table="his_facebook_post">
+    <entity name="HireInSocial\Application\User\User" table="his_user">
 
-        <id name="fbId" type="string">
+        <id name="id" type="guid">
             <generator strategy="NONE" />
         </id>
-
-        <field name="jobOfferId" type="guid" />
+        <field name="createdAt" type="datetime_immutable" />
+        <field name="fbUserAppId" nullable="true" />
+        <unique-constraints>
+            <unique-constraint columns="fb_user_app_id" />
+        </unique-constraints>
     </entity>
 </doctrine-mapping>

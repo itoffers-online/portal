@@ -18,13 +18,13 @@ use HireInSocial\Application\Command\Offer\Offer\Salary;
 
 final class PostOfferMother
 {
-    public static function postAs(string $fbUserId, string $specialization) : \HireInSocial\Application\Command\Offer\PostOffer
+    public static function postAs(string $userId, string $specialization) : PostOffer
     {
         $faker = Factory::create();
 
-        return new \HireInSocial\Application\Command\Offer\PostOffer(
+        return new PostOffer(
             $specialization,
-            $fbUserId,
+            $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
                 new Position('PHP Developer', $faker->text(1024)),

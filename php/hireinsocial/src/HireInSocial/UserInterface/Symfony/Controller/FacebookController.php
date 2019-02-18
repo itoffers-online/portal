@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace HireInSocial\UserInterface\Symfony\Controller;
 
 use Facebook\Facebook;
+use HireInSocial\Application\Command\User\FacebookConnect;
+use HireInSocial\Application\Query\User\UserQuery;
+use HireInSocial\Application\System;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +19,9 @@ final class FacebookController extends AbstractController
     use FacebookAccess;
     use RedirectAfterLogin;
 
-    public const FACEBOOK_USER_TOKEN_SESSION_KEY = 'his_user_fb_user_auth_token';
+    public const USER_SESSION_KEY = '_his_user_id';
 
     private $facebook;
-    /**
-     * @var LoggerInterface
-     */
     private $logger;
 
     public function __construct(Facebook $facebook, LoggerInterface $logger)
@@ -32,7 +32,7 @@ final class FacebookController extends AbstractController
 
     public function loginAction(Request $request) : Response
     {
-        if ($request->getSession()->has(self::FACEBOOK_USER_TOKEN_SESSION_KEY)) {
+        if ($request->getSession()->has(self::USER_SESSION_KEY)) {
             return $this->redirectToRoute('home');
         }
 
@@ -58,9 +58,12 @@ final class FacebookController extends AbstractController
             $this->generateUrl('facebook_login_success', [], UrlGeneratorInterface::ABSOLUTE_URL)
         );
 
-        $this->getUserId($this->facebook, $accessToken, $this->logger);
+        $fbUserAppId = $this->getUserId($this->facebook, $accessToken, $this->logger);
+        $this->get(System::class)->handle(new FacebookConnect($fbUserAppId));
 
-        $request->getSession()->set(self::FACEBOOK_USER_TOKEN_SESSION_KEY, (string) $accessToken);
+        $user = $this->get(System::class)->query(UserQuery::class)->findByFacebook($fbUserAppId);
+
+        $request->getSession()->set(self::USER_SESSION_KEY, $user->id());
 
         if ($this->hasRedirection($request->getSession())) {
             return $this->generateRedirection($request->getSession(), $this->get('router'));
@@ -71,8 +74,8 @@ final class FacebookController extends AbstractController
 
     public function logoutAction(Request $request) : Response
     {
-        if ($request->getSession()->has(self::FACEBOOK_USER_TOKEN_SESSION_KEY)) {
-            $request->getSession()->remove(self::FACEBOOK_USER_TOKEN_SESSION_KEY);
+        if ($request->getSession()->has(self::USER_SESSION_KEY)) {
+            $request->getSession()->remove(self::USER_SESSION_KEY);
         }
 
         return $this->redirectToRoute('home');

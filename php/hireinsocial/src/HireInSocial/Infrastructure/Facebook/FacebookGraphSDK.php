@@ -24,17 +24,6 @@ final class FacebookGraphSDK implements Facebook
         $this->logger = $logger;
     }
 
-    public function userExists(string $facebookId): bool
-    {
-        try {
-            $this->get(sprintf('/%s', $facebookId));
-
-            return true;
-        } catch (FacebookSDKException $e) {
-            return false;
-        }
-    }
-
     public function postToGroupAsPage(Draft $post, Group $group, Page $page): string
     {
         try {
@@ -45,7 +34,7 @@ final class FacebookGraphSDK implements Facebook
 
             return $response->getDecodedBody()['id'];
         } catch (FacebookSDKException $e) {
-            throw new Exception('Can\'t post facebook job offer');
+            throw new Exception('Can\'t post facebook job offer', $e);
         }
     }
 

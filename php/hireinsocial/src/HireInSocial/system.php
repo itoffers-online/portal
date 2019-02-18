@@ -4,19 +4,22 @@ namespace HireInSocial;
 
 use Facebook\Facebook;
 
-use HireInSocial\Application\Command\Offer\PostOfferHandler;
-use HireInSocial\Application\Command\Specialization\CreateSpecializationHandler;
-use HireInSocial\Application\Command\Throttle\RemoveThrottleHandler;
+use HireInSocial\Application\Command\Offer;
+use HireInSocial\Application\Command\Specialization;
+use HireInSocial\Application\Command\Throttle;
+use HireInSocial\Application\Command\User;
 use HireInSocial\Application\Config;
 use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization\DBALSpecializationQuery;
+use HireInSocial\Infrastructure\Doctrine\DBAL\Application\User\DBALUserQuery;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMSlugs;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSpecializations;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
+use HireInSocial\Infrastructure\Doctrine\ORM\Application\User\ORMUsers;
 use HireInSocial\Infrastructure\Facebook\FacebookGraphSDK;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Infrastructure\Predis\PredisThrottle;
@@ -57,7 +60,7 @@ function system(Config $config) : System
     switch ($config->getString(Config::ENV)) {
         case 'prod':
             $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-prod-');
-            $facebookGraphSDK = new FacebookGraphSDK(
+            $facebook = new FacebookGraphSDK(
                 new Facebook([
                     'app_id' => $config->getString(Config::FB_APP_ID),
                     'app_secret' => $config->getString(Config::FB_APP_SECRET),
@@ -68,12 +71,18 @@ function system(Config $config) : System
             break;
         case 'dev':
             $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-dev-');
-            $facebookGraphSDK = $facebookGraphSDK = new DummyFacebook();
+            $facebook = new FacebookGraphSDK(
+                new Facebook([
+                    'app_id' => $config->getString(Config::FB_APP_ID),
+                    'app_secret' => $config->getString(Config::FB_APP_SECRET),
+                ]),
+                $facebookLogger
+            );
 
             break;
         case 'test':
             $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-test-');
-            $facebookGraphSDK = new DummyFacebook();
+            $facebook = new DummyFacebook();
 
             break;
         default:
@@ -86,29 +95,35 @@ function system(Config $config) : System
     return new System(
         new CommandBus(
             new ORMTransactionManager($entityManager),
-            new CreateSpecializationHandler(
+            new Specialization\CreateSpecializationHandler(
                 new ORMSpecializations($entityManager)
             ),
-            new PostOfferHandler(
+            new Offer\PostOfferHandler(
                 $calendar,
                 new ORMOffers($entityManager),
+                new ORMUsers($entityManager),
                 new ORMPosts($entityManager),
                 new FacebookGroupService(
-                    $facebookGraphSDK,
+                    $facebook,
                     $offerThrottle
                 ),
                 new FacebookFormatter($twig),
                 new ORMSpecializations($entityManager),
                 new ORMSlugs($entityManager)
             ),
-            new RemoveThrottleHandler(
+            new Throttle\RemoveThrottleHandler(
                 $offerThrottle
+            ),
+            new User\FacebookConnectHandler(
+                new ORMUsers($entityManager),
+                $calendar
             )
         ),
         new Queries(
             new OfferThrottleQuery($offerThrottle),
             new DbalOfferQuery($dbalConnection),
-            new DBALSpecializationQuery($dbalConnection)
+            new DBALSpecializationQuery($dbalConnection),
+            new DBALUserQuery($dbalConnection)
         ),
         $systemLogger
     );

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Controller;
 
-use Facebook\Authentication\AccessToken;
 use Facebook\Facebook;
 use HireInSocial\Application\Command\Offer\PostOffer;
 use HireInSocial\Application\Command\Offer\Offer\Channels;
@@ -46,19 +45,15 @@ final class OfferController extends AbstractController
 
     public function newAction(string $specSlug, Request $request) : Response
     {
-        try {
-            $fbUserId = $this->getUserId(
-                $this->facebook,
-                new AccessToken((string)$request->getSession()->get(FacebookController::FACEBOOK_USER_TOKEN_SESSION_KEY)),
-                $this->logger
-            );
-        } catch (\Throwable $exception) {
-            $this->logger->debug('Not authenticated, redirecting to facebook login.', ['exception' => $exception->getMessage()]);
+        if (!$request->getSession()->has(FacebookController::USER_SESSION_KEY)) {
+            $this->logger->debug('Not authenticated, redirecting to facebook login.');
 
             $this->redirectAfterLogin($request->getSession(), 'offer_new', ['specSlug' => $specSlug]);
 
             return $this->redirectToRoute('facebook_login');
         }
+
+        $userId = $request->getSession()->get(FacebookController::USER_SESSION_KEY);
 
         if (!$this->get(System::class)->query(SpecializationQuery::class)->findBySlug($specSlug)) {
             throw $this->createNotFoundException();
@@ -74,7 +69,7 @@ final class OfferController extends AbstractController
             try {
                 $this->container->get(System::class)->handle(new PostOffer(
                     $specSlug,
-                    $fbUserId,
+                    $userId,
                     new Offer(
                         new Company($offer['company']['name'], $offer['company']['url'], $offer['company']['description']),
                         new Position($offer['position']['name'], $offer['position']['description']),
@@ -98,7 +93,7 @@ final class OfferController extends AbstractController
 
         return $this->render('/offer/new.html.twig', [
             'form' => $form->createView(),
-            'throttled' => $this->get(System::class)->query(OfferThrottleQuery::class)->isThrottled($fbUserId),
+            'throttled' => $this->get(System::class)->query(OfferThrottleQuery::class)->isThrottled($userId),
         ]);
     }
 
