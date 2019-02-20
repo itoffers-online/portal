@@ -27,13 +27,18 @@ final class DbalOfferQuery implements OfferQuery
 
     public function findAll(OfferFilter $filter): Offers
     {
-        $offersData = $this->connection->createQueryBuilder()
+        $queryBuilder = $this->connection->createQueryBuilder()
             ->select('o.*, os.slug, s.slug as specialization_slug')
             ->from('his_job_offer', 'o')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
-            ->where('s.slug = :specializationSlug AND o.created_at >= :sinceDate AND o.created_at <= :tillDate')
-            ->orderBy('o.created_at', 'DESC')
+            ->where('o.created_at >= :sinceDate AND o.created_at <= :tillDate');
+
+        if ($filter->specialization()) {
+            $queryBuilder->andWhere('s.slug = :specializationSlug');
+        }
+
+        $offersData = $queryBuilder->orderBy('o.created_at', 'DESC')
             ->setMaxResults($filter->limit())
             ->setFirstResult($filter->offset())
             ->setParameters(
@@ -49,6 +54,29 @@ final class DbalOfferQuery implements OfferQuery
             [$this, 'hydrateOffer'],
             $offersData
         ));
+    }
+
+    public function count(OfferFilter $filter): int
+    {
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select('COUNT(o.id)')
+            ->from('his_job_offer', 'o')
+            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->where('o.created_at >= :sinceDate AND o.created_at <= :tillDate');
+
+        if ($filter->specialization()) {
+            $queryBuilder->andWhere('s.slug = :specializationSlug');
+        }
+
+        return (int) $queryBuilder->setParameters(
+                [
+                    'specializationSlug' => $filter->specialization(),
+                    'sinceDate' => $filter->sinceDate()->format('Y-m-d H:i:s'),
+                    'tillDate' => $filter->tillDate()->format('Y-m-d H:i:s'),
+                ]
+            )
+            ->execute()
+            ->fetchColumn();
     }
 
     public function findBySlug(string $slug): ?Offer
@@ -121,24 +149,6 @@ final class DbalOfferQuery implements OfferQuery
         }
 
         return $this->hydrateOffer($offerData);
-    }
-
-    public function count(OfferFilter $filter): int
-    {
-        return (int) $this->connection->createQueryBuilder()
-            ->select('COUNT(o.id)')
-            ->from('his_job_offer', 'o')
-            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
-            ->where('s.slug = :specializationSlug AND o.created_at >= :sinceDate AND o.created_at <= :tillDate')
-            ->setParameters(
-                [
-                    'specializationSlug' => $filter->specialization(),
-                    'sinceDate' => $filter->sinceDate()->format('Y-m-d H:i:s'),
-                    'tillDate' => $filter->tillDate()->format('Y-m-d H:i:s'),
-                ]
-            )
-            ->execute()
-            ->fetchColumn();
     }
 
     private function hydrateOffer(array $offerData) : Offer

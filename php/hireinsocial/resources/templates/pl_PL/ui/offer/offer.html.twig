@@ -1,12 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block hero_block %}{% endblock %}
+{% block header %}{% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="col-6">
             {% if previousOffer %}
                 <a href="{{ url('offer', {'offerSlug': previousOffer.slug}) }}" class="btn btn-outline-secondary">Poprzednia Oferta</a>
+            {% else %}
+                <a href="#" class="btn btn-outline-secondary disabled">Poprzednia Oferta</a>
             {% endif %}
         </div>
         <div class="col-6 text-right">
@@ -15,7 +17,7 @@
             {% endif %}
         </div>
     </div>
-    <h1>{{ offer.position.name }} <span class="text-muted">w</span> {{ offer.company.name }}</strong></h1>
+    <h1 class="mt-2">{% include 'specialization/_logo_plain.html.twig' with {specialization: offer.specializationSlug} only %} {{ offer.position.name }} <span class="text-muted">w</span> {{ offer.company.name }}</strong></h1>
     <div class="row">
         <div class="col-6">
             <h4>Opis Stanowiska</h4>
@@ -52,6 +54,20 @@
                     </p>
                     <p class="text-right">
                         {{ offer.contact.name }}
+                    </p>
+                </div>
+            </div>
+
+            <h4 class="mt-2">Lokalizacja</h4>
+            <div class="card">
+                <div class="card-body">
+                    <p>
+                        {% if offer.location.name %}
+                            Lokalizacja: {{ offer.location.name }}
+                        {% endif %}
+                    </p>
+                    <p>
+                        Zdalnie: {% if offer.location.remote %}Tak <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="right" title="Pamiętaj aby ustalić z pracodawcą zakres pracy zdalnej."></i>{% else %}Nie{% endif %}
                     </p>
                 </div>
             </div>

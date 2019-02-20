@@ -6,9 +6,9 @@ namespace HireInSocial\Application\Query\Offer\Model;
 
 final class Offers extends \ArrayObject
 {
-    public function __construct(Offer ...$offers)
+    public function __construct(Offer ...$specializations)
     {
-        parent::__construct($offers);
+        parent::__construct($specializations);
     }
 
     public function first() : Offer

@@ -11,6 +11,5 @@ use HireInSocial\Application\System\Query;
 interface SpecializationQuery extends Query
 {
     public function all() : Specializations;
-
     public function findBySlug(string $slug) : ?Specialization;
 }

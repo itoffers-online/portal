@@ -43,6 +43,13 @@ final class OfferController extends AbstractController
         $this->logger = $logger;
     }
 
+    public function postAction(Request $request) : Response
+    {
+        return $this->render('/offer/post.html.twig', [
+            'specializations' => $this->get(System::class)->query(SpecializationQuery::class)->all(),
+        ]);
+    }
+
     public function newAction(string $specSlug, Request $request) : Response
     {
         if (!$request->getSession()->has(FacebookController::USER_SESSION_KEY)) {

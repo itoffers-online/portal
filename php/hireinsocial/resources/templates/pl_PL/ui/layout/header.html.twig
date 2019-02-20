@@ -1,0 +1,19 @@
+<div class="pt-5 text-center">
+    <h1><a href="{{ url('home') }}">Hire in Social!</a></h1>
+    <p class="lead">
+        Mamy dla Ciebie tylko świeże oferty pracy!
+    </p>
+</div>
+<div class="my-4 text-center">
+    {% for headerSpec in headerSpecializations %}
+        <a href="{{ url('specialization_offers', {specSlug: headerSpec.slug}) }}" class="btn btn-outline-primary">
+            {% include 'specialization/_logo_plain.html.twig' with {specialization: headerSpec.slug} only %} {% include 'specialization/_name.html.twig' with {specialization: headerSpec.slug} only %}
+        </a>
+    {% endfor %}
+    {# PLACEHOLDER #}
+    <a href="#" class="btn btn-outline-primary disabled"><i class="devicon-ruby-plain"></i> Ruby</a>
+    <a href="#" class="btn btn-outline-primary disabled"><i class="devicon-cplusplus-plain"></i>++</a>
+    <a href="#" class="btn btn-outline-primary disabled"><i class="devicon-python-plain"></i> Python</a>
+    <a href="#" class="btn btn-outline-primary disabled"><i class="devicon-linux-plain"></i> Devops</a>
+    {# PLACEHOLDER END #}
+</div>

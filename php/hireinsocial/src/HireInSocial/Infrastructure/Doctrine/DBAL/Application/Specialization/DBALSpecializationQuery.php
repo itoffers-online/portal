@@ -71,7 +71,7 @@ SQL
         $offersData = $this->connection->fetchAssoc(
             <<<SQL
             SELECT 
-               (SELECT COUNT(*) FROM his_job_offer) as total_count,
+               (SELECT COUNT(*) FROM his_job_offer  WHERE specialization_id = :specializationId) as total_count,
                o.created_at
             FROM his_job_offer o 
             WHERE o.specialization_id = :specializationId

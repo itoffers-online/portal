@@ -30,6 +30,11 @@ final class OfferFilter extends AbstractFilter
         return $filter;
     }
 
+    public static function all() : self
+    {
+        return new self();
+    }
+
     public function newerThan(\DateTimeImmutable $dateTime) : self
     {
         Assertion::eq($dateTime->getTimezone(), new \DateTimeZone('UTC'), 'Timezone UTC is required for filter.');
@@ -58,7 +63,7 @@ final class OfferFilter extends AbstractFilter
         return $this->tillDate;
     }
 
-    public function specialization(): string
+    public function specialization(): ?string
     {
         return $this->specialization;
     }

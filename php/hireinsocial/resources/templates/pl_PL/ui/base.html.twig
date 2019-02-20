@@ -10,22 +10,15 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
 </head>
 <body class="bg-light">
 
 {{ render(controller('HireInSocial\\UserInterface\\Symfony\\Controller\\LayoutController::navbarAction')) }}
 
 <div class="container">
-    {% block hero_block %}
-    <div class="py-5 text-center">
-        <h2><a href="{{ url('home') }}">Hire in Social!</a></h2>
-        <p class="lead">
-            Inicjatywa stworzona przez programistów dla programistów (i nie tylko)!
-        </p>
-        <p>
-            Ten prosty system ma na celu automatyzację procesu dodawania ofert pracy na portalu społecznościowym Facebook.
-        </p>
-    </div>
+    {% block header %}
+        {{ render(controller('HireInSocial\\UserInterface\\Symfony\\Controller\\LayoutController::headerAction')) }}
     {% endblock %}
     {% block body %}{% endblock %}
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
