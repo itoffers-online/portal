@@ -108,6 +108,7 @@ final class SymfonyKernel extends Kernel
 
         switch ($this->frameworkConfig['framework']['default_locale']) {
             case 'pl_PL':
+                $routes->add('/oferty/dodaj', [OfferController::class, 'postAction'], 'offer_post');
                 $routes->add('/oferty/{specSlug}/dodaj', [OfferController::class, 'newAction'], 'offer_new');
                 $routes->add('/oferty/{specSlug}/dodaj/sukces', [OfferController::class, 'successAction'], 'offer_success');
                 $routes->add('/oferty/{specSlug}', [SpecializationController::class, 'offersAction'], 'specialization_offers');
@@ -115,8 +116,9 @@ final class SymfonyKernel extends Kernel
 
                 break;
             case 'en_US':
-                $routes->add('/offers//{specSlug}/new', [OfferController::class, 'newAction'], 'offer_new');
-                $routes->add('/offers//{specSlug}/new/success', [OfferController::class, 'successAction'], 'offer_success');
+                $routes->add('/offers/post', [OfferController::class, 'postAction'], 'offer_post');
+                $routes->add('/offers/{specSlug}/new', [OfferController::class, 'newAction'], 'offer_new');
+                $routes->add('/offers/{specSlug}/new/success', [OfferController::class, 'successAction'], 'offer_success');
                 $routes->add('/offers/{specSlug}', [SpecializationController::class, 'offersAction'], 'specialization_offers');
                 $routes->add('/job-offer/{slug}', [OfferController::class, 'offerAction'], 'offer');
 

@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2 class="text-center">Znaleźliśmy {{ total }} ogłoszeń w kategorii <strong>{% include 'specialization/_name.html.twig' with {'specialization': specialization.slug} only %}</strong></h2>
+    <h2 class="text-center">Znaleźliśmy {{ total }} ogłoszeń w kategorii <strong>{% include 'specialization/_name.html.twig' with {specialization: specialization.slug} only %}</strong> {% include 'specialization/_logo_plain.html.twig' with { specialization: specialization.slug} only %}</h2>
     <p class="alert alert-info">
         Poniżej możesz znaleźć wszystkie najświeższe ofety pracy. Oferty mogą być dodawane nie częściej niż raz dziennie co gwarantuje ich różnorodność.
         Domyślnie nie wyświetlamy ofert starszych niż 2 tygodnie, najciekawsze oferty po tym czasie przeważnie i tak przestają być aktualne.
     </p>
     {% for offer in offers %}
         <div class="job-offer">
-            <h3>{{ offer.position.name }} <span class="text-muted">w</span> {{ offer.company.name }}</h3>
+            <h3><a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >{{ offer.position.name }} <span class="text-muted">w</span> {{ offer.company.name }}</a></h3>
 
             <div class="row">
                 <div class="col-4">
@@ -31,6 +31,20 @@
                     <p>
                         {{ offer.position.description|truncate(300) }}
                     </p>
+                    <div class="row">
+                        <div class="col-4">
+                            <p>
+                                {% if offer.location.name %}
+                                    Lokalizacja: {{ offer.location.name }}
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-4">
+                            <p>
+                                Zdalnie: {% if offer.location.remote %}Tak <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="right" title="Pamiętaj aby ustalić z pracodawcą zakres pracy zdalnej."></i>{% else %}Nie{% endif %}
+                            </p>
+                        </div>
+                    </div>
                     <p class="text-right">
                         <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" class="btn btn-primary btn-sm">Więcej</a>
                     </p>

@@ -86,7 +86,7 @@ final class PostOffer extends Command
                 $user->id(),
                 new Offer(
                     new Company($faker->company, $faker->url, $faker->text(512)),
-                    new Position('PHP Developer', $faker->text(1024)),
+                    new Position('Developer', $faker->text(1024)),
                     new Location($faker->boolean, $faker->country),
                     $noSalary ? null : new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean),
                     new Contract('B2B'),
