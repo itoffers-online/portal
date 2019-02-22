@@ -66,6 +66,8 @@ final class SymfonyKernel extends Kernel
         $c->loadFromExtension('twig', $this->frameworkConfig['twig']);
         $c->loadFromExtension('monolog', $this->frameworkConfig['monolog']);
 
+        $c->register(System::class)->setSynthetic(true);
+
         $c->autowire(Facebook::class)
             ->addArgument([
                 'app_id' => $this->frameworkConfig['facebook']['app_id'],
