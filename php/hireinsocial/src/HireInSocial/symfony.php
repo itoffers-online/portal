@@ -25,9 +25,9 @@ function symfony(Config $config, System $system) : SymfonyKernel
             ],
             'templating' => [
                 'engines' => [
-                    'twig'
-                ]
-            ]
+                    'twig',
+                ],
+            ],
         ],
         'twig' => [
             'paths' => [
