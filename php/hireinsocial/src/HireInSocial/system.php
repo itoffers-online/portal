@@ -55,7 +55,7 @@ function system(Config $config) : System
     $calendar = new SystemCalendar(new \DateTimeZone('UTC'));
 
     $throttleDuration = new \DateInterval($config->getString(Config::THROTTLE_DURATION));
-    $predis = new \Predis\Client($config->getString(Config::REDIS_DSN));
+    $predis = new \Predis\Client($config->getString(Config::REDIS_DSN) . '/' . Config::REDIS_DB_SYSTEM);
 
     switch ($config->getString(Config::ENV)) {
         case 'prod':

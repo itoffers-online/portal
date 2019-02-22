@@ -26,6 +26,9 @@ final class Config
 
     public const THROTTLE_DURATION = 'throttle_duration';
 
+    public const REDIS_DB_SYSTEM = 1;
+    public const REDIS_DB_DOCTRINE_CACHE = 2;
+
     private $config;
 
     private function __construct(array $config)

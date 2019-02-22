@@ -13,7 +13,7 @@ require $projectRootPath . '/src/autoload.php';
 
 $config = \HireInSocial\bootstrap($projectRootPath);
 
-$predis = new \Predis\Client($config->getString(Config::REDIS_DSN));
+$predis = new \Predis\Client($config->getString(Config::REDIS_DSN) . '/' . Config::REDIS_DB_SYSTEM);
 
 (new Application('redis-flush', '1.0.0'))
     ->register('redis-flush')

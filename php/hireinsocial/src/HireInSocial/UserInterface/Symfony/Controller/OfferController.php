@@ -23,6 +23,7 @@ use HireInSocial\Application\System;
 use HireInSocial\UserInterface\Symfony\Form\Type\OfferType;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,22 +32,23 @@ final class OfferController extends AbstractController
     use FacebookAccess;
     use RedirectAfterLogin;
 
+    private $system;
+    private $templating;
     private $facebook;
-    /**
-     * @var LoggerInterface
-     */
     private $logger;
 
-    public function __construct(Facebook $facebook, LoggerInterface $logger)
+    public function __construct(System $system, EngineInterface $templating, Facebook $facebook, LoggerInterface $logger)
     {
+        $this->system = $system;
+        $this->templating = $templating;
         $this->facebook = $facebook;
         $this->logger = $logger;
     }
 
     public function postAction(Request $request) : Response
     {
-        return $this->render('/offer/post.html.twig', [
-            'specializations' => $this->get(System::class)->query(SpecializationQuery::class)->all(),
+        return $this->templating->renderResponse('/offer/post.html.twig', [
+            'specializations' => $this->system->query(SpecializationQuery::class)->all(),
         ]);
     }
 
@@ -62,7 +64,7 @@ final class OfferController extends AbstractController
 
         $userId = $request->getSession()->get(FacebookController::USER_SESSION_KEY);
 
-        if (!$this->get(System::class)->query(SpecializationQuery::class)->findBySlug($specSlug)) {
+        if (!$this->system->query(SpecializationQuery::class)->findBySlug($specSlug)) {
             throw $this->createNotFoundException();
         }
 
@@ -74,7 +76,7 @@ final class OfferController extends AbstractController
             $offer = $form->getData();
 
             try {
-                $this->container->get(System::class)->handle(new PostOffer(
+                $this->system->handle(new PostOffer(
                     $specSlug,
                     $userId,
                     new Offer(
@@ -98,37 +100,37 @@ final class OfferController extends AbstractController
             }
         }
 
-        return $this->render('/offer/new.html.twig', [
+        return $this->templating->renderResponse('/offer/new.html.twig', [
             'form' => $form->createView(),
-            'throttled' => $this->get(System::class)->query(OfferThrottleQuery::class)->isThrottled($userId),
+            'throttled' => $this->system->query(OfferThrottleQuery::class)->isThrottled($userId),
         ]);
     }
 
     public function successAction(string $specSlug) : Response
     {
-        $specSlug = $this->get(System::class)->query(SpecializationQuery::class)->findBySlug($specSlug);
+        $specSlug = $this->system->query(SpecializationQuery::class)->findBySlug($specSlug);
 
         if (!$specSlug) {
             throw $this->createNotFoundException();
         }
 
-        return $this->render('/offer/success.html.twig', [
+        return $this->templating->renderResponse('/offer/success.html.twig', [
             'specialization' => $specSlug,
         ]);
     }
 
     public function offerAction(string $offerSlug) : Response
     {
-        $offer = $this->get(System::class)->query(OfferQuery::class)->findBySlug($offerSlug);
+        $offer = $this->system->query(OfferQuery::class)->findBySlug($offerSlug);
 
         if (!$offer) {
             throw $this->createNotFoundException();
         }
 
-        $nextOffer = $this->get(System::class)->query(OfferQuery::class)->findOneAfter($offer);
-        $previousOffer = $this->get(System::class)->query(OfferQuery::class)->findOneBefore($offer);
+        $nextOffer = $this->system->query(OfferQuery::class)->findOneAfter($offer);
+        $previousOffer = $this->system->query(OfferQuery::class)->findOneBefore($offer);
 
-        return $this->render('offer/offer.html.twig', [
+        return $this->templating->renderResponse('offer/offer.html.twig', [
             'offer' => $offer,
             'nextOffer' => $nextOffer,
             'previousOffer' => $previousOffer,

@@ -67,7 +67,6 @@
       - "php{{ php7_version }}-bcmath"
       - "php{{ php7_version }}-fpm"
       - "php{{ php7_version }}-soap"
-      - "php{{ php7_version }}-apcu"
 
     openssl_cert_common_name: "hireinsocial.local"
     openssl_cert_alternate_names:

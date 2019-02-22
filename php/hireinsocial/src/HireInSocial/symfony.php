@@ -23,6 +23,11 @@ function symfony(Config $config, System $system) : SymfonyKernel
             'translator' => [
                 'fallbacks' => [$config->getString(Config::LOCALE)],
             ],
+            'templating' => [
+                'engines' => [
+                    'twig',
+                ],
+            ],
         ],
         'twig' => [
             'paths' => [

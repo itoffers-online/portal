@@ -10,9 +10,11 @@ use HireInSocial\Application\Query\User\UserQuery;
 use HireInSocial\Application\System;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 final class FacebookController extends AbstractController
 {
@@ -21,13 +23,24 @@ final class FacebookController extends AbstractController
 
     public const USER_SESSION_KEY = '_his_user_id';
 
+    private $system;
+    private $router;
+    private $templating;
     private $facebook;
     private $logger;
 
-    public function __construct(Facebook $facebook, LoggerInterface $logger)
-    {
+    public function __construct(
+        System $system,
+        RouterInterface $router,
+        EngineInterface $templating,
+        Facebook $facebook,
+        LoggerInterface $logger
+    ) {
+        $this->system = $system;
         $this->facebook = $facebook;
         $this->logger = $logger;
+        $this->router = $router;
+        $this->templating = $templating;
     }
 
     public function loginAction(Request $request) : Response
@@ -36,7 +49,7 @@ final class FacebookController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('facebook/login.html.twig', [
+        return $this->templating->renderResponse('facebook/login.html.twig', [
             'facebook_login_url' => $this->facebook->getRedirectLoginHelper()->getLoginUrl(
                 $this->generateUrl('facebook_login_success', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ),
@@ -59,14 +72,14 @@ final class FacebookController extends AbstractController
         );
 
         $fbUserAppId = $this->getUserId($this->facebook, $accessToken, $this->logger);
-        $this->get(System::class)->handle(new FacebookConnect($fbUserAppId));
+        $this->system->handle(new FacebookConnect($fbUserAppId));
 
-        $user = $this->get(System::class)->query(UserQuery::class)->findByFacebook($fbUserAppId);
+        $user = $this->system->query(UserQuery::class)->findByFacebook($fbUserAppId);
 
         $request->getSession()->set(self::USER_SESSION_KEY, $user->id());
 
         if ($this->hasRedirection($request->getSession())) {
-            return $this->generateRedirection($request->getSession(), $this->get('router'));
+            return $this->generateRedirection($request->getSession(), $this->router);
         }
 
         return $this->redirectToRoute('home');

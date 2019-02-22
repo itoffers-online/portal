@@ -32,7 +32,6 @@
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
-        "ext-apcu": "*",
         "facebook/graph-sdk": "^5.7",
         "psr/log": "^1.1",
         "symfony/dotenv": "^4.2",
@@ -59,7 +58,8 @@
         "symfony/stopwatch": "^4.2",
         "twig/extensions": "^1.5",
         "hashids/hashids": "^3.0",
-        "cocur/slugify": "^3.2"
+        "cocur/slugify": "^3.2",
+        "symfony/templating": "^4.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5",
