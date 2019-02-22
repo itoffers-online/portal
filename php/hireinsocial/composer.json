@@ -1,7 +1,7 @@
 {
     "name": "norzechowicz/hire-in-social",
     "type": "project",
-    "license": "GPL 3",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Norbert Orzechowicz",
@@ -10,7 +10,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "": "src",
+            "HireInSocial\\": "src/HireInSocial",
             "DoctrineProxy\\": "var/cache/orm"
         },
         "files": [
