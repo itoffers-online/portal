@@ -25,7 +25,7 @@ function orm(Config $config, Connection $connection) : EntityManager
     if ($isDevMode) {
         $cache = new \Doctrine\Common\Cache\ArrayCache;
     } else {
-        $cache = new \Doctrine\Common\Cache\ApcuCache;
+        $cache = new \Doctrine\Common\Cache\PredisCache(new \Predis\Client($config->getString(Config::REDIS_DSN) . '/' . Config::REDIS_DB_DOCTRINE_CACHE));
     }
 
     $configuration->setMetadataCacheImpl($cache);

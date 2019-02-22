@@ -32,7 +32,6 @@
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
-        "ext-apcu": "*",
         "facebook/graph-sdk": "^5.7",
         "psr/log": "^1.1",
         "symfony/dotenv": "^4.2",
