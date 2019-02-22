@@ -8,14 +8,14 @@ use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
+use HireInSocial\UserInterface\Symfony\Form\Type\OfferFilterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class SpecializationController extends AbstractController
 {
-    use ControllerTrait;
 
     private $system;
     private $templating;
@@ -26,7 +26,7 @@ final class SpecializationController extends AbstractController
         $this->templating = $templating;
     }
 
-    public function offersAction(string $specSlug) : Response
+    public function offersAction(Request $request, string $specSlug) : Response
     {
         $specialization = $this->system->query(SpecializationQuery::class)->findBySlug($specSlug);
 
@@ -36,7 +36,16 @@ final class SpecializationController extends AbstractController
 
 
         $offerFilter = OfferFilter::allFor($specialization->slug())
-            ->changeSlice(50, 0);
+            ->changeSlice(20, 0);
+
+        $form = $this->createForm(OfferFilterType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            var_dump($form->getData());
+            die();
+        }
 
         $offers = $this->system
             ->query(OfferQuery::class)
@@ -46,6 +55,7 @@ final class SpecializationController extends AbstractController
             'total' => $this->system->query(OfferQuery::class)->count($offerFilter),
             'specialization' => $specialization,
             'offers' => $offers,
+            'form' => $form->createView()
         ]);
     }
 }
