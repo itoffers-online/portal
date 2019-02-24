@@ -26,6 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OfferController extends AbstractController
 {
@@ -37,8 +38,12 @@ final class OfferController extends AbstractController
     private $facebook;
     private $logger;
 
-    public function __construct(System $system, EngineInterface $templating, Facebook $facebook, LoggerInterface $logger)
-    {
+    public function __construct(
+        System $system,
+        EngineInterface $templating,
+        Facebook $facebook,
+        LoggerInterface $logger
+    ) {
         $this->system = $system;
         $this->templating = $templating;
         $this->facebook = $facebook;

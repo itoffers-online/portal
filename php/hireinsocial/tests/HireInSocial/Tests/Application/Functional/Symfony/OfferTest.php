@@ -7,7 +7,6 @@ namespace HireInSocial\Tests\Application\Functional\Symfony;
 use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Tests\Application\Functional\WebTestCase;
-use Ramsey\Uuid\Uuid;
 
 final class OfferTest extends WebTestCase
 {

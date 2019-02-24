@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class SpecializationController extends AbstractController
 {
-
     private $system;
     private $templating;
 
@@ -34,28 +33,34 @@ final class SpecializationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $offerFilter = OfferFilter::allFor($specialization->slug());
 
-        $offerFilter = OfferFilter::allFor($specialization->slug())
-            ->changeSlice(20, 0);
-
-        $form = $this->createForm(OfferFilterType::class);
-
-        $form->handleRequest($request);
+        $form = $this->createForm(OfferFilterType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            var_dump($form->getData());
-            die();
+            if ($form->get('remote')->getData()) {
+                $offerFilter->onlyRemote();
+            }
+
+            if ($form->get('with_salary')->getData()) {
+                $offerFilter->onlyWithSalary();
+            }
+
+            if ($sortBy = $form->get('sort_by')->getData()) {
+                $offerFilter->sortBy($sortBy);
+            }
         }
 
         $offers = $this->system
             ->query(OfferQuery::class)
-            ->findAll($offerFilter);
+            ->findAll($offerFilter->changeSize(20, 0));
 
         return $this->templating->renderResponse('/specialization/offers.html.twig', [
             'total' => $this->system->query(OfferQuery::class)->count($offerFilter),
             'specialization' => $specialization,
             'offers' => $offers,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'queryParameters' => $request->query->all(),
         ]);
     }
 }

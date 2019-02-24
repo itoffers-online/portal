@@ -10,23 +10,26 @@
     </p>
     <div class="row">
         <div class="col-2">
-            <h3>Filtruj</h3>
+            <h3 class="d-inline">
+                Filtruj
+                {% if queryParameters|length %}
+                    <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" class="btn btn-danger btn-sm"><i class="fas fa-times"></i></a>
+                {% endif %}
+            </h3>
             <p>
-                <small class="text-muted">Znajdź idealna ofertę dla siebie.</small>
+                <small class="text-muted">Znajdź idealną ofertę dla siebie.</small>
             </p>
 
-            {{ form_start(form, {'method': 'GET'}) }}
+            {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters)) }) }}
                 {{ form_row(form.remote, {label: "Zdalnie"}) }}
-                {{ form_row(form.with_salary, {label: "Tylko z widełkami"}) }}
+                {{ form_row(form.with_salary, {label: "Tylko z podaną pensją"}) }}
+                {{ form_row(form.with_salary, {label: null}) }}
+                {{ form_row(form.sort_by, {label: 'Sortuj Oferty'}) }}
                 {{ form_row(form.submit, {label: "Szukaj", attr: {class: "btn btn-primary btn-block"}}) }}
             {{ form_end(form) }}
 
         </div>
         <div class="col-10">
-            <div class="mb-3">
-                <h3>Sortuj</h3>
-                <button class="btn btn-sm btn-outline-secondary">po wynagrodzeniu</button>
-            </div>
             <div class="card">
                 <div class="card-body">
                 {% for offer in offers %}
@@ -75,6 +78,11 @@
                         </div>
                     </div>
                     <hr />
+                {% else %}
+                    <div class="alert alert-warning text-center">
+                        Nie mamy aktualnie żadnych ogłoszeń w ramach tej specjalizacji. Spróbuj później lub
+                        <a href="{{ url('offer_new', {specSlug: specialization.slug}) }}">dodaj ogłoszenie.</a>
+                    </div>
                 {% endfor %}
                 </div>
             </div>

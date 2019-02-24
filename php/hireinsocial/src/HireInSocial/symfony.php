@@ -22,6 +22,9 @@ function symfony(Config $config, System $system) : SymfonyKernel
             'default_locale' => $config->getString(Config::LOCALE),
             'translator' => [
                 'fallbacks' => [$config->getString(Config::LOCALE)],
+                'paths' => [
+                    $config->getString(Config::ROOT_PATH) . '/resources/translations',
+                ],
             ],
             'templating' => [
                 'engines' => [

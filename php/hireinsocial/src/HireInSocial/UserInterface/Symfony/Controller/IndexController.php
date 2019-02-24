@@ -30,7 +30,7 @@ final class IndexController extends AbstractController
     public function homeAction(Request $request) : Response
     {
         $offerFilter = OfferFilter::all()
-            ->changeSlice(50, 0);
+            ->changeSize(50, 0);
 
         $offers = $this->system
             ->query(OfferQuery::class)
