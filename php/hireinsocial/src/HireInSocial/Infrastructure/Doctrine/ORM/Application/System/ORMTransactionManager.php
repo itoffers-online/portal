@@ -25,7 +25,6 @@ final class ORMTransactionManager implements TransactionManager
     {
         $this->entityManager->flush();
         $this->entityManager->commit();
-        $this->entityManager->clear();
     }
 
     public function rollback() : void

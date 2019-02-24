@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8" />
     <title>{% block title %}Hire in Social!{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -11,6 +10,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
+
+    {% block stylesheets %}
+        <style type="text/css">
+            @media (min-width: 1360px) {
+                .container {
+                    max-width: 1396px !important;
+                }
+            }
+        </style>
+    {% endblock %}
 </head>
 <body class="bg-light">
 

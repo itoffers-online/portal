@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HireInSocial\Application;
 
 use HireInSocial\Application\Exception\Exception;
+use HireInSocial\Application\System\Calendar;
 use HireInSocial\Application\System\Command;
 use HireInSocial\Application\System\CommandBus;
 use HireInSocial\Application\System\Queries;
@@ -16,12 +17,14 @@ class System
     private $commandBus;
     private $queries;
     private $logger;
+    private $calendar;
 
-    public function __construct(CommandBus $commandBus, Queries $queries, LoggerInterface $logger)
+    public function __construct(CommandBus $commandBus, Queries $queries, LoggerInterface $logger, Calendar $calendar)
     {
         $this->commandBus = $commandBus;
         $this->queries = $queries;
         $this->logger = $logger;
+        $this->calendar = $calendar;
     }
 
     public function handle(Command $command) : void
@@ -30,6 +33,7 @@ class System
             $this->commandBus->handle($command);
         } catch (\Throwable $exception) {
             $this->logger->error(sprintf('Failed to handle command %s', \get_class($command)), [
+                'system_time' => $this->calendar->currentTime()->format('c'),
                 'exception' => \get_class($exception),
                 'message' => $exception->getMessage(),
                 'code' => $exception->getCode(),
@@ -42,5 +46,10 @@ class System
     public function query(string $queryClass) : Query
     {
         return $this->queries->get($queryClass);
+    }
+
+    public function getCalendar(): Calendar
+    {
+        return $this->calendar;
     }
 }

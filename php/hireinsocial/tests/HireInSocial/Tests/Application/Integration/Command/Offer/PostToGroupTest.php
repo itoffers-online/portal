@@ -15,7 +15,7 @@ final class PostToGroupTest extends HireInSocialTestCase
         $user = $this->systemContext->createUser();
 
         $this->systemContext->createSpecialization($specialization = 'spec');
-        $this->systemContext->postToFacebookGroup($user->id(), $specialization);
+        $this->systemContext->postOffer($user->id(), $specialization);
 
         $this->assertTrue($this->systemContext->system()->query(OfferThrottleQuery::class)->isThrottled($user->id()));
         $this->assertEquals(1, $this->systemContext->system()->query(OfferQuery::class)->total());

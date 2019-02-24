@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="job-offers">
+<div class="card">
+    <div class="card-body">
     {% for offer in offers %}
         <div class="job-offer">
             <div class="row">
@@ -57,5 +58,6 @@
         </div>
         <hr />
     {% endfor %}
+    </div>
 </div>
 {% endblock %}

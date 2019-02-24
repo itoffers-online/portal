@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace HireInSocial\Application\Query;
 
 use HireInSocial\Application\Assertion;
+use HireInSocial\Application\Query\Filter\Column;
 
 abstract class AbstractFilter
 {
     protected $limit = 50;
     protected $offset = 0;
     protected $order;
+    private $sortBy = [];
 
-    public function changeSlice(int $limit, int $offset) : self
+    public function changeSize(int $limit, int $offset) : self
     {
         Assertion::greaterOrEqualThan($offset, 0);
         Assertion::greaterThan($limit, 0);
@@ -32,4 +34,28 @@ abstract class AbstractFilter
     {
         return $this->offset;
     }
+
+    public function isSorted() : bool
+    {
+        return (bool) \count($this->sortBy);
+    }
+
+    public function addSortBy(Column $column) : self
+    {
+        Assertion::inArray($column->column(), $this->sortColumns());
+
+        $this->sortBy[] = $column;
+
+        return $this;
+    }
+
+    /**
+     * @return Column[]
+     */
+    public function sortByColumns() : array
+    {
+        return $this->sortBy;
+    }
+
+    abstract protected function sortColumns() : array;
 }

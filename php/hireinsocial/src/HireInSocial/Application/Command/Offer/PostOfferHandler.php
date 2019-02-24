@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Application\Command\Offer;
 
-use HireInSocial\Application\Command\Offer\PostOffer;
+use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\Facebook\FacebookGroupService;
 use HireInSocial\Application\Facebook\Draft;
 use HireInSocial\Application\Facebook\Post;
@@ -21,6 +21,7 @@ use HireInSocial\Application\Offer\Position;
 use HireInSocial\Application\Offer\Salary;
 use HireInSocial\Application\Offer\Slug;
 use HireInSocial\Application\Offer\Slugs;
+use HireInSocial\Application\Offer\Throttle;
 use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\Specialization\Specializations;
 use HireInSocial\Application\System\Calendar;
@@ -38,6 +39,7 @@ final class PostOfferHandler implements Handler
     private $facebookGroupService;
     private $formatter;
     private $specializations;
+    private $throttle;
     private $slugs;
 
     public function __construct(
@@ -48,6 +50,7 @@ final class PostOfferHandler implements Handler
         FacebookGroupService $facebookGroupService,
         OfferFormatter $formatter,
         Specializations $specializations,
+        Throttle $throttle,
         Slugs $slugs
     ) {
         $this->calendar = $calendar;
@@ -58,6 +61,7 @@ final class PostOfferHandler implements Handler
         $this->formatter = $formatter;
         $this->specializations = $specializations;
         $this->slugs = $slugs;
+        $this->throttle = $throttle;
     }
 
     public function handles(): string
@@ -72,6 +76,10 @@ final class PostOfferHandler implements Handler
         $specialization = $this->specializations->get($command->specialization());
 
         $offer = $this->createOffer($command, $user, $specialization);
+
+        if ($this->throttle->isThrottled((string) $user->id())) {
+            throw new Exception(sprintf('User %s is throttled', (string) $user->id()));
+        }
 
         if ($command->offer()->channels()->facebookGroup()) {
             $draft = Draft::createFor(
@@ -93,6 +101,7 @@ final class PostOfferHandler implements Handler
 
         $this->offers->add($offer);
         $this->slugs->add(Slug::from($offer, $this->calendar));
+        $this->throttle->throttle((string) $user->id());
     }
 
     private function createOffer(PostOffer $command, User $user, Specialization $specialization): Offer

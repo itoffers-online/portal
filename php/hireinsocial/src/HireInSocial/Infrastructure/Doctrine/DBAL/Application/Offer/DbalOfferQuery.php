@@ -28,7 +28,7 @@ final class DbalOfferQuery implements OfferQuery
     public function findAll(OfferFilter $filter): Offers
     {
         $queryBuilder = $this->connection->createQueryBuilder()
-            ->select('o.*, os.slug, s.slug as specialization_slug')
+            ->select('o.*, os.slug, s.slug as specialization_slug, CAST(o.salary->>\'max\' as INTEGER) as salary_max')
             ->from('his_job_offer', 'o')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
@@ -38,16 +38,41 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->andWhere('s.slug = :specializationSlug');
         }
 
-        $offersData = $queryBuilder->orderBy('o.created_at', 'DESC')
+        if ($filter->remote()) {
+            $queryBuilder->andWhere('o.location_remote = true');
+        }
+
+        if ($filter->withSalary()) {
+            $queryBuilder->andWhere('o.salary IS NOT NULL');
+        }
+
+        $queryBuilder
             ->setMaxResults($filter->limit())
-            ->setFirstResult($filter->offset())
-            ->setParameters(
-                [
-                    'specializationSlug' => $filter->specialization(),
-                    'sinceDate' => $filter->sinceDate()->format('Y-m-d H:i:s'),
-                    'tillDate' => $filter->tillDate()->format('Y-m-d H:i:s'),
-                ]
-            )->execute()
+            ->setFirstResult($filter->offset());
+
+        if ($filter->isSorted()) {
+            foreach ($filter->sortByColumns() as $column) {
+                if ($column->is(OfferFilter::COLUMN_SALARY)) {
+                    $queryBuilder->addOrderBy('salary_max', $column->direction());
+                }
+
+                if ($column->is(OfferFilter::COLUMN_CREATED_AT)) {
+                    $queryBuilder->addOrderBy('o.created_at', $column->direction());
+                }
+            }
+        } else {
+            $queryBuilder->orderBy('o.created_at', 'DESC');
+        }
+
+        $queryBuilder->setParameters(
+            [
+                'specializationSlug' => $filter->specialization(),
+                'sinceDate' => $filter->sinceDate()->format('Y-m-d H:i:s'),
+                'tillDate' => $filter->tillDate()->format('Y-m-d H:i:s'),
+            ]
+        );
+
+        $offersData = $queryBuilder->execute()
             ->fetchAll();
 
         return new Offers(...\array_map(
@@ -66,6 +91,14 @@ final class DbalOfferQuery implements OfferQuery
 
         if ($filter->specialization()) {
             $queryBuilder->andWhere('s.slug = :specializationSlug');
+        }
+
+        if ($filter->remote()) {
+            $queryBuilder->andWhere('o.location_remote = true');
+        }
+
+        if ($filter->withSalary()) {
+            $queryBuilder->andWhere('o.salary IS NOT NULL');
         }
 
         return (int) $queryBuilder->setParameters(
