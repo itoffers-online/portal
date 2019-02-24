@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class OfferType extends AbstractType
 {
@@ -37,5 +38,12 @@ final class OfferType extends AbstractType
             ->add('channels', ChannelsType::class)
             ->add('submit', SubmitType::class)
         ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'csrf_token_id' => 'new_offer',
+        ]);
     }
 }

@@ -6,6 +6,7 @@ namespace HireInSocial\Tests\Application\Integration\Command\Throttle;
 
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Tests\Application\Integration\HireInSocialTestCase;
+use HireInSocial\Tests\Application\MotherObject\Command\Offer\PostOfferMother;
 
 final class RemoteThrottleTest extends HireInSocialTestCase
 {
@@ -14,7 +15,7 @@ final class RemoteThrottleTest extends HireInSocialTestCase
         $user = $this->systemContext->createUser();
 
         $this->systemContext->createSpecialization($specialization = 'spec');
-        $this->systemContext->postOffer($user->id(), $specialization);
+        $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $specialization));
 
         $this->assertTrue($this->systemContext->system()->query(OfferThrottleQuery::class)->isThrottled($user->id()));
 

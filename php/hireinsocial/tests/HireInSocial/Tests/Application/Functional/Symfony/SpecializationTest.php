@@ -23,8 +23,8 @@ final class SpecializationTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $this->systemContext->postOffer($this->systemContext->createUser()->id(), $this->specialization);
-        $this->systemContext->postOffer($this->systemContext->createUser()->id(), $this->specialization);
+        $this->systemContext->system()->handle(PostOfferMother::random($this->systemContext->createUser()->id(), $this->specialization));
+        $this->systemContext->system()->handle(PostOfferMother::random($this->systemContext->createUser()->id(), $this->specialization));
 
         $crawler = $client->request(
             'GET',
