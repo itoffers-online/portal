@@ -33,7 +33,7 @@
             <div class="card">
                 <div class="card-body">
                 {% for offer in offers %}
-                    <div class="job-offer">
+                    <div class="job-offer" data-id="{{ offer.id }}">
                         <h3><a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >{{ offer.position.name }} <span class="text-muted">w</span> {{ offer.company.name }}</a></h3>
 
                         <div class="row">
@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-4">
                                 {% if offer.salary %}
-                                {{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }} - {{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }}
+                                    <span data-salary-min="{{ offer.salary.min }}">{{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }}</span> - <span data-salary-max="{{ offer.salary.max }}">{{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }}</span>
                                 {% if offer.salary.isNet %}<strong class="text-success">netto</strong>{% else %}<strong class="text-warning">brutto</strong>{% endif %}
                                 {% else %}
                                     Niesprecyzowane <small><i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Czasami firmy nie mogą podawać wynagrodzeń, przed podejściem do rekrutacji zapytaj czy Twoja wymagania finansowe są akceptowalne."></i></small>

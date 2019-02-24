@@ -28,6 +28,7 @@ use HireInSocial\Application\System;
 use HireInSocial\Application\System\CommandBus;
 use HireInSocial\Application\System\Queries;
 use HireInSocial\Tests\Application\Double\Dummy\DummyFacebook;
+use HireInSocial\Tests\Application\Double\Stub\CalendarStub;
 use Monolog\ErrorHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -52,13 +53,12 @@ function system(Config $config) : System
         'debug' => $config->getString(Config::ENV) !== 'prod',
     ]);
 
-    $calendar = new SystemCalendar(new \DateTimeZone('UTC'));
-
     $throttleDuration = new \DateInterval($config->getString(Config::THROTTLE_DURATION));
     $predis = new \Predis\Client($config->getString(Config::REDIS_DSN) . '/' . Config::REDIS_DB_SYSTEM);
 
     switch ($config->getString(Config::ENV)) {
         case 'prod':
+            $calendar = new SystemCalendar(new \DateTimeZone('UTC'));
             $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-prod-');
             $facebook = new FacebookGraphSDK(
                 new Facebook([
@@ -70,6 +70,7 @@ function system(Config $config) : System
 
             break;
         case 'dev':
+            $calendar = new CalendarStub(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
             $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-dev-');
             $facebook = new FacebookGraphSDK(
                 new Facebook([
@@ -81,6 +82,7 @@ function system(Config $config) : System
 
             break;
         case 'test':
+            $calendar = new CalendarStub(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
             $offerThrottle = new PredisThrottle($predis, $calendar, $throttleDuration, 'job-offer-user-test-');
             $facebook = new DummyFacebook();
 
@@ -103,12 +105,10 @@ function system(Config $config) : System
                 new ORMOffers($entityManager),
                 new ORMUsers($entityManager),
                 new ORMPosts($entityManager),
-                new FacebookGroupService(
-                    $facebook,
-                    $offerThrottle
-                ),
+                new FacebookGroupService($facebook),
                 new FacebookFormatter($twig),
                 new ORMSpecializations($entityManager),
+                $offerThrottle,
                 new ORMSlugs($entityManager)
             ),
             new Throttle\RemoveThrottleHandler(
@@ -125,6 +125,7 @@ function system(Config $config) : System
             new DBALSpecializationQuery($dbalConnection),
             new DBALUserQuery($dbalConnection)
         ),
-        $systemLogger
+        $systemLogger,
+        $calendar
     );
 }

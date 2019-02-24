@@ -26,7 +26,7 @@ final class OfferTest extends WebTestCase
         $client = static::createClient();
         $user = $this->systemContext->createUser();
         $this->systemContext->createSpecialization($specialization);
-        $this->systemContext->postToFacebookGroup($user->id(), $specialization);
+        $this->systemContext->postOffer($user->id(), $specialization);
 
         $offer = $this->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor($specialization))->first();
 

@@ -14,7 +14,7 @@ final class RemoteThrottleTest extends HireInSocialTestCase
         $user = $this->systemContext->createUser();
 
         $this->systemContext->createSpecialization($specialization = 'spec');
-        $this->systemContext->postToFacebookGroup($user->id(), $specialization);
+        $this->systemContext->postOffer($user->id(), $specialization);
 
         $this->assertTrue($this->systemContext->system()->query(OfferThrottleQuery::class)->isThrottled($user->id()));
 
