@@ -43,11 +43,6 @@ final class SystemContext
         return $this->system->query(SpecializationQuery::class)->findBySlug($slug);
     }
 
-    public function postOffer(string $userId, string $specialization) : void
-    {
-        $this->system->handle(PostOfferMother::random($userId, $specialization));
-    }
-
     public function removeThrottle(string $fbUserId) : void
     {
         $this->system->handle(new RemoveThrottle($fbUserId));
