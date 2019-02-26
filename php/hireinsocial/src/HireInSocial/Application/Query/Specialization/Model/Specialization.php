@@ -13,7 +13,7 @@ final class Specialization
     private $offers;
     private $facebookChannel;
 
-    public function __construct(string $slug, Offers $offers, FacebookChannel $facebookChannel)
+    public function __construct(string $slug, Offers $offers, ?FacebookChannel $facebookChannel)
     {
         $this->slug = $slug;
         $this->offers = $offers;
@@ -30,7 +30,7 @@ final class Specialization
         return $this->offers;
     }
 
-    public function facebookChannel(): FacebookChannel
+    public function facebookChannel(): ?FacebookChannel
     {
         return $this->facebookChannel;
     }

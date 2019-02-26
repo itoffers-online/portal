@@ -93,12 +93,19 @@ function system(Config $config) : System
 
     $dbalConnection = dbal($config);
     $entityManager = orm($config, $dbalConnection);
+    $specializations = new ORMSpecializations($entityManager);
 
     return new System(
         new CommandBus(
             new ORMTransactionManager($entityManager),
             new Specialization\CreateSpecializationHandler(
-                new ORMSpecializations($entityManager)
+                $specializations
+            ),
+            new Specialization\SetFacebookChannelHandler(
+                $specializations
+            ),
+            new Specialization\RemoveFacebookChannelHandler(
+                $specializations
             ),
             new Offer\PostOfferHandler(
                 $calendar,
@@ -107,7 +114,7 @@ function system(Config $config) : System
                 new ORMPosts($entityManager),
                 new FacebookGroupService($facebook),
                 new FacebookFormatter($twig),
-                new ORMSpecializations($entityManager),
+                $specializations,
                 $offerThrottle,
                 new ORMSlugs($entityManager)
             ),

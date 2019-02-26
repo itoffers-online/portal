@@ -11,13 +11,21 @@ use HireInSocial\Tests\Application\MotherObject\Facebook\PageMother;
 
 final class SpecializationMother
 {
-    public static function create(string $spec)
+    public static function create(string $spec) : Specialization
     {
-        return new Specialization($spec, new FacebookChannel(PageMother::random(), GroupMother::random()));
+        return new Specialization($spec);
     }
 
-    public static function random()
+    public static function random() : Specialization
     {
-        return new Specialization('php', new FacebookChannel(PageMother::random(), GroupMother::random()));
+        return new Specialization('php');
+    }
+
+    public static function withFacebook() : Specialization
+    {
+        $specialization = self::random();
+        $specialization->setFacebook(new FacebookChannel(PageMother::random(), GroupMother::random()));
+
+        return $specialization;
     }
 }

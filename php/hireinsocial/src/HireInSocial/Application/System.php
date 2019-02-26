@@ -37,6 +37,7 @@ class System
                 'exception' => \get_class($exception),
                 'message' => $exception->getMessage(),
                 'code' => $exception->getCode(),
+                'trace' => $exception->getTraceAsString(),
             ]);
 
             throw new Exception($exception->getMessage(), $exception->getCode(), $exception);

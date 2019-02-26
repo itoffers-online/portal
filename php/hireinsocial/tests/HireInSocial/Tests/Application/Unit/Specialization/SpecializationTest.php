@@ -20,14 +20,22 @@ final class SpecializationTest extends TestCase
     {
         $this->expectException(InvalidAssertionException::class);
 
-        new Specialization($slug, new FacebookChannel(PageMother::random(), GroupMother::random()));
+        new Specialization($slug);
     }
 
     public function test_that_slug_belongs_to_the_organization()
     {
         $this->assertTrue(
-            (new Specialization('php-developers', new FacebookChannel(PageMother::random(), GroupMother::random())))->is('PHP-Developers')
+            (new Specialization('php-developers'))->is('PHP-Developers')
         );
+    }
+
+    public function test_setting_facebook_channel()
+    {
+        $specialization = new Specialization('php');
+        $specialization->setFacebook(new FacebookChannel(PageMother::random(), GroupMother::random()));
+
+        $this->assertInstanceOf(FacebookChannel::class, $specialization->facebookChannel());
     }
 
     public function invalidSlugs() : array

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\UserInterface\Symfony\Command\Specialization;
 
+use HireInSocial\Application\Command\Specialization\SetFacebookChannel;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
 use Symfony\Component\Console\Command\Command;
@@ -32,9 +33,9 @@ final class CreateSpecialization extends Command
         $this
             ->setDescription('<info>[Specialization]</info> Create new specialization.')
             ->addArgument('slug', InputArgument::REQUIRED, 'Specialization slug')
-            ->addArgument('facebook_page_id', InputArgument::REQUIRED, 'Facebook page id that will post offers into group')
-            ->addArgument('facebook_page_token', InputArgument::REQUIRED, 'Facebook page id access token with publish_to_groups permission')
-            ->addArgument('facebook_group_id', InputArgument::REQUIRED, 'Facebook group id where page will post offers')
+            ->addArgument('facebook_page_id', InputArgument::OPTIONAL, 'Facebook page id that will post offers into group')
+            ->addArgument('facebook_page_token', InputArgument::OPTIONAL, 'Facebook page id access token with publish_to_groups permission')
+            ->addArgument('facebook_group_id', InputArgument::OPTIONAL, 'Facebook group id where page will post offers')
         ;
     }
 
@@ -62,11 +63,20 @@ final class CreateSpecialization extends Command
 
         try {
             $this->system->handle(new SystemCreateSpecializationCommand(
-                $input->getArgument('slug'),
-                $input->getArgument('facebook_page_id'),
-                $input->getArgument('facebook_page_token'),
-                $input->getArgument('facebook_group_id')
+                $input->getArgument('slug')
             ));
+            if (
+                $input->getArgument('facebook_page_id') &&
+                $input->getArgument('facebook_page_token') &&
+                $input->getArgument('facebook_group_id')
+            ) {
+                $this->system->handle(new SetFacebookChannel(
+                    $input->getArgument('slug'),
+                    $input->getArgument('facebook_page_id'),
+                    $input->getArgument('facebook_page_token'),
+                    $input->getArgument('facebook_group_id')
+                ));
+            }
         } catch (\Throwable $e) {
             $io->error('Can\'t crete specialization, check logs for more details.');
 

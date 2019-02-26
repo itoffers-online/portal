@@ -14,12 +14,7 @@ final class CreateSpecializationTest extends HireInSocialTestCase
     {
         $slug = 'php';
 
-        $this->systemContext->system()->handle(new CreateSpecialization(
-            $slug,
-            '123455678',
-            uniqid('facebook'),
-            '1234567'
-        ));
+        $this->systemContext->system()->handle(new CreateSpecialization($slug));
 
         $this->assertTrue(
             $this->systemContext->system()->query(SpecializationQuery::class)->all()->has($slug)

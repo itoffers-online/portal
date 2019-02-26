@@ -9,12 +9,14 @@
         </ul>
         <div class="card-body text-center">
             <p class="card-text">
-                <a href="{{ url('specialization_offers', {'specSlug' : specialization.slug}) }}" class="btn btn-primary btn-sm">Najnowsze Oferty</a>
-                <a href="{{ specialization.facebookChannel.groupId|fb_group_url }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fab fa-facebook-f"></i> zobacz na Facebooku</a>
+                <a href="{{ url('specialization_offers', {'specSlug' : specialization.slug}) }}" class="btn btn-outline-primary btn-sm">Najnowsze Oferty</a>
+                {% if specialization.facebookChannel %}
+                    <a href="{{ specialization.facebookChannel.groupId|fb_group_url }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fab fa-facebook-f"></i> zobacz na Facebooku</a>
+                {% endif %}
             </p>
         </div>
-        <div class="card-body">
-            <a href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}" class="btn btn-lg btn-block btn-primary">Napisz ogłoszenie</a>
+        <div class="card-body text-center">
+            <a href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}" data-post-offer class="btn btn-sm btn-primary">Napisz ogłoszenie</a>
         </div>
     </div>
 </div>
