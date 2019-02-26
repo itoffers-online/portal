@@ -86,7 +86,15 @@
                     <label class="form-check-label" for="offer_post_at_facebook">Wrzuć na stronę główną portalu</label>
                 </div>
             </div>
-            {{ form_row(form.channels.facebook_group, {label: "Wrzuć ogłoszenie na grupę na Facebooku", attr: {checked:"checked"}}) }}
+            {% if specialization.facebookChannel %}
+                {{ form_row(form.channels.facebook_group, {label: "Wrzuć ogłoszenie na grupę na Facebooku", attr: {checked:"checked"}}) }}
+            {% else %}
+                {{ form_row(form.channels.facebook_group, {
+                    label: "Wrzuć ogłoszenie na grupę na Facebooku",
+                    attr: {disabled:"disabled"},
+                    help: "Ta specializacja nie ma jeszcze grupy na Facebooku"
+                }) }}
+            {% endif %}
 
             {% if throttled %}
                 {{ form_row(form.submit, {label: "poczekaj", attr:{disabled:disabled}}) }}

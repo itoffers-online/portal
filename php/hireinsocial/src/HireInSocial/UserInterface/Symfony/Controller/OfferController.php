@@ -26,7 +26,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OfferController extends AbstractController
 {
@@ -69,7 +68,7 @@ final class OfferController extends AbstractController
 
         $userId = $request->getSession()->get(FacebookController::USER_SESSION_KEY);
 
-        if (!$this->system->query(SpecializationQuery::class)->findBySlug($specSlug)) {
+        if (!$specialization = $this->system->query(SpecializationQuery::class)->findBySlug($specSlug)) {
             throw $this->createNotFoundException();
         }
 
@@ -106,6 +105,7 @@ final class OfferController extends AbstractController
         }
 
         return $this->templating->renderResponse('/offer/new.html.twig', [
+            'specialization' => $specialization,
             'form' => $form->createView(),
             'throttled' => $this->system->query(OfferThrottleQuery::class)->isThrottled($userId),
         ]);
