@@ -8,7 +8,7 @@ require $projectRootPath . '/src/autoload.php';
 
 $config = \HireInSocial\bootstrap($projectRootPath);
 
-$kernel = \HireInSocial\symfony(
+$kernel = \App\symfony(
     $config,
     \HireInSocial\system($config)
 );

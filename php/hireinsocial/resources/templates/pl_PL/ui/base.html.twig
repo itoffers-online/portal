@@ -23,11 +23,11 @@
 </head>
 <body class="bg-light">
 
-{{ render(controller('HireInSocial\\UserInterface\\Symfony\\Controller\\LayoutController::navbarAction')) }}
+{{ render(controller('App\\Controller\\LayoutController::navbarAction')) }}
 
 <div class="container">
     {% block header %}
-        {{ render(controller('HireInSocial\\UserInterface\\Symfony\\Controller\\LayoutController::headerAction')) }}
+        {{ render(controller('App\\Controller\\LayoutController::headerAction')) }}
     {% endblock %}
     {% block body %}{% endblock %}
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
