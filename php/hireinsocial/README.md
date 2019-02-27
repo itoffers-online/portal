@@ -27,7 +27,7 @@ Test types:
 * [Unit](tests/HireInSocial/Tests/Application/Unit)
 * [Integration](tests/HireInSocial/Tests/Application/Integration) (application)
 * [Integration](tests/HireInSocial/Tests/Infrastructure/Integration) (infrastructure)
-* [Functional](tests/HireInSocial/Tests/Application/Functional)
+* [Functional](tests/App/Tests/Functional)
 
 
 ### Build project
