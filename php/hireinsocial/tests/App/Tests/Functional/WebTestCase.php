@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace App\Tests\Functional;
 
 use function App\symfony;
+use App\SymfonyKernel;
+use HireInSocial\Application\Config;
+use HireInSocial\Application\System;
 use function HireInSocial\bootstrap;
 use function HireInSocial\dbal;
 use function HireInSocial\system;
-use HireInSocial\Application\System;
-use HireInSocial\Application\Config;
 use HireInSocial\Tests\Application\Context\DatabaseContext;
 use HireInSocial\Tests\Application\Context\ThrottleContext;
-use App\SymfonyKernel;
 use Predis\Client;
 
 class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase

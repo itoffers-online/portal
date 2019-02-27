@@ -16,10 +16,10 @@ namespace HireInSocial\Infrastructure\Facebook;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\FacebookResponse;
 use HireInSocial\Application\Exception\Exception;
+use HireInSocial\Application\Facebook\Draft;
 use HireInSocial\Application\Facebook\Facebook;
 use HireInSocial\Application\Facebook\Group;
 use HireInSocial\Application\Facebook\Page;
-use HireInSocial\Application\Facebook\Draft;
 use Psr\Log\LoggerInterface;
 
 final class FacebookGraphSDK implements Facebook

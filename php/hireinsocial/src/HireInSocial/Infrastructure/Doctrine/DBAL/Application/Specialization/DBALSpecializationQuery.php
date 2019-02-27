@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization;
 
 use Doctrine\DBAL\Connection;
-use HireInSocial\Application\Query\Specialization\Model\Specialization\FacebookChannel;
 use HireInSocial\Application\Query\Specialization\Model\Specialization;
+use HireInSocial\Application\Query\Specialization\Model\Specialization\FacebookChannel;
 use HireInSocial\Application\Query\Specialization\Model\Specializations;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 

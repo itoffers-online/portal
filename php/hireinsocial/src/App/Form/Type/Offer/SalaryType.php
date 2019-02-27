@@ -43,7 +43,7 @@ final class SalaryType extends AbstractType
                                 /** @var \Symfony\Component\Form\Form $form */
                                 $form = $context->getRoot();
 
-                                if (null === $value && null == $form->get('salary')->get('min')->getData()) {
+                                if (null === $value && null === $form->get('salary')->get('min')->getData()) {
                                     return ;
                                 }
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Command\Specialization;
 
+use HireInSocial\Application\Command\Specialization\CreateSpecialization as SystemCreateSpecializationCommand;
 use HireInSocial\Application\Command\Specialization\SetFacebookChannel;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
@@ -21,7 +22,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use HireInSocial\Application\Command\Specialization\CreateSpecialization as SystemCreateSpecializationCommand;
 
 final class CreateSpecialization extends Command
 {

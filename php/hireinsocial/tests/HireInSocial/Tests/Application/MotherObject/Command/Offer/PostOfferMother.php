@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Application\MotherObject\Command\Offer;
 
 use Faker\Factory;
-use HireInSocial\Application\Command\Offer\PostOffer;
 use HireInSocial\Application\Command\Offer\Offer\Channels;
 use HireInSocial\Application\Command\Offer\Offer\Company;
 use HireInSocial\Application\Command\Offer\Offer\Contact;
@@ -24,6 +23,7 @@ use HireInSocial\Application\Command\Offer\Offer\Location;
 use HireInSocial\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Offer\Position;
 use HireInSocial\Application\Command\Offer\Offer\Salary;
+use HireInSocial\Application\Command\Offer\PostOffer;
 
 final class PostOfferMother
 {

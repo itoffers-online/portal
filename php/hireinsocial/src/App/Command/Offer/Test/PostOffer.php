@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Command\Offer\Test;
 
 use Faker\Factory;
-use HireInSocial\Application\Command\Offer\PostOffer as SystemPostOffer;
 use HireInSocial\Application\Command\Offer\Offer\Channels;
 use HireInSocial\Application\Command\Offer\Offer\Company;
 use HireInSocial\Application\Command\Offer\Offer\Contact;
@@ -24,6 +23,7 @@ use HireInSocial\Application\Command\Offer\Offer\Location;
 use HireInSocial\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Offer\Position;
 use HireInSocial\Application\Command\Offer\Offer\Salary;
+use HireInSocial\Application\Command\Offer\PostOffer as SystemPostOffer;
 use HireInSocial\Application\Command\Throttle\RemoveThrottle;
 use HireInSocial\Application\Command\User\FacebookConnect;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;

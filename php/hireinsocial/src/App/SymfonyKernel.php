@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace App;
 
-use Facebook\Facebook;
-use HireInSocial\Application\System;
 use App\Controller\FacebookController;
 use App\Controller\IndexController;
 use App\Controller\LayoutController;
 use App\Controller\OfferController;
 use App\Controller\SpecializationController;
 use App\Twig\Extension\FacebookExtension;
+use Facebook\Facebook;
+use HireInSocial\Application\System;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\MonologBundle\MonologBundle;

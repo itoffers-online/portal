@@ -26,7 +26,10 @@ return PhpCsFixer\Config::create()
         'strict_param' => true,
         'array_syntax' => ['syntax' => 'short'],
         'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
+        'mb_str_functions' => true,
+        'ordered_imports' => true,
         'blank_line_before_statement' => true,
         'trailing_comma_in_multiline_array' => true,
+        'strict_comparison' => true,
     ])
     ->setFinder($finder);

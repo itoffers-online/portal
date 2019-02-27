@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace HireInSocial\Tests\Application\Double\Dummy;
 
+use HireInSocial\Application\Facebook\Draft;
 use HireInSocial\Application\Facebook\Facebook;
 use HireInSocial\Application\Facebook\Group;
 use HireInSocial\Application\Facebook\Page;
-use HireInSocial\Application\Facebook\Draft;
 
 final class DummyFacebook implements Facebook
 {

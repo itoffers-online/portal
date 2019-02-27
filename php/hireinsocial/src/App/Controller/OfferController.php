@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\Type\OfferType;
 use Facebook\Facebook;
-use HireInSocial\Application\Command\Offer\PostOffer;
 use HireInSocial\Application\Command\Offer\Offer\Channels;
 use HireInSocial\Application\Command\Offer\Offer\Company;
 use HireInSocial\Application\Command\Offer\Offer\Contact;
@@ -24,12 +24,12 @@ use HireInSocial\Application\Command\Offer\Offer\Location;
 use HireInSocial\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Offer\Position;
 use HireInSocial\Application\Command\Offer\Offer\Salary;
+use HireInSocial\Application\Command\Offer\PostOffer;
 use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\System;
-use App\Form\Type\OfferType;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;

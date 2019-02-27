@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Symfony;
 
-use HireInSocial\Application\Query\Offer\OfferFilter;
 use App\Tests\Functional\WebTestCase;
+use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Tests\Application\MotherObject\Command\Offer\PostOfferMother;
 
 final class SpecializationTest extends WebTestCase

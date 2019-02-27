@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Symfony;
 
+use App\Controller\FacebookController;
+use App\Tests\Functional\WebTestCase;
 use Faker\Factory;
 use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Application\Query\Offer\OfferQuery;
-use App\Tests\Functional\WebTestCase;
 use HireInSocial\Tests\Application\MotherObject\Command\Offer\PostOfferMother;
-use App\Controller\FacebookController;
 
 final class OfferTest extends WebTestCase
 {

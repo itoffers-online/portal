@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Command\System;
 
-use HireInSocial\Application\System;
 use HireInSocial\Application\Config;
+use HireInSocial\Application\System;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
