@@ -1,7 +1,5 @@
 # Hire In Social
 
-[![Build Status](https://travis-ci.org/norzechowicz/hire-in-social.svg?branch=master)](https://travis-ci.org/norzechowicz/hire-in-social)
-
 Hire in Social focuses mostly on posting quick job offers for IT talents (but not only) and propagate everything
 over social media. No hidden fees, transparent rules, everything to save precious time of candidates.
 
