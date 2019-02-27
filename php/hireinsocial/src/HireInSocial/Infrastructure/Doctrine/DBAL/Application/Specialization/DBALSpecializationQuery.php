@@ -32,8 +32,8 @@ final class DBALSpecializationQuery implements SpecializationQuery
                   SELECT 
                      s.id,
                      s.slug, 
-                     s.facebook_channel_page_fb_id as 
-                     fb_page_id, s.facebook_channel_group_fb_id as fb_group_id 
+                     s.facebook_channel_page_id as fb_page_id, 
+                     s.facebook_channel_group_id as fb_group_id 
                   FROM his_specialization s 
                   ORDER BY s.slug
 SQL
@@ -49,8 +49,8 @@ SQL
             SELECT 
                s.id,
                s.slug, 
-               s.facebook_channel_page_fb_id as fb_page_id, 
-               s.facebook_channel_group_fb_id as fb_group_id
+               s.facebook_channel_page_id as fb_page_id, 
+               s.facebook_channel_group_id as fb_group_id
             FROM his_specialization s
             WHERE s.slug = :slug
 SQL
@@ -91,10 +91,12 @@ SQL
         return new Specialization(
             $data['slug'],
             $offers,
-            new FacebookChannel(
-                $data['fb_page_id'],
-                $data['fb_group_id']
-            )
+            ($data['fb_page_id'])
+                ? new FacebookChannel(
+                   $data['fb_page_id'],
+                    $data['fb_group_id']
+                )
+                : null
         );
     }
 }

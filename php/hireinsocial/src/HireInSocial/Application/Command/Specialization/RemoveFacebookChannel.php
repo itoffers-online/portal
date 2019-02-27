@@ -7,19 +7,19 @@ namespace HireInSocial\Application\Command\Specialization;
 use HireInSocial\Application\Command\ClassCommand;
 use HireInSocial\Application\System\Command;
 
-final class CreateSpecialization implements Command
+class RemoveFacebookChannel implements Command
 {
     use ClassCommand;
 
-    private $slug;
+    private $specSlug;
 
-    public function __construct(string $slug)
+    public function __construct(string $specSlug)
     {
-        $this->slug = $slug;
+        $this->specSlug = $specSlug;
     }
 
-    public function slug(): string
+    public function specSlug(): string
     {
-        return $this->slug;
+        return $this->specSlug;
     }
 }

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace HireInSocial\Application\Command\Specialization;
 
-use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\Specialization\Specializations;
 use HireInSocial\Application\System\Handler;
 
-final class CreateSpecializationHandler implements Handler
+class RemoveFacebookChannelHandler implements Handler
 {
     private $specializations;
 
@@ -19,11 +18,13 @@ final class CreateSpecializationHandler implements Handler
 
     public function handles(): string
     {
-        return CreateSpecialization::class;
+        return RemoveFacebookChannel::class;
     }
 
-    public function __invoke(CreateSpecialization $command) : void
+    public function __invoke(RemoveFacebookChannel $command) : void
     {
-        $this->specializations->add(new Specialization($command->slug()));
+        $specialization = $this->specializations->get($command->specSlug());
+
+        $specialization->removeFacebook();
     }
 }

@@ -21,6 +21,10 @@ final class FacebookGroupService
      */
     public function pagePostAtGroup(Draft $draft, Specialization $specialization) : string
     {
+        if (!$specialization->facebookChannel()) {
+            throw new Exception(sprintf('Specialization "%s" does not have facebook channel assigned.', $specialization->slug()));
+        }
+
         return $this->facebook->postToGroupAsPage(
             $draft,
             $specialization->facebookChannel()->group(),

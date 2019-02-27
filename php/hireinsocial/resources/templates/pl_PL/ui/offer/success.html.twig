@@ -1,10 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="alert alert-success text-center" role="alert">
-        <h4 class="alert-heading">Dobra robota!</h4>
-        <p>Twoje ogłoszenie przeszło poprawnie proces walidacji i wkrótce pojawi się na grupie na <a href="{{ specialization.facebookChannel.groupId|fb_group_url }}" target="_blank">Facebooku.</a></p>
-        <hr>
-        <p class="mb-0">Jeżeli masz jakiekolwiek pytania zajrzyj najpierw do sekcji <a href="{{ url('faq') }}">FAQ</a>.</p>
+<div class="container">
+    <div class="row">
+        <div class="offset-2 col-lg-8">
+            <div class="alert alert-success text-center" role="alert">
+                <h4 class="alert-heading">Dobra robota!</h4>
+                {% if speciailization.facebookChannel %}
+                    <p>Twoje ogłoszenie przeszło poprawnie proces weryfikacji i wkrótce pojawi się na grupie na <a href="{{ specialization.facebookChannel.groupId|fb_group_url }}" target="_blank">Facebooku.</a></p>
+                    <hr>
+                {% endif %}
+                <p class="mb-0">Jeżeli masz jakiekolwiek pytania zajrzyj najpierw do sekcji <a href="{{ url('faq') }}">FAQ</a>.</p>
+            </div>
+        </div>
     </div>
+</div>
 {% endblock %}

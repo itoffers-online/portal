@@ -78,7 +78,7 @@ final class PostOfferHandler implements Handler
         $offer = $this->createOffer($command, $user, $specialization);
 
         if ($this->throttle->isThrottled((string) $user->id())) {
-            throw new Exception(sprintf('User %s is throttled', (string) $user->id()));
+            throw new Exception(sprintf('User "%s" is throttled', (string) $user->id()));
         }
 
         if ($command->offer()->channels()->facebookGroup()) {

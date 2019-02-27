@@ -13,7 +13,7 @@ use HireInSocial\UserInterface\Symfony\Controller\FacebookController;
 
 final class OfferTest extends WebTestCase
 {
-    private $specialization = 'spec';
+    private $specialization = 'php';
 
     public function setUp()
     {
@@ -22,7 +22,24 @@ final class OfferTest extends WebTestCase
         $this->systemContext->createSpecialization($this->specialization);
     }
 
-    public function test_offer_success_page()
+    public function test_new_offer_page()
+    {
+        $user = $this->systemContext->createUser();
+
+        $client = static::createClient();
+        $client->getContainer()
+            ->get('session')
+            ->set(FacebookController::USER_SESSION_KEY, (string) $user->id());
+
+        $crawler = $client->request(
+            'GET',
+            $client->getContainer()->get('router')->generate('offer_post')
+        );
+
+        $this->assertEquals(1, $crawler->filter('a[data-post-offer]')->count());
+    }
+
+    public function test_success_page_after_posting_offer()
     {
         $user = $this->systemContext->createUser();
 
@@ -58,6 +75,8 @@ final class OfferTest extends WebTestCase
             'offer[channels][facebook_group]' => 1,
             'offer[_token]' => $client->getContainer()->get('security.csrf.token_manager')->getToken('new_offer'),
         ]);
+
+        $form['offer[channels][facebook_group]']->untick();
 
         $client->submit($form);
 

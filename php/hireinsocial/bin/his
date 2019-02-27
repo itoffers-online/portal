@@ -3,6 +3,8 @@
 
 use HireInSocial\Application\Config;
 use HireInSocial\UserInterface\Symfony\Command\Specialization\CreateSpecialization;
+use HireInSocial\UserInterface\Symfony\Command\Specialization\RemoveFacebookChannel;
+use HireInSocial\UserInterface\Symfony\Command\Specialization\SetFacebookChannel;
 use HireInSocial\UserInterface\Symfony\Command\System\PerformanceCheckCommand;
 use Symfony\Component\Console\Application;
 use HireInSocial\UserInterface\Symfony\Command\Offer\Test\PostOffer;
@@ -19,6 +21,8 @@ $application = new Application('Hire in Social');
 
 $application->add(new PostOffer($system, $config->getString(Config::LOCALE)));
 $application->add(new CreateSpecialization($system));
+$application->add(new SetFacebookChannel($system));
+$application->add(new RemoveFacebookChannel($system));
 $application->add(new PerformanceCheckCommand($system, $config));
 
 $application->run();

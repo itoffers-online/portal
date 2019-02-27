@@ -8,11 +8,13 @@
             <generator strategy="NONE" />
         </id>
         <field name="slug"/>
+        <field name="facebookChannelPageId" nullable="true" />
+        <field name="facebookChannelPageAccessToken" nullable="true" />
+        <field name="facebookChannelGroupId" nullable="true" />
+
         <unique-constraints>
             <unique-constraint columns="slug" />
+            <unique-constraint columns="facebook_channel_group_id" />
         </unique-constraints>
-
-        <embedded name="facebookChannel" class="HireInSocial\Application\Specialization\FacebookChannel" />
-
     </entity>
 </doctrine-mapping>

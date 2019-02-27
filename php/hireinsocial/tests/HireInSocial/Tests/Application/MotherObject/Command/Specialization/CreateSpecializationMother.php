@@ -11,10 +11,7 @@ final class CreateSpecializationMother
     public static function create(string $slug) : CreateSpecialization
     {
         return new CreateSpecialization(
-            $slug,
-            uniqid('facebook_page_id'),
-            uniqid('facebook_page_token'),
-            uniqid('facebook_group_id')
+            $slug
         );
     }
 
