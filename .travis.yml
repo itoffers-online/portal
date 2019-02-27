@@ -21,4 +21,5 @@ install:
   - composer install
 
 script:
+  - bin/symfony twig:lint --format json
   - composer run test
