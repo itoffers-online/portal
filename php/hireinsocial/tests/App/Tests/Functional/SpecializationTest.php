@@ -11,9 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Functional\Symfony;
+namespace App\Tests\Functional;
 
-use App\Tests\Functional\WebTestCase;
 use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Tests\Application\MotherObject\Command\Offer\PostOfferMother;
 

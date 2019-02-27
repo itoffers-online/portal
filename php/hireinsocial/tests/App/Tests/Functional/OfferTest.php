@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Functional\Symfony;
+namespace App\Tests\Functional;
 
 use App\Controller\FacebookController;
-use App\Tests\Functional\WebTestCase;
 use Faker\Factory;
 use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Application\Query\Offer\OfferQuery;

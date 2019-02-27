@@ -11,9 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Functional\Symfony;
-
-use App\Tests\Functional\WebTestCase;
+namespace App\Tests\Functional;
 
 final class AuthenticationTest extends WebTestCase
 {
