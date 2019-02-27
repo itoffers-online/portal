@@ -18,6 +18,7 @@ use App\Controller\IndexController;
 use App\Controller\LayoutController;
 use App\Controller\OfferController;
 use App\Controller\SpecializationController;
+use App\Routing\Factory;
 use App\Twig\Extension\FacebookExtension;
 use Facebook\Facebook;
 use HireInSocial\Application\System;
@@ -28,7 +29,6 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use Twig\Extensions\IntlExtension;
 use Twig\Extensions\TextExtension;
@@ -112,46 +112,7 @@ final class SymfonyKernel extends Kernel
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $routes->addRoute(
-            new Route('/', ['_controller' => [IndexController::class, 'homeAction']]),
-            'home'
-        );
-        $routes->addRoute(
-            new Route('/faq', ['_controller' => [IndexController::class, 'faqAction']]),
-            'faq'
-        );
-        $routes->addRoute(
-            new Route('/facebook/login', ['_controller' => [FacebookController::class, 'loginAction']]),
-            'facebook_login'
-        );
-        $routes->addRoute(
-            new Route('/facebook/logout', ['_controller' => [FacebookController::class, 'logoutAction']]),
-            'facebook_logout'
-        );
-        $routes->addRoute(
-            new Route('/facebook/login/success', ['_controller' => [FacebookController::class, 'loginSuccessAction']]),
-            'facebook_login_success'
-        );
-
-        switch ($this->frameworkConfig['framework']['default_locale']) {
-            case 'pl_PL':
-                $routes->addRoute(new Route('/oferty/dodaj', ['_controller' => [OfferController::class, 'postAction']]), 'offer_post');
-                $routes->addRoute(new Route('/oferty/{specSlug}/dodaj', ['_controller' => [OfferController::class, 'newAction']]), 'offer_new');
-                $routes->addRoute(new Route('/oferty/{specSlug}/dodaj/sukces', ['_controller' => [OfferController::class, 'successAction']]), 'offer_success');
-                $routes->addRoute(new Route('/oferty/{specSlug}', ['_controller' => [SpecializationController::class, 'offersAction']]), 'specialization_offers');
-                $routes->addRoute(new Route('/oferta-pracy/{offerSlug}', ['_controller' => [OfferController::class, 'offerAction']]), 'offer');
-
-                break;
-            case 'en_US':
-                $routes->addRoute(new Route('/offers/post', ['_controller' => [OfferController::class, 'postAction']]), 'offer_post');
-                $routes->addRoute(new Route('/offers/{specSlug}/new', ['_controller' => [OfferController::class, 'newAction']]), 'offer_new');
-                $routes->addRoute(new Route('/offers/{specSlug}/new/success', ['_controller' => [OfferController::class, 'successAction']]), 'offer_success');
-                $routes->addRoute(new Route('/offers/{specSlug}', ['_controller' => [SpecializationController::class, 'offersAction']]), 'specialization_offers');
-                $routes->addRoute(new Route('/job-offer/{slug}', ['_controller' => [OfferController::class, 'offerAction']]), 'offer');
-
-                break;
-            default:
-                throw new \RuntimeException(sprintf('Unrecognized locale %s', $this->frameworkConfig['framework']['default_locale']));
-        }
+        Factory::addRoutes($routes);
+        Factory::addLocalizedRoutes($routes, $this->frameworkConfig['framework']['default_locale']);
     }
 }
