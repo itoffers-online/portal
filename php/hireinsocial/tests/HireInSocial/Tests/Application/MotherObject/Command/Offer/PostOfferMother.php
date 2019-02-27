@@ -2,10 +2,18 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Hire in Social project.
+ *
+ * (c) Norbert Orzechowicz <norbert@orzechowicz.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace HireInSocial\Tests\Application\MotherObject\Command\Offer;
 
 use Faker\Factory;
-use HireInSocial\Application\Command\Offer\PostOffer;
 use HireInSocial\Application\Command\Offer\Offer\Channels;
 use HireInSocial\Application\Command\Offer\Offer\Company;
 use HireInSocial\Application\Command\Offer\Offer\Contact;
@@ -15,6 +23,7 @@ use HireInSocial\Application\Command\Offer\Offer\Location;
 use HireInSocial\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Offer\Position;
 use HireInSocial\Application\Command\Offer\Offer\Salary;
+use HireInSocial\Application\Command\Offer\PostOffer;
 
 final class PostOfferMother
 {

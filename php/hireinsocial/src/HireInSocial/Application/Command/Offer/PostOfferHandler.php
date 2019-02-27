@@ -2,19 +2,28 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Hire in Social project.
+ *
+ * (c) Norbert Orzechowicz <norbert@orzechowicz.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace HireInSocial\Application\Command\Offer;
 
 use HireInSocial\Application\Exception\Exception;
-use HireInSocial\Application\Facebook\FacebookGroupService;
 use HireInSocial\Application\Facebook\Draft;
+use HireInSocial\Application\Facebook\FacebookGroupService;
 use HireInSocial\Application\Facebook\Post;
 use HireInSocial\Application\Facebook\Posts;
+use HireInSocial\Application\Offer\Company;
 use HireInSocial\Application\Offer\Contact;
 use HireInSocial\Application\Offer\Contract;
-use HireInSocial\Application\Offer\Offer;
-use HireInSocial\Application\Offer\Company;
 use HireInSocial\Application\Offer\Description;
 use HireInSocial\Application\Offer\Location;
+use HireInSocial\Application\Offer\Offer;
 use HireInSocial\Application\Offer\OfferFormatter;
 use HireInSocial\Application\Offer\Offers;
 use HireInSocial\Application\Offer\Position;

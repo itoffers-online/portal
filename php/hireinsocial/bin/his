@@ -2,12 +2,12 @@
 <?php
 
 use HireInSocial\Application\Config;
-use HireInSocial\UserInterface\Symfony\Command\Specialization\CreateSpecialization;
-use HireInSocial\UserInterface\Symfony\Command\Specialization\RemoveFacebookChannel;
-use HireInSocial\UserInterface\Symfony\Command\Specialization\SetFacebookChannel;
-use HireInSocial\UserInterface\Symfony\Command\System\PerformanceCheckCommand;
+use App\Command\Specialization\CreateSpecialization;
+use App\Command\Specialization\RemoveFacebookChannel;
+use App\Command\Specialization\SetFacebookChannel;
+use App\Command\System\PerformanceCheckCommand;
 use Symfony\Component\Console\Application;
-use HireInSocial\UserInterface\Symfony\Command\Offer\Test\PostOffer;
+use App\Command\Offer\Test\PostOffer;
 
 $projectRootPath = dirname(__DIR__);
 

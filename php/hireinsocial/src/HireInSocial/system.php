@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Hire in Social project.
+ *
+ * (c) Norbert Orzechowicz <norbert@orzechowicz.pl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace HireInSocial;
 
 use Facebook\Facebook;
@@ -11,6 +20,10 @@ use HireInSocial\Application\Command\User;
 use HireInSocial\Application\Config;
 use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
+use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
+use HireInSocial\Application\System;
+use HireInSocial\Application\System\CommandBus;
+use HireInSocial\Application\System\Queries;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization\DBALSpecializationQuery;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\User\DBALUserQuery;
@@ -23,10 +36,6 @@ use HireInSocial\Infrastructure\Doctrine\ORM\Application\User\ORMUsers;
 use HireInSocial\Infrastructure\Facebook\FacebookGraphSDK;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Infrastructure\Predis\PredisThrottle;
-use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
-use HireInSocial\Application\System;
-use HireInSocial\Application\System\CommandBus;
-use HireInSocial\Application\System\Queries;
 use HireInSocial\Tests\Application\Double\Dummy\DummyFacebook;
 use HireInSocial\Tests\Application\Double\Stub\CalendarStub;
 use Monolog\ErrorHandler;
