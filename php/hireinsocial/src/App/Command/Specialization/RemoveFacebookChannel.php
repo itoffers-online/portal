@@ -28,6 +28,10 @@ final class RemoveFacebookChannel extends Command
     protected static $defaultName = self::NAME;
 
     private $system;
+    /**
+     * @var SymfonyStyle
+     */
+    private $io;
 
     public function __construct(System $system)
     {
@@ -44,24 +48,27 @@ final class RemoveFacebookChannel extends Command
         ;
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->io = new SymfonyStyle($input, $output);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
-        $io = new SymfonyStyle($input, $output);
-
-        $io->note('Create new specialization');
+        $this->io->note('Create new specialization');
 
         if ($input->isInteractive()) {
-            $answer = $io->ask('Are you sure you want remove facebook channel from the specialization?', 'yes');
+            $answer = $this->io->ask('Are you sure you want remove facebook channel from the specialization?', 'yes');
 
             if (\mb_strtolower($answer) !== 'yes') {
-                $io->note('Ok, action cancelled.');
+                $this->io->note('Ok, action cancelled.');
 
                 return 1;
             }
         }
 
         if (!$this->system->query(SpecializationQuery::class)->findBySlug($input->getArgument('slug'))) {
-            $io->error(sprintf('Specialization slug "%s" does not exists.', $input->getArgument('slug')));
+            $this->io->error(sprintf('Specialization slug "%s" does not exists.', $input->getArgument('slug')));
 
             return 1;
         }
@@ -71,12 +78,12 @@ final class RemoveFacebookChannel extends Command
                 $input->getArgument('slug')
             ));
         } catch (\Throwable $e) {
-            $io->error('Can\'t remove specialization facebook channel, check logs for more details.');
+            $this->io->error('Can\'t remove specialization facebook channel, check logs for more details.');
 
             return 1;
         }
 
-        $io->success('Specialization facebook channel removed');
+        $this->io->success('Specialization facebook channel removed');
 
         return 0;
     }

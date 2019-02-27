@@ -43,6 +43,10 @@ final class PostOffer extends Command
 
     private $system;
     private $locale;
+    /**
+     * @var SymfonyStyle
+     */
+    private $io;
 
     public function __construct(System $system, string $locale)
     {
@@ -63,16 +67,19 @@ final class PostOffer extends Command
         ;
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->io = new SymfonyStyle($input, $output);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
-        $io = new SymfonyStyle($input, $output);
-
-        $io->note('Job offer posted');
+        $this->io->note('Job offer posted');
 
         $specialization = $this->system->query(SpecializationQuery::class)->findBySlug($input->getArgument('specialization'));
 
         if (!$specialization) {
-            $io->error('Specialization does not exists.');
+            $this->io->error('Specialization does not exists.');
 
             return 1;
         }
@@ -112,7 +119,7 @@ final class PostOffer extends Command
                 )
             ));
         } catch (\Throwable $e) {
-            $io->error('Can\'t post job offer at facebook group as a page. Please check logs for more details.');
+            $this->io->error('Can\'t post job offer at facebook group as a page. Please check logs for more details.');
 
             return 1;
         }

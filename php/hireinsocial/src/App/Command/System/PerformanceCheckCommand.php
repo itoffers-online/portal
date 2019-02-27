@@ -28,6 +28,10 @@ final class PerformanceCheckCommand extends Command
 
     private $system;
     private $config;
+    /**
+     * @var SymfonyStyle
+     */
+    private $io;
 
     public function __construct(System $system, Config $config)
     {
@@ -44,19 +48,22 @@ final class PerformanceCheckCommand extends Command
         ;
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->io = new SymfonyStyle($input, $output);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
-        $io = new SymfonyStyle($input, $output);
-
         $stopwatch = new Stopwatch();
         $stopwatch->start('system.bootstrap');
         $event = $stopwatch->stop('system.bootstrap');
 
-        $io->title('System Performance');
-        $io->text('Display basic metrics about single system bootstrap, those values can be used to calculated system total performance');
-        $io->text('System bootstrap process is the same for CLI and Web however in web we need to include also Symfony bootstrap.');
+        $this->io->title('System Performance');
+        $this->io->text('Display basic metrics about single system bootstrap, those values can be used to calculated system total performance');
+        $this->io->text('System bootstrap process is the same for CLI and Web however in web we need to include also Symfony bootstrap.');
 
-        $io->table(
+        $this->io->table(
             ['Environment', 'Memory Usage'],
             [
                 [$this->config->getString(Config::ENV), sprintf("%.2f MB", $event->getMemory() / 1048576)],
