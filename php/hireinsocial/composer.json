@@ -89,7 +89,7 @@
         "test": [
             "security-checker security:check",
             "@test:php:cs",
-            "bin/symfony lint:twig resources",
+            "bin/symfony lint:twig resources --format json",
             "@db:reset:test",
             "@symfony:cache:clear:test",
             "phpunit"
