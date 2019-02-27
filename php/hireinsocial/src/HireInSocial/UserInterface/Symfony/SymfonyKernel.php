@@ -19,6 +19,7 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use Twig\Extensions\IntlExtension;
 use Twig\Extensions\TextExtension;
@@ -102,27 +103,42 @@ final class SymfonyKernel extends Kernel
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $routes->add('/', [IndexController::class, 'homeAction'], 'home');
-        $routes->add('/faq', [IndexController::class, 'faqAction'], 'faq');
-        $routes->add('/facebook/login', [FacebookController::class, 'loginAction'], 'facebook_login');
-        $routes->add('/facebook/logout', [FacebookController::class, 'logoutAction'], 'facebook_logout');
-        $routes->add('/facebook/login/success', [FacebookController::class, 'loginSuccessAction'], 'facebook_login_success');
+        $routes->addRoute(
+            new Route('/', ['_controller' => [IndexController::class, 'homeAction']]),
+            'home'
+        );
+        $routes->addRoute(
+            new Route('/faq', ['_controller' => [IndexController::class, 'faqAction']]),
+            'faq'
+        );
+        $routes->addRoute(
+            new Route('/facebook/login', ['_controller' => [FacebookController::class, 'loginAction']]),
+            'facebook_login'
+        );
+        $routes->addRoute(
+            new Route('/facebook/logout', ['_controller' => [FacebookController::class, 'logoutAction']]),
+            'facebook_logout'
+        );
+        $routes->addRoute(
+            new Route('/facebook/login/success', ['_controller' => [FacebookController::class, 'loginSuccessAction']]),
+            'facebook_login_success'
+        );
 
         switch ($this->frameworkConfig['framework']['default_locale']) {
             case 'pl_PL':
-                $routes->add('/oferty/dodaj', [OfferController::class, 'postAction'], 'offer_post');
-                $routes->add('/oferty/{specSlug}/dodaj', [OfferController::class, 'newAction'], 'offer_new');
-                $routes->add('/oferty/{specSlug}/dodaj/sukces', [OfferController::class, 'successAction'], 'offer_success');
-                $routes->add('/oferty/{specSlug}', [SpecializationController::class, 'offersAction'], 'specialization_offers');
-                $routes->add('/oferta-pracy/{offerSlug}', [OfferController::class, 'offerAction'], 'offer');
+                $routes->addRoute(new Route('/oferty/dodaj', ['_controller' => [OfferController::class, 'postAction']]), 'offer_post');
+                $routes->addRoute(new Route('/oferty/{specSlug}/dodaj', ['_controller' => [OfferController::class, 'newAction']]), 'offer_new');
+                $routes->addRoute(new Route('/oferty/{specSlug}/dodaj/sukces', ['_controller' => [OfferController::class, 'successAction']]), 'offer_success');
+                $routes->addRoute(new Route('/oferty/{specSlug}', ['_controller' => [SpecializationController::class, 'offersAction']]), 'specialization_offers');
+                $routes->addRoute(new Route('/oferta-pracy/{offerSlug}', ['_controller' => [OfferController::class, 'offerAction']]), 'offer');
 
                 break;
             case 'en_US':
-                $routes->add('/offers/post', [OfferController::class, 'postAction'], 'offer_post');
-                $routes->add('/offers/{specSlug}/new', [OfferController::class, 'newAction'], 'offer_new');
-                $routes->add('/offers/{specSlug}/new/success', [OfferController::class, 'successAction'], 'offer_success');
-                $routes->add('/offers/{specSlug}', [SpecializationController::class, 'offersAction'], 'specialization_offers');
-                $routes->add('/job-offer/{slug}', [OfferController::class, 'offerAction'], 'offer');
+                $routes->addRoute(new Route('/offers/post', ['_controller' => [OfferController::class, 'postAction']]), 'offer_post');
+                $routes->addRoute(new Route('/offers/{specSlug}/new', ['_controller' => [OfferController::class, 'newAction']]), 'offer_new');
+                $routes->addRoute(new Route('/offers/{specSlug}/new/success', ['_controller' => [OfferController::class, 'successAction']]), 'offer_success');
+                $routes->addRoute(new Route('/offers/{specSlug}', ['_controller' => [SpecializationController::class, 'offersAction']]), 'specialization_offers');
+                $routes->addRoute(new Route('/job-offer/{slug}', ['_controller' => [OfferController::class, 'offerAction']]), 'offer');
 
                 break;
             default:
