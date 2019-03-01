@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace HireInSocial\Application\Offer;
 
+use HireInSocial\Application\User\User;
+
 interface Offers
 {
     public function add(Offer $offer) : void;
+    public function postedBy(User $user, \DateTimeImmutable $since) : UserOffers;
 }

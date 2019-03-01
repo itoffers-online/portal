@@ -117,6 +117,9 @@ final class OfferController extends AbstractController
             'specialization' => $specialization,
             'form' => $form->createView(),
             'throttled' => $this->system->query(OfferThrottleQuery::class)->isThrottled($userId),
+            'offersLeft' => $this->system->query(OfferThrottleQuery::class)->offersLeft($userId),
+            'throttleLimit' => $this->system->query(OfferThrottleQuery::class)->limit(),
+            'throttleSince' => $this->system->query(OfferThrottleQuery::class)->since(),
         ]);
     }
 

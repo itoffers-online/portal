@@ -7,7 +7,7 @@ use App\Command\Specialization\RemoveFacebookChannel;
 use App\Command\Specialization\SetFacebookChannel;
 use App\Command\System\PerformanceCheckCommand;
 use Symfony\Component\Console\Application;
-use App\Command\Offer\Test\PostOffer;
+use App\Command\Offer\Test;
 
 $projectRootPath = dirname(__DIR__);
 
@@ -19,7 +19,7 @@ $system = \HireInSocial\system($config);
 
 $application = new Application('Hire in Social');
 
-$application->add(new PostOffer($system, $config->getString(Config::LOCALE)));
+$application->add(new Test\PostOffer($system, $config->getString(Config::LOCALE)));
 $application->add(new CreateSpecialization($system));
 $application->add(new SetFacebookChannel($system));
 $application->add(new RemoveFacebookChannel($system));

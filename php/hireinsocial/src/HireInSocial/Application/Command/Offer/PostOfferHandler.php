@@ -31,6 +31,7 @@ use HireInSocial\Application\Offer\Salary;
 use HireInSocial\Application\Offer\Slug;
 use HireInSocial\Application\Offer\Slugs;
 use HireInSocial\Application\Offer\Throttle;
+use HireInSocial\Application\Offer\Throttling;
 use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\Specialization\Specializations;
 use HireInSocial\Application\System\Calendar;
@@ -45,10 +46,10 @@ final class PostOfferHandler implements Handler
     private $offers;
     private $users;
     private $posts;
+    private $throttling;
     private $facebookGroupService;
     private $formatter;
     private $specializations;
-    private $throttle;
     private $slugs;
 
     public function __construct(
@@ -56,21 +57,21 @@ final class PostOfferHandler implements Handler
         Offers $offers,
         Users $users,
         Posts $posts,
+        Throttling $throttling,
         FacebookGroupService $facebookGroupService,
         OfferFormatter $formatter,
         Specializations $specializations,
-        Throttle $throttle,
         Slugs $slugs
     ) {
         $this->calendar = $calendar;
         $this->offers = $offers;
         $this->users = $users;
         $this->posts = $posts;
+        $this->throttling = $throttling;
         $this->facebookGroupService = $facebookGroupService;
         $this->formatter = $formatter;
         $this->specializations = $specializations;
         $this->slugs = $slugs;
-        $this->throttle = $throttle;
     }
 
     public function handles(): string
@@ -86,7 +87,7 @@ final class PostOfferHandler implements Handler
 
         $offer = $this->createOffer($command, $user, $specialization);
 
-        if ($this->throttle->isThrottled((string) $user->id())) {
+        if ($this->throttling->isThrottled($user, $this->offers)) {
             throw new Exception(sprintf('User "%s" is throttled', (string) $user->id()));
         }
 
@@ -110,7 +111,6 @@ final class PostOfferHandler implements Handler
 
         $this->offers->add($offer);
         $this->slugs->add(Slug::from($offer, $this->calendar));
-        $this->throttle->throttle((string) $user->id());
     }
 
     private function createOffer(PostOffer $command, User $user, Specialization $specialization): Offer

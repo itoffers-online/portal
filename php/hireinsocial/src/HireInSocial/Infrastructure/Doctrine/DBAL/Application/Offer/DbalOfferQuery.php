@@ -76,8 +76,8 @@ final class DbalOfferQuery implements OfferQuery
         $queryBuilder->setParameters(
             [
                 'specializationSlug' => $filter->specialization(),
-                'sinceDate' => $filter->sinceDate()->format('Y-m-d H:i:s'),
-                'tillDate' => $filter->tillDate()->format('Y-m-d H:i:s'),
+                'sinceDate' => $filter->sinceDate()->format(\DateTimeInterface::ISO8601),
+                'tillDate' => $filter->tillDate()->format(\DateTimeInterface::ISO8601),
             ]
         );
 
@@ -113,8 +113,8 @@ final class DbalOfferQuery implements OfferQuery
         return (int) $queryBuilder->setParameters(
                 [
                     'specializationSlug' => $filter->specialization(),
-                    'sinceDate' => $filter->sinceDate()->format('Y-m-d H:i:s'),
-                    'tillDate' => $filter->tillDate()->format('Y-m-d H:i:s'),
+                    'sinceDate' => $filter->sinceDate()->format(\DateTimeInterface::ISO8601),
+                    'tillDate' => $filter->tillDate()->format(\DateTimeInterface::ISO8601),
                 ]
             )
             ->execute()
@@ -156,7 +156,7 @@ final class DbalOfferQuery implements OfferQuery
             ->setParameters(
                 [
                     'specializationSlug' => $offer->specializationSlug(),
-                    'sinceDate' => $offer->createdAt()->format('Y-m-d H:i:s'),
+                    'sinceDate' => $offer->createdAt()->format(\DateTimeInterface::ISO8601),
                 ]
             )->execute()
             ->fetch();
@@ -181,7 +181,7 @@ final class DbalOfferQuery implements OfferQuery
             ->setParameters(
                 [
                     'specializationSlug' => $offer->specializationSlug(),
-                    'beforeDate' => $offer->createdAt()->format('Y-m-d H:i:s'),
+                    'beforeDate' => $offer->createdAt()->format(\DateTimeInterface::ISO8601),
                 ]
             )->execute()
             ->fetch();
