@@ -45,8 +45,8 @@ class Offer
         Contact $contact,
         \DateTimeImmutable $createdAt
     ) {
-        $this->id = (string) Uuid::uuid4();
-        $this->userId = (string) $userId;
+        $this->id = Uuid::uuid4()->toString();
+        $this->userId = $userId->toString();
         $this->specializationId = $specializationId;
         $this->company = $company;
         $this->position = $position;

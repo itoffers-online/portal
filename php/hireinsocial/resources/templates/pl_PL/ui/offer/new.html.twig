@@ -4,8 +4,12 @@
 
 {% block body %}
     {% if throttled %}
-    <div class="alert alert-warning" role="alert">
+    <div class="alert alert-warning text-center" role="alert">
         Nie możesz jeszcze dodać kolejnego ogłoszenia, musisz odczekać co najmniej 12 godzin.
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        Możesz dodać maksymalnie {{ throttleLimit }} oferty na {{ throttleSince.format('%d') }} dni. Ilość ofert, które możesz dodać natychmiast: {{ offersLeft }}
     </div>
     {% endif %}
     {{ form_start(form) }}
@@ -21,6 +25,7 @@
                         <li>W ogłoszeniu <strong>musi</strong> być informacja o docelowym pracodawcy.</li>
                         <li>Widełki wynagrodzenia mogą być szerokie, jednak musza być realne.</li>
                         <li>Duplikaty ogłoszenia będą usuwane, jeśli chcesz dodać to samo ogłoszenie musisz odczekać co najmniej 30 dni.</li>
+                        <li>Możesz dodać maksymalnie {{ throttleLimit }} oferty na {{ throttleSince.format('%d') }} dni.</li>
                     </ul>
                     <h5>Masz Pytania?</h5>
                     <p>

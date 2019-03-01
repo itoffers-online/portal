@@ -11,40 +11,41 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer;
+namespace HireInSocial\Infrastructure\InMemory\Application\Offer;
 
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityManager;
 use HireInSocial\Application\Offer\Offer;
 use HireInSocial\Application\Offer\Offers;
 use HireInSocial\Application\Offer\UserOffers;
 use HireInSocial\Application\User\User;
+use HireInSocial\Common\PrivateFields;
 
-final class ORMOffers implements Offers
+final class InMemoryOffers implements Offers
 {
-    private $entityManager;
+    use PrivateFields;
 
-    public function __construct(EntityManager $entityManager)
+    private $offers;
+
+    public function __construct(Offer ...$offers)
     {
-        $this->entityManager = $entityManager;
+        $this->offers = $offers;
     }
 
     public function add(Offer $offer): void
     {
-        $this->entityManager->persist($offer);
+        $this->offers[] = $offer;
     }
 
     public function postedBy(User $user, \DateTimeImmutable $since): UserOffers
     {
-        $criteria = new Criteria();
-        $criteria
-            ->where($criteria->expr()->eq('userId', $user->id()))
-            ->andWhere($criteria->expr()->gt('createdAt', $since));
-
         return new UserOffers(
             $user,
             $since,
-            ...$this->entityManager->getRepository(Offer::class)->matching($criteria)
+            ...array_filter(
+                $this->offers,
+                function (Offer $offer) use ($user) {
+                    return self::getPrivatePropertyValue($offer, 'userId') === $user->id()->toString();
+                }
+            )
         );
     }
 }

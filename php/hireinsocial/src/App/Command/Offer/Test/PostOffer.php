@@ -24,7 +24,6 @@ use HireInSocial\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Offer\Position;
 use HireInSocial\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Application\Command\Offer\PostOffer as SystemPostOffer;
-use HireInSocial\Application\Command\Throttle\RemoveThrottle;
 use HireInSocial\Application\Command\User\FacebookConnect;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\Query\User\UserQuery;
@@ -62,7 +61,6 @@ final class PostOffer extends Command
             ->setDescription('<info>[Offer]</info> Test posting job offer with automatically generated fake data. This offer also generate fake user.')
             ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
             ->addOption('no-salary', null, InputOption::VALUE_OPTIONAL, 'Pass this option when you want to test offer without salary', false)
-            ->addOption('remove-throttle', null, InputOption::VALUE_OPTIONAL, 'Remove throttle after posting offer to a group in order to repeat command quickly', false)
             ->addOption('post-facebook-group', null, InputOption::VALUE_OPTIONAL, 'Post offer to facebook group assigned to the specialization', false)
         ;
     }
@@ -85,7 +83,6 @@ final class PostOffer extends Command
         }
 
         $noSalary = $input->getOption('no-salary') !== false;
-        $removeThrottle = $input->getOption('remove-throttle') !== false;
         $postFacebookGroup = $input->getOption('post-facebook-group') !== false;
 
         try {
@@ -122,10 +119,6 @@ final class PostOffer extends Command
             $this->io->error('Can\'t post job offer at facebook group as a page. Please check logs for more details.');
 
             return 1;
-        }
-
-        if ($removeThrottle) {
-            $this->system->handle(new RemoveThrottle($user->id()));
         }
 
         return 0;

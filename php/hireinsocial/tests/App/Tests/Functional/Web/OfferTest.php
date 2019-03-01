@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Functional;
+namespace App\Tests\Functional\Web;
 
 use App\Controller\FacebookController;
 use Faker\Factory;

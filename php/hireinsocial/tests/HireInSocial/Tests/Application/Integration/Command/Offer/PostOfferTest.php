@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Application\Integration\Command\Offer;
 
 use HireInSocial\Application\Exception\Exception;
+use HireInSocial\Application\Offer\Throttling;
 use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Tests\Application\Integration\HireInSocialTestCase;
@@ -28,7 +29,6 @@ final class PostOfferTest extends HireInSocialTestCase
         $this->systemContext->createSpecialization($specialization = 'spec');
         $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $specialization));
 
-        $this->assertTrue($this->systemContext->system()->query(OfferThrottleQuery::class)->isThrottled($user->id()));
         $this->assertEquals(1, $this->systemContext->system()->query(OfferQuery::class)->total());
     }
 
@@ -47,12 +47,16 @@ final class PostOfferTest extends HireInSocialTestCase
     public function test_posting_offer_too_fast()
     {
         $user = $this->systemContext->createUser();
-
         $this->systemContext->createSpecialization($specialization = 'spec');
-        $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $specialization));
+
+        for ($postedOffers = 0; $postedOffers < Throttling::LIMIT; $postedOffers++) {
+            $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $specialization));
+        }
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage(sprintf('User "%s" is throttled', $user->id()));
+
+        $this->assertTrue($this->systemContext->system()->query(OfferThrottleQuery::class)->isThrottled($user->id()));
 
         $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $specialization));
     }
