@@ -30,7 +30,6 @@ use HireInSocial\Application\Offer\Position;
 use HireInSocial\Application\Offer\Salary;
 use HireInSocial\Application\Offer\Slug;
 use HireInSocial\Application\Offer\Slugs;
-use HireInSocial\Application\Offer\Throttle;
 use HireInSocial\Application\Offer\Throttling;
 use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\Specialization\Specializations;
