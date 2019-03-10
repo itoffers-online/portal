@@ -19,6 +19,7 @@ use HireInSocial\Application\Offer\Offer;
 use HireInSocial\Application\Offer\Offers;
 use HireInSocial\Application\Offer\UserOffers;
 use HireInSocial\Application\User\User;
+use Ramsey\Uuid\UuidInterface;
 
 final class ORMOffers implements Offers
 {
@@ -32,6 +33,11 @@ final class ORMOffers implements Offers
     public function add(Offer $offer): void
     {
         $this->entityManager->persist($offer);
+    }
+
+    public function getById(UuidInterface $offerId): Offer
+    {
+        return $this->entityManager->getRepository(Offer::class)->findOneBy(['id' => (string) $offerId]);
     }
 
     public function postedBy(User $user, \DateTimeImmutable $since): UserOffers

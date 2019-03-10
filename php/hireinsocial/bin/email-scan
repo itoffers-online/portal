@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+use App\Command\Email\ScanMessages;
+use Ddeboer\Imap\Server;
+use HireInSocial\Application\Config;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Filesystem\Filesystem;
+
+$projectRootPath = dirname(__DIR__);
+
+require $projectRootPath . '/src/autoload.php';
+
+$config = \HireInSocial\bootstrap($projectRootPath);
+$system = \HireInSocial\system($config);
+
+$serverConfig = $config->getJson(Config::APPLY_EMAIL_CONFIG);
+
+$server = new Server($serverConfig['host'], $serverConfig['port']);
+$connection = $server->authenticate($serverConfig['username'], $serverConfig['password']);
+$fs = new Filesystem();
+
+(new Application('email-scan', '1.0.0'))
+    ->add(new ScanMessages($system, $connection, $fs))
+    ->getApplication()
+    ->setDefaultCommand(ScanMessages::NAME, true)
+    ->run();

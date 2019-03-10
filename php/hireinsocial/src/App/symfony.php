@@ -52,6 +52,7 @@ function symfony(Config $config, System $system) : SymfonyKernel
                 'facebook' => [
                     'app_id' => $config->getString(Config::FB_APP_ID),
                 ],
+                'apply_email_template' => $config->getString(Config::APPLY_EMAIL_TEMPLATE),
             ],
             'auto_reload' => $config->getString(Config::ENV) !== 'prod',
         ],

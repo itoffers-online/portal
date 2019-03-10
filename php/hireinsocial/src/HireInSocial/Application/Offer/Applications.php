@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace HireInSocial\Application\Offer;
 
-use HireInSocial\Application\User\User;
-use Ramsey\Uuid\UuidInterface;
+use HireInSocial\Application\Offer\Application\EmailHash;
 
-interface Offers
+interface Applications
 {
-    public function add(Offer $offer) : void;
-    public function getById(UuidInterface $offerId) : Offer;
-    public function postedBy(User $user, \DateTimeImmutable $since) : UserOffers;
+    public function alreadyApplied(EmailHash $emailHash, Offer $offer) : bool;
+    public function add(Application $application) : void;
 }

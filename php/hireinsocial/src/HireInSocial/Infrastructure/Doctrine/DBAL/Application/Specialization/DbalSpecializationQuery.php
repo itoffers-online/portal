@@ -19,7 +19,7 @@ use HireInSocial\Application\Query\Specialization\Model\Specialization\FacebookC
 use HireInSocial\Application\Query\Specialization\Model\Specializations;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 
-final class DBALSpecializationQuery implements SpecializationQuery
+final class DbalSpecializationQuery implements SpecializationQuery
 {
     /**
      * @var Connection

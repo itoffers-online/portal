@@ -17,7 +17,7 @@ use Doctrine\DBAL\Connection;
 use HireInSocial\Application\Query\User\Model\User;
 use HireInSocial\Application\Query\User\UserQuery;
 
-final class DBALUserQuery implements UserQuery
+final class DbalUserQuery implements UserQuery
 {
     /**
      * @var Connection
