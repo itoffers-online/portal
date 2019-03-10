@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace HireInSocial\Application;
 
+use function \Safe\json_decode;
+
 final class Config
 {
     public const ROOT_PATH = 'root_path';
@@ -23,6 +25,9 @@ final class Config
     public const SYMFONY_SECRET = 'symfony_secret';
 
     public const REDIS_DSN = 'redis_dsn';
+    public const APPLY_EMAIL_TEMPLATE = 'apply_email_template';
+    public const APPLY_EMAIL_CONFIG = 'apply_email_config';
+    public const MAILER_CONFIG = 'mailer_config';
 
     public const DB_HOST = 'db_host';
     public const DB_PORT = 'db_port';
@@ -54,6 +59,9 @@ final class Config
             self::TIMEZONE => getenv('HIS_TIMEZONE'),
             self::SYMFONY_SECRET => getenv('HIS_SYMFONY_SECRET'),
             self::REDIS_DSN => getenv('HIS_REDIS_DSN'),
+            self::APPLY_EMAIL_TEMPLATE => getenv('HIS_APPLY_EMAIL_TEMPLATE'),
+            self::APPLY_EMAIL_CONFIG => getenv('HIS_APPLY_EMAIL_CONFIG'),
+            self::MAILER_CONFIG => getenv('HIS_MAILER_CONFIG'),
             self::FB_APP_ID => getenv('HIS_FB_APP_ID'),
             self::FB_APP_SECRET => getenv('HIS_FB_APP_SECRET'),
             self::THROTTLE_DURATION => getenv('HIS_THROTTLE_DURATION'),
@@ -72,6 +80,14 @@ final class Config
         }
 
         return (string) $this->config[$key];
+    }
+
+    /**
+     * @throws \Safe\Exceptions\JsonException
+     */
+    public function getJson(string $key): array
+    {
+        return json_decode($this->getString($key), true);
     }
 
     public function getInt(string $key): int

@@ -50,7 +50,10 @@
             <div class="card">
                 <div class="card-body">
                     <p>
-                        Jeżeli jesteś zainteresowany ofertą wyślij CV na adres: <a href="mailto:{{ offer.contact.email }}">{{ offer.contact.email }}</a>
+                        Jeżeli jesteś zainteresowany ofertą wyślij CV na adres: <br/>
+                        <a href="mailto:{{ apply_email_template|format(offer.slug) }}">
+                            {{ apply_email_template|format(offer.slug) }}
+                        </a>
                     </p>
                     <p class="text-right">
                         {{ offer.contact.name }}

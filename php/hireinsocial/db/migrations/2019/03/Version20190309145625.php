@@ -17,7 +17,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190225222244 extends AbstractMigration
+final class Version20190309145625 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
@@ -27,6 +27,8 @@ final class Version20190225222244 extends AbstractMigration
         $this->addSql('CREATE TABLE his_specialization (id UUID NOT NULL, slug VARCHAR(255) NOT NULL, facebook_channel_page_id VARCHAR(255) DEFAULT NULL, facebook_channel_page_access_token VARCHAR(255) DEFAULT NULL, facebook_channel_group_id VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E60FD12B989D9B62 ON his_specialization (slug)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E60FD12BA719CCF6 ON his_specialization (facebook_channel_group_id)');
+        $this->addSql('CREATE TABLE his_job_offer_application (id UUID NOT NULL, offer_id UUID NOT NULL, email_hash VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN his_job_offer_application.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE his_job_offer_slug (slug TEXT NOT NULL, offer_id UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(slug))');
         $this->addSql('COMMENT ON COLUMN his_job_offer_slug.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE his_user (id UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, fb_user_app_id VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
@@ -44,6 +46,7 @@ final class Version20190225222244 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('DROP TABLE his_specialization');
+        $this->addSql('DROP TABLE his_job_offer_application');
         $this->addSql('DROP TABLE his_job_offer_slug');
         $this->addSql('DROP TABLE his_user');
         $this->addSql('DROP TABLE his_facebook_post');

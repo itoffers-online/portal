@@ -23,7 +23,7 @@ final class Queries
     {
         $this->queries = [];
 
-        array_map(
+        \array_map(
             function (Query $query) {
                 $this->register($query);
             },

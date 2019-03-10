@@ -19,22 +19,27 @@ use HireInSocial\Application\Command\User;
 use HireInSocial\Application\Config;
 use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
+use HireInSocial\Application\Offer\EmailFormatter;
 use HireInSocial\Application\Offer\Throttling;
 use HireInSocial\Application\System;
 use HireInSocial\Application\System\CommandBus;
 use HireInSocial\Application\System\Queries;
+use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalApplicationQuery;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferThrottleQuery;
-use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization\DBALSpecializationQuery;
-use HireInSocial\Infrastructure\Doctrine\DBAL\Application\User\DBALUserQuery;
+use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization\DbalSpecializationQuery;
+use HireInSocial\Infrastructure\Doctrine\DBAL\Application\User\DbalUserQuery;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
+use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMApplications;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMSlugs;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSpecializations;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\User\ORMUsers;
 use HireInSocial\Infrastructure\Facebook\FacebookGraphSDK;
+use HireInSocial\Infrastructure\PHP\Hash\SHA256Encoder;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
+use HireInSocial\Infrastructure\SwiftMailer\System\SwiftMailer;
 use HireInSocial\Tests\Application\Double\Dummy\DummyFacebook;
 use HireInSocial\Tests\Application\Double\Stub\CalendarStub;
 use Monolog\ErrorHandler;
@@ -53,7 +58,6 @@ function system(Config $config) : System
     $systemLogger->pushHandler(new StreamHandler($logDir . sprintf('/%s_system.log', $config->getString(Config::ENV)), Logger::DEBUG));
     $facebookLogger->pushHandler(new StreamHandler($logDir . sprintf('/%s_facebook.log', $config->getString(Config::ENV)), Logger::DEBUG));
     $phpLogger->pushHandler(new StreamHandler($logDir . sprintf('/%s_php.log', $config->getString(Config::ENV)), Logger::ERROR));
-    ErrorHandler::register($phpLogger);
 
     $loader = new FilesystemLoader($config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE));
     $twig = new Environment($loader, [
@@ -71,6 +75,16 @@ function system(Config $config) : System
                 ]),
                 $facebookLogger
             );
+            $transport = (new \Swift_SmtpTransport(
+                $config->getJson(Config::MAILER_CONFIG)['host'],
+                $config->getJson(Config::MAILER_CONFIG)['port']
+            ))
+                ->setUsername($config->getJson(Config::MAILER_CONFIG)['username'])
+                ->setPassword($config->getJson(Config::MAILER_CONFIG)['password'])
+                ->setTimeout(10)
+            ;
+            $mailer = new SwiftMailer($config->getJson(Config::MAILER_CONFIG)['domain'], new \Swift_Mailer($transport));
+            ErrorHandler::register($phpLogger);
 
             break;
         case 'dev':
@@ -83,10 +97,27 @@ function system(Config $config) : System
                 $facebookLogger
             );
 
+            $transport = (new \Swift_SmtpTransport(
+                $config->getJson(Config::MAILER_CONFIG)['host'],
+                $config->getJson(Config::MAILER_CONFIG)['port']
+            ))
+                ->setUsername($config->getJson(Config::MAILER_CONFIG)['username'])
+                ->setPassword($config->getJson(Config::MAILER_CONFIG)['password'])
+                ->setTimeout(10)
+            ;
+            $mailer = new SwiftMailer($config->getJson(Config::MAILER_CONFIG)['domain'], new \Swift_Mailer($transport));
+
             break;
         case 'test':
             $calendar = new CalendarStub(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
             $facebook = new DummyFacebook();
+
+            $transport = new \Swift_Transport_NullTransport(new \Swift_Events_SimpleEventDispatcher());
+
+            $mailer = new SwiftMailer(
+                $config->getJson(Config::MAILER_CONFIG)['domain'],
+                new \Swift_Mailer($transport)
+            );
 
             break;
         default:
@@ -98,6 +129,10 @@ function system(Config $config) : System
     $specializations = new ORMSpecializations($entityManager);
 
     $throttling = Throttling::createDefault($calendar);
+    $offers = new ORMOffers($entityManager);
+
+    $encoder = new SHA256Encoder();
+    $emailFormatter = new EmailFormatter($twig);
 
     return new System(
         new CommandBus(
@@ -113,7 +148,7 @@ function system(Config $config) : System
             ),
             new Offer\PostOfferHandler(
                 $calendar,
-                new ORMOffers($entityManager),
+                $offers,
                 new ORMUsers($entityManager),
                 new ORMPosts($entityManager),
                 $throttling,
@@ -125,13 +160,22 @@ function system(Config $config) : System
             new User\FacebookConnectHandler(
                 new ORMUsers($entityManager),
                 $calendar
+            ),
+            new Offer\ApplyThroughEmailHandler(
+                $mailer,
+                $offers,
+                new ORMApplications($entityManager),
+                $encoder,
+                $emailFormatter,
+                $calendar
             )
         ),
         new Queries(
             new DbalOfferThrottleQuery($throttling->limit(), $throttling->since(), $dbalConnection, $calendar),
             new DbalOfferQuery($dbalConnection),
-            new DBALSpecializationQuery($dbalConnection),
-            new DBALUserQuery($dbalConnection)
+            new DbalSpecializationQuery($dbalConnection),
+            new DbalUserQuery($dbalConnection),
+            new DbalApplicationQuery($dbalConnection, $encoder)
         ),
         $systemLogger,
         $calendar

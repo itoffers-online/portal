@@ -18,6 +18,7 @@ use HireInSocial\Application\Offer\Offers;
 use HireInSocial\Application\Offer\UserOffers;
 use HireInSocial\Application\User\User;
 use HireInSocial\Common\PrivateFields;
+use Ramsey\Uuid\UuidInterface;
 
 final class InMemoryOffers implements Offers
 {
@@ -33,6 +34,16 @@ final class InMemoryOffers implements Offers
     public function add(Offer $offer): void
     {
         $this->offers[] = $offer;
+    }
+
+    public function getById(UuidInterface $offerId): Offer
+    {
+        return \current(\array_filter(
+            $this->offers,
+            function (Offer $offer) use ($offerId) {
+                return $offer->id()->equals($offerId);
+            }
+        ));
     }
 
     public function postedBy(User $user, \DateTimeImmutable $since): UserOffers

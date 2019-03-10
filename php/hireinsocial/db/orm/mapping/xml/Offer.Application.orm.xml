@@ -1,0 +1,14 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="HireInSocial\Application\Offer\Application" table="his_job_offer_application">
+
+        <id name="id" type="guid">
+            <generator strategy="NONE" />
+        </id>
+        <field name="offerId" type="guid" />
+        <field name="emailHash"/>
+        <field name="createdAt" type="datetime_immutable" />
+    </entity>
+</doctrine-mapping>
