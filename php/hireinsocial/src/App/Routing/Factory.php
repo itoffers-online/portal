@@ -16,6 +16,7 @@ namespace App\Routing;
 use App\Controller\FacebookController;
 use App\Controller\IndexController;
 use App\Controller\OfferController;
+use App\Controller\ReCaptchaController;
 use App\Controller\SpecializationController;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -31,6 +32,10 @@ final class Factory
         $routes->addRoute(
             new Route('/faq', ['_controller' => [IndexController::class, 'faqAction']]),
             'faq'
+        );
+        $routes->addRoute(
+            new Route('/recaptcha/verify', ['_controller' => [ReCaptchaController::class, 'verifyAction']]),
+            'recaptcha_verify'
         );
         $routes->addRoute(
             new Route('/facebook/login', ['_controller' => [FacebookController::class, 'loginAction']]),

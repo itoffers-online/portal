@@ -17,6 +17,7 @@ use App\Controller\FacebookController;
 use App\Controller\IndexController;
 use App\Controller\LayoutController;
 use App\Controller\OfferController;
+use App\Controller\ReCaptchaController;
 use App\Controller\SpecializationController;
 use App\Routing\Factory;
 use App\Twig\Extension\FacebookExtension;
@@ -84,6 +85,10 @@ final class SymfonyKernel extends Kernel
                 'app_secret' => $this->frameworkConfig['facebook']['app_secret'],
             ]);
 
+        foreach ($this->frameworkConfig['parameters'] as $key => $value) {
+            $c->setParameter($key, $value);
+        }
+
         $c->register(FacebookExtension::class)->addTag('twig.extension');
         $c->register(IntlExtension::class)->addTag('twig.extension');
         $c->register(TextExtension::class)->addTag('twig.extension');
@@ -93,6 +98,7 @@ final class SymfonyKernel extends Kernel
         $c->autowire(OfferController::class)->addTag('controller.service_arguments');
         $c->autowire(LayoutController::class)->addTag('controller.service_arguments');
         $c->autowire(SpecializationController::class)->addTag('controller.service_arguments');
+        $c->autowire(ReCaptchaController::class)->addTag('controller.service_arguments');
     }
 
     public function getProjectDir()

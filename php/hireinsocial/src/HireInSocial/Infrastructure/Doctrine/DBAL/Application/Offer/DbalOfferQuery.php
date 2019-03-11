@@ -121,6 +121,28 @@ final class DbalOfferQuery implements OfferQuery
             ->fetchColumn();
     }
 
+    public function findById(string $id): ?Offer
+    {
+        $offerData = $this->connection->createQueryBuilder()
+            ->select('o.*, os.slug, s.slug as specialization_slug')
+            ->from('his_job_offer_slug', 'os')
+            ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
+            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->where('o.id = :id')
+            ->setParameters(
+                [
+                    'id' => $id,
+                ]
+            )->execute()
+            ->fetch();
+
+        if (!$offerData) {
+            return null;
+        }
+
+        return $this->hydrateOffer($offerData);
+    }
+
     public function findBySlug(string $slug): ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
