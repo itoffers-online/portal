@@ -17,6 +17,10 @@ use HireInSocial\Application\System;
 function symfony(Config $config, System $system) : SymfonyKernel
 {
     $frameworkConfig = [
+        'parameters' => [
+            'google_recaptcha_secret' => $config->getString(Config::RECAPTCHA_SECRET),
+            'apply_email_template' => $config->getString(Config::APPLY_EMAIL_TEMPLATE),
+        ],
         'framework' => [
             'secret' => $config->getString(Config::SYMFONY_SECRET),
             'csrf_protection' => null,
@@ -52,7 +56,11 @@ function symfony(Config $config, System $system) : SymfonyKernel
                 'facebook' => [
                     'app_id' => $config->getString(Config::FB_APP_ID),
                 ],
-                'apply_email_template' => $config->getString(Config::APPLY_EMAIL_TEMPLATE),
+                'google' => [
+                    'recaptcha' => [
+                        'key' => $config->getString(Config::RECAPTCHA_KEY),
+                    ],
+                ],
             ],
             'auto_reload' => $config->getString(Config::ENV) !== 'prod',
         ],

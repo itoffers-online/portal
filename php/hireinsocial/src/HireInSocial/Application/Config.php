@@ -29,6 +29,9 @@ final class Config
     public const APPLY_EMAIL_CONFIG = 'apply_email_config';
     public const MAILER_CONFIG = 'mailer_config';
 
+    public const RECAPTCHA_KEY = 'recaptcha_key';
+    public const RECAPTCHA_SECRET = 'recaptcha_secret';
+
     public const DB_HOST = 'db_host';
     public const DB_PORT = 'db_port';
     public const DB_USER = 'db_user';
@@ -61,6 +64,8 @@ final class Config
             self::REDIS_DSN => getenv('HIS_REDIS_DSN'),
             self::APPLY_EMAIL_TEMPLATE => getenv('HIS_APPLY_EMAIL_TEMPLATE'),
             self::APPLY_EMAIL_CONFIG => getenv('HIS_APPLY_EMAIL_CONFIG'),
+            self::RECAPTCHA_KEY => getenv('HIS_RECAPTCHA_KEY'),
+            self::RECAPTCHA_SECRET => getenv('HIS_RECAPTCHA_SECRET'),
             self::MAILER_CONFIG => getenv('HIS_MAILER_CONFIG'),
             self::FB_APP_ID => getenv('HIS_FB_APP_ID'),
             self::FB_APP_SECRET => getenv('HIS_FB_APP_SECRET'),

@@ -1,5 +1,42 @@
 {% extends 'base.html.twig' %}
 
+{% block headerjs %}
+<script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(window.document).ready(function() {
+        $('#job-apply').on('click', function(event) {
+            event.preventDefault();
+
+            $(this).hide();
+
+            var recaptcha = grecaptcha.render('google-recaptcha', {
+                'sitekey' : '{{ google.recaptcha.key }}',
+                'theme' : 'light',
+                'callback' : function(token) {
+                    $('#google-recaptcha').hide();
+
+                    $.post({
+                        url: "{{ url('recaptcha_verify') }}",
+                        data: {
+                            'google-recaptcha-token': token,
+                            'offer-id': '{{ offer.id }}'
+                        }
+                    }).then(function(response) {
+                        $('#job-apply-email').html('<a href="mailto:' + response.email + '">' + response.email + '</a>');
+                        $('#job-apply-info').removeClass('d-none');
+                    }).catch(function() {
+                        grecaptcha.reset(recaptcha);
+                        $('#google-recaptcha').show();
+                    });
+                }
+            });
+        })
+    });
+</script>
+{% endblock %}
 {% block header %}{% endblock %}
 
 {% block body %}
@@ -49,15 +86,12 @@
             <h4 class="mt-2">Kontakt</h4>
             <div class="card">
                 <div class="card-body">
-                    <p>
-                        Jeżeli jesteś zainteresowany ofertą wyślij CV na adres: <br/>
-                        <a href="mailto:{{ apply_email_template|format(offer.slug) }}">
-                            {{ apply_email_template|format(offer.slug) }}
-                        </a>
-                    </p>
-                    <p class="text-right">
-                        {{ offer.contact.name }}
-                    </p>
+                    <div id="job-apply-info" class="d-none">
+                        <p>Jeżeli jesteś zainteresowany ofertą wyślij CV na adres: </p>
+                        <div id="job-apply-email"></div>
+                    </div>
+                    <div id="google-recaptcha"></div>
+                    <button class="btn btn-primary" id="job-apply">Aplikuj</button>
                 </div>
             </div>
 

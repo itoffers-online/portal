@@ -41,6 +41,7 @@
         "doctrine/migrations": "^1.8",
         "doctrine/orm": "^2.6",
         "facebook/graph-sdk": "^5.7",
+        "google/recaptcha": "^1.2",
         "hashids/hashids": "^3.0",
         "monolog/monolog": "^1.24",
         "predis/predis": "^1.1",
