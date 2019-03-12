@@ -111,7 +111,7 @@ final class DbalOfferQuery implements OfferQuery
         }
 
         return (int) $queryBuilder->setParameters(
-                [
+            [
                     'specializationSlug' => $filter->specialization(),
                     'sinceDate' => $filter->sinceDate()->format(\DateTimeInterface::ISO8601),
                     'tillDate' => $filter->tillDate()->format(\DateTimeInterface::ISO8601),

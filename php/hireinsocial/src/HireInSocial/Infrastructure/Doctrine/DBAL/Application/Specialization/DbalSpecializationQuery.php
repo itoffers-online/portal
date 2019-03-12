@@ -102,7 +102,7 @@ SQL
             $offers,
             ($data['fb_page_id'])
                 ? new FacebookChannel(
-                   $data['fb_page_id'],
+                    $data['fb_page_id'],
                     $data['fb_group_id']
                 )
                 : null
