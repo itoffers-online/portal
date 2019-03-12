@@ -143,6 +143,28 @@ final class DbalOfferQuery implements OfferQuery
         return $this->hydrateOffer($offerData);
     }
 
+    public function findByEmailHash(string $emailHah): ?Offer
+    {
+        $offerData = $this->connection->createQueryBuilder()
+            ->select('o.*, os.slug, s.slug as specialization_slug')
+            ->from('his_job_offer_slug', 'os')
+            ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
+            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->where('o.email_hash = :emailHash')
+            ->setParameters(
+                [
+                    'emailHash' => $emailHah,
+                ]
+            )->execute()
+            ->fetch();
+
+        if (!$offerData) {
+            return null;
+        }
+
+        return $this->hydrateOffer($offerData);
+    }
+
     public function findBySlug(string $slug): ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
@@ -220,9 +242,10 @@ final class DbalOfferQuery implements OfferQuery
         $salary = $offerData['salary'] ? \json_decode($offerData['salary'], true) : null;
 
         return new Offer(
-            $offerData['slug'],
-            $offerData['specialization_slug'],
             Uuid::fromString($offerData['id']),
+            $offerData['slug'],
+            $offerData['email_hash'],
+            $offerData['specialization_slug'],
             new \DateTimeImmutable($offerData['created_at']),
             new Offer\Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),
             new Offer\Contact($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),

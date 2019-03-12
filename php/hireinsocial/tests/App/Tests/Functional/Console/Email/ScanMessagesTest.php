@@ -16,7 +16,6 @@ namespace App\Tests\Functional\Console\Email;
 use App\Command\Email\ScanMessages;
 use App\Tests\Functional\Console\ConsoleTestCase;
 use Ddeboer\Imap\ConnectionInterface;
-use Ddeboer\Imap\ImapResource;
 use Ddeboer\Imap\MailboxInterface;
 use Ddeboer\Imap\Message\EmailAddress;
 use Ddeboer\Imap\MessageInterface;
@@ -55,7 +54,7 @@ final class ScanMessagesTest extends ConsoleTestCase
 
 
         $message = $this->createMessage(
-            sprintf('apply+%s', $offer->slug()),
+            sprintf('apply+%s', $offer->emailHash()),
             'doe',
             'example.com',
             'Jon Doe'

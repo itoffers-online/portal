@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Application\Offer;
 
+use Hashids\Hashids;
 use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\System\Calendar;
 use HireInSocial\Application\User\User;
@@ -22,6 +23,7 @@ use Ramsey\Uuid\UuidInterface;
 class Offer
 {
     private $id;
+    private $emailHash;
     private $userId;
     private $specializationId;
     private $createdAt;
@@ -47,6 +49,7 @@ class Offer
     ) {
         $this->id = Uuid::uuid4()->toString();
         $this->userId = $userId->toString();
+        $this->emailHash = (new Hashids())->encode(time() + \random_int(0, 5000));
         $this->specializationId = $specializationId;
         $this->company = $company;
         $this->position = $position;

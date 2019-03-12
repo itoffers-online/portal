@@ -37,7 +37,7 @@ class Slug
         $slugify = new Slugify();
 
         return new self(
-            sprintf('%s-%s', $slugify->slugify($offer->position()->name() . ' ' . $offer->company()->name()), $hashids->encode(time())),
+            sprintf('%s-%s', $slugify->slugify($offer->position()->name() . ' ' . $offer->company()->name()), $hashids->encode(time() + \random_int(0, 5000))),
             $offer->id(),
             $calendar->currentTime()
         );

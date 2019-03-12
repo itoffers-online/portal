@@ -105,7 +105,7 @@ final class ScanMessages extends Command
             $email = (new Parser($message->getTo()[0]->getAddress()))->parse();
             $sender = $message->getSender()[0]->getAddress();
 
-            if ($offer = $this->system->query(OfferQuery::class)->findBySlug($email->tag())) {
+            if ($offer = $this->system->query(OfferQuery::class)->findByEmailHash($email->tag())) {
                 if ($this->system->query(ApplicationQuery::class)->alreadyApplied($offer->id()->toString(), $sender)) {
                     $this->io->note(sprintf('Marking email as seen since sender already applied for <info>%s</info> job offer', $offer->slug()));
                     $message->markAsSeen();
