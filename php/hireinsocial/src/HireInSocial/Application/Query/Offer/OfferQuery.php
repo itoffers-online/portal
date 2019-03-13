@@ -22,6 +22,7 @@ interface OfferQuery extends Query
     public function total() : int;
     public function count(OfferFilter $filter) : int;
     public function findAll(OfferFilter $filter) : Offers;
+    public function findByEmailHash(string $emailHash) : ?Offer;
     public function findById(string $id) : ?Offer;
     public function findBySlug(string $slug) : ?Offer;
     public function findOneAfter(Offer $offer) : ?Offer;
