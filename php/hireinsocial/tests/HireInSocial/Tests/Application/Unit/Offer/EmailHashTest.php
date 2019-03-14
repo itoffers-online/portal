@@ -46,9 +46,6 @@ final class EmailHashTest extends TestCase
         );
     }
 
-    /**
-     * @return EmailHash
-     */
     public function createMD5Encoder(): Encoder
     {
         return new class implements Encoder {
