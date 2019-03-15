@@ -43,6 +43,7 @@
         "facebook/graph-sdk": "^5.7",
         "google/recaptcha": "^1.2",
         "hashids/hashids": "^3.0",
+        "infection/infection": "^0.12.2",
         "monolog/monolog": "^1.24",
         "predis/predis": "^1.1",
         "psr/log": "^1.1",
