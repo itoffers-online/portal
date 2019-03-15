@@ -32,7 +32,7 @@ class HireInSocialTestCase extends TestCase
      */
     protected $databaseContext;
 
-    public function setUp()
+    public function setUp() : void
     {
         $config = bootstrap(ROOT_DIR);
 

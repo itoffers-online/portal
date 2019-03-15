@@ -3,3 +3,4 @@
 !/var/.gitkeep
 /var/
 /build/
+*.cache

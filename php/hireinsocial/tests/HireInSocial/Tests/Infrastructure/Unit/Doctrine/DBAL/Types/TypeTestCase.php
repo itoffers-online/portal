@@ -29,7 +29,7 @@ abstract class TypeTestCase extends TestCase
      */
     protected $type;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         if (!Type::hasType($this->getTypeName())) {
             Type::addType($this->getTypeName(), $this->getTypeClass());

@@ -70,11 +70,11 @@ final class ScanMessagesTest extends ConsoleTestCase
             'command'  => ScanMessages::NAME,
         ]);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "New messages: 1",
             $commandTester->getDisplay()
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             "Message forwarded to offer contact email and marked as seen.",
             $commandTester->getDisplay()
         );
@@ -118,12 +118,12 @@ final class ScanMessagesTest extends ConsoleTestCase
             'command' => ScanMessages::NAME,
         ]);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "New messages: 1",
             $commandTester->getDisplay()
         );
-        $this->assertContains(
-            'No active related job offer was found.',
+        $this->assertStringContainsString(
+            'No active related job offer',
             $commandTester->getDisplay()
         );
     }
