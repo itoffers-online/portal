@@ -30,6 +30,15 @@
     {% block header %}
         {{ render(controller('App\\Controller\\LayoutController::headerAction')) }}
     {% endblock %}
+
+    {% for label, messages in app.flashes(['warning', 'error', 'success']) %}
+        {% for message in messages %}
+            <div data-alert-{{ label }} class="alert alert-{{ label }} text-center">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     {% block body %}{% endblock %}
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">

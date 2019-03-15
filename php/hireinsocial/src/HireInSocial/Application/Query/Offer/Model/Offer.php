@@ -20,6 +20,7 @@ use HireInSocial\Application\Query\Offer\Model\Offer\Description;
 use HireInSocial\Application\Query\Offer\Model\Offer\Location;
 use HireInSocial\Application\Query\Offer\Model\Offer\Position;
 use HireInSocial\Application\Query\Offer\Model\Offer\Salary;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 final class Offer
@@ -27,6 +28,7 @@ final class Offer
     private $id;
     private $slug;
     private $emailHash;
+    private $userId;
     private $specializationSlug;
     private $createdAt;
     private $company;
@@ -41,6 +43,7 @@ final class Offer
         UuidInterface $id,
         string $slug,
         string $emailHash,
+        UuidInterface $userId,
         string $specializationSlug,
         \DateTimeImmutable $createdAt,
         Company $company,
@@ -53,6 +56,8 @@ final class Offer
     ) {
         $this->slug = $slug;
         $this->id = $id;
+        $this->emailHash = $emailHash;
+        $this->userId = $userId;
         $this->createdAt = $createdAt;
         $this->company = $company;
         $this->contact = $contact;
@@ -62,12 +67,16 @@ final class Offer
         $this->position = $position;
         $this->salary = $salary;
         $this->specializationSlug = $specializationSlug;
-        $this->emailHash = $emailHash;
     }
 
     public function id(): UuidInterface
     {
         return $this->id;
+    }
+
+    public function userId(): ?UuidInterface
+    {
+        return $this->userId;
     }
 
     public function emailHash(): string
@@ -123,5 +132,10 @@ final class Offer
     public function salary(): ?Salary
     {
         return $this->salary;
+    }
+
+    public function postedBy(string $userId) : bool
+    {
+        return $this->userId->equals(Uuid::fromString($userId));
     }
 }

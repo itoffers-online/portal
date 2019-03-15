@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace HireInSocial\Application\Offer;
 
 use Hashids\Hashids;
+use HireInSocial\Application\Assertion;
 use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\System\Calendar;
 use HireInSocial\Application\User\User;
@@ -34,6 +35,7 @@ class Offer
     private $contract;
     private $description;
     private $contact;
+    private $removedAt;
 
     private function __construct(
         UuidInterface $userId,
@@ -130,5 +132,12 @@ class Offer
     public function contact(): Contact
     {
         return $this->contact;
+    }
+
+    public function remove(User $user, Calendar $calendar) : void
+    {
+        Assertion::true(Uuid::fromString($this->userId)->equals($user->id()));
+
+        $this->removedAt = $calendar->currentTime();
     }
 }

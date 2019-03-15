@@ -129,7 +129,9 @@ function system(Config $config) : System
     $specializations = new ORMSpecializations($entityManager);
 
     $throttling = Throttling::createDefault($calendar);
-    $offers = new ORMOffers($entityManager);
+    $ormOffers = new ORMOffers($entityManager);
+    $ormUsers = new ORMUsers($entityManager);
+    $ormApplications = new ORMApplications($entityManager);
 
     $encoder = new SHA256Encoder();
     $emailFormatter = new EmailFormatter($twig);
@@ -148,8 +150,8 @@ function system(Config $config) : System
             ),
             new Offer\PostOfferHandler(
                 $calendar,
-                $offers,
-                new ORMUsers($entityManager),
+                $ormOffers,
+                $ormUsers,
                 new ORMPosts($entityManager),
                 $throttling,
                 new FacebookGroupService($facebook),
@@ -157,14 +159,19 @@ function system(Config $config) : System
                 $specializations,
                 new ORMSlugs($entityManager)
             ),
+            new Offer\RemoveOfferHandler(
+                $ormUsers,
+                $ormOffers,
+                $calendar
+            ),
             new User\FacebookConnectHandler(
-                new ORMUsers($entityManager),
+                $ormUsers,
                 $calendar
             ),
             new Offer\ApplyThroughEmailHandler(
                 $mailer,
-                $offers,
-                new ORMApplications($entityManager),
+                $ormOffers,
+                $ormApplications,
                 $encoder,
                 $emailFormatter,
                 $calendar

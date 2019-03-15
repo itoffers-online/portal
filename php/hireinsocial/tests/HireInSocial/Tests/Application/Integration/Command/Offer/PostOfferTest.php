@@ -15,6 +15,7 @@ namespace HireInSocial\Tests\Application\Integration\Command\Offer;
 
 use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\Offer\Throttling;
+use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Tests\Application\Integration\HireInSocialTestCase;
@@ -29,7 +30,10 @@ final class PostOfferTest extends HireInSocialTestCase
         $this->systemContext->createSpecialization($specialization = 'spec');
         $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $specialization));
 
+        $offer = $this->systemContext->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor($specialization))->first();
+
         $this->assertEquals(1, $this->systemContext->system()->query(OfferQuery::class)->total());
+        $this->assertTrue($offer->postedBy($user->id()));
     }
 
     public function test_posting_offer_to_facebook_when_specialization_fb_channel_is_not_set()

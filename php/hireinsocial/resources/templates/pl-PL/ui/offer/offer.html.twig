@@ -54,7 +54,13 @@
             {% endif %}
         </div>
     </div>
-    <h1 class="mt-2">{% include 'specialization/_logo_plain.html.twig' with {specialization: offer.specializationSlug} only %} {{ offer.position.name }} <span class="text-muted">w</span> {{ offer.company.name }}</strong></h1>
+    <h1 class="mt-2">
+        {% include 'specialization/_logo_plain.html.twig' with {specialization: offer.specializationSlug} only %}
+        {{ offer.position.name }} <span class="text-muted">w</span> {{ offer.company.name }}
+        {% if userId and offer.postedBy(userId)%}
+            <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger d-inline">Usuń</a>
+        {% endif %}
+    </h1>
     <div class="row">
         <div class="col-6">
             <h4>Opis Stanowiska</h4>

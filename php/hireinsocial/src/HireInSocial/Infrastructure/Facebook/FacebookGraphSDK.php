@@ -107,6 +107,37 @@ final class FacebookGraphSDK implements Facebook
         }
     }
 
+    private function delete(string $url, array $parameters, string $accessToken = null) : FacebookResponse
+    {
+        $this->logger->debug('Facebook SDK pre DELETE request', [
+            'appId' => $this->facebook->getApp()->getId(),
+            'app_secret' => mb_substr($this->facebook->getApp()->getSecret(), 0, 4) . '############',
+            'url' => $url,
+            'parameters' => $parameters,
+            'graph_version' => $this->facebook->getDefaultGraphVersion(),
+            'access_token' => $accessToken,
+        ]);
+
+        try {
+            $response = $this->facebook->delete($url, $parameters, $accessToken ?: $this->facebook->getApp()->getAccessToken());
+
+            $this->logger->debug('Facebook SDK post DELETE request', [
+                'appId' => $this->facebook->getApp()->getId(),
+                'app_secret' => mb_substr($this->facebook->getApp()->getSecret(), 0, 4) . '############',
+                'url' => $url,
+                'parameters' => $parameters,
+                'graph_version' => $this->facebook->getDefaultGraphVersion(),
+                'response' => $response->getBody(),
+            ]);
+
+            return $response;
+        } catch (\Throwable $exception) {
+            $this->logException($url, $accessToken ?: (string) $this->facebook->getApp()->getAccessToken(), $exception);
+
+            throw $exception;
+        }
+    }
+
     private function logException(string $url, string $accessToken, \Throwable $exception): void
     {
         $this->logger->error('Facebook SDK exception', [

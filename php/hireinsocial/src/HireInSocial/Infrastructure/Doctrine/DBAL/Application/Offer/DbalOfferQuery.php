@@ -31,7 +31,7 @@ final class DbalOfferQuery implements OfferQuery
 
     public function total(): int
     {
-        return (int) $this->connection->fetchColumn('SELECT COUNT(*) FROM his_job_offer');
+        return (int) $this->connection->fetchColumn('SELECT COUNT(*) FROM his_job_offer o WHERE o.removed_at IS NULL');
     }
 
     public function findAll(OfferFilter $filter): Offers
@@ -41,7 +41,8 @@ final class DbalOfferQuery implements OfferQuery
             ->from('his_job_offer', 'o')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
-            ->where('o.created_at >= :sinceDate AND o.created_at <= :tillDate');
+            ->where('o.created_at >= :sinceDate AND o.created_at <= :tillDate')
+            ->andWhere('o.removed_at IS NULL');
 
         if ($filter->specialization()) {
             $queryBuilder->andWhere('s.slug = :specializationSlug');
@@ -96,7 +97,8 @@ final class DbalOfferQuery implements OfferQuery
             ->select('COUNT(o.id)')
             ->from('his_job_offer', 'o')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
-            ->where('o.created_at >= :sinceDate AND o.created_at <= :tillDate');
+            ->where('o.created_at >= :sinceDate AND o.created_at <= :tillDate')
+            ->andWhere('o.removed_at IS NULL');
 
         if ($filter->specialization()) {
             $queryBuilder->andWhere('s.slug = :specializationSlug');
@@ -129,6 +131,7 @@ final class DbalOfferQuery implements OfferQuery
             ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->where('o.id = :id')
+            ->andWhere('o.removed_at IS NULL')
             ->setParameters(
                 [
                     'id' => $id,
@@ -151,6 +154,7 @@ final class DbalOfferQuery implements OfferQuery
             ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->where('o.email_hash = :emailHash')
+            ->andWhere('o.removed_at IS NULL')
             ->setParameters(
                 [
                     'emailHash' => $emailHah,
@@ -173,6 +177,7 @@ final class DbalOfferQuery implements OfferQuery
             ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->where('os.slug = :offerSlug')
+            ->andWhere('o.removed_at IS NULL')
             ->setParameters(
                 [
                     'offerSlug' => $slug,
@@ -195,6 +200,7 @@ final class DbalOfferQuery implements OfferQuery
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
             ->where('s.slug = :specializationSlug AND o.created_at < :sinceDate')
+            ->andWhere('o.removed_at IS NULL')
             ->orderBy('o.created_at', 'DESC')
             ->setMaxResults(1)
             ->setParameters(
@@ -220,6 +226,7 @@ final class DbalOfferQuery implements OfferQuery
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
             ->where('s.slug = :specializationSlug AND o.created_at > :beforeDate')
+            ->andWhere('o.removed_at IS NULL')
             ->orderBy('o.created_at', 'ASC')
             ->setMaxResults(1)
             ->setParameters(
@@ -245,6 +252,7 @@ final class DbalOfferQuery implements OfferQuery
             Uuid::fromString($offerData['id']),
             $offerData['slug'],
             $offerData['email_hash'],
+            Uuid::fromString($offerData['user_id']),
             $offerData['specialization_slug'],
             new \DateTimeImmutable($offerData['created_at']),
             new Offer\Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),

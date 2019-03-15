@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace HireInSocial\Application\Facebook;
 
+use HireInSocial\Application\Offer\Offer;
+
 interface Posts
 {
     public function add(Post $post) : void;
+    public function findFor(Offer $offer) : ?Post;
 }
