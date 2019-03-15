@@ -14,7 +14,8 @@
 
     <filter>
         <whitelist>
-            <directory>./src/</directory>
+            <directory>./src/HireInSocial/Application</directory>
+            <directory>./src/HireInSocial/Common</directory>
         </whitelist>
     </filter>
 

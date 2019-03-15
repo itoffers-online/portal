@@ -97,7 +97,13 @@
             "@test:php:cs",
             "@db:reset:test",
             "@symfony:cache:clear:test",
-            "phpunit"
+            "phpunit --testsuite=unit",
+            "phpunit --testsuite=integration",
+            "phpunit --testsuite=functional"
+        ],
+        "test:coverage:unit": [
+            "rm -rf ./var/coverage",
+            "phpdbg -qrr ./vendor/bin/phpunit --testsuite=unit --coverage-html ./var/coverage"
         ],
         "test:php:cs": [
             "phpstan analyse src tests bin",
