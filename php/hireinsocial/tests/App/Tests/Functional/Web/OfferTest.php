@@ -24,7 +24,7 @@ final class OfferTest extends WebTestCase
 {
     private $specialization = 'php';
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 

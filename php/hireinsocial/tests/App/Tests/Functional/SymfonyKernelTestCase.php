@@ -76,7 +76,7 @@ class SymfonyKernelTestCase extends KernelTestCase
         return static::$system;
     }
 
-    public function setUp()
+    public function setUp() : void
     {
         $config = static::config();
 
