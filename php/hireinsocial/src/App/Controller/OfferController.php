@@ -25,6 +25,7 @@ use HireInSocial\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Offer\Position;
 use HireInSocial\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Application\Command\Offer\PostOffer;
+use HireInSocial\Application\Command\Offer\RemoveOffer;
 use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
@@ -136,7 +137,7 @@ final class OfferController extends AbstractController
         ]);
     }
 
-    public function offerAction(string $offerSlug) : Response
+    public function offerAction(Request $request, string $offerSlug) : Response
     {
         $offer = $this->system->query(OfferQuery::class)->findBySlug($offerSlug);
 
@@ -148,9 +149,34 @@ final class OfferController extends AbstractController
         $previousOffer = $this->system->query(OfferQuery::class)->findOneBefore($offer);
 
         return $this->templating->renderResponse('offer/offer.html.twig', [
+            'userId' => $request->getSession()->get(FacebookController::USER_SESSION_KEY),
             'offer' => $offer,
             'nextOffer' => $nextOffer,
             'previousOffer' => $previousOffer,
         ]);
+    }
+
+    public function removeAction(Request $request, string $offerSlug) : Response
+    {
+        $offer = $this->system->query(OfferQuery::class)->findBySlug($offerSlug);
+        $userId = $request->getSession()->get(FacebookController::USER_SESSION_KEY);
+
+        if (!$userId || !$offer->postedBy($userId)) {
+            return new Response('', Response::HTTP_FORBIDDEN);
+        }
+
+        $this->system->handle(new RemoveOffer($offer->id()->toString(), $userId));
+
+        $this->addFlash('success', $this->renderView('alert/offer_removed.txt'));
+
+        return $this->redirectToRoute('home');
+    }
+
+    public function removeConfirmationAction(Request $request, string $offerSlug) : Response
+    {
+        return $this->render(
+            'offer/remove_confirmation.html.twig',
+            ['offerSlug' => $offerSlug]
+        );
     }
 }

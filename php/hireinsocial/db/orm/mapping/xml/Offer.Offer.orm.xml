@@ -12,6 +12,7 @@
         <field name="specializationId" type="guid" />
         <field name="createdAt" type="datetime_immutable" />
         <field name="salary" type="his_offer_salary" nullable="true"/>
+        <field name="removedAt" type="datetime_immutable" nullable="true"/>
 
         <embedded name="company" class="HireInSocial\Application\Offer\Company" />
         <embedded name="position" class="HireInSocial\Application\Offer\Position" />

@@ -5,7 +5,7 @@
 {% block body %}
     {% if throttled %}
     <div class="alert alert-warning text-center" role="alert">
-        Nie możesz jeszcze dodać kolejnego ogłoszenia, musisz odczekać co najmniej 12 godzin.
+        Nie możesz jeszcze dodać kolejnego ogłoszenia, dodałeś już {{ throttleLimit }} w przeciągu ostatnich {{ throttleSince.format('%d') }} dni. Musisz poczekać.<br/>
     </div>
     {% else %}
     <div class="alert alert-info text-center" role="alert">

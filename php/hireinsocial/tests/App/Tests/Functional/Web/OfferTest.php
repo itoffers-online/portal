@@ -18,6 +18,7 @@ use Faker\Factory;
 use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Tests\Application\MotherObject\Command\Offer\PostOfferMother;
+use Symfony\Component\HttpFoundation\Response;
 
 final class OfferTest extends WebTestCase
 {
@@ -35,9 +36,7 @@ final class OfferTest extends WebTestCase
         $user = $this->systemContext->createUser();
 
         $client = static::createClient();
-        $client->getContainer()
-            ->get('session')
-            ->set(FacebookController::USER_SESSION_KEY, (string) $user->id());
+        $this->authenticate($client, $user);
 
         $crawler = $client->request(
             'GET',
@@ -104,5 +103,39 @@ final class OfferTest extends WebTestCase
 
         $client->request('GET', $client->getContainer()->get('router')->generate('offer', ['offerSlug' => $offer->slug()]));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+
+    public function test_deleting_offer()
+    {
+        $user = $this->systemContext->createUser();
+        $client = static::createClient();
+        $this->authenticate($client, $user);
+
+        $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $this->specialization));
+
+        $offer = $this->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor($this->specialization))->first();
+
+        $client->request('GET', $client->getContainer()->get('router')->generate('offer', ['offerSlug' => $offer->slug()]));
+
+        // go to confirmation page
+        $client->click($client->getCrawler()->filter('[data-remove-offer]')->link());
+
+        // confirm removing offer
+        $client->click($client->getCrawler()->filter('[data-remove-offer]')->link());
+        $client->followRedirect();
+
+        $this->assertEquals(1, $client->getCrawler()->filter('[data-alert-success]')->count());
+        $this->assertEquals(0, $this->system()->query(OfferQuery::class)->total());
+    }
+
+    public function test_attempt_to_remove_offer_that_does_not_belong_to_the_user()
+    {
+        $user = $this->systemContext->createUser();
+        $client = static::createClient();
+        $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $this->specialization));
+        $offer = $this->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor($this->specialization))->first();
+
+        $client->request('GET', $client->getContainer()->get('router')->generate('offer_remove', ['offerSlug' => $offer->slug()]));
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
     }
 }

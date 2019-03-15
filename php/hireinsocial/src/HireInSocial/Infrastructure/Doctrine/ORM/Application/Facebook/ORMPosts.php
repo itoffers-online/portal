@@ -16,6 +16,7 @@ namespace HireInSocial\Infrastructure\Doctrine\ORM\Application\Facebook;
 use Doctrine\ORM\EntityManager;
 use HireInSocial\Application\Facebook\Post;
 use HireInSocial\Application\Facebook\Posts;
+use HireInSocial\Application\Offer\Offer;
 
 final class ORMPosts implements Posts
 {
@@ -29,5 +30,10 @@ final class ORMPosts implements Posts
     public function add(Post $post): void
     {
         $this->entityManager->persist($post);
+    }
+
+    public function findFor(Offer $offer): ?Post
+    {
+        return $this->entityManager->getRepository(Post::class)->findOneBy(['offerId' => $offer->id()]);
     }
 }
