@@ -21,4 +21,4 @@ install:
 
 script:
   - composer run test
-  - phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit'
+  - phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --only-covered

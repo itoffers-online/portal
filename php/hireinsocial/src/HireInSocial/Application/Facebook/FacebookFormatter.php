@@ -15,13 +15,13 @@ namespace HireInSocial\Application\Facebook;
 
 use HireInSocial\Application\Offer\Offer;
 use HireInSocial\Application\Offer\OfferFormatter;
-use Twig_Environment;
+use Twig\Environment;
 
 final class FacebookFormatter implements OfferFormatter
 {
     private $twig;
 
-    public function __construct(Twig_Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }

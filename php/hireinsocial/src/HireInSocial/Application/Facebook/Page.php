@@ -22,8 +22,8 @@ final class Page
 
     public function __construct(string $fbId, string $accessToken)
     {
-        Assertion::betweenLength($fbId, 3, 255);
-        Assertion::betweenLength($accessToken, 3, 255);
+        Assertion::betweenLength($fbId, 3, 255, 'Invalid FB Page ID');
+        Assertion::betweenLength($accessToken, 3, 255, 'Invalid FB Page Token');
 
         $this->fbId = $fbId;
         $this->accessToken = $accessToken;
