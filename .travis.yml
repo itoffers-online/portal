@@ -14,7 +14,6 @@ cache:
 before_install:
   - psql -c 'create database hireinsocial_test;' -U postgres
   - psql -c "CREATE USER hireinsocial WITH PASSWORD 'hireinsocial';" -U postgres
-  - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
   - cd php/hireinsocial
@@ -22,3 +21,4 @@ install:
 
 script:
   - composer run test
+  - phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --only-covered

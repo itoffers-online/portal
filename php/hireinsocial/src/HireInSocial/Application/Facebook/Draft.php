@@ -27,9 +27,6 @@ final class Draft
 
     private function __construct(UuidInterface $userId, string $message, string $link)
     {
-        Assertion::notEmpty($message);
-        Assertion::url($link);
-
         $this->userId = $userId;
         $this->message = $message;
         $this->link = $link;

@@ -68,6 +68,7 @@
       - "php{{ php7_version }}-fpm"
       - "php{{ php7_version }}-soap"
       - "php{{ php7_version }}-imap"
+      - "php{{ php7_version }}-phpdbg"
 
     openssl_cert_common_name: "hireinsocial.local"
     openssl_cert_alternate_names:

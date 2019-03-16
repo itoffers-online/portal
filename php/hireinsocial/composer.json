@@ -43,6 +43,7 @@
         "facebook/graph-sdk": "^5.7",
         "google/recaptcha": "^1.2",
         "hashids/hashids": "^3.0",
+        "infection/infection": "^0.12.2",
         "monolog/monolog": "^1.24",
         "predis/predis": "^1.1",
         "psr/log": "^1.1",
@@ -96,7 +97,13 @@
             "@test:php:cs",
             "@db:reset:test",
             "@symfony:cache:clear:test",
-            "phpunit"
+            "phpunit --testsuite=unit",
+            "phpunit --testsuite=integration",
+            "phpunit --testsuite=functional"
+        ],
+        "test:coverage:unit": [
+            "rm -rf ./var/coverage",
+            "phpdbg -qrr ./vendor/bin/phpunit --testsuite=unit --coverage-html ./var/coverage"
         ],
         "test:php:cs": [
             "phpstan analyse src tests bin",

@@ -24,7 +24,7 @@ final class Group
 
     public function __construct(string $fbId)
     {
-        Assertion::betweenLength($fbId, 3, 255);
+        Assertion::betweenLength($fbId, 3, 255, 'Invalid FB Group ID');
 
         $this->fbId = $fbId;
     }

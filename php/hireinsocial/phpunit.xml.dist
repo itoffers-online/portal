@@ -12,10 +12,23 @@
         <ini name="error_reporting" value="-1" />
     </php>
 
+    <filter>
+        <whitelist>
+            <directory>./src/HireInSocial/Application</directory>
+            <directory>./src/HireInSocial/Common</directory>
+        </whitelist>
+    </filter>
+
     <testsuites>
-        <testsuite name="jobs">
+        <testsuite name="functional">
             <directory>tests/App/Tests</directory>
-            <directory>tests/HireInSocial/Tests</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>tests/HireInSocial/Tests/Application/Integration</directory>
+        </testsuite>
+        <testsuite name="unit">
+            <directory>tests/HireInSocial/Tests/Application/Unit</directory>
+            <directory>tests/HireInSocial/Tests/Infrastructure/Unit</directory>
         </testsuite>
     </testsuites>
 </phpunit>

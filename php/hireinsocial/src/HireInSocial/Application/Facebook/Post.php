@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Application\Facebook;
 
+use HireInSocial\Application\Assertion;
 use HireInSocial\Application\Offer\Offer;
 use Ramsey\Uuid\UuidInterface;
 
@@ -23,6 +24,8 @@ class Post
 
     public function __construct(string $fbId, Offer $offer)
     {
+        Assertion::betweenLength($fbId, 3, 255, 'Invalid FB Post ID');
+
         $this->fbId = $fbId;
         $this->jobOfferId = $offer->id();
     }

@@ -19,14 +19,22 @@ This command will execute whole testsuite at once, it will also clear all caches
 Environment variables used in tests are defined in [.env.test](.env.test) file.
 
 ```
-$ composer run test
+$ composer test
 ```
+
+To check PHPUnit code coverage run:
+
+```
+$ composer test:coverage:unit
+```
+
+And open `./var/coverage/index.html` in your browser.
 
 Test types:
 
 * [Unit](tests/HireInSocial/Tests/Application/Unit)
+* [Unit](tests/HireInSocial/Tests/Infrastructure/Unit) (infrastructure)
 * [Integration](tests/HireInSocial/Tests/Application/Integration) (application)
-* [Integration](tests/HireInSocial/Tests/Infrastructure/Integration) (infrastructure)
 * [Functional](tests/App/Tests/Functional)
 
 
@@ -66,13 +74,10 @@ $ bin/db migrations:migrate
 Execute all migrations
 
 
-### Redis
+### Symfony Cache Clear
 
-Redis is used as a storage for throttling mechanism. 
-In development environment it can be easily flushed by:
+Cleans symfony cache (twig, routing, translation etc)
 
 ```
-$ bin/redis-flush
+$ bin/symfony cache:clear
 ```
-
-This command is not available in deployment archive.
