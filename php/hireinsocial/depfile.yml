@@ -1,0 +1,24 @@
+paths:
+  - ./src
+exclude_files:
+  - .*test.*
+layers:
+  - name: Symfony
+    collectors:
+      - type: directory
+        regex: src/App
+  - name: Application
+    collectors:
+      - type: directory
+        regex: src/HireInSocial/Application
+  - name: Infrastructure
+    collectors:
+      - type: directory
+        regex: src/HireInSocial/Infrastructure
+ruleset:
+  Symfony:
+    - Application
+    - Infrastructure
+  Infrastructure:
+    - Application
+  Application: ~
