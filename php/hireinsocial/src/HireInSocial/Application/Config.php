@@ -29,6 +29,8 @@ final class Config
     public const APPLY_EMAIL_CONFIG = 'apply_email_config';
     public const MAILER_CONFIG = 'mailer_config';
 
+    public const FILESYSTEM_CONFIG = 'filesystem_config';
+
     public const RECAPTCHA_KEY = 'recaptcha_key';
     public const RECAPTCHA_SECRET = 'recaptcha_secret';
 
@@ -70,6 +72,7 @@ final class Config
             self::FB_APP_ID => getenv('HIS_FB_APP_ID'),
             self::FB_APP_SECRET => getenv('HIS_FB_APP_SECRET'),
             self::THROTTLE_DURATION => getenv('HIS_THROTTLE_DURATION'),
+            self::FILESYSTEM_CONFIG => getenv('HIS_FILESYSTEM_CONFIG'),
             self::DB_HOST => getenv('HIS_DB_HOST'),
             self::DB_PORT => getenv('HIS_DB_PORT'),
             self::DB_USER => getenv('HIS_DB_USER'),

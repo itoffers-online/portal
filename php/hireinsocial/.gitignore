@@ -4,3 +4,4 @@
 /var/
 /build/
 *.cache
+/public/upload

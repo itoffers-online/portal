@@ -18,6 +18,8 @@ use HireInSocial\Application\Query\Offer\Model\Offer\Contact;
 use HireInSocial\Application\Query\Offer\Model\Offer\Contract;
 use HireInSocial\Application\Query\Offer\Model\Offer\Description;
 use HireInSocial\Application\Query\Offer\Model\Offer\Location;
+use HireInSocial\Application\Query\Offer\Model\Offer\OfferPDF;
+use HireInSocial\Application\Query\Offer\Model\Offer\Parameters;
 use HireInSocial\Application\Query\Offer\Model\Offer\Position;
 use HireInSocial\Application\Query\Offer\Model\Offer\Salary;
 use Ramsey\Uuid\Uuid;
@@ -31,13 +33,8 @@ final class Offer
     private $userId;
     private $specializationSlug;
     private $createdAt;
-    private $company;
-    private $contact;
-    private $contract;
-    private $description;
-    private $location;
-    private $position;
-    private $salary;
+    private $parameters;
+    private $offerPDF;
 
     public function __construct(
         UuidInterface $id,
@@ -46,27 +43,17 @@ final class Offer
         UuidInterface $userId,
         string $specializationSlug,
         \DateTimeImmutable $createdAt,
-        Company $company,
-        Contact $contact,
-        Contract $contract,
-        Description $description,
-        Location $location,
-        Position $position,
-        ?Salary $salary
+        Parameters $parameters,
+        ?OfferPDF $offerPDF
     ) {
         $this->slug = $slug;
         $this->id = $id;
         $this->emailHash = $emailHash;
         $this->userId = $userId;
         $this->createdAt = $createdAt;
-        $this->company = $company;
-        $this->contact = $contact;
-        $this->contract = $contract;
-        $this->description = $description;
-        $this->location = $location;
-        $this->position = $position;
-        $this->salary = $salary;
         $this->specializationSlug = $specializationSlug;
+        $this->parameters = $parameters;
+        $this->offerPDF = $offerPDF;
     }
 
     public function id(): UuidInterface
@@ -101,37 +88,42 @@ final class Offer
 
     public function company(): Company
     {
-        return $this->company;
+        return $this->parameters->company();
     }
 
     public function contact(): Contact
     {
-        return $this->contact;
+        return $this->parameters->contact();
     }
 
     public function contract(): Contract
     {
-        return $this->contract;
+        return $this->parameters->contract();
     }
 
     public function description(): Description
     {
-        return $this->description;
+        return $this->parameters->description();
     }
 
     public function location(): Location
     {
-        return $this->location;
+        return $this->parameters->location();
     }
 
     public function position(): Position
     {
-        return $this->position;
+        return $this->parameters->position();
     }
 
     public function salary(): ?Salary
     {
-        return $this->salary;
+        return $this->parameters->salary();
+    }
+
+    public function offerPDF(): ?OfferPDF
+    {
+        return $this->offerPDF;
     }
 
     public function postedBy(string $userId) : bool

@@ -99,12 +99,13 @@ final class OfferController extends AbstractController
                         new Location((bool)$offer['location']['remote'], $offer['location']['name']),
                         (null === $offer['salary']['min'] && null === $offer['salary']['max'])
                             ? null
-                            : new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool)$offer['salary']['net']),
+                            : new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool) $offer['salary']['net']),
                         new Contract($offer['contract']),
                         new Description($offer['description']['requirements'], $offer['description']['benefits']),
                         new Contact($offer['contact']['email'], $offer['contact']['name'], $offer['contact']['phone']),
                         new Channels((bool) $offer['channels']['facebook_group'])
-                    )
+                    ),
+                    $offer['offer_pdf'] ? $offer['offer_pdf']->getPathname() : null
                 ));
 
                 return $this->redirectToRoute('offer_success', ['specSlug' => $specSlug]);

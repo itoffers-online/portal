@@ -62,12 +62,19 @@ final class PostOffer extends Command
             ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
             ->addOption('no-salary', null, InputOption::VALUE_OPTIONAL, 'Pass this option when you want to test offer without salary', false)
             ->addOption('post-facebook-group', null, InputOption::VALUE_OPTIONAL, 'Post offer to facebook group assigned to the specialization', false)
+            ->addOption('offer-pdf', null, InputOption::VALUE_OPTIONAL, 'Path to offer PDF file.')
         ;
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
+
+        $offerPDFPath = (string) $input->getOption('offer-pdf');
+
+        if ($offerPDFPath && !\file_exists($offerPDFPath)) {
+            throw new \RuntimeException(sprintf('Offer PDF "%s" file does not exists.', $offerPDFPath));
+        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) : int
@@ -84,6 +91,7 @@ final class PostOffer extends Command
 
         $noSalary = $input->getOption('no-salary') !== false;
         $postFacebookGroup = $input->getOption('post-facebook-group') !== false;
+        $offerPDFpath = $input->getOption('offer-pdf');
 
         try {
             $faker = Factory::create($this->locale);
@@ -113,7 +121,8 @@ final class PostOffer extends Command
                         '+1 333333333'
                     ),
                     new Channels($postFacebookGroup)
-                )
+                ),
+                $offerPDFpath
             ));
         } catch (\Throwable $e) {
             $this->io->error('Can\'t post job offer at facebook group as a page. Please check logs for more details.');

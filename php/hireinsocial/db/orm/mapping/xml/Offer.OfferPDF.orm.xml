@@ -2,9 +2,13 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <embeddable name="HireInSocial\Application\Offer\Contact">
-        <field name="email"/>
-        <field name="name"/>
-        <field name="phone" length="16" nullable="true"/>
-    </embeddable>
+    <entity name="HireInSocial\Application\Offer\OfferPDF" table="his_job_offer_pdf">
+
+        <id name="id" type="guid">
+            <generator strategy="NONE" />
+        </id>
+        <field name="offerId" type="guid" />
+        <field name="path"/>
+        <field name="createdAt" type="datetime_immutable" />
+    </entity>
 </doctrine-mapping>

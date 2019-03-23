@@ -22,9 +22,12 @@ use App\Form\Type\Offer\PositionType;
 use App\Form\Type\Offer\SalaryType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class OfferType extends AbstractType
 {
@@ -45,6 +48,14 @@ final class OfferType extends AbstractType
             ->add('description', DescriptionType::class)
             ->add('contact', ContactType::class)
             ->add('channels', ChannelsType::class)
+            ->add('offer_pdf', FileType::class, [
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => ['application/pdf', 'application/x-pdf'],
+                    ]),
+                ],
+            ])
             ->add('submit', SubmitType::class)
         ;
     }
