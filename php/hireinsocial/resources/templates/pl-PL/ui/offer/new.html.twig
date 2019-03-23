@@ -84,6 +84,14 @@
             {{ form_row(form.contact.email, {label: "Adres email na który należy wysyłać CV"}) }}
             {{ form_row(form.contact.phone, {label: "Numer telefonu (opcjonalny)"}) }}
 
+            <h5>Oferta PDF</h5>
+            {{ form_row(form.offer_pdf, {label: false, help: "Oferta w formie PDF"}) }}
+            <p class="alert alert-warning">
+                Oferta w formie PDF musi być 100% zgodna z ofertą opisaną powyżej. Oferty z pikami PDF zawierającymi
+                inne parametry będą usuwane.
+            </p>
+
+
             <h5 class="mb-3">Na których kanałach opublikować ogłoszenie</h5>
             <div class="form-group">
                 <div class="form-check">
@@ -109,4 +117,13 @@
         </div>
         {{ form_end(form) }}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    $('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+    });
+</script>
 {% endblock %}

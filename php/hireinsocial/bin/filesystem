@@ -1,0 +1,70 @@
+#!/usr/bin/env php
+<?php
+
+use HireInSocial\Application\Config;
+use HireInSocial\Infrastructure\Flysystem\Application\System\FlysystemStorage;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
+$projectRootPath = dirname(__DIR__);
+
+require $projectRootPath . '/src/autoload.php';
+
+$config = \HireInSocial\bootstrap($projectRootPath);
+
+$application = new Application('filesystem', '1.0.0');
+$application->add(new class($config) extends Command {
+
+    private $config;
+    /**
+     * @var SymfonyStyle
+     */
+    private $io;
+
+    public function __construct(Config $config)
+    {
+        parent::__construct();
+
+        $this->config = $config;
+    }
+
+    protected function configure() : void
+    {
+        $this
+            ->setName('purge')
+            ->setDescription('Purge filesystem <error>Can\'t be reversed!</error>');
+    }
+
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->io = new SymfonyStyle($input, $output);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output) : int
+    {
+        $this->io->note('Purge Filesystem');
+
+        if ($input->isInteractive()) {
+            $answer = $this->io->ask('Are you sure you want to purge filesystem? This will not remove entries from database.', 'yes');
+
+            if (\mb_strtolower($answer) !== 'yes') {
+                $this->io->note('Ok, action cancelled.');
+
+                return 1;
+            }
+        }
+
+        $fs = FlysystemStorage::create($this->config->getJson(Config::FILESYSTEM_CONFIG));
+
+        $fs->purge();
+
+        $this->io->success('Filesystem purged!');
+
+        return 0;
+    }
+});
+
+$application->run();

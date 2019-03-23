@@ -31,17 +31,21 @@ use HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization\DbalSpe
 use HireInSocial\Infrastructure\Doctrine\DBAL\Application\User\DbalUserQuery;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMApplications;
+use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMOfferPDFs;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Offer\ORMSlugs;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSpecializations;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
 use HireInSocial\Infrastructure\Doctrine\ORM\Application\User\ORMUsers;
 use HireInSocial\Infrastructure\Facebook\FacebookGraphSDK;
+use HireInSocial\Infrastructure\Flysystem\Application\System\FlysystemStorage;
 use HireInSocial\Infrastructure\PHP\Hash\SHA256Encoder;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Infrastructure\SwiftMailer\System\SwiftMailer;
 use HireInSocial\Tests\Application\Double\Dummy\DummyFacebook;
 use HireInSocial\Tests\Application\Double\Stub\CalendarStub;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use Monolog\ErrorHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -157,7 +161,9 @@ function system(Config $config) : System
                 new FacebookGroupService($facebook),
                 new FacebookFormatter($twig),
                 $specializations,
-                new ORMSlugs($entityManager)
+                new ORMSlugs($entityManager),
+                new ORMOfferPDFs($entityManager),
+                FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG))
             ),
             new Offer\RemoveOfferHandler(
                 $ormUsers,

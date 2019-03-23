@@ -25,6 +25,8 @@ use HireInSocial\Application\Offer\Description;
 use HireInSocial\Application\Offer\Location;
 use HireInSocial\Application\Offer\Offer;
 use HireInSocial\Application\Offer\OfferFormatter;
+use HireInSocial\Application\Offer\OfferPDF;
+use HireInSocial\Application\Offer\OfferPDFs;
 use HireInSocial\Application\Offer\Offers;
 use HireInSocial\Application\Offer\Position;
 use HireInSocial\Application\Offer\Salary;
@@ -34,6 +36,7 @@ use HireInSocial\Application\Offer\Throttling;
 use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\Specialization\Specializations;
 use HireInSocial\Application\System\Calendar;
+use HireInSocial\Application\System\FileStorage;
 use HireInSocial\Application\System\Handler;
 use HireInSocial\Application\User\User;
 use HireInSocial\Application\User\Users;
@@ -50,6 +53,8 @@ final class PostOfferHandler implements Handler
     private $formatter;
     private $specializations;
     private $slugs;
+    private $offerPDFs;
+    private $fileStorage;
 
     public function __construct(
         Calendar $calendar,
@@ -60,7 +65,9 @@ final class PostOfferHandler implements Handler
         FacebookGroupService $facebookGroupService,
         OfferFormatter $formatter,
         Specializations $specializations,
-        Slugs $slugs
+        Slugs $slugs,
+        OfferPDFs $offerPDFs,
+        FileStorage $fileStorage
     ) {
         $this->calendar = $calendar;
         $this->offers = $offers;
@@ -71,6 +78,8 @@ final class PostOfferHandler implements Handler
         $this->formatter = $formatter;
         $this->specializations = $specializations;
         $this->slugs = $slugs;
+        $this->offerPDFs = $offerPDFs;
+        $this->fileStorage = $fileStorage;
     }
 
     public function handles(): string
@@ -106,6 +115,12 @@ final class PostOfferHandler implements Handler
                     $offer
                 )
             );
+        }
+
+        if ($command->offerPDFPath()) {
+            $offerPDF = OfferPDF::forOffer($offer, $this->calendar);
+            $this->fileStorage->upload(FileStorage\File::pdf($offerPDF->path(), $command->offerPDFPath()));
+            $this->offerPDFs->add($offerPDF);
         }
 
         $this->offers->add($offer);

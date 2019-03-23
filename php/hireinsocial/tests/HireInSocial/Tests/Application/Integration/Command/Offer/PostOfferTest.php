@@ -28,11 +28,19 @@ final class PostOfferTest extends HireInSocialTestCase
         $user = $this->systemContext->createUser();
 
         $this->systemContext->createSpecialization($specialization = 'spec');
-        $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $specialization));
+        $this->systemContext->system()->handle(PostOfferMother::randomWithPDF(
+            $user->id(),
+            $specialization,
+            __DIR__ . '/fixtures/blank.pdf'
+        ));
 
         $offer = $this->systemContext->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor($specialization))->first();
 
         $this->assertEquals(1, $this->systemContext->system()->query(OfferQuery::class)->total());
+        $this->assertEquals(
+            sprintf('/offer/%s/offer.pdf', $offer->id()->toString()),
+            $offer->offerPDF()
+        );
         $this->assertTrue($offer->postedBy($user->id()));
     }
 

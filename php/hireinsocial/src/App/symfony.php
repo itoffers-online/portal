@@ -61,6 +61,9 @@ function symfony(Config $config, System $system) : SymfonyKernel
                         'key' => $config->getString(Config::RECAPTCHA_KEY),
                     ],
                 ],
+                'assets' => [
+                    'storage_url' => $config->getJson(Config::FILESYSTEM_CONFIG)['storage_url'],
+                ],
             ],
             'auto_reload' => $config->getString(Config::ENV) !== 'prod',
         ],

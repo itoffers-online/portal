@@ -64,6 +64,9 @@
     <div class="row">
         <div class="col-6">
             <h4>Opis Stanowiska</h4>
+            {% if offer.offerPDF %}
+                <a href="{{ offer.offerpdf.url(assets.storage_url) }}" class="btn btn-link" download>Pobierze ofertę w PDF</a>
+            {% endif %}
             <div class="card">
                 <div class="card-body">
                     <p>
