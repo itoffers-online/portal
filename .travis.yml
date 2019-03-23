@@ -7,6 +7,9 @@ services:
   - postgresql
   - redis-server
 
+before_cache:
+  - sudo chown -R travis:travis $TRAVIS_BUILD_DIR/
+
 cache:
   directories:
     - $HOME/.composer/cache/files
