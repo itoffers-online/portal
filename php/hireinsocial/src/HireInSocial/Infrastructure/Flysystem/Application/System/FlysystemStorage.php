@@ -60,7 +60,7 @@ final class FlysystemStorage implements FileStorage
                     [
                         'azure_storage_account_name',
                         'azure_storage_account_key',
-                        'azure_storage_container'
+                        'azure_storage_container',
                     ],
                     \array_keys($config)
                 );

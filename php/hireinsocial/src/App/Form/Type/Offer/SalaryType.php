@@ -62,7 +62,7 @@ final class SalaryType extends AbstractType
                     'EUR' => 'EUR',
                     'USD' => 'USD',
                 ],
-                'data' => 'PLN'
+                'data' => 'PLN',
             ])
             ->add('net', CheckboxType::class, [
                 'required' => false,
