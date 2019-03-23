@@ -7,14 +7,12 @@ services:
   - postgresql
   - redis-server
 
-before_cache:
-  - sudo chown -R travis:travis $TRAVIS_BUILD_DIR/
-
 cache:
   directories:
     - $HOME/.composer/cache/files
 
 before_install:
+  - sudo chown -R travis:travis $TRAVIS_BUILD_DIR/
   - psql -c 'create database hireinsocial_test;' -U postgres
   - psql -c "CREATE USER hireinsocial WITH PASSWORD 'hireinsocial';" -U postgres
 
