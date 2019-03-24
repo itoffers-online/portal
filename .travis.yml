@@ -12,6 +12,7 @@ addons:
       - postgresql-client-11
 
 services:
+  - postgresql
   - redis-server
 
 cache:
