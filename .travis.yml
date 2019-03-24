@@ -5,14 +5,13 @@ php:
 dist: xenial
 
 addons:
-  postgresql: "11"
+  postgresql: "11.2"
   apt:
     packages:
       - postgresql-11
       - postgresql-client-11
 
 services:
-  - postgresql
   - redis-server
 
 cache:
@@ -20,6 +19,7 @@ cache:
     - $HOME/.composer/cache/files
 
 before_install:
+  - psql --version
   - psql -c 'create database hireinsocial_test;' -U postgres
   - psql -c "CREATE USER hireinsocial WITH PASSWORD 'hireinsocial';" -U postgres
 
