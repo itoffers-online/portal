@@ -1,7 +1,11 @@
 language: php
 php:
-  - '7.2'
+  - '7.3'
+
 dist: xenial
+
+addons:
+  postgresql: "11.2"
 
 services:
   - postgresql
@@ -12,12 +16,19 @@ cache:
     - $HOME/.composer/cache/files
 
 before_install:
-  - psql -c 'create database hireinsocial_test;' -U postgres
-  - psql -c "CREATE USER hireinsocial WITH PASSWORD 'hireinsocial';" -U postgres
+  - sudo apt-get --yes remove postgresql\*
+  - sudo apt-get install -y postgresql-11 postgresql-client-11
+  - sudo cp /etc/postgresql/{9.6,11}/main/pg_hba.conf
+  - sudo service postgresql restart 11
 
 install:
   - cd php/hireinsocial
   - composer install
+
+before_script:
+  - psql --version
+  - psql -c 'create database hireinsocial_test;' -U postgres
+  - psql -c "CREATE USER hireinsocial WITH PASSWORD 'hireinsocial';" -U postgres
 
 script:
   - composer run test
