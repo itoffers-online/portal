@@ -54,7 +54,7 @@
       - 'short_open_tag = 0'
 
     php_http_connector: fpm
-    php_version: "7.2"
+    php_version: "7.3"
     php_extensions:
       - "php{{ php7_version }}-cli"
       - "php{{ php7_version }}-gd"
@@ -82,9 +82,9 @@
     openssl_cert_name: "hireinsocial.local"
     openssl_generate_ca: true
 
-    pg_version: 9.6
+    pg_version: 11
     pg_users:
-      - { name: "hireinsocial", password: "hireinsocial", permissions: "LOGIN"}
+      - { name: "hireinsocial", password: "hireinsocial", permissions: "LOGIN", password_encrypted: "yes"}
     pg_databases:
       - { name: "hireinsocial_prod", owner: "hireinsocial" }
       - { name: "hireinsocial_test", owner: "hireinsocial" }

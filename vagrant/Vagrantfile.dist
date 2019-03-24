@@ -3,7 +3,7 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 Vagrant.configure(2) do |config|
 
   config.vm.define :hireinsocial, primary: true do |hireinsocial|
-    hireinsocial.vm.box = "bento/ubuntu-16.04"
+    hireinsocial.vm.box = "bento/ubuntu-18.04"
     hireinsocial.vm.network :private_network, ip: "10.0.0.200"
     hireinsocial.ssh.forward_agent = true
 

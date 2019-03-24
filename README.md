@@ -19,6 +19,8 @@ If you want to help, please check the project roadmap.
 
 ## Supported channels 
 
+ * Website
+    * Post offer at hire in social web page 
  * Facebook 
     * Group 
         * Post offer as a Page that is linked to a Group
@@ -27,10 +29,11 @@ If you want to help, please check the project roadmap.
 
 | Service       | Version       |
 | ------------- | ------------- |
-| OS            | Ubuntu 16.04  |
-| PHP           | 7.2           |
+| OS            | Ubuntu 18.04  |
+| PHP           | 7.3           |
 | Redis         | 3.0.6         |
 | Nginx         | 1.10.3        |
+| PostgreSQL    | 11.2          |
 
 ## Configuration
 

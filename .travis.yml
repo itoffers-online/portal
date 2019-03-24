@@ -1,7 +1,11 @@
 language: php
 php:
-  - '7.2'
+  - '7.3'
+
 dist: xenial
+
+addons:
+  postgresql: "11"
 
 services:
   - postgresql
