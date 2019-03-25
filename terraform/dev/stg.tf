@@ -1,7 +1,7 @@
 resource "azurerm_storage_account" "his-dev-weu-01-stg" {
   name                     = "${var.his_dev_az_prefix}hisdevweu01stg"
   resource_group_name      = "${azurerm_resource_group.his-dev-weu-01-rg.name}"
-  location                 = "${var.his_dev_location}"
+  location                 = "${azurerm_resource_group.his-dev-weu-01-rg.location}"
   account_tier             = "Standard"
   account_replication_type = "LRS"
   account_kind             = "Storage"
