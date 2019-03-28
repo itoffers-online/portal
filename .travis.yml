@@ -23,7 +23,7 @@ before_install:
 
 install:
   - cd php/hireinsocial
-  - composer install
+  - composer install --no-interaction --optimize-autoloader
 
 before_script:
   - psql --version
