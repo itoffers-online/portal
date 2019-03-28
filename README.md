@@ -15,7 +15,7 @@ If you want to help, please check the project roadmap.
 
 *There was no stable release yet, things might still be changed* 
 
-* [![Build Status](https://travis-ci.org/norzechowicz/hire-in-social.svg?branch=master)](https://travis-ci.org/norzechowicz/hire-in-social) - development (master)
+* [![Build Status](https://travis-ci.com/norzechowicz/hire-in-social.svg?branch=master)](https://travis-ci.com/norzechowicz/hire-in-social) - development (master)
 
 ## Supported channels 
 
