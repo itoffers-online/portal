@@ -44,8 +44,6 @@ use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Infrastructure\SwiftMailer\System\SwiftMailer;
 use HireInSocial\Tests\Application\Double\Dummy\DummyFacebook;
 use HireInSocial\Tests\Application\Double\Stub\CalendarStub;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
 use Monolog\ErrorHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;

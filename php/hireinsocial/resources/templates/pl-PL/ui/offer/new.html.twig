@@ -2,6 +2,15 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
+{% block stylesheets %}
+{{ parent() }}
+
+<style type="text/css">
+    #location-map {
+        height: 400px;
+    }
+</style>
+{% endblock %}
 {% block body %}
     {% if throttled %}
     <div class="alert alert-warning text-center" role="alert">
@@ -73,8 +82,18 @@
             <hr />
             <h5>Lokalizacja</h5>
             {{ form_row(form.location.remote, {label: "Możliwość pracy zdalnej"}) }}
-            {{ form_row(form.location.name, {label:"Lokalizacja (opcjonalne)", attr:{placeholder:"Polska, Kraków..."}}) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.location.name, {label:"Lokalizacja (opcjonalne)", attr:{placeholder:"Polska, Kraków...", autocomplete: 'disabled'}}) }}
+                    {{ form_row(form.location.lat) }}
+                    {{ form_row(form.location.lng) }}
+                </div>
+                <div class="col-md-6">
+                    <div id="location-map"></div>
+                </div>
+            </div>
             <hr/>
+
             <h5>Opis Stanowiska</h5>
             {{ form_row(form.description.requirements, {label: "Wymagania", attr:{rows: 5, placeholder: "od 100 do 1024 znaków..."}}) }}
             {{ form_row(form.description.benefits, {label: "Benefity", attr:{rows: 5, placeholder: "od 100 do 1024 znaków..."}}) }}
@@ -125,5 +144,73 @@
         var fileName = e.target.files[0].name;
         $('.custom-file-label').html(fileName);
     });
+
+    function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('location-map'), {
+            zoom: 14,
+            center: {lat: 50.06212, lng: 19.9353153}
+        });
+        var geocoder = new google.maps.Geocoder;
+
+        var marker = new google.maps.Marker({
+            map: map,
+            center: {lat: 50.06212, lng: 19.9353153},
+            visible: false
+        });
+
+        let searchInput = document.getElementById('{{ form.location.name.vars.id }}');
+        var autocomplete = new google.maps.places.Autocomplete(searchInput);
+
+        marker.addListener('position_changed', function(e) {
+            document.getElementById('{{ form.location.lat.vars.id }}').value = this.getPosition().lat();
+            document.getElementById('{{ form.location.lng.vars.id }}').value = this.getPosition().lng();
+        });
+
+        map.addListener('click', function(e) {
+            marker.setPosition(e.latLng);
+            marker.setVisible(true);
+
+            geocoder.geocode(
+                {'location' : e.latLng},
+                function (results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            searchInput.value = results[0].formatted_address;
+                        }
+                    }
+                }
+            );
+
+            map.panTo(e.latLng);
+        });
+
+        autocomplete.bindTo('bounds', map);
+
+        autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                searchInput.value = "";
+                document.getElementById('{{ form.location.lat.vars.id }}').value = "";
+                document.getElementById('{{ form.location.lng.vars.id }}').value = "";
+
+                return;
+            }
+
+            marker.setPosition(place.geometry.location);
+            map.panTo(place.geometry.location);
+            marker.setVisible(true);
+        });
+
+        searchInput.addEventListener('keypress', (event) => {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
+    }
+
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google.maps.key }}&libraries=places&&callback=initMap">
 </script>
 {% endblock %}

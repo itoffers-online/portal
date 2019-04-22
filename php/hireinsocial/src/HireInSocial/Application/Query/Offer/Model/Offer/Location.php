@@ -17,11 +17,15 @@ final class Location
 {
     private $remote;
     private $name;
+    private $lat;
+    private $lng;
 
-    public function __construct(bool $remote, ?string $name = null)
+    public function __construct(bool $remote, ?string $name = null, ?float $lat = null, ?float $lng = null)
     {
         $this->remote = $remote;
         $this->name = $name;
+        $this->lat = $lat;
+        $this->lng = $lng;
     }
 
     public function remote(): bool
@@ -32,5 +36,15 @@ final class Location
     public function name(): ?string
     {
         return $this->name;
+    }
+
+    public function lat(): ?float
+    {
+        return $this->lat;
+    }
+
+    public function lng(): ?float
+    {
+        return $this->lng;
     }
 }

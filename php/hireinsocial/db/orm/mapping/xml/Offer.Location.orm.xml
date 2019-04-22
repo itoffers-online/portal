@@ -5,5 +5,7 @@
     <embeddable name="HireInSocial\Application\Offer\Location">
         <field name="remote" type="boolean"/>
         <field name="name" length="512" nullable="true"/>
+        <field name="lat" type="float" nullable="true"/>
+        <field name="lng" type="float" nullable="true"/>
     </embeddable>
 </doctrine-mapping>

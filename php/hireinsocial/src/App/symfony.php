@@ -26,6 +26,10 @@ function symfony(Config $config, System $system) : SymfonyKernel
             'csrf_protection' => null,
             'validation' => [
                 'enabled' => true,
+                'enable_annotations' => false,
+            ],
+            'annotations' => [
+                'enabled' => false,
             ],
             'session' => [
                 'cookie_samesite' => 'strict',
@@ -59,6 +63,9 @@ function symfony(Config $config, System $system) : SymfonyKernel
                 'google' => [
                     'recaptcha' => [
                         'key' => $config->getString(Config::RECAPTCHA_KEY),
+                    ],
+                    'maps' => [
+                        'key' => $config->getString(Config::GOOGLE_MAPS_KEY),
                     ],
                 ],
                 'assets' => [
