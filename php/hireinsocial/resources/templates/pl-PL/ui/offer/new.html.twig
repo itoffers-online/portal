@@ -151,12 +151,16 @@
             zoom: 14,
             center: {lat: 50.06212, lng: 19.9353153}
         });
+        var geocoder = new google.maps.Geocoder;
 
         var marker = new google.maps.Marker({
             map: map,
             center: {lat: 50.06212, lng: 19.9353153},
             visible: false
         });
+
+        let searchInput = document.getElementById('{{ form.location.name.vars.id }}');
+        var autocomplete = new google.maps.places.Autocomplete(searchInput);
 
         marker.addListener('position_changed', function(e) {
             document.getElementById('{{ form.location.lat.vars.id }}').value = this.getPosition().lat();
@@ -167,11 +171,19 @@
             marker.setPosition(e.latLng);
             marker.setVisible(true);
 
+            geocoder.geocode(
+                {'location' : e.latLng},
+                function (results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            searchInput.value = results[0].formatted_address;
+                        }
+                    }
+                }
+            );
+
             map.panTo(e.latLng);
         });
-
-        let searchInput = document.getElementById('{{ form.location.name.vars.id }}');
-        var autocomplete = new google.maps.places.Autocomplete(searchInput);
 
         autocomplete.bindTo('bounds', map);
 
@@ -179,6 +191,8 @@
             var place = autocomplete.getPlace();
             if (!place.geometry) {
                 searchInput.value = "";
+                document.getElementById('{{ form.location.lat.vars.id }}').value = "";
+                document.getElementById('{{ form.location.lng.vars.id }}').value = "";
 
                 return;
             }
@@ -189,7 +203,6 @@
         });
 
         searchInput.addEventListener('keypress', (event) => {
-
             if (event.keyCode === 13) {
                 event.preventDefault();
                 event.stopPropagation();
