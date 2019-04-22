@@ -34,6 +34,8 @@ final class Config
     public const RECAPTCHA_KEY = 'recaptcha_key';
     public const RECAPTCHA_SECRET = 'recaptcha_secret';
 
+    public const GOOGLE_MAPS_KEY = 'google_maps_key';
+
     public const DB_HOST = 'db_host';
     public const DB_PORT = 'db_port';
     public const DB_USER = 'db_user';
@@ -68,6 +70,7 @@ final class Config
             self::APPLY_EMAIL_CONFIG => getenv('HIS_APPLY_EMAIL_CONFIG'),
             self::RECAPTCHA_KEY => getenv('HIS_RECAPTCHA_KEY'),
             self::RECAPTCHA_SECRET => getenv('HIS_RECAPTCHA_SECRET'),
+            self::GOOGLE_MAPS_KEY => getenv('HIS_GOOGLE_MAPS_API_KEY'),
             self::MAILER_CONFIG => getenv('HIS_MAILER_CONFIG'),
             self::FB_APP_ID => getenv('HIS_FB_APP_ID'),
             self::FB_APP_SECRET => getenv('HIS_FB_APP_SECRET'),

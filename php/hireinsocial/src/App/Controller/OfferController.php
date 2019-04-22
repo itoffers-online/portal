@@ -96,7 +96,13 @@ final class OfferController extends AbstractController
                     new Offer(
                         new Company($offer['company']['name'], $offer['company']['url'], $offer['company']['description']),
                         new Position($offer['position']['name'], $offer['position']['description']),
-                        new Location((bool)$offer['location']['remote'], $offer['location']['name']),
+                        new Location(
+                            (bool)$offer['location']['remote'],
+                            $offer['location']['name'],
+                            ($offer['location']['lat'] && $offer['location']['lng'])
+                                ? new Location\LatLng((float) $offer['location']['lat'], (float) $offer['location']['lng'])
+                                : null
+                        ),
                         (null === $offer['salary']['min'] && null === $offer['salary']['max'])
                             ? null
                             : new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool) $offer['salary']['net']),

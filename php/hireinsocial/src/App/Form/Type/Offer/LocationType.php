@@ -15,9 +15,12 @@ namespace App\Form\Type\Offer;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 
 final class LocationType extends AbstractType
 {
@@ -31,6 +34,20 @@ final class LocationType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Length(['max' => 255]),
+                ],
+            ])
+            ->add('lat', HiddenType::class, [
+                'required' => false,
+                'constraints' => [
+                    new GreaterThanOrEqual(['value' => -90.0]),
+                    new LessThanOrEqual(['value' => 90.0]),
+                ],
+            ])
+            ->add('lng', HiddenType::class, [
+                'required' => false,
+                'constraints' => [
+                    new GreaterThanOrEqual(['value' => -180.0]),
+                    new LessThanOrEqual(['value' => 180.0]),
                 ],
             ])
         ;

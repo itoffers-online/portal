@@ -141,7 +141,14 @@ final class PostOfferHandler implements Handler
                 $command->offer()->position()->name(),
                 $command->offer()->position()->description()
             ),
-            new Location($command->offer()->location()->remote(), $command->offer()->location()->name()),
+            $command->offer()->location()->name()
+                ? Location::atPlace(
+                    $command->offer()->location()->remote(),
+                    $command->offer()->location()->name(),
+                    $command->offer()->location()->latLng()->lat(),
+                    $command->offer()->location()->latLng()->lng(),
+                    )
+                : Location::onlyRemote(),
             $command->offer()->salary()
                 ? new Salary(
                     $command->offer()->salary()->min(),

@@ -37,7 +37,7 @@ final class PostOfferMother
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
                 new Position('PHP Developer', $faker->text(1024)),
-                new Location($faker->boolean, $faker->country),
+                new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean),
                 new Contract('B2B'),
                 new Description(
@@ -66,7 +66,7 @@ final class PostOfferMother
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
                 new Position('PHP Developer', $faker->text(1024)),
-                new Location($faker->boolean, $faker->country),
+                new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean),
                 new Contract('B2B'),
                 new Description(
@@ -96,7 +96,7 @@ final class PostOfferMother
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
                 new Position('PHP Developer', $faker->text(1024)),
-                new Location($faker->boolean, $faker->country),
+                new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 null,
                 new Contract('B2B'),
                 new Description(
@@ -125,7 +125,7 @@ final class PostOfferMother
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
                 new Position('PHP Developer', $faker->text(1024)),
-                new Location($faker->boolean, $faker->country),
+                new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 new Salary($min, $max, $currency, $faker->boolean),
                 new Contract('B2B'),
                 new Description(
@@ -154,7 +154,7 @@ final class PostOfferMother
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
                 new Position('PHP Developer', $faker->text(1024)),
-                new Location(false, $faker->country),
+                new Location(false, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean),
                 new Contract('B2B'),
                 new Description(
@@ -183,7 +183,7 @@ final class PostOfferMother
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
                 new Position('PHP Developer', $faker->text(1024)),
-                new Location(true, $faker->country),
+                new Location(true),
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean),
                 new Contract('B2B'),
                 new Description(
@@ -212,7 +212,7 @@ final class PostOfferMother
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
                 new Position('PHP Developer', $faker->text(1024)),
-                new Location($faker->boolean, $faker->country),
+                new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean),
                 new Contract('B2B'),
                 new Description(

@@ -13,15 +13,19 @@ declare(strict_types=1);
 
 namespace HireInSocial\Application\Command\Offer\Offer;
 
+use HireInSocial\Application\Command\Offer\Offer\Location\LatLng;
+
 final class Location
 {
     private $remote;
     private $name;
+    private $latLng;
 
-    public function __construct(bool $remote, ?string $name = null)
+    public function __construct(bool $remote, ?string $name = null, ?LatLng $latLng = null)
     {
         $this->remote = $remote;
         $this->name = $name;
+        $this->latLng = $latLng;
     }
 
     public function remote(): bool
@@ -32,5 +36,10 @@ final class Location
     public function name(): ?string
     {
         return $this->name;
+    }
+
+    public function latLng(): ?LatLng
+    {
+        return $this->latLng;
     }
 }

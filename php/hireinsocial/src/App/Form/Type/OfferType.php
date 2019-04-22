@@ -27,7 +27,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class OfferType extends AbstractType
 {
@@ -49,6 +48,7 @@ final class OfferType extends AbstractType
             ->add('contact', ContactType::class)
             ->add('channels', ChannelsType::class)
             ->add('offer_pdf', FileType::class, [
+                'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '5M',

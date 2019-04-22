@@ -19,15 +19,36 @@ final class Location
 {
     private $remote;
     private $name;
+    private $lat;
+    private $lng;
 
-    public function __construct(bool $remote, string $name = null)
+    private function __construct()
     {
-        if ($name) {
-            Assertion::betweenLength($name, 3, 512);
-        }
+    }
 
-        $this->remote = $remote;
-        $this->name = $name;
+    public static function onlyRemote() : self
+    {
+        $location = new self();
+        $location->remote = true;
+
+        return $location;
+    }
+
+    public static function atPlace(bool $remote, string $name, float $lat, float $lng) : self
+    {
+        Assertion::betweenLength($name, 3, 512);
+        Assertion::greaterOrEqualThan($lat, -90.0);
+        Assertion::lessOrEqualThan($lat, 90.0);
+        Assertion::greaterOrEqualThan($lng, -180.0);
+        Assertion::lessOrEqualThan($lng, 180.0);
+
+        $location = new self();
+        $location->name = $name;
+        $location->remote = $remote;
+        $location->lat = $lat;
+        $location->lng = $lng;
+
+        return $location;
     }
 
     public function isRemote(): bool

@@ -107,11 +107,18 @@
             <h4 class="mt-2">Lokalizacja</h4>
             <div class="card">
                 <div class="card-body">
+                    {% if offer.location.name %}
                     <p>
-                        {% if offer.location.name %}
-                            Lokalizacja: {{ offer.location.name }}
-                        {% endif %}
+                            <strong>Lokalizacja</strong>: {{ offer.location.name }}
                     </p>
+                        <p>
+                            {% spaceless %}
+                            <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ offer.location.lat }},{{ offer.location.lng }}&zoom=16&size=600x300&maptype=roadmap
+                            &markers=color:blue%7C{{ offer.location.lat }},{{ offer.location.lng }}
+                            &key={{ google.maps.key }}" alt="Mapa z lokalizacją"/>
+                            {% endspaceless %}
+                        </p>
+                    {% endif %}
                     <p>
                         Zdalnie: {% if offer.location.remote %}Tak <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="right" title="Pamiętaj aby ustalić z pracodawcą zakres pracy zdalnej."></i>{% else %}Nie{% endif %}
                     </p>

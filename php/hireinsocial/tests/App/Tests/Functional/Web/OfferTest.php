@@ -74,6 +74,8 @@ final class OfferTest extends WebTestCase
             'offer[contract]' => 'B2B',
             'offer[location][remote]' => 1,
             'offer[location][name]' => 'Cracow',
+            'offer[location][lat]' => '50.06212',
+            'offer[location][lng]' => '19.9353153',
             'offer[description][requirements]' => $faker->text(1024),
             'offer[description][benefits]' => $faker->text(1024),
             'offer[contact][email]' => $faker->email,
