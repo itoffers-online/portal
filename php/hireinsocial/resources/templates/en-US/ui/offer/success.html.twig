@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="offset-2 col-lg-8">
+            <div class="alert alert-success text-center" role="alert">
+                <h4 class="alert-heading">Good job!</h4>
+                {% if speciailization.facebookChannel %}
+                    <p>Your offer was posted on our <a href="{{ specialization.facebookChannel.groupId|fb_group_url }}" target="_blank">Facebook group</a>.</p>
+                    <hr>
+                {% endif %}
+                <p class="mb-0">If you have any questions please check our <a href="{{ url('faq') }}">FAQ</a> section.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

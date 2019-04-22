@@ -1,0 +1,204 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+
+<style type="text/css">
+    #location-map {
+        height: 400px;
+    }
+</style>
+{% endblock %}
+{% block body %}
+    {% if throttled %}
+    <div class="alert alert-warning text-center" role="alert">
+        Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait.
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        You can add only {{ throttleLimit }} offers for {{ throttleSince.format('%d') }} days.
+        Number of offers you can add immediately: {{ offersLeft }}
+    </div>
+    {% endif %}
+    {{ form_start(form) }}
+    <h3 class="mb-3">Post Offer</h3>
+    <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Questions?</h5>
+                    <p>
+                        Please look into our<a href="{{ url('faq') }}">FAQ</a> section.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 order-md-1">
+            <h5>Company</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.company.name, {label: "Name"}) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.company.url, {label: "Homepage", attr:{placeholder:"Company hompate url"}}) }}
+                </div>
+            </div>
+            {{ form_row(form.company.description, {label: "Description", attr:{rows: 5, placeholder: "between 10 and 512 characters..."}}) }}
+            <hr />
+            <h5>Position</h5>
+            {{ form_row(form.position.name, {label: "Name", attr:{placeholder: "PHP Developer"}}) }}
+            {{ form_row(form.position.description, {label: "Description", attr:{rows: 5, placeholder: "between 50 and 1024 characters..."}}) }}
+            <hr />
+            <h5>Salary</h5>
+            <div class="alert alert-warning" role="alert">
+                This field is optional but please remember that potential candidates prefer offers with transparent salary.
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    {{ form_row(form.salary.min, {label: false, attr:{placeholder:"From"}}) }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    {{ form_row(form.salary.max, {label: false, attr:{placeholder:"To"}}) }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    {{ form_row(form.salary.currency, {label: false}) }}
+                </div>
+            </div>
+            {{ form_row(form.salary.net, {label: "Net"}) }}
+            {{ form_row(form.contract, {label: "Contract Type"}) }}
+            <hr />
+            <h5>Location</h5>
+            {{ form_row(form.location.remote, {label: "Possibility to work remotly"}) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.location.name, {label:"Location (optional)", attr:{placeholder:"Polska, Kraków...", autocomplete: 'disabled'}}) }}
+                    {{ form_row(form.location.lat) }}
+                    {{ form_row(form.location.lng) }}
+                </div>
+                <div class="col-md-6">
+                    <div id="location-map"></div>
+                </div>
+            </div>
+            <hr/>
+
+            <h5>Description</h5>
+            {{ form_row(form.description.requirements, {label: "Requirements", attr:{rows: 5, placeholder: "between 100 and 1024 characters..."}}) }}
+            {{ form_row(form.description.benefits, {label: "Benefits", attr:{rows: 5, placeholder: "between 100 and 1024 characters..."}}) }}
+            <hr />
+            <h5>Contact</h5>
+            {{ form_row(form.contact.name, {label: "Recruiter name"}) }}
+            {{ form_row(form.contact.email, {label: "Email address "}) }}
+            {{ form_row(form.contact.phone, {label: "Phone number (optional)"}) }}
+
+            <h5>Oferta PDF</h5>
+            {{ form_row(form.offer_pdf, {label: false, help: "Offer in PDF"}) }}
+            <p class="alert alert-warning">
+                Offer in PDF must be 100% accurate with one described above.
+            </p>
+
+
+            <h5 class="mb-3">Where should we post your offer</h5>
+            <div class="form-group">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input disabled" checked disabled value="1">
+                    <label class="form-check-label" for="offer_post_at_facebook">Hire in social homepage</label>
+                </div>
+            </div>
+            {% if specialization.facebookChannel %}
+                {{ form_row(form.channels.facebook_group, {label: "Facebook Group", attr: {checked:"checked"}}) }}
+            {% else %}
+                {{ form_row(form.channels.facebook_group, {
+                    label: "Facebook Group",
+                    attr: { disabled: "disabled" },
+                    help: "This specialization does not have Facebook group yet"
+                }) }}
+            {% endif %}
+
+            {% if throttled %}
+                {{ form_row(form.submit, {label: "wait", attr:{disabled:disabled}}) }}
+            {% else %}
+                {{ form_row(form.submit, {label: "Submit"}) }}
+            {% endif %}
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    $('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+    });
+
+    function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('location-map'), {
+            zoom: 14,
+            center: {lat: 50.06212, lng: 19.9353153}
+        });
+        var geocoder = new google.maps.Geocoder;
+
+        var marker = new google.maps.Marker({
+            map: map,
+            center: {lat: 50.06212, lng: 19.9353153},
+            visible: false
+        });
+
+        let searchInput = document.getElementById('{{ form.location.name.vars.id }}');
+        var autocomplete = new google.maps.places.Autocomplete(searchInput);
+
+        marker.addListener('position_changed', function(e) {
+            document.getElementById('{{ form.location.lat.vars.id }}').value = this.getPosition().lat();
+            document.getElementById('{{ form.location.lng.vars.id }}').value = this.getPosition().lng();
+        });
+
+        map.addListener('click', function(e) {
+            marker.setPosition(e.latLng);
+            marker.setVisible(true);
+
+            geocoder.geocode(
+                {'location' : e.latLng},
+                function (results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            searchInput.value = results[0].formatted_address;
+                        }
+                    }
+                }
+            );
+
+            map.panTo(e.latLng);
+        });
+
+        autocomplete.bindTo('bounds', map);
+
+        autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                searchInput.value = "";
+                document.getElementById('{{ form.location.lat.vars.id }}').value = "";
+                document.getElementById('{{ form.location.lng.vars.id }}').value = "";
+
+                return;
+            }
+
+            marker.setPosition(place.geometry.location);
+            map.panTo(place.geometry.location);
+            marker.setVisible(true);
+        });
+
+        searchInput.addEventListener('keypress', (event) => {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
+    }
+
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google.maps.key }}&libraries=places&&callback=initMap">
+</script>
+{% endblock %}

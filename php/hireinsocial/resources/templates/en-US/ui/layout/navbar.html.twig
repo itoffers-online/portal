@@ -1,0 +1,17 @@
+<header class="pb-3">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarsExample07">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url('home') }}">Hire in Social</a>
+                    </li>
+                </ul>
+                <a href="{{ url('offer_post') }}" class="btn btn-primary mr-2">Post Offer</a>
+                {% if facebook_logged_in %}
+                    <a class="btn btn-secondary" href="{{ url('facebook_logout') }}">Logout</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</header>
