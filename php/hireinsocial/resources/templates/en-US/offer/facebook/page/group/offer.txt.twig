@@ -1,0 +1,20 @@
+Who: {{ offer.company.name }} ({{ offer.company.url }})
+{{ offer.company.description }}
+
+Looking for: {{ offer.position.name }}
+{{ offer.position.description }}
+
+Contract type: {{ offer.contract.type }}
+
+{% if offer.salary %}
+Salary: {{ offer.salary.min }} - {{ offer.salary.max }} ({{ offer.salary.currencyCode }}) monthly {% if offer.salary.isNet %}net{% else %}gross{% endif %}
+{% endif %}
+
+Location: {% if offer.location.isRemote %}Remote{% endif %} {% if offer.location.name %}- {{ offer.location.name }}{% endif %}
+
+
+Requirements:
+{{ offer.description.requirements }}
+
+Benefits:
+{{ offer.description.benefits }}
