@@ -10,6 +10,7 @@ jobs:
     name: Run Full Testsuite
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@master
       - name: Install dependecies through composer
         working-directory: ./php/hireinsocial
         run: composer install 
