@@ -7,15 +7,13 @@ on:
 
 jobs:
   build:
-
+    name: Run Full Testsuite
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v1
-    - name: Change working directory
-      run: cd php/hireinsocial
-    - name: Install dependecies through composer
-      run: composer install 
-    - name: Run testsuite
-      run: composer test
+      - name: Install dependecies through composer
+        working-directory: php/hireinsocial
+        run: composer install 
+      - name: Run testsuite
+        working-directory: php/hireinsocial
+        run: composer test
       
