@@ -17,7 +17,11 @@ jobs:
           POSTGRES_PASSWORD: hireinsocial
           POSTGRES_DB: hireinsocial_test
         ports:
-          - 5432:5432
+          - 5432/tcp
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp
     steps:
       - uses: actions/checkout@master
       - name: Dump php extensions
