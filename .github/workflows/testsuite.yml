@@ -1,8 +1,8 @@
 name: Github CI
 
-on: 
+on:
   pull_request:
-    branches: 
+    branches:
       - master
 
 jobs:
@@ -13,12 +13,14 @@ jobs:
       - uses: actions/checkout@master
       - name: Dump php extensions
         run: php -m
-      - name: Install php extension
-        run: pecl install intl
+      - name: Dump php version
+        run: php -v
+      - name: Dump php info
+        run: php -i
       - name: Install dependecies through composer
         working-directory: ./php/hireinsocial
-        run: composer install 
+        run: composer install
       - name: Run testsuite
         working-directory: ./php/hireinsocial
         run: composer test
-      
+
