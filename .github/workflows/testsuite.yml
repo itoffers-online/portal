@@ -1,4 +1,4 @@
-name: CI
+name: Github CI
 
 on: 
   pull_request:
@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install dependecies through composer
-        working-directory: php/hireinsocial
+        working-directory: ./php/hireinsocial
         run: composer install 
       - name: Run testsuite
-        working-directory: php/hireinsocial
+        working-directory: ./php/hireinsocial
         run: composer test
       
