@@ -12,6 +12,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: Change working directory
+      run: cd php/hireinsocial
     - name: Install dependecies through composer
       run: composer install 
     - name: Run testsuite
