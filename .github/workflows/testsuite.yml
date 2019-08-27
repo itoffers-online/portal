@@ -18,6 +18,7 @@ jobs:
           POSTGRES_DB: hireinsocial_test
         ports:
           - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       redis:
         image: redis
         ports:
@@ -36,4 +37,7 @@ jobs:
       - name: Run testsuite
         working-directory: ./php/hireinsocial
         run: composer test
+        env:
+          HIS_REDIS_DSN: redis://localhost:${{ job.services.redis.ports[6379] }}
+          HIS_DB_PORT: ${{ job.services.postgres.ports[5432] }}
 
