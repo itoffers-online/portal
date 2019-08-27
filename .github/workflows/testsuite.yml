@@ -9,6 +9,15 @@ jobs:
   build:
     name: Run Full Testsuite
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11.2
+        env:
+          POSTGRES_USER: hireinsocial
+          POSTGRES_PASSWORD: hireinsocial
+          POSTGRES_DB: hireinsocial_test
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@master
       - name: Dump php extensions
