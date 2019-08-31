@@ -1,0 +1,48 @@
+name: Github CI
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Run Full Testsuite
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11.2
+        env:
+          POSTGRES_USER: hireinsocial
+          POSTGRES_PASSWORD: hireinsocial
+          POSTGRES_DB: hireinsocial_test
+        ports:
+          - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp
+    steps:
+      - uses: actions/checkout@master
+      - name: Dump php extensions
+        run: php -m
+      - name: Dump php version
+        run: php -v
+      - name: Dump php info
+        run: php -i
+      - name: Install phpdbg
+        run: sudo apt-get install php7.3-phpdbg
+      - name: Install dependecies through composer
+        working-directory: ./php/hireinsocial
+        run: composer install
+      - name: Run testsuite
+        working-directory: ./php/hireinsocial
+        run: composer test
+        env:
+          HIS_REDIS_DSN: redis://localhost:${{ job.services.redis.ports[6379] }}
+          HIS_DB_PORT: ${{ job.services.postgres.ports[5432] }}
+      - name: Run mutation tests
+        run: phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --only-covered
+        working-directory: ./php/hireinsocial
+

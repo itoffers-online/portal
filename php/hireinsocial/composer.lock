@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "71ed4890ad7a13a8a75e54019d586b96",
+    "content-hash": "6ee1683baeeabcc3002d80275c255a4e",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -1576,12 +1576,12 @@
             "version": "3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ivanakimov/hashids.php.git",
+                "url": "https://github.com/vinkla/hashids.git",
                 "reference": "b6c61142bfe36d43740a5419d11c351dddac0458"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ivanakimov/hashids.php/zipball/b6c61142bfe36d43740a5419d11c351dddac0458",
+                "url": "https://api.github.com/repos/vinkla/hashids/zipball/b6c61142bfe36d43740a5419d11c351dddac0458",
                 "reference": "b6c61142bfe36d43740a5419d11c351dddac0458",
                 "shasum": ""
             },
@@ -4057,16 +4057,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v4.2.7",
+            "version": "v4.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "6361d2168db3ef9203eeb565f05c1108dd04f796"
+                "reference": "8db5505703c5bdb23d524fd994dad2f781966538"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/6361d2168db3ef9203eeb565f05c1108dd04f796",
-                "reference": "6361d2168db3ef9203eeb565f05c1108dd04f796",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/8db5505703c5bdb23d524fd994dad2f781966538",
+                "reference": "8db5505703c5bdb23d524fd994dad2f781966538",
                 "shasum": ""
             },
             "require": {
@@ -4082,7 +4082,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.2-dev"
+                    "dev-master": "4.3-dev"
                 }
             },
             "autoload": {
@@ -4128,7 +4128,7 @@
                 "l10n",
                 "localization"
             ],
-            "time": "2019-04-01T07:32:59+00:00"
+            "time": "2019-08-26T08:26:39+00:00"
         },
         {
             "name": "symfony/lock",
@@ -4496,21 +4496,21 @@
         },
         {
             "name": "symfony/polyfill-intl-icu",
-            "version": "v1.11.0",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-icu.git",
-                "reference": "999878a3a09d73cae157b0cf89bb6fb2cc073057"
+                "reference": "66810b9d6eb4af54d543867909d65ab9af654d7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/999878a3a09d73cae157b0cf89bb6fb2cc073057",
-                "reference": "999878a3a09d73cae157b0cf89bb6fb2cc073057",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/66810b9d6eb4af54d543867909d65ab9af654d7e",
+                "reference": "66810b9d6eb4af54d543867909d65ab9af654d7e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "symfony/intl": "~2.3|~3.0|~4.0"
+                "symfony/intl": "~2.3|~3.0|~4.0|~5.0"
             },
             "suggest": {
                 "ext-intl": "For best performance"
@@ -4518,7 +4518,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9-dev"
+                    "dev-master": "1.12-dev"
                 }
             },
             "autoload": {
@@ -4550,7 +4550,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-01-07T19:39:47+00:00"
+            "time": "2019-08-06T08:03:45+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -8490,7 +8490,6 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.3",
-        "ext-intl": "*",
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
