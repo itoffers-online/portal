@@ -33,8 +33,6 @@ jobs:
         run: php -i
       - name: Install phpdbg
         run: sudo apt-get install php7.3-phpdbg
-      - name: Install php intl extension
-        run: sudo apt-get install php7.3-intl
       - name: Install dependecies through composer
         working-directory: ./php/hireinsocial
         run: composer install
