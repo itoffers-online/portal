@@ -44,4 +44,5 @@ jobs:
           HIS_DB_PORT: ${{ job.services.postgres.ports[5432] }}
       - name: Run mutation tests
         run: phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --only-covered
+        working-directory: ./php/hireinsocial
 
