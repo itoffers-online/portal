@@ -32,7 +32,7 @@ jobs:
       - name: Dump php info
         run: php -i
       - name: Install php intl extension
-        run: sudo apt-get intsall php7.3-intl
+        run: sudo apt-get install php7.3-intl
       - name: Install dependecies through composer
         working-directory: ./php/hireinsocial
         run: composer install
