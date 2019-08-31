@@ -31,6 +31,8 @@ jobs:
         run: php -v
       - name: Dump php info
         run: php -i
+      - name: Install php intl extension
+        run: sudo apt-get intsall php7.3-intl
       - name: Install dependecies through composer
         working-directory: ./php/hireinsocial
         run: composer install
@@ -40,4 +42,6 @@ jobs:
         env:
           HIS_REDIS_DSN: redis://localhost:${{ job.services.redis.ports[6379] }}
           HIS_DB_PORT: ${{ job.services.postgres.ports[5432] }}
+      - name: Run mutation tests
+        run: phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --only-covered
 
