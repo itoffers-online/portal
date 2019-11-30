@@ -5,6 +5,14 @@ over social media. No hidden fees, transparent rules, everything to save preciou
 
 Transparency is the key to quality, that's why this project is developed and published as an open source. 
 
+## Architecture
+
+[Structurizr Workspace](https://structurizr.com/public/49192)
+
+![Architecture](https://structurizr.com/share/49192/images/system-landscape.png)
+
+![Key](https://structurizr.com/share/49192/images/system-landscape-key.png)
+
 ## Roadmap
 
 If you want to help, please check the project roadmap.
@@ -14,8 +22,6 @@ If you want to help, please check the project roadmap.
 ## Releases
 
 *There was no stable release yet, things might still be changed* 
-
-* [![Build Status](https://travis-ci.com/norzechowicz/hire-in-social.svg?branch=master)](https://travis-ci.com/norzechowicz/hire-in-social) - development (master)
 
 ## Supported channels 
 
