@@ -119,7 +119,7 @@ final class DbalOfferQuery implements OfferQuery
                     'sinceDate' => $filter->sinceDate()->format(\DateTimeInterface::ISO8601),
                     'tillDate' => $filter->tillDate()->format(\DateTimeInterface::ISO8601),
                 ]
-            )
+        )
             ->execute()
             ->fetchColumn();
     }
