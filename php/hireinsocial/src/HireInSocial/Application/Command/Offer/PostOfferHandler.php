@@ -147,7 +147,7 @@ final class PostOfferHandler implements Handler
                     $command->offer()->location()->name(),
                     $command->offer()->location()->latLng()->lat(),
                     $command->offer()->location()->latLng()->lng(),
-                    )
+                )
                 : Location::onlyRemote(),
             $command->offer()->salary()
                 ? new Salary(

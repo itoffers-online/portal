@@ -64,7 +64,7 @@ $candidate->usesSoftwareSystem($mailServer, 'Apply to position', 'Email');
 $recruiter->usesSoftwareSystem($hireInSocial, 'Post job offers', 'Web Browser');
 
 $candidate->usesContainer($webApp,  'Browse job offers', 'Web Browser');
-$recruiter->usesContainer($webApp,  'ost job offers', 'Web Browser');
+$recruiter->usesContainer($webApp,  'Post job offers', 'Web Browser');
 
 // Software System Relationships
 $hireInSocial->usesSoftwareSystem($facebook, 'Post job offers at groups');
