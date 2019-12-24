@@ -9,14 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial;
+namespace HireInSocial\Infrastructure;
 
+use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\PredisCache;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
+use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Proxy\ProxyFactory;
 use HireInSocial\Application\Config;
+use Predis\Client;
 
 function orm(Config $config, Connection $connection) : EntityManager
 {
@@ -29,12 +33,12 @@ function orm(Config $config, Connection $connection) : EntityManager
         ]
     ));
 
-    $configuration->setNamingStrategy(new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy(CASE_LOWER));
+    $configuration->setNamingStrategy(new UnderscoreNamingStrategy(CASE_LOWER));
 
     if ($isDevMode) {
-        $cache = new \Doctrine\Common\Cache\ArrayCache;
+        $cache = new ArrayCache;
     } else {
-        $cache = new \Doctrine\Common\Cache\PredisCache(new \Predis\Client($config->getString(Config::REDIS_DSN) . '/' . Config::REDIS_DB_DOCTRINE_CACHE));
+        $cache = new PredisCache(new Client($config->getString(Config::REDIS_DSN) . '/' . Config::REDIS_DB_DOCTRINE_CACHE));
     }
 
     $configuration->setMetadataCacheImpl($cache);

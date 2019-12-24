@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial;
+namespace HireInSocial\Infrastructure;
 
 use HireInSocial\Application\Config;
 use Symfony\Component\Dotenv\Dotenv;

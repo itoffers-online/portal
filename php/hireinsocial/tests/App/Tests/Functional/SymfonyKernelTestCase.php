@@ -17,10 +17,11 @@ use function App\symfony;
 use App\SymfonyKernel;
 use HireInSocial\Application\Config;
 use HireInSocial\Application\System;
-use function HireInSocial\bootstrap;
-use function HireInSocial\dbal;
-use function HireInSocial\system;
+use function HireInSocial\Infrastructure\bootstrap;
+use function HireInSocial\Infrastructure\dbal;
+use function HireInSocial\Infrastructure\system;
 use HireInSocial\Tests\Application\Context\DatabaseContext;
+use HireInSocial\Tests\Application\Context\SystemContext;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class SymfonyKernelTestCase extends KernelTestCase
@@ -35,7 +36,7 @@ class SymfonyKernelTestCase extends KernelTestCase
     protected static $system;
 
     /**
-     * @var \HireInSocial\Tests\Application\Context\SystemContext
+     * @var SystemContext
      */
     protected $systemContext;
 
@@ -80,7 +81,7 @@ class SymfonyKernelTestCase extends KernelTestCase
     {
         $config = static::config();
 
-        $this->systemContext = new \HireInSocial\Tests\Application\Context\SystemContext(static::system());
+        $this->systemContext = new SystemContext(static::system());
         $this->databaseContext = new DatabaseContext(dbal($config));
 
         $this->databaseContext->purgeDatabase();
