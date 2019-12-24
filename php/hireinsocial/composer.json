@@ -1,11 +1,11 @@
 {
-    "name": "norzechowicz/hire-in-social",
+    "name": "norberttech/hire-in-social",
     "type": "project",
     "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Norbert Orzechowicz",
-            "email": "norbert@orzechowicz.pl"
+            "email": "contact@norbert.tech"
         }
     ],
     "autoload": {
