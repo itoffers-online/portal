@@ -16,7 +16,7 @@ This is a technical documentation of the project.
   * [Terraform](/terraform/README.md)
   * [Architecture](/docs/architecture/README.md)
   * [System Setup](/php/hireinsocial/README.md)
-* Features
+* [Features](/php/hireinsocial/docs/README.md)
   * [Social Channels](/php/hireinsocial/docs/README.md)
 * [Roadmap](https://github.com/norzechowicz/hire-in-social/projects/1)
 
