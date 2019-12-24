@@ -11,12 +11,13 @@ This is a technical documentation of the project.
 ### Table of contents:
 
 * Development 
+  * [Repository Structure](/docs/structure.md)
   * [Requirements](/docs/requirements.md)
   * [Vagrant](/vagrant/README.md)
   * [Local SSL](/ssl/README.md)
   * [Terraform](/terraform/README.md)
   * [Architecture](/docs/architecture/README.md)
-  * [Local System Setup](/php/hireinsocial/README.md)
+  * [System Setup](/php/hireinsocial/README.md)
 * Features
   * [Social Channels](/php/hireinsocial/docs/README.md)
 * [Roadmap](https://github.com/norzechowicz/hire-in-social/projects/1)

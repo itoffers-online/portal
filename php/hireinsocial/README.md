@@ -1,4 +1,4 @@
-# Local System Setup
+# System Setup
 
 [↩️ back](/README.md)
 
@@ -96,3 +96,6 @@ $ bin/symfony cache:clear
 
 In order to use azure blob storage in development you can set it up manually or through terraform
 like described in [dev terraform readme](../../terraform/README.md).
+
+---
+[↩️ back](/README.md)

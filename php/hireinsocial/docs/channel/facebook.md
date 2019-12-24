@@ -12,4 +12,7 @@ In order to use Facebook as a social media destination channel you need to meet 
     * publish_to_groups
 4) Create Facebook App at developers.facebook.com 
     
-https://sujipthapa.co/blog/generating-never-expiring-facebook-page-access-token 
+https://sujipthapa.co/blog/generating-never-expiring-facebook-page-access-token
+
+---
+[↩️ back](/php/hireinsocial/docs/README.md) 
