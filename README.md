@@ -20,7 +20,7 @@ This is a technical documentation of the project.
   * [Social Channels](/php/hireinsocial/docs/README.md)
 * [Roadmap](https://github.com/norzechowicz/hire-in-social/projects/1)
 
-## ⚠️ Explanation
+## ⚠️ Heads Up
 
 This is experimental, pet project where I test thing before using them in commercial projects. 
 Hire in Social was never released anywhere, and I'm not sure if it will be released at all. 
