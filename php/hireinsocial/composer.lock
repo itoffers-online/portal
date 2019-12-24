@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99e56d6e9b18ba10120a5ecd2583551a",
+    "content-hash": "859a84d6bf8b5da36c8ba815c21fb992",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6068,6 +6068,52 @@
             "time": "2019-11-06T16:40:04+00:00"
         },
         {
+            "name": "erusev/parsedown",
+            "version": "1.7.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erusev/parsedown.git",
+                "reference": "6d893938171a817f4e9bc9e86f2da1e370b7bcd7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/6d893938171a817f4e9bc9e86f2da1e370b7bcd7",
+                "reference": "6d893938171a817f4e9bc9e86f2da1e370b7bcd7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Parsedown": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emanuil Rusev",
+                    "email": "hello@erusev.com",
+                    "homepage": "http://erusev.com"
+                }
+            ],
+            "description": "Parser for Markdown.",
+            "homepage": "http://parsedown.org",
+            "keywords": [
+                "markdown",
+                "parser"
+            ],
+            "time": "2019-03-17T18:48:37+00:00"
+        },
+        {
             "name": "friendsofphp/php-cs-fixer",
             "version": "v2.16.1",
             "source": {
@@ -7046,6 +7092,65 @@
                 "php"
             ],
             "time": "2019-11-08T13:50:10+00:00"
+        },
+        {
+            "name": "norberttech/md-link-linter",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/norberttech/md-link-linter.git",
+                "reference": "20c7f239f6c06c23a170b75408967973ad38e317"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/norberttech/md-link-linter/zipball/20c7f239f6c06c23a170b75408967973ad38e317",
+                "reference": "20c7f239f6c06c23a170b75408967973ad38e317",
+                "shasum": ""
+            },
+            "require": {
+                "cocur/slugify": "^3.2",
+                "erusev/parsedown": "^1.7",
+                "ext-dom": "*",
+                "ext-mbstring": "*",
+                "php": "^7.3",
+                "symfony/console": "^4|^3.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "phpstan/phpstan": "^0.11.19",
+                "phpunit/phpunit": "^8.4"
+            },
+            "bin": [
+                "bin/mdlinklint"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MDLinkLinter\\": "src/MDLinkLinter"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Norbert Orzechowicz",
+                    "email": "norbert@orzechowicz.pl"
+                }
+            ],
+            "description": "Markdown link linter",
+            "keywords": [
+                "link",
+                "linter",
+                "markdown"
+            ],
+            "time": "2019-12-15T11:15:09+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -9442,6 +9547,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "norberttech/md-link-linter": 20,
         "structurizr-php/structurizr-php": 20
     },
     "prefer-stable": false,

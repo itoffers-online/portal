@@ -75,6 +75,7 @@
         "friendsofphp/php-cs-fixer": "^2.14",
         "fzaninotto/faker": "^1.8",
         "infection/infection": "^0.15.0",
+        "norberttech/md-link-linter": "@dev",
         "nyholm/psr7": "^1.2",
         "phpstan/phpstan": "^0.11.1",
         "phpunit/phpunit": "^8.0",
@@ -101,12 +102,16 @@
         "test": [
             "security-checker security:check",
             "./vendor/bin/deptrac",
+            "@test:md",
             "@test:php:cs",
             "@db:reset:test",
             "@symfony:cache:clear:test",
             "phpunit --testsuite=unit",
             "phpunit --testsuite=integration",
             "phpunit --testsuite=functional"
+        ],
+        "test:md": [
+            "mdlinklint ../../ --exclude=vendor"
         ],
         "test:coverage:unit": [
             "rm -rf ./var/coverage",
