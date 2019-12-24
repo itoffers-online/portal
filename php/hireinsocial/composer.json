@@ -42,7 +42,6 @@
         "facebook/graph-sdk": "^5.7",
         "google/recaptcha": "^1.2",
         "hashids/hashids": "^3.0",
-        "infection/infection": "^0.12.2",
         "league/flysystem": "^1.0",
         "league/flysystem-azure": "^1.0",
         "monolog/monolog": "^1.24",
@@ -75,6 +74,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
         "fzaninotto/faker": "^1.8",
+        "infection/infection": "^0.15.0",
         "nyholm/psr7": "^1.2",
         "phpstan/phpstan": "^0.11.1",
         "phpunit/phpunit": "^8.0",
