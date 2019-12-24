@@ -25,23 +25,37 @@ jobs:
           - 6379/tcp
     steps:
       - uses: actions/checkout@master
-      - name: Dump php extensions
-        run: php -m
-      - name: Dump php version
-        run: php -v
-      - name: Dump php info
-        run: php -i
-      - name: Install phpdbg
-        run: sudo apt-get install php7.3-phpdbg
+        -
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: 7.3
+          coverage: none
+          extension-csv: mbstring, imap, intl, phpdbg
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
       - name: Install dependecies through composer
         working-directory: ./php/hireinsocial
         run: composer install
+
       - name: Run testsuite
         working-directory: ./php/hireinsocial
         run: composer test
         env:
           HIS_REDIS_DSN: redis://localhost:${{ job.services.redis.ports[6379] }}
           HIS_DB_PORT: ${{ job.services.postgres.ports[5432] }}
+
       - name: Run mutation tests
         run: phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --only-covered
         working-directory: ./php/hireinsocial
