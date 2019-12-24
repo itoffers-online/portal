@@ -1,7 +1,5 @@
 # Hire In Social 💼
 
-[↩️ back](/README.md)
-
 Hire in Social is a portal that connects IT Recruiters with Candidates helping them to find the best possible job offers.   
 
 > Transparency is the key to quality, that's why this project is developed and published as an open source. 
