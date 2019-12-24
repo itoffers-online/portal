@@ -1,4 +1,13 @@
-# Setup Azure resources for development purpose
+# Terraform
+
+[↩️ back](/README.md)
+
+Terraform is used to prepare cloud resources like for example storage. It's not mandatory to use it, it was added in order
+to test system locally in prod env. Feel free to skip it if you don't know how to use Terraform.
+
+At this point only Azure provider is supported but feel free to provide others.   
+
+## Setup Azure resources for development purpose
 
 1) Create azure free account
 2) Download and install azure cli app and login

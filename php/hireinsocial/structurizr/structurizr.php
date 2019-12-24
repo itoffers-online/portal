@@ -75,7 +75,6 @@ $facebook->delivers($candidate, 'Notify about new posts');
 $mailServer->delivers($recruiter, 'Notify about new applications', 'Email');
 
 // Containers Relationships
-
 $webApp->usesContainer($db, 'reads and writes');
 $webApp->addTags(TAG_HIS);
 $cliApp->usesContainer($db, 'reads and writes');
