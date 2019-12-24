@@ -15,31 +15,20 @@ Vagrant.configure(2) do |config|
     end
 
     hireinsocial.vm.synced_folder ".", "/vagrant", disabled: true
-    hireinsocial.vm.synced_folder "../php/hireinsocial", "/var/www/hireinsocial", id: "hireinsocial", type: "nfs"
-    hireinsocial.vm.synced_folder "../ssl", "/var/www/ssl", id: "ssl", type: "nfs"
-    hireinsocial.vm.synced_folder "../ansible", "/vagrant/ansible", id: "ansible", type: "nfs"
-
-    $script = <<-SCRIPT
-            curl https://bootstrap.pypa.io/get-pip.py | python
-            python -m easy_install --upgrade pyOpenSSL
-            mkdir -p /home/vagrant/.ssh
-            ssh-keyscan -H github.com > /home/vagrant/.ssh/known_hosts 2>/dev/null
-            chown -R vagrant.vagrant /home/vagrant/.ssh
-    SCRIPT
-
-    hireinsocial.vm.provision "shell", inline: $script
+    hireinsocial.vm.synced_folder "../", "/var/www/hireinsocial", id: "hireinsocial", type: "nfs"
 
     hireinsocial.vm.provision "ansible_local" do |ansible|
-      ansible.galaxy_role_file = "ansible/vagrant/requirements.yml"
-      ansible.galaxy_roles_path = "ansible/vagrant/roles/provision"
-      ansible.playbook = "ansible/vagrant/playbook.yml"
+      ansible.galaxy_role_file = "/var/www/hireinsocial/ansible/vagrant/requirements.yml"
+      ansible.galaxy_roles_path = "/var/www/hireinsocial/ansible/vagrant/roles/provision"
+      ansible.playbook = "/var/www/hireinsocial/ansible/vagrant/playbook.yml"
       ansible.version = "2.5.4"
       ansible.install_mode = "pip"
+      ansible.galaxy_command = "ansible-galaxy install --role-file=%{role_file} --roles-path=%{roles_path}"
     end
 
     $script = <<-SCRIPT
-            cp /etc/ssl/ca.crt /var/www/ssl/
-            chmod 0644 /etc/ssl/hireinsocial.local.*
+      cp /etc/ssl/ca.crt /var/www/hireinsocial/ssl/
+      chmod 0644 /etc/ssl/hireinsocial.local.*
     SCRIPT
 
     hireinsocial.vm.provision "shell", inline: $script

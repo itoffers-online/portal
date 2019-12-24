@@ -1,14 +1,24 @@
-# Development
+# System Setup
 
-Before you start make sure all dependencies are on place. Vagrant is recommended for local development and
+[↩️ back](/README.md)
+
+Before you start make sure all dependencies are on place. Vagrant is recommended environment for local development and
 all instructions in this readme are prepared for it.  
 
 ```
 $ vagrant ssh
-$ cd /var/www/hireinsocial
+$ cd /var/www/hireinsocial/php/hireinsocial
 $ composer install
 ```
 
+## Configuration
+
+Check [.env.dist file](/php/hireinsocial/.env.dist) and create your own local copy:
+
+```
+$ cp /var/www/hireinsocial/php/hireinsocial/.env.dist /var/www/hireinsocial/php/hireinsocial/.env
+```
+ 
 ## Command Line Interface
 
 All available CLI commands are defined in `composer.json` file, in scripts section.
@@ -86,3 +96,6 @@ $ bin/symfony cache:clear
 
 In order to use azure blob storage in development you can set it up manually or through terraform
 like described in [dev terraform readme](../../terraform/README.md).
+
+---
+[↩️ back](/README.md)
