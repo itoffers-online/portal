@@ -6,12 +6,14 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use function HireInSocial\Infrastructure\bootstrap;
+use function HireInSocial\Infrastructure\dbal;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$config = \HireInSocial\bootstrap($projectRootPath);
+$config = bootstrap($projectRootPath);
 
 (new Application('db-drop', '1.0.0'))
     ->register('db-drop')
@@ -26,7 +28,7 @@ $config = \HireInSocial\bootstrap($projectRootPath);
             }
         }
 
-        $connection = \HireInSocial\dbal($config);
+        $connection = dbal($config);
 
         $io->title('Database: ' . $config->getString(Config::DB_NAME));
 
