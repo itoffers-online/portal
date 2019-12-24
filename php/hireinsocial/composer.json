@@ -102,7 +102,6 @@
         "test": [
             "security-checker security:check",
             "./vendor/bin/deptrac",
-            "@test:md",
             "@test:php:cs",
             "@db:reset:test",
             "@symfony:cache:clear:test",
@@ -111,7 +110,7 @@
             "phpunit --testsuite=functional"
         ],
         "test:md": [
-            "mdlinklint ../../ --exclude=vendor"
+            "mdlinklint ./../../ --exclude=vendor"
         ],
         "test:coverage:unit": [
             "rm -rf ./var/coverage",
