@@ -20,17 +20,25 @@ use HireInSocial\Application\Query\Filter\Column;
 final class OfferFilter extends AbstractFilter
 {
     public const COLUMN_SALARY = 'salary';
+
     public const COLUMN_CREATED_AT = 'created_at';
 
     public const SORT_SALARY_ASC = 'salary_asc';
+
     public const SORT_SALARY_DESC = 'salary_desc';
+
     public const SORT_CREATED_AT_ASC = 'created_at_asc';
+
     public const SORT_CREATED_AT_DESC = 'created_at_desc';
 
     private $specialization;
+
     private $sinceDate;
+
     private $tillDate;
+
     private $remote;
+
     private $withSalary;
 
     private function __construct()
@@ -70,17 +78,17 @@ final class OfferFilter extends AbstractFilter
         return $this;
     }
 
-    public function sinceDate(): \DateTimeImmutable
+    public function sinceDate() : \DateTimeImmutable
     {
         return $this->sinceDate;
     }
 
-    public function tillDate(): \DateTimeImmutable
+    public function tillDate() : \DateTimeImmutable
     {
         return $this->tillDate;
     }
 
-    public function specialization(): ?string
+    public function specialization() : ?string
     {
         return $this->specialization;
     }
@@ -109,7 +117,7 @@ final class OfferFilter extends AbstractFilter
         return $this->withSalary;
     }
 
-    public function sortBy(string $columnType): self
+    public function sortBy(string $columnType) : self
     {
         switch ($columnType) {
             case self::SORT_CREATED_AT_DESC:
@@ -133,7 +141,7 @@ final class OfferFilter extends AbstractFilter
         return $this;
     }
 
-    protected function sortColumns(): array
+    protected function sortColumns() : array
     {
         return [
             self::COLUMN_SALARY,

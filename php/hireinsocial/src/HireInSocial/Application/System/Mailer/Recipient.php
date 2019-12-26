@@ -16,7 +16,9 @@ namespace HireInSocial\Application\System\Mailer;
 final class Recipient
 {
     private $email;
+
     private $name;
+
     private $bcc;
 
     public function __construct(string $email, string $name = null)
@@ -34,12 +36,12 @@ final class Recipient
         return $recipient;
     }
 
-    public function email(): string
+    public function email() : string
     {
         return $this->email;
     }
 
-    public function name(): ?string
+    public function name() : ?string
     {
         return $this->name;
     }

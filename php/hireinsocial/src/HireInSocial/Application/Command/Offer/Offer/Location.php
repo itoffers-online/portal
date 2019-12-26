@@ -18,7 +18,9 @@ use HireInSocial\Application\Command\Offer\Offer\Location\LatLng;
 final class Location
 {
     private $remote;
+
     private $name;
+
     private $latLng;
 
     public function __construct(bool $remote, ?string $name = null, ?LatLng $latLng = null)
@@ -28,17 +30,17 @@ final class Location
         $this->latLng = $latLng;
     }
 
-    public function remote(): bool
+    public function remote() : bool
     {
         return $this->remote;
     }
 
-    public function name(): ?string
+    public function name() : ?string
     {
         return $this->name;
     }
 
-    public function latLng(): ?LatLng
+    public function latLng() : ?LatLng
     {
         return $this->latLng;
     }

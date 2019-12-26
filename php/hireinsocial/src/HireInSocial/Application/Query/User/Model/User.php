@@ -16,6 +16,7 @@ namespace HireInSocial\Application\Query\User\Model;
 final class User
 {
     private $id;
+
     private $fbAppId;
 
     public function __construct(string $id, ?string $fbAppId)
@@ -24,12 +25,12 @@ final class User
         $this->fbAppId = $fbAppId;
     }
 
-    public function id(): string
+    public function id() : string
     {
         return $this->id;
     }
 
-    public function fbAppId(): ?string
+    public function fbAppId() : ?string
     {
         return $this->fbAppId;
     }

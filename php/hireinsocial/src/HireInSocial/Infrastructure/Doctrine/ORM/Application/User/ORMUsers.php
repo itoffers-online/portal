@@ -28,12 +28,12 @@ final class ORMUsers implements Users
         $this->entityManager = $entityManager;
     }
 
-    public function add(User $user): void
+    public function add(User $user) : void
     {
         $this->entityManager->persist($user);
     }
 
-    public function getById(UuidInterface $id): User
+    public function getById(UuidInterface $id) : User
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['id' => $id->toString()]);
 
@@ -44,7 +44,7 @@ final class ORMUsers implements Users
         return $user;
     }
 
-    public function getByFB(string $userAppId): User
+    public function getByFB(string $userAppId) : User
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['fbUserAppId' => $userAppId]);
 

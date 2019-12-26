@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class SpecializationController extends AbstractController
 {
     private $offers;
+
     private $templating;
 
     public function __construct(Offers $offers, EngineInterface $templating)

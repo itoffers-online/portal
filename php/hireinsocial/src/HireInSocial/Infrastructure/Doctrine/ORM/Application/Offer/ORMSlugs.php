@@ -26,7 +26,7 @@ final class ORMSlugs implements Slugs
         $this->entityManager = $entityManager;
     }
 
-    public function add(Slug $slug): void
+    public function add(Slug $slug) : void
     {
         $this->entityManager->persist($slug);
     }

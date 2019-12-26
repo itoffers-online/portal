@@ -24,10 +24,13 @@ use Symfony\Component\Stopwatch\Stopwatch;
 final class PerformanceCheckCommand extends Command
 {
     public const NAME = 'system:performance:check';
+
     protected static $defaultName = self::NAME;
 
     private $offers;
+
     private $config;
+
     /**
      * @var SymfonyStyle
      */

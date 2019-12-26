@@ -29,7 +29,7 @@ final class InMemorySpecializations implements Specializations
         $this->specializations = $specializations;
     }
 
-    public function get(string $slug): Specialization
+    public function get(string $slug) : Specialization
     {
         foreach ($this->specializations as $specialization) {
             if ($specialization->is($slug)) {
@@ -40,7 +40,7 @@ final class InMemorySpecializations implements Specializations
         throw new Exception(sprintf('Specialization "%s" does not exists', $slug));
     }
 
-    public function add(Specialization $specialization): void
+    public function add(Specialization $specialization) : void
     {
         $this->specializations[] = $specialization;
     }

@@ -29,7 +29,7 @@ final class DbalUserQuery implements UserQuery
         $this->connection = $connection;
     }
 
-    public function findByFacebook(string $facebookUserAppId): ?User
+    public function findByFacebook(string $facebookUserAppId) : ?User
     {
         $userData = $this->connection->createQueryBuilder()
             ->select('u.*')

@@ -26,7 +26,7 @@ final class CreateSpecializationHandler implements Handler
         $this->specializations = $specializations;
     }
 
-    public function handles(): string
+    public function handles() : string
     {
         return CreateSpecialization::class;
     }

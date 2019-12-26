@@ -17,13 +17,13 @@ use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\System\Mailer;
 use HireInSocial\Application\System\Mailer\Attachments;
 use HireInSocial\Application\System\Mailer\Email;
-use HireInSocial\Application\System\Mailer\Recipient;
 use HireInSocial\Application\System\Mailer\Recipients;
 use HireInSocial\Application\System\Mailer\Sender;
 
 final class SwiftMailer implements Mailer
 {
     private $domain;
+
     private $swiftMailer;
 
     public function __construct(string $domain, \Swift_Mailer $swiftMailer)
@@ -32,7 +32,7 @@ final class SwiftMailer implements Mailer
         $this->swiftMailer = $swiftMailer;
     }
 
-    public function domain(): string
+    public function domain() : string
     {
         return $this->domain;
     }
@@ -40,7 +40,7 @@ final class SwiftMailer implements Mailer
     /**
      * @throws Exception
      */
-    public function send(Email $email, Sender $sender, Recipients $recipients, Attachments $attachments): void
+    public function send(Email $email, Sender $sender, Recipients $recipients, Attachments $attachments) : void
     {
         $message = (new \Swift_Message($email->subject()))
             ->setFrom([$sender->email() => $sender->name()])

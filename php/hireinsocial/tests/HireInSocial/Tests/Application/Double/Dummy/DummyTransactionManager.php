@@ -17,15 +17,15 @@ use HireInSocial\Application\System\TransactionManager;
 
 final class DummyTransactionManager implements TransactionManager
 {
-    public function begin(): void
+    public function begin() : void
     {
     }
 
-    public function commit(): void
+    public function commit() : void
     {
     }
 
-    public function rollback(): void
+    public function rollback() : void
     {
     }
 }

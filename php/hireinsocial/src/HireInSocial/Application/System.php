@@ -24,8 +24,11 @@ use Psr\Log\LoggerInterface;
 class System
 {
     private $commandBus;
+
     private $queries;
+
     private $logger;
+
     private $calendar;
 
     public function __construct(CommandBus $commandBus, Queries $queries, LoggerInterface $logger, Calendar $calendar)

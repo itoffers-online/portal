@@ -18,5 +18,6 @@ use HireInSocial\Application\Offer\Application\EmailHash;
 interface Applications
 {
     public function alreadyApplied(EmailHash $emailHash, Offer $offer) : bool;
+
     public function add(Application $application) : void;
 }

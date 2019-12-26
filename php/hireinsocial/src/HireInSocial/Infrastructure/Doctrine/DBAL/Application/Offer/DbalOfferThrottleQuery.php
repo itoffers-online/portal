@@ -25,8 +25,11 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
     private $cache;
 
     private $limit;
+
     private $since;
+
     private $connection;
+
     private $calendar;
 
     public function __construct(int $limit, \DateInterval $since, Connection $connection, Calendar $calendar)
@@ -38,12 +41,12 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
         $this->cache = [];
     }
 
-    public function limit(): int
+    public function limit() : int
     {
         return $this->limit;
     }
 
-    public function since(): \DateInterval
+    public function since() : \DateInterval
     {
         return $this->since;
     }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of the Hire in Social project.
@@ -37,7 +39,7 @@ final class Offers
         $this->calendar = $calendar;
     }
 
-    public function calendar(): System\Calendar
+    public function calendar() : System\Calendar
     {
         return $this->calendar;
     }

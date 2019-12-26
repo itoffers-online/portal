@@ -46,10 +46,10 @@ final class EmailHashTest extends TestCase
         );
     }
 
-    public function createMD5Encoder(): Encoder
+    public function createMD5Encoder() : Encoder
     {
         return new class implements Encoder {
-            public function encode(string $value): string
+            public function encode(string $value) : string
             {
                 return \md5($value);
             }

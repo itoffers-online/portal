@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class LayoutController extends AbstractController
 {
     private $offers;
+
     private $templating;
 
     public function __construct(Offers $offers, EngineInterface $templating)

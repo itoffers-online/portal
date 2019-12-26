@@ -126,7 +126,7 @@ final class ScanMessagesTest extends ConsoleTestCase
         );
     }
 
-    public function createOffer(): Offer
+    public function createOffer() : Offer
     {
         $user = $this->systemContext->createUser();
         $this->systemContext->createSpecialization('spec');
@@ -137,7 +137,7 @@ final class ScanMessagesTest extends ConsoleTestCase
         return $offer;
     }
 
-    public function createMessage(string $sentTo, string $fromMailbox, string $fromHost, string $fromName): MockObject
+    public function createMessage(string $sentTo, string $fromMailbox, string $fromHost, string $fromName) : MockObject
     {
         $message = $this->createMock(MessageInterface::class);
 

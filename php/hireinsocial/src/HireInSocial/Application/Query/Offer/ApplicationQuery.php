@@ -18,5 +18,6 @@ use HireInSocial\Application\System\Query;
 interface ApplicationQuery extends Query
 {
     public function alreadyApplied(string $offerId, string $email) : bool;
+
     public function countFor(string $offerId) : int;
 }

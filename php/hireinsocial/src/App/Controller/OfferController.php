@@ -40,8 +40,11 @@ final class OfferController extends AbstractController
     use RedirectAfterLogin;
 
     private $offers;
+
     private $templating;
+
     private $facebook;
+
     private $logger;
 
     public function __construct(

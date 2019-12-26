@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class ReCaptchaController extends AbstractController
 {
     private $offers;
+
     private $parameterBag;
 
     public function __construct(Offers $offers, ParameterBagInterface $parameterBag)

@@ -28,12 +28,19 @@ use Ramsey\Uuid\UuidInterface;
 final class Offer
 {
     private $id;
+
     private $slug;
+
     private $emailHash;
+
     private $userId;
+
     private $specializationSlug;
+
     private $createdAt;
+
     private $parameters;
+
     private $offerPDF;
 
     public function __construct(
@@ -56,72 +63,72 @@ final class Offer
         $this->offerPDF = $offerPDF;
     }
 
-    public function id(): UuidInterface
+    public function id() : UuidInterface
     {
         return $this->id;
     }
 
-    public function userId(): ?UuidInterface
+    public function userId() : ?UuidInterface
     {
         return $this->userId;
     }
 
-    public function emailHash(): string
+    public function emailHash() : string
     {
         return $this->emailHash;
     }
 
-    public function slug(): string
+    public function slug() : string
     {
         return $this->slug;
     }
 
-    public function specializationSlug(): string
+    public function specializationSlug() : string
     {
         return $this->specializationSlug;
     }
 
-    public function createdAt(): \DateTimeImmutable
+    public function createdAt() : \DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function company(): Company
+    public function company() : Company
     {
         return $this->parameters->company();
     }
 
-    public function contact(): Contact
+    public function contact() : Contact
     {
         return $this->parameters->contact();
     }
 
-    public function contract(): Contract
+    public function contract() : Contract
     {
         return $this->parameters->contract();
     }
 
-    public function description(): Description
+    public function description() : Description
     {
         return $this->parameters->description();
     }
 
-    public function location(): Location
+    public function location() : Location
     {
         return $this->parameters->location();
     }
 
-    public function position(): Position
+    public function position() : Position
     {
         return $this->parameters->position();
     }
 
-    public function salary(): ?Salary
+    public function salary() : ?Salary
     {
         return $this->parameters->salary();
     }
 
-    public function offerPDF(): ?OfferPDF
+    public function offerPDF() : ?OfferPDF
     {
         return $this->offerPDF;
     }

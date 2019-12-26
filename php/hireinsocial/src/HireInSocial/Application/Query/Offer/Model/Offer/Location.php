@@ -16,8 +16,11 @@ namespace HireInSocial\Application\Query\Offer\Model\Offer;
 final class Location
 {
     private $remote;
+
     private $name;
+
     private $lat;
+
     private $lng;
 
     public function __construct(bool $remote, ?string $name = null, ?float $lat = null, ?float $lng = null)
@@ -28,22 +31,22 @@ final class Location
         $this->lng = $lng;
     }
 
-    public function remote(): bool
+    public function remote() : bool
     {
         return $this->remote;
     }
 
-    public function name(): ?string
+    public function name() : ?string
     {
         return $this->name;
     }
 
-    public function lat(): ?float
+    public function lat() : ?float
     {
         return $this->lat;
     }
 
-    public function lng(): ?float
+    public function lng() : ?float
     {
         return $this->lng;
     }

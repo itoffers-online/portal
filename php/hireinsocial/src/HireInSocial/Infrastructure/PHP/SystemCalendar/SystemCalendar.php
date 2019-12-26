@@ -27,7 +27,7 @@ final class SystemCalendar implements Calendar
         $this->timeZone = $timeZone;
     }
 
-    public function currentTime(): \DateTimeImmutable
+    public function currentTime() : \DateTimeImmutable
     {
         return new \DateTimeImmutable('now', $this->timeZone);
     }

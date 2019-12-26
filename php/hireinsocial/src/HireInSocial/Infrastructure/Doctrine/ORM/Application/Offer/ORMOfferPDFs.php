@@ -26,7 +26,7 @@ final class ORMOfferPDFs implements OfferPDFs
         $this->entityManager = $entityManager;
     }
 
-    public function add(OfferPDF $offerPDF): void
+    public function add(OfferPDF $offerPDF) : void
     {
         $this->entityManager->persist($offerPDF);
     }

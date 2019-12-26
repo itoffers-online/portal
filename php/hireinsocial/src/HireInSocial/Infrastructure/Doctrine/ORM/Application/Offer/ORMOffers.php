@@ -30,17 +30,17 @@ final class ORMOffers implements Offers
         $this->entityManager = $entityManager;
     }
 
-    public function add(Offer $offer): void
+    public function add(Offer $offer) : void
     {
         $this->entityManager->persist($offer);
     }
 
-    public function getById(UuidInterface $offerId): Offer
+    public function getById(UuidInterface $offerId) : Offer
     {
         return $this->entityManager->getRepository(Offer::class)->findOneBy(['id' => $offerId->toString()]);
     }
 
-    public function postedBy(User $user, \DateTimeImmutable $since): UserOffers
+    public function postedBy(User $user, \DateTimeImmutable $since) : UserOffers
     {
         $criteria = new Criteria();
         $criteria

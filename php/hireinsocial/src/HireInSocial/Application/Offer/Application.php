@@ -20,8 +20,11 @@ use Ramsey\Uuid\Uuid;
 class Application
 {
     private $id;
+
     private $offerId;
+
     private $emailHash;
+
     private $createdAt;
 
     private function __construct()

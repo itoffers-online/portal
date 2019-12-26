@@ -18,5 +18,6 @@ use HireInSocial\Application\System\FileStorage\File;
 interface FileStorage
 {
     public function upload(File $file) : void;
+
     public function purge() : void;
 }

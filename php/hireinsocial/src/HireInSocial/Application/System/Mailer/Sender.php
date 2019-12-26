@@ -18,7 +18,9 @@ use HireInSocial\Application\Assertion;
 final class Sender
 {
     private $email;
+
     private $name;
+
     private $replyEmail;
 
     public function __construct(string $email, string $name, string $replyEmail)
@@ -32,17 +34,17 @@ final class Sender
         $this->replyEmail = $replyEmail;
     }
 
-    public function email(): string
+    public function email() : string
     {
         return $this->email;
     }
 
-    public function name(): string
+    public function name() : string
     {
         return $this->name;
     }
 
-    public function replyEmail(): string
+    public function replyEmail() : string
     {
         return $this->replyEmail;
     }

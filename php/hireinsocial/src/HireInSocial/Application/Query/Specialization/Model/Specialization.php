@@ -19,7 +19,9 @@ use HireInSocial\Application\Query\Specialization\Model\Specialization\Offers;
 final class Specialization
 {
     private $slug;
+
     private $offers;
+
     private $facebookChannel;
 
     public function __construct(string $slug, Offers $offers, ?FacebookChannel $facebookChannel)
@@ -29,17 +31,17 @@ final class Specialization
         $this->facebookChannel = $facebookChannel;
     }
 
-    public function slug(): string
+    public function slug() : string
     {
         return $this->slug;
     }
 
-    public function offers(): Offers
+    public function offers() : Offers
     {
         return $this->offers;
     }
 
-    public function facebookChannel(): ?FacebookChannel
+    public function facebookChannel() : ?FacebookChannel
     {
         return $this->facebookChannel;
     }

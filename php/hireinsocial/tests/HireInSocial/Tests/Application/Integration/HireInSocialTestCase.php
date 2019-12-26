@@ -56,8 +56,7 @@ class HireInSocialTestCase extends TestCase
         $this->filesystemContext->purgeFilesystem();
     }
 
-
-    public function tearDown(): void
+    public function tearDown() : void
     {
         $this->filesystemContext->purgeFilesystem();
     }

@@ -22,9 +22,13 @@ final class ApplyThroughEmail implements Command
     use ClassCommand;
 
     private $offerId;
+
     private $from;
+
     private $subject;
+
     private $htmlBody;
+
     private $attachments;
 
     public function __construct(
@@ -41,27 +45,27 @@ final class ApplyThroughEmail implements Command
         $this->attachments = $attachments;
     }
 
-    public function offerId(): string
+    public function offerId() : string
     {
         return $this->offerId;
     }
 
-    public function from(): string
+    public function from() : string
     {
         return $this->from;
     }
 
-    public function subject(): string
+    public function subject() : string
     {
         return $this->subject;
     }
 
-    public function htmlBody(): string
+    public function htmlBody() : string
     {
         return $this->htmlBody;
     }
 
-    public function attachments(): array
+    public function attachments() : array
     {
         return $this->attachments;
     }

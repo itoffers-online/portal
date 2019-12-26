@@ -16,7 +16,9 @@ namespace HireInSocial\Application\Query\Offer\Model\Offer;
 final class Company
 {
     private $name;
+
     private $url;
+
     private $description;
 
     public function __construct(string $name, string $url, string $description)
@@ -26,17 +28,17 @@ final class Company
         $this->description = $description;
     }
 
-    public function name(): string
+    public function name() : string
     {
         return $this->name;
     }
 
-    public function url(): string
+    public function url() : string
     {
         return $this->url;
     }
 
-    public function description(): string
+    public function description() : string
     {
         return $this->description;
     }

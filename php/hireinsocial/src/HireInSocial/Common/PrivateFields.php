@@ -17,7 +17,7 @@ use Doctrine\Instantiator\Instantiator;
 
 trait PrivateFields
 {
-    private static function instantiate(string $class): object
+    private static function instantiate(string $class) : object
     {
         $instantiator = new Instantiator();
 

@@ -37,7 +37,9 @@ use Twig\Extensions\TextExtension;
 final class SymfonyKernel extends Kernel
 {
     private $projectRootPath;
+
     private $offers;
+
     private $frameworkConfig;
 
     public function __construct(

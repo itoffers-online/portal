@@ -30,6 +30,7 @@ use function sprintf;
 final class FlysystemStorage implements FileStorage
 {
     private $filesystem;
+
     private $config;
 
     public function __construct(Filesystem $filesystem)
@@ -103,12 +104,12 @@ final class FlysystemStorage implements FileStorage
         return $this->config;
     }
 
-    public function upload(File $file): void
+    public function upload(File $file) : void
     {
         $this->filesystem->put($file->destinationPath(), file_get_contents($file->tmpPath()));
     }
 
-    public function purge(): void
+    public function purge() : void
     {
         array_map(
             function (array $file) {

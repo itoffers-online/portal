@@ -29,7 +29,7 @@ final class Group
         $this->fbId = $fbId;
     }
 
-    public function fbId(): string
+    public function fbId() : string
     {
         return $this->fbId;
     }

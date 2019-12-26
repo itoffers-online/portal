@@ -30,7 +30,7 @@ final class CommandBusTest extends TestCase
         new CommandBus(
             new DummyTransactionManager(),
             new class implements Handler {
-                public function handles(): string
+                public function handles() : string
                 {
                     return 'nothing';
                 }
@@ -47,7 +47,7 @@ final class CommandBusTest extends TestCase
                 {
                 }
 
-                public function handles(): string
+                public function handles() : string
                 {
                     return 'nothing';
                 }
@@ -58,7 +58,7 @@ final class CommandBusTest extends TestCase
         $this->expectExceptionMessage('Unknown command "FancyClassName"');
 
         $commandBus->handle(new class implements Command {
-            public function commandName(): string
+            public function commandName() : string
             {
                 return 'FancyClassName';
             }
@@ -70,7 +70,7 @@ final class CommandBusTest extends TestCase
         $commandBus = new CommandBus(
             new DummyTransactionManager(),
             new class implements Handler {
-                public function handles(): string
+                public function handles() : string
                 {
                     return 'Command';
                 }
@@ -85,12 +85,12 @@ final class CommandBusTest extends TestCase
         $command = new class implements Command {
             public $handled = false;
 
-            public function commandName(): string
+            public function commandName() : string
             {
                 return 'Command';
             }
 
-            public function handle(): void
+            public function handle() : void
             {
                 $this->handled = true;
             }

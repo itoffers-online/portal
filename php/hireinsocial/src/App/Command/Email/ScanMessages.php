@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Command\Email;
 
-use function \Safe\sprintf;
 use App\Email\Parser;
 use Ddeboer\Imap\ConnectionInterface;
 use Ddeboer\Imap\Message\AttachmentInterface;
@@ -34,16 +33,20 @@ final class ScanMessages extends Command
     use LockableTrait;
 
     public const NAME = 'email:scan';
+
     protected static $defaultName = self::NAME;
 
     private $offers;
+
     private $connection;
 
     private $tmpBasePath;
+
     /**
      * @var SymfonyStyle
      */
     private $io;
+
     /**
      * @var Filesystem
      */
@@ -146,7 +149,7 @@ final class ScanMessages extends Command
         return 0;
     }
 
-    protected function finishCommand(): void
+    protected function finishCommand() : void
     {
         $this->release();
         $this->fs->remove($this->tmpBasePath);
@@ -154,7 +157,7 @@ final class ScanMessages extends Command
         $this->io->note(\sprintf('Tmp dir for attachments removed: %s', $this->tmpBasePath));
     }
 
-    protected function saveInTmp(AttachmentInterface $attachment): AttachmentTmpPath
+    protected function saveInTmp(AttachmentInterface $attachment) : AttachmentTmpPath
     {
         $this->io->comment(\sprintf('Saving attachment "%s" to tmp storage...', $attachment->getFilename()));
 

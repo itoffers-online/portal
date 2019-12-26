@@ -21,6 +21,7 @@ final class RemoveOffer implements Command
     use ClassCommand;
 
     private $offerId;
+
     private $userId;
 
     public function __construct(string $offerId, string $userId)
@@ -29,12 +30,12 @@ final class RemoveOffer implements Command
         $this->userId = $userId;
     }
 
-    public function offerId(): string
+    public function offerId() : string
     {
         return $this->offerId;
     }
 
-    public function userId(): string
+    public function userId() : string
     {
         return $this->userId;
     }

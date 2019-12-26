@@ -40,8 +40,8 @@ abstract class TypeTestCase extends TestCase
     }
 
     abstract protected function getTypeName() : string;
-    abstract protected function getTypeClass() : string;
 
+    abstract protected function getTypeClass() : string;
 
     /**
      * @param mixed $value

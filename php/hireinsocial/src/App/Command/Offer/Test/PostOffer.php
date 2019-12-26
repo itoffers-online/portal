@@ -36,10 +36,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class PostOffer extends Command
 {
     public const NAME = 'post:offer:test';
+
     protected static $defaultName = self::NAME;
 
     private $offers;
+
     private $locale;
+
     /**
      * @var SymfonyStyle
      */

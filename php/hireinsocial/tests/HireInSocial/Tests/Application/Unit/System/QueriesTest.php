@@ -42,7 +42,6 @@ final class QueriesTest extends TestCase
         $queries->get(Query::class);
     }
 
-
     public function test_accessing_not_registered_query() : void
     {
         $this->expectException(Exception::class);

@@ -22,6 +22,7 @@ use HireInSocial\Application\User\Users;
 final class FacebookConnectHandler implements Handler
 {
     private $users;
+
     private $calendar;
 
     public function __construct(Users $users, Calendar $calendar)
@@ -30,7 +31,7 @@ final class FacebookConnectHandler implements Handler
         $this->calendar = $calendar;
     }
 
-    public function handles(): string
+    public function handles() : string
     {
         return FacebookConnect::class;
     }

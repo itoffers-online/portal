@@ -27,7 +27,7 @@ final class CreateSpecialization implements Command
         $this->slug = $slug;
     }
 
-    public function slug(): string
+    public function slug() : string
     {
         return $this->slug;
     }

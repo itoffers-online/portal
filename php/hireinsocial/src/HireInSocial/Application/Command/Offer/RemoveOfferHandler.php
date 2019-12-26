@@ -22,7 +22,9 @@ use Ramsey\Uuid\Uuid;
 final class RemoveOfferHandler implements Handler
 {
     private $users;
+
     private $offers;
+
     private $calendar;
 
     public function __construct(
@@ -35,7 +37,7 @@ final class RemoveOfferHandler implements Handler
         $this->calendar = $calendar;
     }
 
-    public function handles(): string
+    public function handles() : string
     {
         return RemoveOffer::class;
     }

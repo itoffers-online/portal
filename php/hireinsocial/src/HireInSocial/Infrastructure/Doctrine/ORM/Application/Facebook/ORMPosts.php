@@ -27,12 +27,12 @@ final class ORMPosts implements Posts
         $this->entityManager = $entityManager;
     }
 
-    public function add(Post $post): void
+    public function add(Post $post) : void
     {
         $this->entityManager->persist($post);
     }
 
-    public function findFor(Offer $offer): ?Post
+    public function findFor(Offer $offer) : ?Post
     {
         return $this->entityManager->getRepository(Post::class)->findOneBy(['offerId' => $offer->id()]);
     }

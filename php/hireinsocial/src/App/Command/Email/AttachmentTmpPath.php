@@ -16,6 +16,7 @@ namespace App\Command\Email;
 final class AttachmentTmpPath
 {
     private $basePath;
+
     private $filename;
 
     public function __construct(string $basePath, string $filename)
@@ -29,7 +30,7 @@ final class AttachmentTmpPath
         return $this->basePath . '/' . $this->filename;
     }
 
-    public function filename(): string
+    public function filename() : string
     {
         return $this->filename;
     }

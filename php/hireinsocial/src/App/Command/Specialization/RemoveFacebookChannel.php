@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Command\Specialization;
 
 use HireInSocial\Application\Command\Specialization\RemoveFacebookChannel as SystemRemoveFacebookChannel;
-use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Offers;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -25,9 +24,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class RemoveFacebookChannel extends Command
 {
     public const NAME = 'specialization:channel:facebook:remove';
+
     protected static $defaultName = self::NAME;
 
     private $offers;
+
     /**
      * @var SymfonyStyle
      */

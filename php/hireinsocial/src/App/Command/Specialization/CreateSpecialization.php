@@ -15,7 +15,6 @@ namespace App\Command\Specialization;
 
 use HireInSocial\Application\Command\Specialization\CreateSpecialization as SystemCreateSpecializationCommand;
 use HireInSocial\Application\Command\Specialization\SetFacebookChannel;
-use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Offers;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,9 +25,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class CreateSpecialization extends Command
 {
     public const NAME = 'specialization:create';
+
     protected static $defaultName = self::NAME;
 
     private $offers;
+
     /**
      * @var SymfonyStyle
      */

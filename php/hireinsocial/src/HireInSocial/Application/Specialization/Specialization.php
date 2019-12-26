@@ -22,9 +22,13 @@ use Ramsey\Uuid\UuidInterface;
 class Specialization
 {
     private $id;
+
     private $slug;
+
     private $facebookChannelPageId;
+
     private $facebookChannelPageAccessToken;
+
     private $facebookChannelGroupId;
 
     public function __construct(string $slug)
@@ -36,7 +40,7 @@ class Specialization
         $this->slug = \mb_strtolower($slug);
     }
 
-    public function id(): UuidInterface
+    public function id() : UuidInterface
     {
         return Uuid::fromString($this->id);
     }
@@ -65,7 +69,7 @@ class Specialization
         $this->facebookChannelGroupId = null;
     }
 
-    public function facebookChannel(): ?FacebookChannel
+    public function facebookChannel() : ?FacebookChannel
     {
         if (!\is_null($this->facebookChannelPageId) &&
             !\is_null($this->facebookChannelPageAccessToken) &&

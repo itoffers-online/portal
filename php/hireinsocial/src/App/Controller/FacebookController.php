@@ -32,9 +32,13 @@ final class FacebookController extends AbstractController
     public const USER_SESSION_KEY = '_his_user_id';
 
     private $offers;
+
     private $router;
+
     private $templating;
+
     private $facebook;
+
     private $logger;
 
     public function __construct(

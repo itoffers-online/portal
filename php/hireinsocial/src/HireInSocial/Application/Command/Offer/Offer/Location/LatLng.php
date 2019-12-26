@@ -16,6 +16,7 @@ namespace HireInSocial\Application\Command\Offer\Offer\Location;
 final class LatLng
 {
     private $lat;
+
     private $lng;
 
     public function __construct(float $lat, float $lng)
@@ -24,12 +25,12 @@ final class LatLng
         $this->lng = $lng;
     }
 
-    public function lat(): float
+    public function lat() : float
     {
         return $this->lat;
     }
 
-    public function lng(): float
+    public function lng() : float
     {
         return $this->lng;
     }

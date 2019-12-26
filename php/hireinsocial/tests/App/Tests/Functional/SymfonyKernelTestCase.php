@@ -16,7 +16,6 @@ namespace App\Tests\Functional;
 use function App\symfony;
 use App\SymfonyKernel;
 use HireInSocial\Application\Config;
-use HireInSocial\Application\System;
 use function HireInSocial\Infrastructure\bootstrap;
 use function HireInSocial\Infrastructure\dbal;
 use function HireInSocial\Infrastructure\offersFacade;

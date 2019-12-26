@@ -27,7 +27,7 @@ class CalendarStub implements Calendar
         $this->currentTime = $currentTime;
     }
 
-    public function currentTime(): \DateTimeImmutable
+    public function currentTime() : \DateTimeImmutable
     {
         return $this->currentTime;
     }

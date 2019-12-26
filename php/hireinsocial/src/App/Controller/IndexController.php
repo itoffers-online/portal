@@ -26,6 +26,7 @@ final class IndexController extends AbstractController
     use ControllerTrait;
 
     private $offers;
+
     private $templating;
 
     public function __construct(Offers $offers, EngineInterface $templating)

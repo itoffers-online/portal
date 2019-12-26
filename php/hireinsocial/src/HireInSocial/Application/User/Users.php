@@ -18,6 +18,8 @@ use Ramsey\Uuid\UuidInterface;
 interface Users
 {
     public function add(User $user) : void;
+
     public function getById(UuidInterface $id) : User;
+
     public function getByFB(string $userAppId) : User;
 }
