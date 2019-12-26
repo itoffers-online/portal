@@ -16,6 +16,7 @@ namespace HireInSocial\Application\Query\Specialization\Model\Specialization;
 final class FacebookChannel
 {
     private $pageId;
+
     private $groupId;
 
     public function __construct(string $pageId, string $groupId)
@@ -24,12 +25,12 @@ final class FacebookChannel
         $this->groupId = $groupId;
     }
 
-    public function pageId(): string
+    public function pageId() : string
     {
         return $this->pageId;
     }
 
-    public function groupId(): string
+    public function groupId() : string
     {
         return $this->groupId;
     }

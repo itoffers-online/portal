@@ -22,14 +22,14 @@ final class EmailFormatter
         $this->twig = $twig;
     }
 
-    public function applicationSubject(string $originSubject): string
+    public function applicationSubject(string $originSubject) : string
     {
         return $this->twig->render('/email/apply/offer.txt.twig', [
             'originSubject' => $originSubject,
         ]);
     }
 
-    public function applicationBody(string $originMessage): string
+    public function applicationBody(string $originMessage) : string
     {
         return $this->twig->render('/email/apply/message.html.twig', [
             'originMessage' => $originMessage,

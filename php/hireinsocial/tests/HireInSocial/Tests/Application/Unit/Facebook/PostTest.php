@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PostTest extends TestCase
 {
-    public function test_create_page_with_too_long_fb_id()
+    public function test_create_page_with_too_long_fb_id() : void
     {
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Invalid FB Post ID');
@@ -28,7 +28,7 @@ final class PostTest extends TestCase
         new Post(\str_repeat('1', 256), OfferMother::random());
     }
 
-    public function test_create_page_with_too_short_fb_id()
+    public function test_create_page_with_too_short_fb_id() : void
     {
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Invalid FB Post ID');

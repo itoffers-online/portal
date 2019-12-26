@@ -18,8 +18,11 @@ use HireInSocial\Application\Assertion;
 final class Location
 {
     private $remote;
+
     private $name;
+
     private $lat;
+
     private $lng;
 
     private function __construct()
@@ -51,7 +54,7 @@ final class Location
         return $location;
     }
 
-    public function isRemote(): bool
+    public function isRemote() : bool
     {
         return $this->remote;
     }

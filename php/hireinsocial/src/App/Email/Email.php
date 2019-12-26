@@ -16,7 +16,9 @@ namespace App\Email;
 final class Email
 {
     private $local;
+
     private $tag;
+
     private $domain;
 
     public function __construct(string $local, string $tag, string $domain)
@@ -26,7 +28,7 @@ final class Email
         $this->domain = $domain;
     }
 
-    public function local(): string
+    public function local() : string
     {
         return $this->local;
     }
@@ -36,12 +38,12 @@ final class Email
         return \mb_strlen($this->tag) > 0;
     }
 
-    public function tag(): string
+    public function tag() : string
     {
         return $this->tag;
     }
 
-    public function domain(): string
+    public function domain() : string
     {
         return $this->domain;
     }

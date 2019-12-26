@@ -29,12 +29,12 @@ final class DbalOfferQuery implements OfferQuery
         $this->connection = $connection;
     }
 
-    public function total(): int
+    public function total() : int
     {
         return (int) $this->connection->fetchColumn('SELECT COUNT(*) FROM his_job_offer o WHERE o.removed_at IS NULL');
     }
 
-    public function findAll(OfferFilter $filter): Offers
+    public function findAll(OfferFilter $filter) : Offers
     {
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('o.*, op.path as offer_pdf, os.slug, s.slug as specialization_slug, CAST(o.salary->>\'max\' as INTEGER) as salary_max')
@@ -92,7 +92,7 @@ final class DbalOfferQuery implements OfferQuery
         ));
     }
 
-    public function count(OfferFilter $filter): int
+    public function count(OfferFilter $filter) : int
     {
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('COUNT(o.id)')
@@ -124,7 +124,7 @@ final class DbalOfferQuery implements OfferQuery
             ->fetchColumn();
     }
 
-    public function findById(string $id): ?Offer
+    public function findById(string $id) : ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
             ->select('o.*, op.path as offer_pdf, os.slug, s.slug as specialization_slug')
@@ -148,7 +148,7 @@ final class DbalOfferQuery implements OfferQuery
         return $this->hydrateOffer($offerData);
     }
 
-    public function findByEmailHash(string $emailHah): ?Offer
+    public function findByEmailHash(string $emailHah) : ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
             ->select('o.*, os.slug, s.slug as specialization_slug')
@@ -172,7 +172,7 @@ final class DbalOfferQuery implements OfferQuery
         return $this->hydrateOffer($offerData);
     }
 
-    public function findBySlug(string $slug): ?Offer
+    public function findBySlug(string $slug) : ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
             ->select('o.*, op.path as offer_pdf, os.slug, s.slug as specialization_slug')
@@ -196,7 +196,7 @@ final class DbalOfferQuery implements OfferQuery
         return $this->hydrateOffer($offerData);
     }
 
-    public function findOneAfter(Offer $offer): ?Offer
+    public function findOneAfter(Offer $offer) : ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
             ->select('o.*, op.path as offer_pdf, os.slug, s.slug as specialization_slug')
@@ -223,7 +223,7 @@ final class DbalOfferQuery implements OfferQuery
         return $this->hydrateOffer($offerData);
     }
 
-    public function findOneBefore(Offer $offer): ?Offer
+    public function findOneBefore(Offer $offer) : ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
             ->select('o.*, op.path as offer_pdf, os.slug, s.slug as specialization_slug')

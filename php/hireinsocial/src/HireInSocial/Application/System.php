@@ -24,8 +24,11 @@ use Psr\Log\LoggerInterface;
 class System
 {
     private $commandBus;
+
     private $queries;
+
     private $logger;
+
     private $calendar;
 
     public function __construct(CommandBus $commandBus, Queries $queries, LoggerInterface $logger, Calendar $calendar)
@@ -56,10 +59,5 @@ class System
     public function query(string $queryClass) : Query
     {
         return $this->queries->get($queryClass);
-    }
-
-    public function getCalendar(): Calendar
-    {
-        return $this->calendar;
     }
 }

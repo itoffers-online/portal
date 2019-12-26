@@ -20,8 +20,11 @@ use Ramsey\Uuid\UuidInterface;
 class OfferPDF
 {
     private $id;
+
     private $path;
+
     private $offerId;
+
     private $createdAt;
 
     private function __construct($path, UuidInterface $offerId, \DateTimeImmutable $createdAt)

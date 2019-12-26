@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Hire in Social project.
  *
@@ -12,9 +14,9 @@
 namespace App;
 
 use HireInSocial\Application\Config;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 
-function symfony(Config $config, System $system) : SymfonyKernel
+function symfony(Config $config, Offers $offers) : SymfonyKernel
 {
     $frameworkConfig = [
         'parameters' => [
@@ -102,6 +104,6 @@ function symfony(Config $config, System $system) : SymfonyKernel
         $config->getString(Config::ENV),
         $config->getString(Config::ENV) !== 'prod',
         $frameworkConfig,
-        $system
+        $offers
     );
 }

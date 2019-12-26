@@ -19,6 +19,8 @@ use Ramsey\Uuid\UuidInterface;
 interface Offers
 {
     public function add(Offer $offer) : void;
+
     public function getById(UuidInterface $offerId) : Offer;
+
     public function postedBy(User $user, \DateTimeImmutable $since) : UserOffers;
 }

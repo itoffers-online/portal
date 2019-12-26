@@ -21,6 +21,7 @@ final class File
      * @var string
      */
     private $destinationPath;
+
     /**
      * @var string
      */
@@ -43,12 +44,12 @@ final class File
         return new self($dstPath, $tmpPath);
     }
 
-    public function destinationPath(): string
+    public function destinationPath() : string
     {
         return $this->destinationPath;
     }
 
-    public function tmpPath(): string
+    public function tmpPath() : string
     {
         return $this->tmpPath;
     }

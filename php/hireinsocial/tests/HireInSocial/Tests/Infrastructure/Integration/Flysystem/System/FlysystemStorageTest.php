@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FlysystemStorageTest extends TestCase
 {
-    public function test_local_filesystem()
+    public function test_local_filesystem() : void
     {
         $filesystem = FlysystemStorage::create([
             'type' => 'local',

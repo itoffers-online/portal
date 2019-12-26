@@ -21,12 +21,14 @@ use Ramsey\Uuid\UuidInterface;
 class User
 {
     private $id;
+
     private $fbUserAppId;
+
     private $createdAt;
 
     private function __construct(\DateTimeImmutable $createdAt)
     {
-        $this->id = (string) Uuid::uuid4();
+        $this->id = Uuid::uuid4()->toString();
         $this->createdAt = $createdAt;
     }
 
@@ -40,7 +42,7 @@ class User
         return $user;
     }
 
-    public function id(): UuidInterface
+    public function id() : UuidInterface
     {
         return Uuid::fromString($this->id);
     }

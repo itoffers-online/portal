@@ -16,10 +16,10 @@ namespace App\Tests\Functional;
 use function App\symfony;
 use App\SymfonyKernel;
 use HireInSocial\Application\Config;
-use HireInSocial\Application\System;
 use function HireInSocial\Infrastructure\bootstrap;
 use function HireInSocial\Infrastructure\dbal;
-use function HireInSocial\Infrastructure\system;
+use function HireInSocial\Infrastructure\offersFacade;
+use HireInSocial\Offers;
 use HireInSocial\Tests\Application\Context\DatabaseContext;
 use HireInSocial\Tests\Application\Context\SystemContext;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -30,10 +30,11 @@ class SymfonyKernelTestCase extends KernelTestCase
      * @var Config
      */
     protected static $config;
+
     /**
-     * @var System
+     * @var Offers
      */
-    protected static $system;
+    protected static $offersFacade;
 
     /**
      * @var SystemContext
@@ -52,12 +53,12 @@ class SymfonyKernelTestCase extends KernelTestCase
 
     protected static function createKernel(array $options = [])
     {
-        return symfony(static::config(), static::system());
+        return symfony(static::config(), static::offersFacade());
     }
 
     protected static function config() : Config
     {
-        if (!static::$config) {
+        if (null === static::$config) {
             static::$config = bootstrap(ROOT_DIR);
         }
 
@@ -68,20 +69,20 @@ class SymfonyKernelTestCase extends KernelTestCase
         return static::$config;
     }
 
-    protected static function system() : System
+    protected static function offersFacade() : Offers
     {
-        if (!static::$system) {
-            static::$system = system(static::config());
+        if (null === static::$offersFacade) {
+            static::$offersFacade = offersFacade(static::config());
         }
 
-        return static::$system;
+        return static::$offersFacade;
     }
 
     public function setUp() : void
     {
         $config = static::config();
 
-        $this->systemContext = new SystemContext(static::system());
+        $this->systemContext = new SystemContext(static::offersFacade());
         $this->databaseContext = new DatabaseContext(dbal($config));
 
         $this->databaseContext->purgeDatabase();

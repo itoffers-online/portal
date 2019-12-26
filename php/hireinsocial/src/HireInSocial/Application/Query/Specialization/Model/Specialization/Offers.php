@@ -16,6 +16,7 @@ namespace HireInSocial\Application\Query\Specialization\Model\Specialization;
 final class Offers
 {
     private $count;
+
     private $latestOfferDate;
 
     private function __construct()
@@ -32,18 +33,17 @@ final class Offers
         return $specialization;
     }
 
-
     public static function noOffers()
     {
         return new self();
     }
 
-    public function count(): int
+    public function count() : int
     {
         return $this->count;
     }
 
-    public function latestOfferDate(): ?\DateTimeImmutable
+    public function latestOfferDate() : ?\DateTimeImmutable
     {
         return $this->latestOfferDate;
     }

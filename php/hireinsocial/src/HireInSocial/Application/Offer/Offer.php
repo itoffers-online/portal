@@ -24,17 +24,29 @@ use Ramsey\Uuid\UuidInterface;
 class Offer
 {
     private $id;
+
     private $emailHash;
+
     private $userId;
+
     private $specializationId;
+
     private $createdAt;
+
     private $company;
+
     private $position;
+
     private $location;
+
     private $salary;
+
     private $contract;
+
     private $description;
+
     private $contact;
+
     private $removedAt;
 
     private function __construct(
@@ -89,47 +101,47 @@ class Offer
         );
     }
 
-    public function id(): UuidInterface
+    public function id() : UuidInterface
     {
         return Uuid::fromString($this->id);
     }
 
-    public function createdAt(): \DateTimeImmutable
+    public function createdAt() : \DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function company(): Company
+    public function company() : Company
     {
         return $this->company;
     }
 
-    public function position(): Position
+    public function position() : Position
     {
         return $this->position;
     }
 
-    public function location(): Location
+    public function location() : Location
     {
         return $this->location;
     }
 
-    public function salary(): ?Salary
+    public function salary() : ?Salary
     {
         return $this->salary;
     }
 
-    public function contract(): Contract
+    public function contract() : Contract
     {
         return $this->contract;
     }
 
-    public function description(): Description
+    public function description() : Description
     {
         return $this->description;
     }
 
-    public function contact(): Contact
+    public function contact() : Contact
     {
         return $this->contact;
     }

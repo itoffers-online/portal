@@ -18,6 +18,7 @@ use HireInSocial\Application\Assertion;
 final class Email
 {
     private $subject;
+
     private $htmlContent;
 
     public function __construct(string $subject, string $htmlBody)
@@ -29,12 +30,12 @@ final class Email
         $this->htmlContent = $htmlBody;
     }
 
-    public function subject(): string
+    public function subject() : string
     {
         return $this->subject;
     }
 
-    public function htmlBody(): string
+    public function htmlBody() : string
     {
         return $this->htmlContent;
     }

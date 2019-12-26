@@ -9,7 +9,7 @@ use App\Command\System\PerformanceCheckCommand;
 use Symfony\Component\Console\Application;
 use App\Command\Offer\Test;
 use function HireInSocial\Infrastructure\bootstrap;
-use function HireInSocial\Infrastructure\system;
+use function HireInSocial\Infrastructure\offersFacade;
 
 $projectRootPath = dirname(__DIR__);
 
@@ -17,14 +17,14 @@ require $projectRootPath . '/src/autoload.php';
 
 $config = bootstrap($projectRootPath);
 
-$system = system($config);
+$offers = offersFacade($config);
 
 $application = new Application('Hire in Social');
 
-$application->add(new Test\PostOffer($system, $config->getString(Config::LOCALE)));
-$application->add(new CreateSpecialization($system));
-$application->add(new SetFacebookChannel($system));
-$application->add(new RemoveFacebookChannel($system));
-$application->add(new PerformanceCheckCommand($system, $config));
+$application->add(new Test\PostOffer($offers, $config->getString(Config::LOCALE)));
+$application->add(new CreateSpecialization($offers));
+$application->add(new SetFacebookChannel($offers));
+$application->add(new RemoveFacebookChannel($offers));
+$application->add(new PerformanceCheckCommand($offers, $config));
 
 $application->run();

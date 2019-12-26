@@ -16,6 +16,7 @@ namespace HireInSocial\Application\Command\Offer\Offer;
 final class Description
 {
     private $requirements;
+
     private $benefits;
 
     public function __construct(string $requirements, string $benefits)
@@ -24,12 +25,12 @@ final class Description
         $this->benefits = $benefits;
     }
 
-    public function requirements(): string
+    public function requirements() : string
     {
         return $this->requirements;
     }
 
-    public function benefits(): string
+    public function benefits() : string
     {
         return $this->benefits;
     }

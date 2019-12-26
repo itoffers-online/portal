@@ -18,5 +18,6 @@ use HireInSocial\Application\Offer\Offer;
 interface Posts
 {
     public function add(Post $post) : void;
+
     public function findFor(Offer $offer) : ?Post;
 }

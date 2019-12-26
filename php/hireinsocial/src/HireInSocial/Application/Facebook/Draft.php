@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace HireInSocial\Application\Facebook;
 
-use HireInSocial\Application\Assertion;
 use HireInSocial\Application\Offer\Offer;
 use HireInSocial\Application\Offer\OfferFormatter;
 use HireInSocial\Application\User\User;
@@ -22,7 +21,9 @@ use Ramsey\Uuid\UuidInterface;
 final class Draft
 {
     private $userId;
+
     private $message;
+
     private $link;
 
     private function __construct(UuidInterface $userId, string $message, string $link)
@@ -42,12 +43,12 @@ final class Draft
         return $this->message;
     }
 
-    public function link(): string
+    public function link() : string
     {
         return $this->link;
     }
 
-    public function userId(): UuidInterface
+    public function userId() : UuidInterface
     {
         return $this->userId;
     }

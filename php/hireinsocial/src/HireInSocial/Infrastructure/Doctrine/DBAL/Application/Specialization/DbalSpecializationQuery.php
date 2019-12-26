@@ -31,7 +31,7 @@ final class DbalSpecializationQuery implements SpecializationQuery
         $this->connection = $connection;
     }
 
-    public function all(): Specializations
+    public function all() : Specializations
     {
         return new Specializations(
             ...\array_map(
@@ -51,7 +51,7 @@ SQL
         );
     }
 
-    public function findBySlug(string $slug): ?Specialization
+    public function findBySlug(string $slug) : ?Specialization
     {
         $specialization = $this->connection->fetchAssoc(
             <<<SQL
@@ -74,7 +74,7 @@ SQL
         return $this->hydrateSpecialization($specialization);
     }
 
-    public function hydrateSpecialization(array $data): Specialization
+    public function hydrateSpecialization(array $data) : Specialization
     {
         // TODO: Optimize this, maybe try to merge this into main query or migrate to projections
         $offersData = $this->connection->fetchAssoc(

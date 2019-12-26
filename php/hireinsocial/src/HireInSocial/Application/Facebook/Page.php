@@ -18,6 +18,7 @@ use HireInSocial\Application\Assertion;
 final class Page
 {
     private $fbId;
+
     private $accessToken;
 
     public function __construct(string $fbId, string $accessToken)
@@ -29,12 +30,12 @@ final class Page
         $this->accessToken = $accessToken;
     }
 
-    public function fbId(): string
+    public function fbId() : string
     {
         return $this->fbId;
     }
 
-    public function accessToken(): string
+    public function accessToken() : string
     {
         return $this->accessToken;
     }

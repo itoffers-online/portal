@@ -26,13 +26,12 @@ final class ORMSpecializations implements Specializations
         $this->entityManager = $entityManager;
     }
 
-
-    public function add(Specialization $specialization): void
+    public function add(Specialization $specialization) : void
     {
         $this->entityManager->persist($specialization);
     }
 
-    public function get(string $slug): Specialization
+    public function get(string $slug) : Specialization
     {
         return $this->entityManager->getRepository(Specialization::class)->findOneBy(['slug' => $slug]);
     }

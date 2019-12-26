@@ -28,7 +28,7 @@ final class ORMApplications implements Applications
         $this->entityManager = $entityManager;
     }
 
-    public function alreadyApplied(EmailHash $emailHash, Offer $offer): bool
+    public function alreadyApplied(EmailHash $emailHash, Offer $offer) : bool
     {
         return (bool) $this->entityManager->getRepository(Application::class)->findOneBy([
             'offerId' => $offer->id(),
@@ -36,7 +36,7 @@ final class ORMApplications implements Applications
         ]);
     }
 
-    public function add(Application $application): void
+    public function add(Application $application) : void
     {
         $this->entityManager->persist($application);
     }

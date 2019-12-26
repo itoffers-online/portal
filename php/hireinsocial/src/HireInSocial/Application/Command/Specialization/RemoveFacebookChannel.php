@@ -27,7 +27,7 @@ class RemoveFacebookChannel implements Command
         $this->specSlug = $specSlug;
     }
 
-    public function specSlug(): string
+    public function specSlug() : string
     {
         return $this->specSlug;
     }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Command\System;
 
 use HireInSocial\Application\Config;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,20 +24,23 @@ use Symfony\Component\Stopwatch\Stopwatch;
 final class PerformanceCheckCommand extends Command
 {
     public const NAME = 'system:performance:check';
+
     protected static $defaultName = self::NAME;
 
-    private $system;
+    private $offers;
+
     private $config;
+
     /**
      * @var SymfonyStyle
      */
     private $io;
 
-    public function __construct(System $system, Config $config)
+    public function __construct(Offers $offers, Config $config)
     {
         parent::__construct();
 
-        $this->system = $system;
+        $this->offers = $offers;
         $this->config = $config;
     }
 

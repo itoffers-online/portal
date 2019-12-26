@@ -25,7 +25,7 @@ class RemoveFacebookChannelHandler implements Handler
         $this->specializations = $specializations;
     }
 
-    public function handles(): string
+    public function handles() : string
     {
         return RemoveFacebookChannel::class;
     }

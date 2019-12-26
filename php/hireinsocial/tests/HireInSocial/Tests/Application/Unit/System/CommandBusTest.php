@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 final class CommandBusTest extends TestCase
 {
-    public function test_registering_command_without_invoke_method()
+    public function test_registering_command_without_invoke_method() : void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Can\'t register command handler without __invoke method.');
@@ -30,7 +30,7 @@ final class CommandBusTest extends TestCase
         new CommandBus(
             new DummyTransactionManager(),
             new class implements Handler {
-                public function handles(): string
+                public function handles() : string
                 {
                     return 'nothing';
                 }
@@ -38,16 +38,16 @@ final class CommandBusTest extends TestCase
         );
     }
 
-    public function test_handling_unknown_command()
+    public function test_handling_unknown_command() : void
     {
         $commandBus = new CommandBus(
             new DummyTransactionManager(),
             new class implements Handler {
-                public function __invoke()
+                public function __invoke() : void
                 {
                 }
 
-                public function handles(): string
+                public function handles() : string
                 {
                     return 'nothing';
                 }
@@ -58,24 +58,24 @@ final class CommandBusTest extends TestCase
         $this->expectExceptionMessage('Unknown command "FancyClassName"');
 
         $commandBus->handle(new class implements Command {
-            public function commandName(): string
+            public function commandName() : string
             {
                 return 'FancyClassName';
             }
         });
     }
 
-    public function test_handling_command()
+    public function test_handling_command() : void
     {
         $commandBus = new CommandBus(
             new DummyTransactionManager(),
             new class implements Handler {
-                public function handles(): string
+                public function handles() : string
                 {
                     return 'Command';
                 }
 
-                public function __invoke($command)
+                public function __invoke($command) : void
                 {
                     $command->handle();
                 }
@@ -85,12 +85,12 @@ final class CommandBusTest extends TestCase
         $command = new class implements Command {
             public $handled = false;
 
-            public function commandName(): string
+            public function commandName() : string
             {
                 return 'Command';
             }
 
-            public function handle(): void
+            public function handle() : void
             {
                 $this->handled = true;
             }

@@ -45,15 +45,25 @@ use Ramsey\Uuid\Uuid;
 final class PostOfferHandler implements Handler
 {
     private $calendar;
+
     private $offers;
+
     private $users;
+
     private $posts;
+
     private $throttling;
+
     private $facebookGroupService;
+
     private $formatter;
+
     private $specializations;
+
     private $slugs;
+
     private $offerPDFs;
+
     private $fileStorage;
 
     public function __construct(
@@ -82,7 +92,7 @@ final class PostOfferHandler implements Handler
         $this->fileStorage = $fileStorage;
     }
 
-    public function handles(): string
+    public function handles() : string
     {
         return PostOffer::class;
     }
@@ -127,7 +137,7 @@ final class PostOfferHandler implements Handler
         $this->slugs->add(Slug::from($offer, $this->calendar));
     }
 
-    private function createOffer(PostOffer $command, User $user, Specialization $specialization): Offer
+    private function createOffer(PostOffer $command, User $user, Specialization $specialization) : Offer
     {
         return Offer::postIn(
             $specialization,

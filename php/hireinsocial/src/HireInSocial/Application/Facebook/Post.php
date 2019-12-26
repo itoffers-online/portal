@@ -20,6 +20,7 @@ use Ramsey\Uuid\UuidInterface;
 class Post
 {
     private $fbId;
+
     private $jobOfferId;
 
     public function __construct(string $fbId, Offer $offer)
@@ -30,12 +31,12 @@ class Post
         $this->jobOfferId = $offer->id();
     }
 
-    public function fbId(): string
+    public function fbId() : string
     {
         return $this->fbId;
     }
 
-    public function jobOfferId(): UuidInterface
+    public function jobOfferId() : UuidInterface
     {
         return $this->jobOfferId;
     }

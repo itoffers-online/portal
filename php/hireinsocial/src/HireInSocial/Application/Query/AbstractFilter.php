@@ -19,8 +19,11 @@ use HireInSocial\Application\Query\Filter\Column;
 abstract class AbstractFilter
 {
     protected $limit = 50;
+
     protected $offset = 0;
+
     protected $order;
+
     private $sortBy = [];
 
     public function changeSize(int $limit, int $offset) : self
@@ -34,12 +37,12 @@ abstract class AbstractFilter
         return $this;
     }
 
-    public function limit(): int
+    public function limit() : int
     {
         return $this->limit;
     }
 
-    public function offset(): int
+    public function offset() : int
     {
         return $this->offset;
     }

@@ -17,6 +17,9 @@ use HireInSocial\Application\System\Calendar;
 
 final class SystemCalendar implements Calendar
 {
+    /**
+     * @var \DateTimeZone
+     */
     private $timeZone;
 
     public function __construct(\DateTimeZone $timeZone)
@@ -24,7 +27,7 @@ final class SystemCalendar implements Calendar
         $this->timeZone = $timeZone;
     }
 
-    public function currentTime(): \DateTimeImmutable
+    public function currentTime() : \DateTimeImmutable
     {
         return new \DateTimeImmutable('now', $this->timeZone);
     }

@@ -19,16 +19,19 @@ use HireInSocial\Tests\Infrastructure\Unit\Doctrine\DBAL\Types\TypeTestCase;
 
 final class SalaryTypeTest extends TypeTestCase
 {
-    protected function getTypeName(): string
+    protected function getTypeName() : string
     {
         return SalaryType::NAME;
     }
 
-    protected function getTypeClass(): string
+    protected function getTypeClass() : string
     {
         return SalaryType::class;
     }
 
+    /**
+     * @return array<array>
+     */
     public function dataProvider() : array
     {
         return [

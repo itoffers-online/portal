@@ -25,6 +25,7 @@ use Psr\Log\LoggerInterface;
 final class FacebookGraphSDK implements Facebook
 {
     private $facebook;
+
     private $logger;
 
     public function __construct(\Facebook\Facebook $facebook, LoggerInterface $logger)
@@ -33,7 +34,7 @@ final class FacebookGraphSDK implements Facebook
         $this->logger = $logger;
     }
 
-    public function postToGroupAsPage(Draft $post, Group $group, Page $page): string
+    public function postToGroupAsPage(Draft $post, Group $group, Page $page) : string
     {
         try {
             $response = $this->post(sprintf('/%s/feed', $group->fbId()), [
@@ -43,7 +44,7 @@ final class FacebookGraphSDK implements Facebook
 
             return $response->getDecodedBody()['id'];
         } catch (FacebookSDKException $e) {
-            throw new Exception('Can\'t post facebook job offer', $e);
+            throw new Exception('Can\'t post facebook job offer', 0, $e);
         }
     }
 
@@ -138,7 +139,7 @@ final class FacebookGraphSDK implements Facebook
         }
     }
 
-    private function logException(string $url, string $accessToken, \Throwable $exception): void
+    private function logException(string $url, string $accessToken, \Throwable $exception) : void
     {
         $this->logger->error('Facebook SDK exception', [
             'appId' => $this->facebook->getApp()->getId(),

@@ -25,9 +25,7 @@ use HireInSocial\Application\Command\Offer\Offer\Position;
 use HireInSocial\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Application\Command\Offer\PostOffer as SystemPostOffer;
 use HireInSocial\Application\Command\User\FacebookConnect;
-use HireInSocial\Application\Query\Specialization\SpecializationQuery;
-use HireInSocial\Application\Query\User\UserQuery;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,20 +36,23 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class PostOffer extends Command
 {
     public const NAME = 'post:offer:test';
+
     protected static $defaultName = self::NAME;
 
-    private $system;
+    private $offers;
+
     private $locale;
+
     /**
      * @var SymfonyStyle
      */
     private $io;
 
-    public function __construct(System $system, string $locale)
+    public function __construct(Offers $offers, string $locale)
     {
         parent::__construct();
 
-        $this->system = $system;
+        $this->offers = $offers;
         $this->locale = $locale;
     }
 
@@ -81,7 +82,7 @@ final class PostOffer extends Command
     {
         $this->io->note('Job offer posted');
 
-        $specialization = $this->system->query(SpecializationQuery::class)->findBySlug($input->getArgument('specialization'));
+        $specialization = $this->offers->specializationQuery()->findBySlug($input->getArgument('specialization'));
 
         if (!$specialization) {
             $this->io->error('Specialization does not exists.');
@@ -98,11 +99,11 @@ final class PostOffer extends Command
 
             $fbUserAppId = $faker->uuid;
 
-            $this->system->handle(new FacebookConnect($fbUserAppId));
+            $this->offers->handle(new FacebookConnect($fbUserAppId));
 
-            $user = $this->system->query(UserQuery::class)->findByFacebook($fbUserAppId);
+            $user = $this->offers->userQuery()->findByFacebook($fbUserAppId);
 
-            $this->system->handle(new SystemPostOffer(
+            $this->offers->handle(new SystemPostOffer(
                 $specialization->slug(),
                 $user->id(),
                 new Offer(

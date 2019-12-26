@@ -30,7 +30,7 @@ final class FacebookConnect implements Command
         $this->fbUserAppId = $fbUserAppId;
     }
 
-    public function fbUserAppId(): string
+    public function fbUserAppId() : string
     {
         return $this->fbUserAppId;
     }

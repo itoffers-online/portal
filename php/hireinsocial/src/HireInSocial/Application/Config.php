@@ -18,36 +18,49 @@ use function \Safe\json_decode;
 final class Config
 {
     public const ROOT_PATH = 'root_path';
+
     public const ENV = 'env';
+
     public const LOCALE = 'locale';
+
     public const TIMEZONE = 'timezone';
 
     public const SYMFONY_SECRET = 'symfony_secret';
 
     public const REDIS_DSN = 'redis_dsn';
+
     public const APPLY_EMAIL_TEMPLATE = 'apply_email_template';
+
     public const APPLY_EMAIL_CONFIG = 'apply_email_config';
+
     public const MAILER_CONFIG = 'mailer_config';
 
     public const FILESYSTEM_CONFIG = 'filesystem_config';
 
     public const RECAPTCHA_KEY = 'recaptcha_key';
+
     public const RECAPTCHA_SECRET = 'recaptcha_secret';
 
     public const GOOGLE_MAPS_KEY = 'google_maps_key';
 
     public const DB_HOST = 'db_host';
+
     public const DB_PORT = 'db_port';
+
     public const DB_USER = 'db_user';
+
     public const DB_USER_PASS = 'db_user_pass';
+
     public const DB_NAME = 'db_name';
 
     public const FB_APP_ID = 'facebook_app_id';
+
     public const FB_APP_SECRET = 'facebook_app_secret';
 
     public const THROTTLE_DURATION = 'throttle_duration';
 
     public const REDIS_DB_SYSTEM = 1;
+
     public const REDIS_DB_DOCTRINE_CACHE = 2;
 
     private $config;
@@ -84,7 +97,7 @@ final class Config
         ]);
     }
 
-    public function getString(string $key): string
+    public function getString(string $key) : string
     {
         if (!$this->has($key)) {
             throw new \RuntimeException(sprintf('Missing config key: %s', $key));
@@ -96,12 +109,12 @@ final class Config
     /**
      * @throws \Safe\Exceptions\JsonException
      */
-    public function getJson(string $key): array
+    public function getJson(string $key) : array
     {
         return json_decode($this->getString($key), true);
     }
 
-    public function getInt(string $key): int
+    public function getInt(string $key) : int
     {
         if (!$this->has($key)) {
             throw new \RuntimeException(sprintf('Missing config key: %s', $key));

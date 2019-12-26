@@ -15,5 +15,5 @@ namespace HireInSocial\Application\Facebook;
 
 interface Facebook
 {
-    public function postToGroupAsPage(Draft $post, Group $group, Page $page): string;
+    public function postToGroupAsPage(Draft $post, Group $group, Page $page) : string;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Hire in Social project.
  *
@@ -14,6 +16,7 @@ namespace HireInSocial\Application\Query\Filter;
 class Column
 {
     private $column;
+
     private $direction;
 
     private function __construct()

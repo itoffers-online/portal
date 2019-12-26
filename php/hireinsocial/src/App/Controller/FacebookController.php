@@ -15,8 +15,7 @@ namespace App\Controller;
 
 use Facebook\Facebook;
 use HireInSocial\Application\Command\User\FacebookConnect;
-use HireInSocial\Application\Query\User\UserQuery;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -32,20 +31,24 @@ final class FacebookController extends AbstractController
 
     public const USER_SESSION_KEY = '_his_user_id';
 
-    private $system;
+    private $offers;
+
     private $router;
+
     private $templating;
+
     private $facebook;
+
     private $logger;
 
     public function __construct(
-        System $system,
+        Offers $offers,
         RouterInterface $router,
         EngineInterface $templating,
         Facebook $facebook,
         LoggerInterface $logger
     ) {
-        $this->system = $system;
+        $this->offers = $offers;
         $this->facebook = $facebook;
         $this->logger = $logger;
         $this->router = $router;
@@ -81,9 +84,9 @@ final class FacebookController extends AbstractController
         );
 
         $fbUserAppId = $this->getUserId($this->facebook, $accessToken, $this->logger);
-        $this->system->handle(new FacebookConnect($fbUserAppId));
+        $this->offers->handle(new FacebookConnect($fbUserAppId));
 
-        $user = $this->system->query(UserQuery::class)->findByFacebook($fbUserAppId);
+        $user = $this->offers->userQuery()->findByFacebook($fbUserAppId);
 
         $request->getSession()->set(self::USER_SESSION_KEY, $user->id());
 

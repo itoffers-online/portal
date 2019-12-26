@@ -21,7 +21,9 @@ use Ramsey\Uuid\UuidInterface;
 class Slug
 {
     private $slug;
+
     private $offerId;
+
     private $createdAt;
 
     private function __construct(string $value, UuidInterface $offerId, \DateTimeImmutable $createdAt)

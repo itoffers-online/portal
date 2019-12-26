@@ -18,7 +18,9 @@ use HireInSocial\Application\Assertion;
 final class Contact
 {
     private $email;
+
     private $name;
+
     private $phone;
 
     public function __construct(string $email, string $name, ?string $phone = null)
@@ -35,17 +37,17 @@ final class Contact
         $this->phone = $phone;
     }
 
-    public function email(): string
+    public function email() : string
     {
         return $this->email;
     }
 
-    public function name(): string
+    public function name() : string
     {
         return $this->name;
     }
 
-    public function phone(): ?string
+    public function phone() : ?string
     {
         return $this->phone;
     }

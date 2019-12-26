@@ -31,5 +31,12 @@ return PhpCsFixer\Config::create()
         'blank_line_before_statement' => true,
         'trailing_comma_in_multiline_array' => true,
         'strict_comparison' => true,
+        'php_unit_method_casing' => ['case' => 'snake_case'],
+        'php_unit_test_case_static_method_calls' => ['call_type' => 'this'],
+        'return_type_declaration' => ['space_before' => 'one'],
+        'class_attributes_separation' => ['elements' => ['const', 'property', 'method']],
+        'declare_strict_types' => true,
+        'blank_line_after_opening_tag' => true,
+        'no_unused_imports' => true,
     ])
     ->setFinder($finder);

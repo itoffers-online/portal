@@ -16,12 +16,15 @@ namespace App\Tests\Functional\Web;
 use App\Controller\FacebookController;
 use Faker\Factory;
 use HireInSocial\Application\Query\Offer\OfferFilter;
-use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Tests\Application\MotherObject\Command\Offer\PostOfferMother;
+use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Response;
 
 final class OfferTest extends WebTestCase
 {
+    /**
+     * @var string
+     */
     private $specialization = 'php';
 
     public function setUp() : void
@@ -31,7 +34,7 @@ final class OfferTest extends WebTestCase
         $this->systemContext->createSpecialization($this->specialization);
     }
 
-    public function test_new_offer_page()
+    public function test_new_offer_page() : void
     {
         $user = $this->systemContext->createUser();
 
@@ -46,7 +49,7 @@ final class OfferTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('a[data-post-offer]')->count());
     }
 
-    public function test_success_page_after_posting_offer()
+    public function test_success_page_after_posting_offer() : void
     {
         $user = $this->systemContext->createUser();
 
@@ -85,7 +88,9 @@ final class OfferTest extends WebTestCase
             'offer[_token]' => $client->getContainer()->get('security.csrf.token_manager')->getToken('new_offer'),
         ]);
 
-        $form['offer[channels][facebook_group]']->untick();
+        /** @var ChoiceFormField $choiceField */
+        $choiceField = $form['offer[channels][facebook_group]'];
+        $choiceField->untick();
 
         $client->submit($form);
 
@@ -95,27 +100,27 @@ final class OfferTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('.alert-success')->count());
     }
 
-    public function test_offer_details_page()
+    public function test_offer_details_page() : void
     {
         $client = static::createClient();
         $user = $this->systemContext->createUser();
-        $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $this->specialization));
+        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $this->specialization));
 
-        $offer = $this->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor($this->specialization))->first();
+        $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($this->specialization))->first();
 
         $client->request('GET', $client->getContainer()->get('router')->generate('offer', ['offerSlug' => $offer->slug()]));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function test_deleting_offer()
+    public function test_deleting_offer() : void
     {
         $user = $this->systemContext->createUser();
         $client = static::createClient();
         $this->authenticate($client, $user);
 
-        $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $this->specialization));
+        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $this->specialization));
 
-        $offer = $this->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor($this->specialization))->first();
+        $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($this->specialization))->first();
 
         $client->request('GET', $client->getContainer()->get('router')->generate('offer', ['offerSlug' => $offer->slug()]));
 
@@ -127,15 +132,15 @@ final class OfferTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertEquals(1, $client->getCrawler()->filter('[data-alert-success]')->count());
-        $this->assertEquals(0, $this->system()->query(OfferQuery::class)->total());
+        $this->assertEquals(0, $this->offersFacade()->offerQuery()->total());
     }
 
-    public function test_attempt_to_remove_offer_that_does_not_belong_to_the_user()
+    public function test_attempt_to_remove_offer_that_does_not_belong_to_the_user() : void
     {
         $user = $this->systemContext->createUser();
         $client = static::createClient();
-        $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $this->specialization));
-        $offer = $this->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor($this->specialization))->first();
+        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $this->specialization));
+        $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($this->specialization))->first();
 
         $client->request('GET', $client->getContainer()->get('router')->generate('offer_remove', ['offerSlug' => $offer->slug()]));
         $this->assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());

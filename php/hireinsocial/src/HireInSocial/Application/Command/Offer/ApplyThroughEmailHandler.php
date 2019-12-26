@@ -30,10 +30,15 @@ use Ramsey\Uuid\Uuid;
 final class ApplyThroughEmailHandler implements Handler
 {
     private $mailer;
+
     private $offers;
+
     private $applications;
+
     private $encoder;
+
     private $calendar;
+
     /**
      * @var EmailFormatter
      */
@@ -55,7 +60,7 @@ final class ApplyThroughEmailHandler implements Handler
         $this->calendar = $calendar;
     }
 
-    public function handles(): string
+    public function handles() : string
     {
         return ApplyThroughEmail::class;
     }

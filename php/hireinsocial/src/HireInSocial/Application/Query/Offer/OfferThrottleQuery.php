@@ -17,8 +17,11 @@ use HireInSocial\Application\System\Query;
 
 interface OfferThrottleQuery extends Query
 {
-    public function limit(): int;
-    public function since(): \DateInterval;
+    public function limit() : int;
+
+    public function since() : \DateInterval;
+
     public function isThrottled(string $userId) : bool;
+
     public function offersLeft(string $userId) : int;
 }

@@ -22,7 +22,7 @@ final class Channels
         $this->facebookGroup = $facebookGroup;
     }
 
-    public function facebookGroup(): bool
+    public function facebookGroup() : bool
     {
         return $this->facebookGroup;
     }

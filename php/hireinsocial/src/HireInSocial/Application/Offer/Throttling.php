@@ -19,10 +19,13 @@ use HireInSocial\Application\User\User;
 final class Throttling
 {
     public const LIMIT = 2;
+
     public const SINCE = 'P7D';
 
     private $limit;
+
     private $since;
+
     private $calendar;
 
     public function __construct(int $defaultLimit, \DateInterval $since, Calendar $calendar)
@@ -41,12 +44,12 @@ final class Throttling
         );
     }
 
-    public function limit(): int
+    public function limit() : int
     {
         return $this->limit;
     }
 
-    public function since(): \DateInterval
+    public function since() : \DateInterval
     {
         return $this->since;
     }

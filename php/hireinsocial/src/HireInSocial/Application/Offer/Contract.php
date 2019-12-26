@@ -27,7 +27,7 @@ final class Contract
         $this->type = $type;
     }
 
-    public function type(): string
+    public function type() : string
     {
         return $this->type;
     }

@@ -20,7 +20,7 @@ use PHPStan\Testing\TestCase;
 
 final class SlugTest extends TestCase
 {
-    public function test_creating_offer_slug()
+    public function test_creating_offer_slug() : void
     {
         $order = OfferMother::withName('Senior PHP Developer', 'Super Company');
 

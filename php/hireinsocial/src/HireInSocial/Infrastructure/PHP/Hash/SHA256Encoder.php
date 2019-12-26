@@ -17,7 +17,7 @@ use HireInSocial\Application\Hash\Encoder;
 
 final class SHA256Encoder implements Encoder
 {
-    public function encode(string $value): string
+    public function encode(string $value) : string
     {
         return \hash('sha256', $value);
     }

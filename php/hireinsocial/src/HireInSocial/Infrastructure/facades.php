@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Hire in Social project.
  *
@@ -42,6 +44,7 @@ use HireInSocial\Infrastructure\Flysystem\Application\System\FlysystemStorage;
 use HireInSocial\Infrastructure\PHP\Hash\SHA256Encoder;
 use HireInSocial\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Infrastructure\SwiftMailer\System\SwiftMailer;
+use HireInSocial\Offers;
 use HireInSocial\Tests\Application\Double\Dummy\DummyFacebook;
 use HireInSocial\Tests\Application\Double\Stub\CalendarStub;
 use Monolog\ErrorHandler;
@@ -50,7 +53,7 @@ use Monolog\Logger;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-function system(Config $config) : System
+function offersFacade(Config $config) : Offers
 {
     $logDir = $config->getString(Config::ROOT_PATH) . '/var/logs';
 
@@ -138,57 +141,60 @@ function system(Config $config) : System
     $encoder = new SHA256Encoder();
     $emailFormatter = new EmailFormatter($twig);
 
-    return new System(
-        new CommandBus(
-            new ORMTransactionManager($entityManager),
-            new Specialization\CreateSpecializationHandler(
-                $specializations
+    return new Offers(
+        new System(
+            new CommandBus(
+                new ORMTransactionManager($entityManager),
+                new Specialization\CreateSpecializationHandler(
+                    $specializations
+                ),
+                new Specialization\SetFacebookChannelHandler(
+                    $specializations
+                ),
+                new Specialization\RemoveFacebookChannelHandler(
+                    $specializations
+                ),
+                new Offer\PostOfferHandler(
+                    $calendar,
+                    $ormOffers,
+                    $ormUsers,
+                    new ORMPosts($entityManager),
+                    $throttling,
+                    new FacebookGroupService($facebook),
+                    new FacebookFormatter($twig),
+                    $specializations,
+                    new ORMSlugs($entityManager),
+                    new ORMOfferPDFs($entityManager),
+                    FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG))
+                ),
+                new Offer\RemoveOfferHandler(
+                    $ormUsers,
+                    $ormOffers,
+                    $calendar
+                ),
+                new User\FacebookConnectHandler(
+                    $ormUsers,
+                    $calendar
+                ),
+                new Offer\ApplyThroughEmailHandler(
+                    $mailer,
+                    $ormOffers,
+                    $ormApplications,
+                    $encoder,
+                    $emailFormatter,
+                    $calendar
+                )
             ),
-            new Specialization\SetFacebookChannelHandler(
-                $specializations
+            new Queries(
+                new DbalOfferThrottleQuery($throttling->limit(), $throttling->since(), $dbalConnection, $calendar),
+                new DbalOfferQuery($dbalConnection),
+                new DbalSpecializationQuery($dbalConnection),
+                new DbalUserQuery($dbalConnection),
+                new DbalApplicationQuery($dbalConnection, $encoder)
             ),
-            new Specialization\RemoveFacebookChannelHandler(
-                $specializations
-            ),
-            new Offer\PostOfferHandler(
-                $calendar,
-                $ormOffers,
-                $ormUsers,
-                new ORMPosts($entityManager),
-                $throttling,
-                new FacebookGroupService($facebook),
-                new FacebookFormatter($twig),
-                $specializations,
-                new ORMSlugs($entityManager),
-                new ORMOfferPDFs($entityManager),
-                FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG))
-            ),
-            new Offer\RemoveOfferHandler(
-                $ormUsers,
-                $ormOffers,
-                $calendar
-            ),
-            new User\FacebookConnectHandler(
-                $ormUsers,
-                $calendar
-            ),
-            new Offer\ApplyThroughEmailHandler(
-                $mailer,
-                $ormOffers,
-                $ormApplications,
-                $encoder,
-                $emailFormatter,
-                $calendar
-            )
+            $systemLogger,
+            $calendar
         ),
-        new Queries(
-            new DbalOfferThrottleQuery($throttling->limit(), $throttling->since(), $dbalConnection, $calendar),
-            new DbalOfferQuery($dbalConnection),
-            new DbalSpecializationQuery($dbalConnection),
-            new DbalUserQuery($dbalConnection),
-            new DbalApplicationQuery($dbalConnection, $encoder)
-        ),
-        $systemLogger,
         $calendar
     );
 }

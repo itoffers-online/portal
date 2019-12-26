@@ -32,14 +32,14 @@ final class SpecializationTest extends TestCase
         new Specialization($slug);
     }
 
-    public function test_that_slug_belongs_to_the_organization()
+    public function test_that_slug_belongs_to_the_organization() : void
     {
         $this->assertTrue(
             (new Specialization('php-developers'))->is('PHP-Developers')
         );
     }
 
-    public function test_setting_facebook_channel()
+    public function test_setting_facebook_channel() : void
     {
         $specialization = new Specialization('php');
         $specialization->setFacebook(new FacebookChannel(PageMother::random(), GroupMother::random()));

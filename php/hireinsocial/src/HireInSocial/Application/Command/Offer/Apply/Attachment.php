@@ -22,7 +22,7 @@ final class Attachment
         $this->filePath = $filePath;
     }
 
-    public function filePath(): string
+    public function filePath() : string
     {
         return $this->filePath;
     }

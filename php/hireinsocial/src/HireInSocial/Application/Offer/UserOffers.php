@@ -18,7 +18,9 @@ use HireInSocial\Application\User\User;
 final class UserOffers implements \Countable
 {
     private $user;
+
     private $since;
+
     private $offers;
 
     public function __construct(User $user, \DateTimeImmutable $since, Offer ...$offers)

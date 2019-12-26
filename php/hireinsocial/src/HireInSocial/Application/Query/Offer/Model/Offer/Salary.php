@@ -16,8 +16,11 @@ namespace HireInSocial\Application\Query\Offer\Model\Offer;
 final class Salary
 {
     private $min;
+
     private $max;
+
     private $currencyCode;
+
     private $net;
 
     public function __construct(int $min, int $max, string $currencyCode, bool $net)
@@ -28,22 +31,22 @@ final class Salary
         $this->net = $net;
     }
 
-    public function min(): int
+    public function min() : int
     {
         return $this->min;
     }
 
-    public function max(): int
+    public function max() : int
     {
         return $this->max;
     }
 
-    public function currencyCode(): string
+    public function currencyCode() : string
     {
         return \mb_strtoupper($this->currencyCode);
     }
 
-    public function isNet(): bool
+    public function isNet() : bool
     {
         return $this->net;
     }

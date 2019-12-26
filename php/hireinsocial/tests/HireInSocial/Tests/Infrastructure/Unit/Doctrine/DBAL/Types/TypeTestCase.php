@@ -40,15 +40,16 @@ abstract class TypeTestCase extends TestCase
     }
 
     abstract protected function getTypeName() : string;
+
     abstract protected function getTypeClass() : string;
 
-
     /**
+     * @param mixed $value
      * @dataProvider dataProvider
      */
     public function test_converting_to_database_value($value) : void
     {
         $dbValue = $this->type->convertToDatabaseValue($value, $this->platform);
-        self::assertEquals($value, $this->type->convertToPHPValue($dbValue, $this->platform));
+        $this->assertEquals($value, $this->type->convertToPHPValue($dbValue, $this->platform));
     }
 }

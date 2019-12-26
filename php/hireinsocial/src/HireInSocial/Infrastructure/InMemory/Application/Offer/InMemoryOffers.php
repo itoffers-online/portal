@@ -31,12 +31,12 @@ final class InMemoryOffers implements Offers
         $this->offers = $offers;
     }
 
-    public function add(Offer $offer): void
+    public function add(Offer $offer) : void
     {
         $this->offers[] = $offer;
     }
 
-    public function getById(UuidInterface $offerId): Offer
+    public function getById(UuidInterface $offerId) : Offer
     {
         return \current(\array_filter(
             $this->offers,
@@ -46,7 +46,7 @@ final class InMemoryOffers implements Offers
         ));
     }
 
-    public function postedBy(User $user, \DateTimeImmutable $since): UserOffers
+    public function postedBy(User $user, \DateTimeImmutable $since) : UserOffers
     {
         return new UserOffers(
             $user,
