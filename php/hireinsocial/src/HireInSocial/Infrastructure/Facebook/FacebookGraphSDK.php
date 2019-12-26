@@ -43,7 +43,7 @@ final class FacebookGraphSDK implements Facebook
 
             return $response->getDecodedBody()['id'];
         } catch (FacebookSDKException $e) {
-            throw new Exception('Can\'t post facebook job offer', $e);
+            throw new Exception('Can\'t post facebook job offer', 0, $e);
         }
     }
 

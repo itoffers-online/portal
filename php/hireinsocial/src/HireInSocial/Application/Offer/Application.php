@@ -31,8 +31,8 @@ class Application
     public static function forOffer(EmailHash $email, Offer $offer, Calendar $calendar) : self
     {
         $application = new self();
-        $application->id = (string) Uuid::uuid4();
-        $application->offerId = (string) $offer->id();
+        $application->id = Uuid::uuid4()->toString();
+        $application->offerId = $offer->id()->toString();
         $application->emailHash = $email->toString();
         $application->createdAt = $calendar->currentTime();
 

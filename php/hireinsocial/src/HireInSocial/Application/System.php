@@ -57,9 +57,4 @@ class System
     {
         return $this->queries->get($queryClass);
     }
-
-    public function getCalendar(): Calendar
-    {
-        return $this->calendar;
-    }
 }

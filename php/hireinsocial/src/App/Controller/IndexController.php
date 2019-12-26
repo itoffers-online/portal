@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use HireInSocial\Application\Query\Offer\OfferFilter;
-use HireInSocial\Application\Query\Offer\OfferQuery;
-use HireInSocial\Application\Query\Specialization\SpecializationQuery;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -27,12 +25,12 @@ final class IndexController extends AbstractController
 {
     use ControllerTrait;
 
-    private $system;
+    private $offers;
     private $templating;
 
-    public function __construct(System $system, EngineInterface $templating)
+    public function __construct(Offers $offers, EngineInterface $templating)
     {
-        $this->system = $system;
+        $this->offers = $offers;
         $this->templating = $templating;
     }
 
@@ -41,12 +39,10 @@ final class IndexController extends AbstractController
         $offerFilter = OfferFilter::all()
             ->changeSize(50, 0);
 
-        $offers = $this->system
-            ->query(OfferQuery::class)
-            ->findAll($offerFilter);
+        $offers = $this->offers->offerQuery()->findAll($offerFilter);
 
         return $this->templating->renderResponse('/home/index.html.twig', [
-            'specializations' => $this->system->query(SpecializationQuery::class)->all(),
+            'specializations' => $this->offers->specializationQuery()->all(),
             'offers' => $offers,
         ]);
     }

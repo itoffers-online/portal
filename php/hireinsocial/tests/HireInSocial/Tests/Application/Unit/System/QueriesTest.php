@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 final class QueriesTest extends TestCase
 {
-    public function test_accessing_queries()
+    public function test_accessing_queries() : void
     {
         $queries = new Queries();
         $queries->register(new DummyQuery());
@@ -33,7 +33,7 @@ final class QueriesTest extends TestCase
         );
     }
 
-    public function test_attempt_to_access_query_by_generic_query_interface()
+    public function test_attempt_to_access_query_by_generic_query_interface() : void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Using generic Query interface in order to access specific query is impossible.');
@@ -43,7 +43,7 @@ final class QueriesTest extends TestCase
     }
 
 
-    public function test_accessing_not_registered_query()
+    public function test_accessing_not_registered_query() : void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Query "\DateTime" does not exists. Available Query: "\HireInSocial\Tests\Application\Double\Dummy\DummyQuery"');
@@ -54,7 +54,7 @@ final class QueriesTest extends TestCase
         $queries->get(\DateTime::class);
     }
 
-    public function test_registering_two_implementations_of_the_same_query()
+    public function test_registering_two_implementations_of_the_same_query() : void
     {
         $query1 = new class implements FakeQueryInterface {
         };

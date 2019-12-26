@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FacebookGroupServiceTest extends TestCase
 {
-    public function test_post_as_a_page_for_specialization_without_facebook_channel()
+    public function test_post_as_a_page_for_specialization_without_facebook_channel() : void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Specialization "php" does not have facebook channel assigned.');

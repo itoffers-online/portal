@@ -15,24 +15,22 @@ namespace HireInSocial\Tests\Application\Integration\Command\Offer;
 
 use HireInSocial\Application\Command\Offer\RemoveOffer;
 use HireInSocial\Application\Query\Offer\OfferFilter;
-use HireInSocial\Application\Query\Offer\OfferQuery;
-use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Tests\Application\Integration\HireInSocialTestCase;
 use HireInSocial\Tests\Application\MotherObject\Command\Offer\PostOfferMother;
 
 final class RemoveOfferTest extends HireInSocialTestCase
 {
-    public function test_removing_offer()
+    public function test_removing_offer() : void
     {
         $user = $this->systemContext->createUser();
         $this->systemContext->createSpecialization($specialization = 'spec');
-        $this->systemContext->system()->handle(PostOfferMother::random($user->id(), $specialization));
+        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $specialization));
 
-        $offerQuery = $this->systemContext->system()->query(OfferQuery::class);
+        $offerQuery = $this->systemContext->offersFacade()->offerQuery();
 
         $offer = $offerQuery->findAll(OfferFilter::allFor($specialization))->first();
 
-        $this->systemContext->system()->handle(new RemoveOffer($offer->id()->toString(), $user->id()));
+        $this->systemContext->offersFacade()->handle(new RemoveOffer($offer->id()->toString(), $user->id()));
 
         $this->assertEquals(0, $offerQuery->total());
         $this->assertEquals(0, $offerQuery->findAll(OfferFilter::all())->count());
@@ -42,9 +40,8 @@ final class RemoveOfferTest extends HireInSocialTestCase
         $this->assertNull($offerQuery->findByEmailHash($offer->emailHash()));
 
         $this->assertEquals(
-            $this->systemContext->system()->query(OfferThrottleQuery::class)->limit() - 1,
-            $this->systemContext->system()->query(OfferThrottleQuery::class)->offersLeft($user->id())
-        )
-        ;
+            $this->systemContext->offersFacade()->offerThrottleQuery()->limit() - 1,
+            $this->systemContext->offersFacade()->offerThrottleQuery()->offersLeft($user->id())
+        );
     }
 }

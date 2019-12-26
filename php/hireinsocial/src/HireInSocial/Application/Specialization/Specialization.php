@@ -32,7 +32,7 @@ class Specialization
         Assertion::regex(\mb_strtolower($slug), '/^[a-z\-\_]+$/');
         Assertion::betweenLength($slug, 3, 255);
 
-        $this->id = (string) Uuid::uuid4();
+        $this->id = Uuid::uuid4()->toString();
         $this->slug = \mb_strtolower($slug);
     }
 

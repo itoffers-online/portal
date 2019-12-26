@@ -18,13 +18,14 @@
             "src/HireInSocial/Infrastructure/bootstrap.php",
             "src/HireInSocial/Infrastructure/dbal.php",
             "src/HireInSocial/Infrastructure/orm.php",
-            "src/HireInSocial/Infrastructure/system.php",
+            "src/HireInSocial/Infrastructure/facades.php",
             "src/App/symfony.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
-            "": "tests"
+            "App\\Tests\\": "tests/App/Tests",
+            "HireInSocial\\Tests\\" : "tests/HireInSocial/Tests"
         }
     },
     "require": {
@@ -77,7 +78,11 @@
         "infection/infection": "^0.15.0",
         "norberttech/md-link-linter": "@dev",
         "nyholm/psr7": "^1.2",
-        "phpstan/phpstan": "^0.11.1",
+        "phpstan/phpstan": "^0.12.3",
+        "phpstan/phpstan-doctrine": "^0.12.6",
+        "phpstan/phpstan-phpunit": "^0.12.3",
+        "phpstan/phpstan-symfony": "^0.12.1",
+        "phpstan/phpstan-webmozart-assert": "^0.12.0",
         "phpunit/phpunit": "^8.0",
         "sensiolabs-de/deptrac-shim": "^0.5.0",
         "structurizr-php/structurizr-php": "@dev",
@@ -117,7 +122,7 @@
             "phpdbg -qrr ./vendor/bin/phpunit --testsuite=unit --coverage-html ./var/coverage"
         ],
         "test:php:cs": [
-            "phpstan analyse src tests bin",
+            "phpstan analyse -c phpstan.neon",
             "php-cs-fixer fix -v --dry-run --using-cache=no"
         ],
         "db:reset": [

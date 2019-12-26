@@ -15,9 +15,7 @@ namespace App\Controller;
 
 use App\Form\Type\OfferFilterType;
 use HireInSocial\Application\Query\Offer\OfferFilter;
-use HireInSocial\Application\Query\Offer\OfferQuery;
-use HireInSocial\Application\Query\Specialization\SpecializationQuery;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,18 +23,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class SpecializationController extends AbstractController
 {
-    private $system;
+    private $offers;
     private $templating;
 
-    public function __construct(System $system, EngineInterface $templating)
+    public function __construct(Offers $offers, EngineInterface $templating)
     {
-        $this->system = $system;
+        $this->offers = $offers;
         $this->templating = $templating;
     }
 
     public function offersAction(Request $request, string $specSlug) : Response
     {
-        $specialization = $this->system->query(SpecializationQuery::class)->findBySlug($specSlug);
+        $specialization = $this->offers->specializationQuery()->findBySlug($specSlug);
 
         if (!$specialization) {
             throw $this->createNotFoundException();
@@ -60,12 +58,10 @@ final class SpecializationController extends AbstractController
             }
         }
 
-        $offers = $this->system
-            ->query(OfferQuery::class)
-            ->findAll($offerFilter->changeSize(20, 0));
+        $offers = $this->offers->offerQuery()->findAll($offerFilter->changeSize(20, 0));
 
         return $this->templating->renderResponse('/specialization/offers.html.twig', [
-            'total' => $this->system->query(OfferQuery::class)->count($offerFilter),
+            'total' => $this->offers->offerQuery()->count($offerFilter),
             'specialization' => $specialization,
             'offers' => $offers,
             'form' => $form->createView(),

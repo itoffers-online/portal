@@ -15,38 +15,36 @@ namespace HireInSocial\Tests\Application\Context;
 
 use HireInSocial\Application\Command\User\FacebookConnect;
 use HireInSocial\Application\Query\Specialization\Model\Specialization;
-use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\Query\User\Model\User;
-use HireInSocial\Application\Query\User\UserQuery;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use HireInSocial\Tests\Application\MotherObject\Command\Specialization\CreateSpecializationMother;
 
 final class SystemContext
 {
-    private $system;
+    private $offers;
 
-    public function __construct(System $system)
+    public function __construct(Offers $offers)
     {
-        $this->system = $system;
+        $this->offers = $offers;
     }
 
-    public function system() : System
+    public function offersFacade() : Offers
     {
-        return $this->system;
+        return $this->offers;
     }
 
     public function createUser() : User
     {
         $fbUserAppId = \uniqid('facebook_user_id');
-        $this->system->handle(new FacebookConnect($fbUserAppId));
+        $this->offers->handle(new FacebookConnect($fbUserAppId));
 
-        return $this->system->query(UserQuery::class)->findByFacebook($fbUserAppId);
+        return $this->offers->userQuery()->findByFacebook($fbUserAppId);
     }
 
     public function createSpecialization(string $slug) : Specialization
     {
-        $this->system->handle(CreateSpecializationMother::create($slug));
+        $this->offers->handle(CreateSpecializationMother::create($slug));
 
-        return $this->system->query(SpecializationQuery::class)->findBySlug($slug);
+        return $this->offers->specializationQuery()->findBySlug($slug);
     }
 }

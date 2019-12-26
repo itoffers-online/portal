@@ -27,10 +27,7 @@ use HireInSocial\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Application\Command\Offer\PostOffer;
 use HireInSocial\Application\Command\Offer\RemoveOffer;
 use HireInSocial\Application\Exception\Exception;
-use HireInSocial\Application\Query\Offer\OfferQuery;
-use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
-use HireInSocial\Application\Query\Specialization\SpecializationQuery;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -42,18 +39,18 @@ final class OfferController extends AbstractController
     use FacebookAccess;
     use RedirectAfterLogin;
 
-    private $system;
+    private $offers;
     private $templating;
     private $facebook;
     private $logger;
 
     public function __construct(
-        System $system,
+        Offers $offers,
         EngineInterface $templating,
         Facebook $facebook,
         LoggerInterface $logger
     ) {
-        $this->system = $system;
+        $this->offers = $offers;
         $this->templating = $templating;
         $this->facebook = $facebook;
         $this->logger = $logger;
@@ -62,7 +59,7 @@ final class OfferController extends AbstractController
     public function postAction(Request $request) : Response
     {
         return $this->templating->renderResponse('/offer/post.html.twig', [
-            'specializations' => $this->system->query(SpecializationQuery::class)->all(),
+            'specializations' => $this->offers->specializationQuery()->all(),
         ]);
     }
 
@@ -78,7 +75,7 @@ final class OfferController extends AbstractController
 
         $userId = $request->getSession()->get(FacebookController::USER_SESSION_KEY);
 
-        if (!$specialization = $this->system->query(SpecializationQuery::class)->findBySlug($specSlug)) {
+        if (!$specialization = $this->offers->specializationQuery()->findBySlug($specSlug)) {
             throw $this->createNotFoundException();
         }
 
@@ -90,7 +87,7 @@ final class OfferController extends AbstractController
             $offer = $form->getData();
 
             try {
-                $this->system->handle(new PostOffer(
+                $this->offers->handle(new PostOffer(
                     $specSlug,
                     $userId,
                     new Offer(
@@ -124,16 +121,16 @@ final class OfferController extends AbstractController
         return $this->templating->renderResponse('/offer/new.html.twig', [
             'specialization' => $specialization,
             'form' => $form->createView(),
-            'throttled' => $this->system->query(OfferThrottleQuery::class)->isThrottled($userId),
-            'offersLeft' => $this->system->query(OfferThrottleQuery::class)->offersLeft($userId),
-            'throttleLimit' => $this->system->query(OfferThrottleQuery::class)->limit(),
-            'throttleSince' => $this->system->query(OfferThrottleQuery::class)->since(),
+            'throttled' => $this->offers->offerThrottleQuery()->isThrottled($userId),
+            'offersLeft' => $this->offers->offerThrottleQuery()->offersLeft($userId),
+            'throttleLimit' => $this->offers->offerThrottleQuery()->limit(),
+            'throttleSince' => $this->offers->offerThrottleQuery()->since(),
         ]);
     }
 
     public function successAction(string $specSlug) : Response
     {
-        $specSlug = $this->system->query(SpecializationQuery::class)->findBySlug($specSlug);
+        $specSlug = $this->offers->specializationQuery()->findBySlug($specSlug);
 
         if (!$specSlug) {
             throw $this->createNotFoundException();
@@ -146,14 +143,14 @@ final class OfferController extends AbstractController
 
     public function offerAction(Request $request, string $offerSlug) : Response
     {
-        $offer = $this->system->query(OfferQuery::class)->findBySlug($offerSlug);
+        $offer = $this->offers->offerQuery()->findBySlug($offerSlug);
 
         if (!$offer) {
             throw $this->createNotFoundException();
         }
 
-        $nextOffer = $this->system->query(OfferQuery::class)->findOneAfter($offer);
-        $previousOffer = $this->system->query(OfferQuery::class)->findOneBefore($offer);
+        $nextOffer = $this->offers->offerQuery()->findOneAfter($offer);
+        $previousOffer = $this->offers->offerQuery()->findOneBefore($offer);
 
         return $this->templating->renderResponse('offer/offer.html.twig', [
             'userId' => $request->getSession()->get(FacebookController::USER_SESSION_KEY),
@@ -165,14 +162,14 @@ final class OfferController extends AbstractController
 
     public function removeAction(Request $request, string $offerSlug) : Response
     {
-        $offer = $this->system->query(OfferQuery::class)->findBySlug($offerSlug);
+        $offer = $this->offers->offerQuery()->findBySlug($offerSlug);
         $userId = $request->getSession()->get(FacebookController::USER_SESSION_KEY);
 
         if (!$userId || !$offer->postedBy($userId)) {
             return new Response('', Response::HTTP_FORBIDDEN);
         }
 
-        $this->system->handle(new RemoveOffer($offer->id()->toString(), $userId));
+        $this->offers->handle(new RemoveOffer($offer->id()->toString(), $userId));
 
         $this->addFlash('success', $this->renderView('alert/offer_removed.txt'));
 

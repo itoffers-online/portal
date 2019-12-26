@@ -13,13 +13,19 @@ declare(strict_types=1);
 
 namespace HireInSocial\Infrastructure\Flysystem\Application\System;
 
+use function array_keys;
+use function array_map;
+use function file_get_contents;
 use HireInSocial\Application\Assertion;
+use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\System\FileStorage;
 use HireInSocial\Application\System\FileStorage\File;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Azure\AzureAdapter;
 use League\Flysystem\Filesystem;
+use MicrosoftAzure\Storage\Blob\Internal\IBlob;
 use MicrosoftAzure\Storage\Common\ServicesBuilder;
+use function sprintf;
 
 final class FlysystemStorage implements FileStorage
 {
@@ -33,7 +39,7 @@ final class FlysystemStorage implements FileStorage
 
     public static function create(array $config) : self
     {
-        Assertion::allInArray(['type'], \array_keys($config));
+        Assertion::allInArray(['type'], array_keys($config));
         Assertion::inArray($config['type'], ['local', 'azure'], 'Missing or invalid filesystem type');
 
         switch ($config['type']) {
@@ -43,7 +49,7 @@ final class FlysystemStorage implements FileStorage
                         'local_storage_path',
                         'storage_url',
                     ],
-                    \array_keys($config)
+                    array_keys($config)
                 );
 
                 $storage = new self(
@@ -62,25 +68,29 @@ final class FlysystemStorage implements FileStorage
                         'azure_storage_account_key',
                         'azure_storage_container',
                     ],
-                    \array_keys($config)
+                    array_keys($config)
                 );
 
+                /** @var IBlob $blobService */
+                $blobService = ServicesBuilder::getInstance()->createBlobService(
+                    sprintf(
+                        'DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s',
+                        $config['azure_storage_account_name'],
+                        $config['azure_storage_account_key']
+                    )
+                );
                 $storage = new self(
                     new Filesystem(
                         new AzureAdapter(
-                            ServicesBuilder::getInstance()->createBlobService(
-                                \sprintf(
-                                    'DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s',
-                                    $config['azure_storage_account_name'],
-                                    $config['azure_storage_account_key']
-                                )
-                            ),
+                            $blobService,
                             $config['azure_storage_container']
                         )
                     )
                 );
 
                 break;
+            default:
+                throw new Exception(sprintf("Invalid storage type %s", $config['type']));
         }
 
         $storage->config = $config;
@@ -95,12 +105,12 @@ final class FlysystemStorage implements FileStorage
 
     public function upload(File $file): void
     {
-        $this->filesystem->put($file->destinationPath(), \file_get_contents($file->tmpPath()));
+        $this->filesystem->put($file->destinationPath(), file_get_contents($file->tmpPath()));
     }
 
     public function purge(): void
     {
-        \array_map(
+        array_map(
             function (array $file) {
                 if ($file['type'] === 'file') {
                     $this->filesystem->delete($file['path']);

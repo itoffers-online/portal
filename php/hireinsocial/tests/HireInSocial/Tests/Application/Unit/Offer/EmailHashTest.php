@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 final class EmailHashTest extends TestCase
 {
-    public function test_creating_from_raw_eamil()
+    public function test_creating_from_raw_eamil() : void
     {
         $hash = EmailHash::fromRaw('email@example.com', $this->createMD5Encoder());
 
@@ -30,7 +30,7 @@ final class EmailHashTest extends TestCase
         );
     }
 
-    public function test_not_accepting_emails_with_plus_tags()
+    public function test_not_accepting_emails_with_plus_tags() : void
     {
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Email address can\'t contain + character');
@@ -38,7 +38,7 @@ final class EmailHashTest extends TestCase
         EmailHash::fromRaw('email+tag@example.com', $this->createMock(Encoder::class));
     }
 
-    public function test_removing_dots_from_email_local()
+    public function test_removing_dots_from_email_local() : void
     {
         $this->assertEquals(
             EmailHash::fromRaw('norbert.orzechowicz.test@example.com', $this->createMD5Encoder())->toString(),

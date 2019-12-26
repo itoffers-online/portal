@@ -21,10 +21,8 @@ use Ddeboer\Imap\Message\EmailAddress;
 use Ddeboer\Imap\MessageInterface;
 use Ddeboer\Imap\Search\Flag\Unseen;
 use Ddeboer\Imap\Test\RawMessageIterator;
-use HireInSocial\Application\Query\Offer\ApplicationQuery;
 use HireInSocial\Application\Query\Offer\Model\Offer;
 use HireInSocial\Application\Query\Offer\OfferFilter;
-use HireInSocial\Application\Query\Offer\OfferQuery;
 use HireInSocial\Tests\Application\MotherObject\Command\Offer\PostOfferMother;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Application;
@@ -33,7 +31,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class ScanMessagesTest extends ConsoleTestCase
 {
-    public function test_marking_messages_for_existing_offer_as_seen_and_forwarding_email()
+    public function test_marking_messages_for_existing_offer_as_seen_and_forwarding_email() : void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $mailbox = $this->createMock(MailboxInterface::class);
@@ -46,7 +44,7 @@ final class ScanMessagesTest extends ConsoleTestCase
 
         $offer = $this->createOffer();
 
-        $command = new ScanMessages(self::$system, $connection, $fs);
+        $command = new ScanMessages(self::$offersFacade, $connection, $fs);
         $application = new Application('test');
         $application->add($command);
 
@@ -79,12 +77,12 @@ final class ScanMessagesTest extends ConsoleTestCase
             $commandTester->getDisplay()
         );
         $this->assertTrue(
-            $this->system()->query(ApplicationQuery::class)->alreadyApplied($offer->id()->toString(), 'doe@example.com')
+            $this->offersFacade()->applicationQuery()->alreadyApplied($offer->id()->toString(), 'doe@example.com')
         );
-        $this->assertEquals(1, $this->system()->query(ApplicationQuery::class)->countFor($offer->id()->toString()));
+        $this->assertEquals(1, $this->offersFacade()->applicationQuery()->countFor($offer->id()->toString()));
     }
 
-    public function test_marking_messages_for_non_existing_offer_as_seen()
+    public function test_marking_messages_for_non_existing_offer_as_seen() : void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $mailbox = $this->createMock(MailboxInterface::class);
@@ -95,7 +93,7 @@ final class ScanMessagesTest extends ConsoleTestCase
             ->with('INBOX')
             ->willReturn($mailbox);
 
-        $command = new ScanMessages(self::$system, $connection, $fs);
+        $command = new ScanMessages(self::$offersFacade, $connection, $fs);
         $application = new Application('test');
         $application->add($command);
 
@@ -132,9 +130,9 @@ final class ScanMessagesTest extends ConsoleTestCase
     {
         $user = $this->systemContext->createUser();
         $this->systemContext->createSpecialization('spec');
-        $this->systemContext->system()->handle(PostOfferMother::random($user->id(), 'spec'));
+        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), 'spec'));
 
-        $offer = $this->system()->query(OfferQuery::class)->findAll(OfferFilter::allFor('spec'))->first();
+        $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor('spec'))->first();
 
         return $offer;
     }

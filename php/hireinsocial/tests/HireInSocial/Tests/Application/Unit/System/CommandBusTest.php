@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 final class CommandBusTest extends TestCase
 {
-    public function test_registering_command_without_invoke_method()
+    public function test_registering_command_without_invoke_method() : void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Can\'t register command handler without __invoke method.');
@@ -38,12 +38,12 @@ final class CommandBusTest extends TestCase
         );
     }
 
-    public function test_handling_unknown_command()
+    public function test_handling_unknown_command() : void
     {
         $commandBus = new CommandBus(
             new DummyTransactionManager(),
             new class implements Handler {
-                public function __invoke()
+                public function __invoke() : void
                 {
                 }
 
@@ -65,7 +65,7 @@ final class CommandBusTest extends TestCase
         });
     }
 
-    public function test_handling_command()
+    public function test_handling_command() : void
     {
         $commandBus = new CommandBus(
             new DummyTransactionManager(),
@@ -75,7 +75,7 @@ final class CommandBusTest extends TestCase
                     return 'Command';
                 }
 
-                public function __invoke($command)
+                public function __invoke($command) : void
                 {
                     $command->handle();
                 }

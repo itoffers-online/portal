@@ -74,10 +74,6 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
         return $this->limit - $postedOffers;
     }
 
-    /**
-     * @param string $userId
-     * @return false|mixed
-     */
     private function postedOffers(string $userId) : int
     {
         return (int) $this->connection->createQueryBuilder()

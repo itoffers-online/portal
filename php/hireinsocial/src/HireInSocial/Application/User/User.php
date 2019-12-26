@@ -26,7 +26,7 @@ class User
 
     private function __construct(\DateTimeImmutable $createdAt)
     {
-        $this->id = (string) Uuid::uuid4();
+        $this->id = Uuid::uuid4()->toString();
         $this->createdAt = $createdAt;
     }
 

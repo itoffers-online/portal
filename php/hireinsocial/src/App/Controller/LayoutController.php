@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use HireInSocial\Application\Query\Specialization\SpecializationQuery;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,12 +21,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class LayoutController extends AbstractController
 {
-    private $system;
+    private $offers;
     private $templating;
 
-    public function __construct(System $system, EngineInterface $templating)
+    public function __construct(Offers $offers, EngineInterface $templating)
     {
-        $this->system = $system;
+        $this->offers = $offers;
         $this->templating = $templating;
     }
 
@@ -41,7 +40,7 @@ final class LayoutController extends AbstractController
     public function headerAction(Request $request) : Response
     {
         return $this->templating->renderResponse('layout/header.html.twig', [
-            'headerSpecializations' => $this->system->query(SpecializationQuery::class)->all(),
+            'headerSpecializations' => $this->offers->specializationQuery()->all(),
         ]);
     }
 }

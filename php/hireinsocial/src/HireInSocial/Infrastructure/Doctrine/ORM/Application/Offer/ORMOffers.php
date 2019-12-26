@@ -37,7 +37,7 @@ final class ORMOffers implements Offers
 
     public function getById(UuidInterface $offerId): Offer
     {
-        return $this->entityManager->getRepository(Offer::class)->findOneBy(['id' => (string) $offerId]);
+        return $this->entityManager->getRepository(Offer::class)->findOneBy(['id' => $offerId->toString()]);
     }
 
     public function postedBy(User $user, \DateTimeImmutable $since): UserOffers

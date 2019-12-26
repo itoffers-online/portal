@@ -17,6 +17,9 @@ use HireInSocial\Application\System\Calendar;
 
 final class SystemCalendar implements Calendar
 {
+    /**
+     * @var \DateTimeZone
+     */
     private $timeZone;
 
     public function __construct(\DateTimeZone $timeZone)

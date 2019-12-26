@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FileTest extends TestCase
 {
-    public function test_creating_pdf_file()
+    public function test_creating_pdf_file() : void
     {
         $file = File::pdf('/destination/file.pdf', __DIR__ . '/fixtures/blank.pdf');
 
@@ -29,7 +29,7 @@ final class FileTest extends TestCase
         );
     }
 
-    public function test_creating_pdf_file_from_txt_file()
+    public function test_creating_pdf_file_from_txt_file() : void
     {
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Expected application/pdf file got text/plain');

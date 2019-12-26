@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Tests\Infrastructure\Unit\Doctrine\DBAL\Types\Offer;
 
+use HireInSocial\Application\Offer\Salary;
 use HireInSocial\Infrastructure\Doctrine\DBAL\Types\Offer\SalaryType;
 use HireInSocial\Tests\Application\MotherObject\Offer\SalaryMother;
 use HireInSocial\Tests\Infrastructure\Unit\Doctrine\DBAL\Types\TypeTestCase;
@@ -29,6 +30,9 @@ final class SalaryTypeTest extends TypeTestCase
         return SalaryType::class;
     }
 
+    /**
+     * @return array<array>
+     */
     public function dataProvider() : array
     {
         return [

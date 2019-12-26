@@ -22,7 +22,7 @@ use App\Controller\SpecializationController;
 use App\Routing\Factory;
 use App\Twig\Extension\FacebookExtension;
 use Facebook\Facebook;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\MonologBundle\MonologBundle;
@@ -37,7 +37,7 @@ use Twig\Extensions\TextExtension;
 final class SymfonyKernel extends Kernel
 {
     private $projectRootPath;
-    private $system;
+    private $offers;
     private $frameworkConfig;
 
     public function __construct(
@@ -45,12 +45,12 @@ final class SymfonyKernel extends Kernel
         string $environment,
         bool $debug,
         array $frameworkConfig,
-        System $system
+        Offers $offers
     ) {
         parent::__construct($environment, $debug);
         $this->projectRootPath = $projectRootPath;
         $this->frameworkConfig = $frameworkConfig;
-        $this->system = $system;
+        $this->offers = $offers;
     }
 
     use MicroKernelTrait;
@@ -68,7 +68,7 @@ final class SymfonyKernel extends Kernel
     {
         parent::initializeContainer();
 
-        $this->container->set(System::class, $this->system);
+        $this->container->set(Offers::class, $this->offers);
     }
 
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
@@ -77,7 +77,7 @@ final class SymfonyKernel extends Kernel
         $c->loadFromExtension('twig', $this->frameworkConfig['twig']);
         $c->loadFromExtension('monolog', $this->frameworkConfig['monolog']);
 
-        $c->register(System::class)->setSynthetic(true);
+        $c->register(Offers::class)->setSynthetic(true);
 
         $c->autowire(Facebook::class)
             ->addArgument([

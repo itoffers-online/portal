@@ -25,22 +25,27 @@ final class MockPlatform extends AbstractPlatform
 
     public function getBooleanTypeDeclarationSQL(array $columnDef)
     {
+        throw DBALException::notSupported(__METHOD__);
     }
 
     public function getIntegerTypeDeclarationSQL(array $columnDef)
     {
+        throw DBALException::notSupported(__METHOD__);
     }
 
     public function getBigIntTypeDeclarationSQL(array $columnDef)
     {
+        throw DBALException::notSupported(__METHOD__);
     }
 
     public function getSmallIntTypeDeclarationSQL(array $columnDef)
     {
+        throw DBALException::notSupported(__METHOD__);
     }
 
     public function _getCommonIntegerTypeDeclarationSQL(array $columnDef)
     {
+        throw DBALException::notSupported(__METHOD__);
     }
 
     public function getVarcharTypeDeclarationSQL(array $field)
@@ -82,9 +87,11 @@ final class MockPlatform extends AbstractPlatform
 
     protected function initializeDoctrineTypeMappings()
     {
+        throw DBALException::notSupported(__METHOD__);
     }
 
     protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed)
     {
+        throw DBALException::notSupported(__METHOD__);
     }
 }

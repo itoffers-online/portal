@@ -15,7 +15,7 @@ namespace App\Tests\Functional\Web;
 
 final class AuthenticationTest extends WebTestCase
 {
-    public function test_redirect_to_login_page_when_want_to_add_new_offer_not_logged()
+    public function test_redirect_to_login_page_when_want_to_add_new_offer_not_logged() : void
     {
         $client = static::createClient();
         $client->request('GET', $client->getContainer()->get('router')->generate('offer_new', ['specSlug' => 'php']));

@@ -15,7 +15,7 @@ namespace App\Command\Specialization;
 
 use HireInSocial\Application\Command\Specialization\RemoveFacebookChannel as SystemRemoveFacebookChannel;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,17 +27,17 @@ final class RemoveFacebookChannel extends Command
     public const NAME = 'specialization:channel:facebook:remove';
     protected static $defaultName = self::NAME;
 
-    private $system;
+    private $offers;
     /**
      * @var SymfonyStyle
      */
     private $io;
 
-    public function __construct(System $system)
+    public function __construct(Offers $offers)
     {
         parent::__construct();
 
-        $this->system = $system;
+        $this->offers = $offers;
     }
 
     protected function configure() : void
@@ -67,14 +67,14 @@ final class RemoveFacebookChannel extends Command
             }
         }
 
-        if (!$this->system->query(SpecializationQuery::class)->findBySlug($input->getArgument('slug'))) {
+        if (!$this->offers->specializationQuery()->findBySlug($input->getArgument('slug'))) {
             $this->io->error(sprintf('Specialization slug "%s" does not exists.', $input->getArgument('slug')));
 
             return 1;
         }
 
         try {
-            $this->system->handle(new SystemRemoveFacebookChannel(
+            $this->offers->handle(new SystemRemoveFacebookChannel(
                 $input->getArgument('slug')
             ));
         } catch (\Throwable $e) {

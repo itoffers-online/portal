@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GroupTest extends TestCase
 {
-    public function test_create_group_with_too_long_fb_id()
+    public function test_create_group_with_too_long_fb_id() : void
     {
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Invalid FB Group ID');
@@ -27,7 +27,7 @@ final class GroupTest extends TestCase
         new Group(\str_repeat('1', 256));
     }
 
-    public function test_create_group_with_too_short_fb_id()
+    public function test_create_group_with_too_short_fb_id() : void
     {
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Invalid FB Group ID');

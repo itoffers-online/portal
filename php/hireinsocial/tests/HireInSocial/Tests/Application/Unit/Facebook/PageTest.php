@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PageTest extends TestCase
 {
-    public function test_create_page_with_too_long_fb_id()
+    public function test_create_page_with_too_long_fb_id() : void
     {
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Invalid FB Page ID');
@@ -27,7 +27,7 @@ final class PageTest extends TestCase
         new Page(\str_repeat('1', 256), 'access_token');
     }
 
-    public function test_create_page_with_too_short_fb_id()
+    public function test_create_page_with_too_short_fb_id() : void
     {
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Invalid FB Page ID');
@@ -35,7 +35,7 @@ final class PageTest extends TestCase
         new Page('1', 'access_token');
     }
 
-    public function test_create_page_with_too_long_fb_token()
+    public function test_create_page_with_too_long_fb_token() : void
     {
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Invalid FB Page Token');
@@ -43,7 +43,7 @@ final class PageTest extends TestCase
         new Page('fb_page_id', \str_repeat('1', 256));
     }
 
-    public function test_create_page_with_too_short_fb_token()
+    public function test_create_page_with_too_short_fb_token() : void
     {
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Invalid FB Page Token');

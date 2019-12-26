@@ -20,9 +20,7 @@ use Ddeboer\Imap\Message\AttachmentInterface;
 use Ddeboer\Imap\Search\Flag\Unseen;
 use HireInSocial\Application\Command\Offer\Apply\Attachment;
 use HireInSocial\Application\Command\Offer\ApplyThroughEmail;
-use HireInSocial\Application\Query\Offer\ApplicationQuery;
-use HireInSocial\Application\Query\Offer\OfferQuery;
-use HireInSocial\Application\System;
+use HireInSocial\Offers;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,7 +36,7 @@ final class ScanMessages extends Command
     public const NAME = 'email:scan';
     protected static $defaultName = self::NAME;
 
-    private $system;
+    private $offers;
     private $connection;
 
     private $tmpBasePath;
@@ -51,11 +49,11 @@ final class ScanMessages extends Command
      */
     private $fs;
 
-    public function __construct(System $system, ConnectionInterface $connection, Filesystem $filesystem)
+    public function __construct(Offers $offers, ConnectionInterface $connection, Filesystem $filesystem)
     {
         parent::__construct();
 
-        $this->system = $system;
+        $this->offers = $offers;
         $this->connection = $connection;
         $this->fs = $filesystem;
     }
@@ -99,15 +97,15 @@ final class ScanMessages extends Command
         }
 
         $this->io->section('Start scan');
-        $this->io->text(sprintf('New messages: <info>%d</info>', \count($messages)));
+        $this->io->text(\sprintf('New messages: <info>%d</info>', \count($messages)));
 
         foreach ($messages as $message) {
             $email = (new Parser($message->getTo()[0]->getAddress()))->parse();
             $sender = $message->getSender()[0]->getAddress();
 
-            if ($offer = $this->system->query(OfferQuery::class)->findByEmailHash($email->tag())) {
-                if ($this->system->query(ApplicationQuery::class)->alreadyApplied($offer->id()->toString(), $sender)) {
-                    $this->io->note(sprintf('Marking email as seen since sender already applied for <info>%s</info> job offer', $offer->slug()));
+            if ($offer = $this->offers->offerQuery()->findByEmailHash($email->tag())) {
+                if ($this->offers->applicationQuery()->alreadyApplied($offer->id()->toString(), $sender)) {
+                    $this->io->note(\sprintf('Marking email as seen since sender already applied for <info>%s</info> job offer', $offer->slug()));
                     $message->markAsSeen();
 
                     continue;
@@ -115,9 +113,9 @@ final class ScanMessages extends Command
 
                 $attachments = \array_map([$this, 'saveInTmp'], $message->getAttachments());
 
-                $this->io->text(sprintf('New email for: <info>%s</info>', $offer->slug()));
+                $this->io->text(\sprintf('New email for: <info>%s</info>', $offer->slug()));
 
-                $this->system->handle(new ApplyThroughEmail(
+                $this->offers->handle(new ApplyThroughEmail(
                     (string) $offer->id(),
                     $sender,
                     $message->getSubject(),
@@ -138,7 +136,7 @@ final class ScanMessages extends Command
 
                 $this->io->newLine(1);
             } else {
-                $this->io->note(sprintf('Marking email to offer "%s" as seen. No active related job offer was found.', $email->toString()));
+                $this->io->note(\sprintf('Marking email to offer "%s" as seen. No active related job offer was found.', $email->toString()));
                 $message->markAsSeen();
             }
         }
@@ -153,18 +151,18 @@ final class ScanMessages extends Command
         $this->release();
         $this->fs->remove($this->tmpBasePath);
 
-        $this->io->note(sprintf('Tmp dir for attachments removed: %s', $this->tmpBasePath));
+        $this->io->note(\sprintf('Tmp dir for attachments removed: %s', $this->tmpBasePath));
     }
 
     protected function saveInTmp(AttachmentInterface $attachment): AttachmentTmpPath
     {
-        $this->io->comment(sprintf('Saving attachment "%s" to tmp storage...', $attachment->getFilename()));
+        $this->io->comment(\sprintf('Saving attachment "%s" to tmp storage...', $attachment->getFilename()));
 
         $attachmentTmp = new AttachmentTmpPath($this->tmpBasePath, $attachment->getFilename());
 
         $this->fs->dumpFile($attachmentTmp->toString(), $attachment->getDecodedContent());
 
-        $this->io->comment(sprintf('Attachment saved to tmp storage: <info>%s</info>', $attachmentTmp->toString()));
+        $this->io->comment(\sprintf('Attachment saved to tmp storage: <info>%s</info>', $attachmentTmp->toString()));
 
         return $attachmentTmp;
     }

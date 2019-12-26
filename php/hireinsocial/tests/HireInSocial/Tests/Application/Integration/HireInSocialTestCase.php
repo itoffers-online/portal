@@ -17,7 +17,7 @@ use HireInSocial\Application\Config;
 use function HireInSocial\Infrastructure\bootstrap;
 use function HireInSocial\Infrastructure\dbal;
 use HireInSocial\Infrastructure\Flysystem\Application\System\FlysystemStorage;
-use function HireInSocial\Infrastructure\system;
+use function HireInSocial\Infrastructure\offersFacade;
 use HireInSocial\Tests\Application\Context\DatabaseContext;
 use HireInSocial\Tests\Application\Context\FilesystemContext;
 use HireInSocial\Tests\Application\Context\SystemContext;
@@ -48,7 +48,7 @@ class HireInSocialTestCase extends TestCase
             $this->fail(sprintf('Expected environment "test" but got "%s"', $config->getString(Config::ENV)));
         }
 
-        $this->systemContext = new SystemContext(system($config));
+        $this->systemContext = new SystemContext(offersFacade($config));
         $this->databaseContext = new DatabaseContext(dbal($config));
         $this->filesystemContext = new FilesystemContext(FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG)));
 

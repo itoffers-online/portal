@@ -35,10 +35,10 @@ final class ORMUsers implements Users
 
     public function getById(UuidInterface $id): User
     {
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['id' => (string) $id]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['id' => $id->toString()]);
 
         if (!$user) {
-            throw new Exception(sprintf('User with id %s does not exists.', (string) $id));
+            throw new Exception(sprintf('User with id %s does not exists.', (string) $id->toString()));
         }
 
         return $user;
