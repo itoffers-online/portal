@@ -35,7 +35,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
             ],
             'session' => [
                 'cookie_samesite' => 'strict',
-                'save_path' => '/var/lib/php/sessions',
+                'save_path' => sys_get_temp_dir() . '/his/sessions',
             ],
             'default_locale' => $config->getString(Config::LOCALE),
             'translator' => [

@@ -113,9 +113,7 @@
                     </p>
                         <p>
                             {% spaceless %}
-                            <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ offer.location.lat }},{{ offer.location.lng }}&zoom=16&size=600x300&maptype=roadmap
-                            &markers=color:blue%7C{{ offer.location.lat }},{{ offer.location.lng }}
-                            &key={{ google.maps.key }}" alt="Map with location"/>
+                            <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&zoom=16&size=600x300&maptype=roadmap&markers=color:blue%7C{{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&key={{ google.maps.key|raw }}" alt="Map with location"/>
                             {% endspaceless %}
                         </p>
                     {% endif %}
