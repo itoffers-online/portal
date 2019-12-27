@@ -10,7 +10,7 @@
 **Contract type**: {{ offer.contract.type|raw }}
 
 {% if offer.salary %}
-**Salary**: {{ offer.salary.min }} - {{ offer.salary.max }} ({{ offer.salary.currencyCode }}) monthly {% if offer.salary.isNet %}net{% else %}gross{% endif %}
+**Salary**: {{ offer.salary.min }} - {{ offer.salary.max }} ({{ offer.salary.currencyCode }}) {% if offer.salary.period.isTotal %}in total{% else %}per {{ offer.salary.period.type|lower }}{% endif %} {% if offer.salary.isNet %}net{% else %}gross{% endif %}
 {% else %}
 **Salary**: -
 > This offer does not have specified salary range

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Offer;
 
+use DateTimeImmutable;
 use Hashids\Hashids;
 use HireInSocial\Offers\Application\Assertion;
 use HireInSocial\Offers\Application\Specialization\Specialization;
@@ -39,52 +40,52 @@ class Offer
     private $userId;
 
     /**
-     * @var \Ramsey\Uuid\UuidInterface
+     * @var UuidInterface
      */
     private $specializationId;
 
     /**
-     * @var \DateTimeImmutable
+     * @var DateTimeImmutable
      */
     private $createdAt;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Company
+     * @var Company
      */
     private $company;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Position
+     * @var Position
      */
     private $position;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Location
+     * @var Location
      */
     private $location;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Salary|null
+     * @var Salary|null
      */
     private $salary;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Contract
+     * @var Contract
      */
     private $contract;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Description
+     * @var Description
      */
     private $description;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Contact
+     * @var Contact
      */
     private $contact;
 
     /**
-     * @var \DateTimeImmutable
+     * @var DateTimeImmutable
      */
     private $removedAt;
 
@@ -98,7 +99,7 @@ class Offer
         Contract $contract,
         Description $description,
         Contact $contact,
-        \DateTimeImmutable $createdAt
+        DateTimeImmutable $createdAt
     ) {
         $this->id = Uuid::uuid4()->toString();
         $this->userId = $userId->toString();
@@ -145,7 +146,7 @@ class Offer
         return Uuid::fromString($this->id);
     }
 
-    public function createdAt() : \DateTimeImmutable
+    public function createdAt() : DateTimeImmutable
     {
         return $this->createdAt;
     }

@@ -198,7 +198,8 @@ final class PostOfferHandler implements Handler
                     $command->offer()->salary()->min(),
                     $command->offer()->salary()->max(),
                     $command->offer()->salary()->currencyCode(),
-                    $command->offer()->salary()->isNet()
+                    $command->offer()->salary()->isNet(),
+                    Salary\Period::fromString(\mb_strtoupper($command->offer()->salary()->periodType()))
                 )
                 : null,
             new Contract(

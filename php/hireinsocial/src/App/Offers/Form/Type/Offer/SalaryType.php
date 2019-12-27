@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace App\Offers\Form\Type\Offer;
 
+use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\GreaterThan;
@@ -40,7 +42,7 @@ final class SalaryType extends AbstractType
                     new Callback(
                         [
                             'callback' => function ($value, ExecutionContextInterface $context, $payload) {
-                                /** @var \Symfony\Component\Form\Form $form */
+                                /** @var Form $form */
                                 $form = $context->getRoot();
 
                                 if (null === $value && null === $form->get('salary')->get('min')->getData()) {
@@ -66,6 +68,18 @@ final class SalaryType extends AbstractType
             ])
             ->add('net', CheckboxType::class, [
                 'required' => false,
+            ])
+            ->add('period_type', ChoiceType::class, [
+                'required' => true,
+                'choices' => [
+                    'per month' => Salary::PERIOD_TYPE_MONTH,
+                    'per hour' => Salary::PERIOD_TYPE_HOUR,
+                    'per day' => Salary::PERIOD_TYPE_DAY,
+                    'per week' => Salary::PERIOD_TYPE_WEEK,
+                    'per year' => Salary::PERIOD_TYPE_YEAR,
+                    'in total' => Salary::PERIOD_TYPE_IN_TOTAL,
+                ],
+                'data' => 'PLN',
             ])
         ;
     }

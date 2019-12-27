@@ -110,7 +110,7 @@ final class OfferController extends AbstractController
                         ),
                         (null === $offer['salary']['min'] && null === $offer['salary']['max'])
                             ? null
-                            : new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool) $offer['salary']['net']),
+                            : new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool) $offer['salary']['net'], $offer['salary']['period_type']),
                         new Contract($offer['contract']),
                         new Description($offer['description']['requirements'], $offer['description']['benefits']),
                         new Contact($offer['contact']['email'], $offer['contact']['name'], $offer['contact']['phone']),

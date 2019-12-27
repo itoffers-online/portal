@@ -35,12 +35,18 @@ final class Salary
      */
     private $net;
 
-    public function __construct(int $min, int $max, string $currencyCode, bool $net)
+    /**
+     * @var string
+     */
+    private $periodType;
+
+    public function __construct(int $min, int $max, string $currencyCode, bool $net, string $periodType)
     {
         $this->min = $min;
         $this->max = $max;
         $this->currencyCode = $currencyCode;
         $this->net = $net;
+        $this->periodType = $periodType;
     }
 
     public function min() : int
@@ -61,5 +67,10 @@ final class Salary
     public function isNet() : bool
     {
         return $this->net;
+    }
+
+    public function periodType() : string
+    {
+        return $this->periodType;
     }
 }

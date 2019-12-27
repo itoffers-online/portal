@@ -81,7 +81,7 @@
             {% if offer.salary %}
             <div class="card">
                 <div class="card-body">
-                    {{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }} - {{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }} monthly
+                    {{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }} - {{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }} {% if offer.salary.periodTypeTotal %}in total{% else %}per {{ offer.salary.periodType }}{% endif %}
                     {% if offer.salary.isNet %}<strong class="text-success">net</strong>{% else %}<strong class="text-warning">gross</strong>{% endif %}
                 </div>
             </div>

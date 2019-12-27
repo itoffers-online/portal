@@ -21,7 +21,7 @@ use Ramsey\Uuid\UuidInterface;
 final class Draft
 {
     /**
-     * @var \Ramsey\Uuid\UuidInterface
+     * @var UuidInterface
      */
     private $userId;
 

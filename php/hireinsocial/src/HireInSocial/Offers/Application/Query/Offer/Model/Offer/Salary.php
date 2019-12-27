@@ -15,6 +15,18 @@ namespace HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 
 final class Salary
 {
+    public const PERIOD_TYPE_HOUR = 'HOUR';
+
+    public const PERIOD_TYPE_DAY = 'DAY';
+
+    public const PERIOD_TYPE_WEEK = 'WEEK';
+
+    public const PERIOD_TYPE_MONTH = 'MONTH';
+
+    public const PERIOD_TYPE_YEAR = 'YEAR';
+
+    public const PERIOD_TYPE_IN_TOTAL = 'IN_TOTAL';
+
     /**
      * @var int
      */
@@ -35,12 +47,18 @@ final class Salary
      */
     private $net;
 
-    public function __construct(int $min, int $max, string $currencyCode, bool $net)
+    /**
+     * @var string
+     */
+    private $periodType;
+
+    public function __construct(int $min, int $max, string $currencyCode, bool $net, string $periodType)
     {
         $this->min = $min;
         $this->max = $max;
         $this->currencyCode = $currencyCode;
         $this->net = $net;
+        $this->periodType = $periodType;
     }
 
     public function min() : int
@@ -61,5 +79,15 @@ final class Salary
     public function isNet() : bool
     {
         return $this->net;
+    }
+
+    public function periodType() : string
+    {
+        return \mb_strtolower($this->periodType);
+    }
+
+    public function periodTypeTotal() : bool
+    {
+        return $this->periodType === self::PERIOD_TYPE_IN_TOTAL;
     }
 }

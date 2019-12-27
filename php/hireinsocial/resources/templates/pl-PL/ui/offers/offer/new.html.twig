@@ -67,14 +67,17 @@
                 postara się wyjaśnić w opisie stanowiska jaka jest tego przyczyna.
             </div>
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     {{ form_row(form.salary.min, {label: false, attr:{placeholder:"Od"}}) }}
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     {{ form_row(form.salary.max, {label: false, attr:{placeholder:"Do"}}) }}
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     {{ form_row(form.salary.currency, {label: false}) }}
+                </div>
+                <div class="col-md-3 mb-3">
+                    {{ form_row(form.salary.period_type, {label: false}) }}
                 </div>
             </div>
             {{ form_row(form.salary.net, {label: "Kwota netto"}) }}
