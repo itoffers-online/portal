@@ -291,7 +291,8 @@ final class DbalOfferQuery implements OfferQuery
                         $salary['min'],
                         $salary['max'],
                         $salary['currency_code'],
-                        $salary['net']
+                        $salary['net'],
+                        $salary['period_type']
                     )
                     : null
             ),

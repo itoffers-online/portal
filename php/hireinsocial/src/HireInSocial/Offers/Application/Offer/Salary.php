@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Application\Offer;
 
 use HireInSocial\Offers\Application\Assertion;
+use HireInSocial\Offers\Application\Offer\Salary\Period;
 
 final class Salary
 {
@@ -37,7 +38,12 @@ final class Salary
      */
     private $net;
 
-    public function __construct(int $min, int $max, string $currencyCode, bool $net)
+    /**
+     * @var Period
+     */
+    private $period;
+
+    public function __construct(int $min, int $max, string $currencyCode, bool $net, Period $period)
     {
         Assertion::greaterThan($min, 0);
         Assertion::greaterThan($max, $min);
@@ -47,6 +53,7 @@ final class Salary
         $this->max = $max;
         $this->currencyCode = $currencyCode;
         $this->net = $net;
+        $this->period = $period;
     }
 
     public function min() : int
@@ -67,5 +74,10 @@ final class Salary
     public function isNet() : bool
     {
         return $this->net;
+    }
+
+    public function period() : Period
+    {
+        return $this->period;
     }
 }

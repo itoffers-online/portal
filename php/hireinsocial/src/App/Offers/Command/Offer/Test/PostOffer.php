@@ -27,6 +27,7 @@ use HireInSocial\Offers\Application\Command\Offer\Offer\Position;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Offers\Application\Command\Offer\PostOffer as SystemPostOffer;
 use HireInSocial\Offers\Application\Command\User\FacebookConnect;
+use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary as SalaryView;
 use HireInSocial\Offers\Offers;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
@@ -130,7 +131,7 @@ final class PostOffer extends Command
                         'Full stack Software developer position, you will work mostly on web applications with automated and scalable infrastructure.'
                     ),
                     new Location($faker->boolean, $faker->country, new LatLng($faker->latitude, $faker->longitude)),
-                    $noSalary ? null : new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean),
+                    $noSalary ? null : new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                     new Contract('B2B'),
                     new Description(
                         'Candidate for this position needs to be solid, reliable and meet all our expectations. You need to have at least 5 years of commercial experience.',

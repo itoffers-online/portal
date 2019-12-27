@@ -45,6 +45,7 @@ final class SalaryType extends JsonType
             'max' => self::getPrivatePropertyValue($value, 'max'),
             'currency_code' => self::getPrivatePropertyValue($value, 'currencyCode'),
             'net' => self::getPrivatePropertyValue($value, 'net'),
+            'period_type' => self::getPrivatePropertyValue(self::getPrivatePropertyValue($value, 'period'), 'type'),
         ]);
     }
 
@@ -60,7 +61,8 @@ final class SalaryType extends JsonType
             $data['min'],
             $data['max'],
             $data['currency_code'],
-            $data['net']
+            $data['net'],
+            Salary\Period::fromString($data['period_type'])
         );
     }
 

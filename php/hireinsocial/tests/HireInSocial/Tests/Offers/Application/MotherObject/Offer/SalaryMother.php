@@ -19,6 +19,6 @@ final class SalaryMother
 {
     public static function netPLN(int $min, int $max) : Salary
     {
-        return new Salary($min, $max, 'PLN', true);
+        return new Salary($min, $max, 'PLN', true, Salary\Period::perMonth());
     }
 }

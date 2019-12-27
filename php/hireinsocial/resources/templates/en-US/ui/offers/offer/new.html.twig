@@ -56,14 +56,17 @@
                 This field is optional but please remember that potential candidates prefer offers with transparent salary.
             </div>
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     {{ form_row(form.salary.min, {label: false, attr:{placeholder:"From"}}) }}
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     {{ form_row(form.salary.max, {label: false, attr:{placeholder:"To"}}) }}
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                     {{ form_row(form.salary.currency, {label: false}) }}
+                </div>
+                <div class="col-md-3 mb-3">
+                    {{ form_row(form.salary.period_type, {label: false}) }}
                 </div>
             </div>
             {{ form_row(form.salary.net, {label: "Net"}) }}
