@@ -14,11 +14,3 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
     autoload_files:
         - tests/bootstrap.php
-
-    ignoreErrors:
-        -
-            message: '#Method (.*)::getPrivatePropertyValue()#'
-            path: src/HireInSocial/Common/PrivateFields.php
-        -
-            message: '#Method (.*)::setPrivatePropertyValue()#'
-            path: src/HireInSocial/Common/PrivateFields.php
