@@ -74,7 +74,7 @@ final class OfferTest extends WebTestCase
             'offer[salary][max]' => 5000,
             'offer[salary][currency]' => 'USD',
             'offer[salary][net]' => 1,
-            'offer[contract]' => 'B2B',
+            'offer[contract]' => 'Contract (B2B)',
             'offer[location][remote]' => 1,
             'offer[location][name]' => 'Cracow',
             'offer[location][lat]' => '50.06212',
