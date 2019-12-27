@@ -38,9 +38,12 @@ final class OfferType extends AbstractType
             ->add('salary', SalaryType::class, ['required' => false])
             ->add('contract', ChoiceType::class, [
                 'choices' => [
-                    'B2B' => 'B2B',
-                    'Umowa o Pracę' => 'Umowa o Pracę',
-                    'Umowa Zlecenie' => 'Umowa Zlecenie',
+                    'Contract' => 'Contract (B2B)',
+                    'Full-time' => 'Full-time',
+                    'Full-time (B2B)' => 'Full-time (B2B)',
+                    'Part-time' => 'Part-time',
+                    'Internship' => 'Internship',
+                    'Volunteer' => 'Volunteer',
                 ],
             ])
             ->add('location', LocationType::class)

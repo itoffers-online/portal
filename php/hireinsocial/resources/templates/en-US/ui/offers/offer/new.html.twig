@@ -70,7 +70,7 @@
                 </div>
             </div>
             {{ form_row(form.salary.net, {label: "Net"}) }}
-            {{ form_row(form.contract, {label: "Contract Type"}) }}
+            {{ form_row(form.contract, {label: "Job Type"}) }}
             <hr />
             <h5>Location</h5>
             {{ form_row(form.location.remote, {label: "Possibility to work remotly"}) }}
@@ -95,7 +95,7 @@
             {{ form_row(form.contact.email, {label: "Email address "}) }}
             {{ form_row(form.contact.phone, {label: "Phone number (optional)"}) }}
 
-            <h5>Oferta PDF</h5>
+            <h5>Offer in PDF</h5>
             {{ form_row(form.offer_pdf, {label: false, help: "Offer in PDF"}) }}
             <p class="alert alert-warning">
                 Offer in PDF must be 100% accurate with one described above.
