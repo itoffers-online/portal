@@ -16,29 +16,19 @@ namespace App\Controller;
 use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Offers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\ControllerTrait;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class IndexController extends AbstractController
 {
-    use ControllerTrait;
-
     /**
-     * @var \HireInSocial\Offers
+     * @var Offers
      */
     private $offers;
 
-    /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
-     */
-    private $templating;
-
-    public function __construct(Offers $offers, EngineInterface $templating)
+    public function __construct(Offers $offers)
     {
         $this->offers = $offers;
-        $this->templating = $templating;
     }
 
     public function homeAction(Request $request) : Response
@@ -49,7 +39,7 @@ final class IndexController extends AbstractController
 
         $offers = $this->offers->offerQuery()->findAll($offerFilter);
 
-        return $this->templating->renderResponse('/home/index.html.twig', [
+        return $this->render('/home/index.html.twig', [
             'specializations' => $this->offers->specializationQuery()->all(),
             'offers' => $offers,
         ]);
@@ -57,6 +47,6 @@ final class IndexController extends AbstractController
 
     public function faqAction(Request $request) : Response
     {
-        return $this->templating->renderResponse('/home/faq.html.twig', []);
+        return $this->render('/home/faq.html.twig', []);
     }
 }

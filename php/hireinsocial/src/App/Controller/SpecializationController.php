@@ -17,26 +17,19 @@ use App\Form\Type\OfferFilterType;
 use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Offers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class SpecializationController extends AbstractController
 {
     /**
-     * @var \HireInSocial\Offers
+     * @var Offers
      */
     private $offers;
 
-    /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
-     */
-    private $templating;
-
-    public function __construct(Offers $offers, EngineInterface $templating)
+    public function __construct(Offers $offers)
     {
         $this->offers = $offers;
-        $this->templating = $templating;
     }
 
     public function offersAction(Request $request, string $specSlug) : Response
@@ -69,7 +62,7 @@ final class SpecializationController extends AbstractController
 
         $offers = $this->offers->offerQuery()->findAll($offerFilter);
 
-        return $this->templating->renderResponse('/specialization/offers.html.twig', [
+        return $this->render('/specialization/offers.html.twig', [
             'total' => $this->offers->offerQuery()->count($offerFilter),
             'specialization' => $specialization,
             'offers' => $offers,

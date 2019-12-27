@@ -31,7 +31,6 @@ use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Offers;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -41,40 +40,33 @@ final class OfferController extends AbstractController
     use RedirectAfterLogin;
 
     /**
-     * @var \HireInSocial\Offers
+     * @var Offers
      */
     private $offers;
 
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
-     */
-    private $templating;
-
-    /**
-     * @var \Facebook\Facebook
+     * @var Facebook
      */
     private $facebook;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
 
     public function __construct(
         Offers $offers,
-        EngineInterface $templating,
         Facebook $facebook,
         LoggerInterface $logger
     ) {
         $this->offers = $offers;
-        $this->templating = $templating;
         $this->facebook = $facebook;
         $this->logger = $logger;
     }
 
     public function postAction(Request $request) : Response
     {
-        return $this->templating->renderResponse('/offer/post.html.twig', [
+        return $this->render('/offer/post.html.twig', [
             'specializations' => $this->offers->specializationQuery()->all(),
         ]);
     }
@@ -134,7 +126,7 @@ final class OfferController extends AbstractController
             }
         }
 
-        return $this->templating->renderResponse('/offer/new.html.twig', [
+        return $this->render('/offer/new.html.twig', [
             'specialization' => $specialization,
             'form' => $form->createView(),
             'throttled' => $this->offers->offerThrottleQuery()->isThrottled($userId),
@@ -152,7 +144,7 @@ final class OfferController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        return $this->templating->renderResponse('/offer/success.html.twig', [
+        return $this->render('/offer/success.html.twig', [
             'specialization' => $specSlug,
         ]);
     }
@@ -168,7 +160,7 @@ final class OfferController extends AbstractController
         $nextOffer = $this->offers->offerQuery()->findOneAfter($offer);
         $previousOffer = $this->offers->offerQuery()->findOneBefore($offer);
 
-        return $this->templating->renderResponse('offer/offer.html.twig', [
+        return $this->render('offer/offer.html.twig', [
             'userId' => $request->getSession()->get(FacebookController::USER_SESSION_KEY),
             'offer' => $offer,
             'nextOffer' => $nextOffer,

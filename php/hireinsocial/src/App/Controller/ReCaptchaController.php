@@ -15,6 +15,7 @@ namespace App\Controller;
 
 use HireInSocial\Offers;
 use ReCaptcha\ReCaptcha;
+use function sprintf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,12 +25,12 @@ use Symfony\Component\HttpFoundation\Response;
 final class ReCaptchaController extends AbstractController
 {
     /**
-     * @var \HireInSocial\Offers
+     * @var Offers
      */
     private $offers;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface
+     * @var ParameterBagInterface
      */
     private $parameterBag;
 
@@ -47,7 +48,7 @@ final class ReCaptchaController extends AbstractController
             ->verify($request->request->get('google-recaptcha-token'), $request->getClientIp());
 
         $offer = $this->offers->offerQuery()->findById($request->request->get('offer-id'));
-        $email = \sprintf($this->parameterBag->get('apply_email_template'), $offer->emailHash());
+        $email = sprintf($this->parameterBag->get('apply_email_template'), $offer->emailHash());
 
         if ($resp->isSuccess()) {
             return new JsonResponse(['email' => $email]);

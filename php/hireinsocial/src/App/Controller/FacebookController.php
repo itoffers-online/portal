@@ -18,7 +18,6 @@ use HireInSocial\Application\Command\User\FacebookConnect;
 use HireInSocial\Offers;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -32,34 +31,28 @@ final class FacebookController extends AbstractController
     public const USER_SESSION_KEY = '_his_user_id';
 
     /**
-     * @var \HireInSocial\Offers
+     * @var Offers
      */
     private $offers;
 
     /**
-     * @var \Symfony\Component\Routing\RouterInterface
+     * @var RouterInterface
      */
     private $router;
 
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
-     */
-    private $templating;
-
-    /**
-     * @var \Facebook\Facebook
+     * @var Facebook
      */
     private $facebook;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
 
     public function __construct(
         Offers $offers,
         RouterInterface $router,
-        EngineInterface $templating,
         Facebook $facebook,
         LoggerInterface $logger
     ) {
@@ -67,7 +60,6 @@ final class FacebookController extends AbstractController
         $this->facebook = $facebook;
         $this->logger = $logger;
         $this->router = $router;
-        $this->templating = $templating;
     }
 
     public function loginAction(Request $request) : Response
@@ -76,7 +68,7 @@ final class FacebookController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->templating->renderResponse('facebook/login.html.twig', [
+        return $this->render('facebook/login.html.twig', [
             'facebook_login_url' => $this->facebook->getRedirectLoginHelper()->getLoginUrl(
                 $this->generateUrl('facebook_login_success', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ),
