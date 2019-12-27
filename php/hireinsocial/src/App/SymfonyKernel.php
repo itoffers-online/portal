@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Controller\FacebookController;
-use App\Controller\IndexController;
-use App\Controller\LayoutController;
-use App\Controller\OfferController;
-use App\Controller\ReCaptchaController;
-use App\Controller\SpecializationController;
-use App\Routing\Factory;
-use App\Twig\Extension\FacebookExtension;
+use App\Offers\Controller\FacebookController;
+use App\Offers\Controller\IndexController;
+use App\Offers\Controller\LayoutController;
+use App\Offers\Controller\OfferController;
+use App\Offers\Controller\ReCaptchaController;
+use App\Offers\Controller\SpecializationController;
+use App\Offers\Routing\Factory;
+use App\Offers\Twig\Extension\FacebookExtension;
 use Facebook\Facebook;
-use HireInSocial\Offers;
+use HireInSocial\Offers\Offers;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\MonologBundle\MonologBundle;
@@ -42,7 +42,7 @@ final class SymfonyKernel extends Kernel
     private $projectRootPath;
 
     /**
-     * @var \HireInSocial\Offers
+     * @var Offers
      */
     private $offers;
 

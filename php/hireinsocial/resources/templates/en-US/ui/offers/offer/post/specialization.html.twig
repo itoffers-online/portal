@@ -1,0 +1,22 @@
+<div class="col-md-4">
+    <div class="card">
+        <div class="card-title text-center">
+            <h1>{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}</h1>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Offers: {{ specialization.offers.count }}</li>
+            <li class="list-group-item">Latest offer: {% if specialization.offers.count > 0 %}{{ specialization.offers.latestOfferDate|date('Y-m-d H:i:s') }}{% endif %}</li>
+        </ul>
+        <div class="card-body text-center">
+            <p class="card-text">
+                <a href="{{ url('specialization_offers', {'specSlug' : specialization.slug}) }}" class="btn btn-outline-primary btn-sm">Latest offers</a>
+                {% if specialization.facebookChannel %}
+                    <a href="{{ specialization.facebookChannel.groupId|fb_group_url }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fab fa-facebook-f"></i> see at Facebook</a>
+                {% endif %}
+            </p>
+        </div>
+        <div class="card-body text-center">
+            <a href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}" data-post-offer class="btn btn-sm btn-primary">Post offer</a>
+        </div>
+    </div>
+</div>

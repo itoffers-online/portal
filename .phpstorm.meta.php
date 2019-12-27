@@ -5,7 +5,7 @@ namespace PHPSTORM_META
         '' => '@',
     ]));
 
-    override(\HireInSocial\Application\System::query(0), map([
+    override(\HireInSocial\Offers\Application\System::query(0), map([
         '' => '@',
     ]));
 }

@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <embeddable name="HireInSocial\Application\Offer\Contract">
+    <embeddable name="HireInSocial\Offers\Application\Offer\Contract">
         <field name="type"/>
     </embeddable>
 </doctrine-mapping>

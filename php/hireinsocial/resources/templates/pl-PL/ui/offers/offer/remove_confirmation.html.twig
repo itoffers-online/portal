@@ -1,0 +1,19 @@
+{% extends '@offers/base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="offset-2 col-lg-8">
+            <div class="alert alert-warning text-center" role="alert">
+                <h4 class="alert-heading">Jesteś pewny?</h4>
+                <p class="mb-0">Tej operacji nie można cofnąć, po usunięciu oferty przestaniemy wyświetlać ją w serwisie.</p>
+                <p class="mb-0">Usunięcie oferty nie skraca czasu oczekiwania na dodanie kolejnej.</p>
+            </div>
+            <div class="text-center">
+                <a href="{{ url('offer', {offerSlug: offerSlug}) }}" class="btn btn-primary">Nie usuwaj</a>
+                <a data-remove-offer href="{{ url('offer_remove', {offerSlug: offerSlug}) }}" class="btn btn-danger">Tak, usuń</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

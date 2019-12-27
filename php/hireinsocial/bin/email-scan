@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-use App\Command\Email\ScanMessages;
+use App\Offers\Command\Email\ScanMessages;
 use Ddeboer\Imap\Server;
-use HireInSocial\Application\Config;
+use HireInSocial\Offers\Application\Config;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
-use function HireInSocial\Infrastructure\bootstrap;
-use function HireInSocial\Infrastructure\offersFacade;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
+use function HireInSocial\Offers\Infrastructure\offersFacade;
 
 $projectRootPath = dirname(__DIR__);
 

@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <embeddable name="HireInSocial\Application\Offer\Contact">
+    <embeddable name="HireInSocial\Offers\Application\Offer\Contact">
         <field name="email"/>
         <field name="name"/>
         <field name="phone" length="16" nullable="true"/>

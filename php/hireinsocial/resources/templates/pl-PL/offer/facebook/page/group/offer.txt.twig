@@ -1,29 +1,29 @@
-𝐊𝐭𝐨: {{ offer.company.name }} ({{ offer.company.url }})
-{{ offer.company.description }}
+# **{{ offer.company.name|raw }}**
+[O nas]({{ offer.company.url|raw }})
 
-𝐊𝐨𝐠𝐨: {{ offer.position.name }}
-{{ offer.position.description }}
+{{ offer.company.description|raw }}
 
-𝐅𝐨𝐫𝐦𝐚 𝐙𝐚𝐭𝐫𝐮𝐝𝐧𝐢𝐞𝐧𝐢𝐚: {{ offer.contract.type }}
+**Kogo**: {{ offer.position.name }}
+
+{{ offer.position.description|raw }}
+
+**Forma Zatrudnienia**: {{ offer.contract.type|raw }}
 
 {% if offer.salary %}
-𝐖𝐲𝐧𝐚𝐠𝐫𝐨𝐝𝐳𝐞𝐧𝐢𝐞: {{ offer.salary.min }} - {{ offer.salary.max }} ({{ offer.salary.currencyCode }}) {% if offer.salary.isNet %}Netto{% else %}Brutto{% endif %}
+**Wynagrodzenie:** {{ offer.salary.min }} - {{ offer.salary.max }} ({{ offer.salary.currencyCode }}) {% if offer.salary.isNet %}Netto{% else %}Brutto{% endif %}
 {% else %}
-𝐖𝐲𝐧𝐚𝐠𝐫𝐨𝐝𝐳𝐞𝐧𝐢𝐞: Pracodawca nie podał wynagrodzenia, pamiętaj że możesz zacząć rozmowę od ustalenia czy Twoje wymagania są dla pracodawcy akceptowalne.
-Brak wynagrodzenia nie musi oznaczać złej woli, czasami polityka firmy nie pozwala ujawniać takich informacji, pamiętaj że wynagrodzenie to kwestia bardzo indywidualna.
+> Wynagrodzenie: Pracodawca nie podał wynagrodzenia, pamiętaj że możesz zacząć rozmowę od ustalenia czy Twoje wymagania są dla pracodawcy akceptowalne.
 {% endif %}
 
-𝐋𝐨𝐤𝐚𝐥𝐢𝐳𝐚𝐜𝐣𝐚: {% if offer.location.isRemote %}Zdalnie{% endif %} {% if offer.location.name %}- {{ offer.location.name }}{% endif %}
+**Lokalizacja**: {% if offer.location.isRemote %}Zdalnie{% endif %} {% if offer.location.name|raw %}- {{ offer.location.name|raw }}{% endif %}
 
+**Wymagania**:
+{{ offer.description.requirements|raw }}
 
-𝐖𝐲𝐦𝐚𝐠𝐚𝐧𝐢𝐚:
-{{ offer.description.requirements }}
+**Benefity**:
+{{ offer.description.benefits|raw }}
 
-𝐁𝐞𝐧𝐞𝐟𝐢𝐭𝐲:
-{{ offer.description.benefits }}
-
-CV wyślij na adres: {{ offer.contact.name }} <{{ offer.contact.email }}>
+**Kontakt**: {{ offer.contact.name|raw }} <{{ offer.contact.email|raw }}>
 {% if offer.contact.phone %}
-Ewentualne pytania kieruj na powyższy adres email lub telefonicznie: {{ offer.contact.phone }}
+**Telefon**: {{ offer.contact.phone|raw }}
 {% endif %}
-{# bold font generated with: https://yaytext.com/bold-italic/ #}

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use HireInSocial\Application\Config;
-use HireInSocial\Offers;
+use HireInSocial\Offers\Application\Config;
+use HireInSocial\Offers\Offers;
 
 function symfony(Config $config, Offers $offers) : SymfonyKernel
 {
@@ -52,7 +52,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
         ],
         'twig' => [
             'paths' => [
-                $config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE) . '/ui' => '__main__',
+                $config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE) . '/ui/offers' => 'offers',
             ],
             'date' => [
                 'timezone' => $config->getString(Config::TIMEZONE),

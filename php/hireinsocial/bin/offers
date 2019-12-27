@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+
+use HireInSocial\Offers\Application\Config;
+use App\Offers\Command\Specialization\CreateSpecialization;
+use App\Offers\Command\Specialization\RemoveFacebookChannel;
+use App\Offers\Command\Specialization\SetFacebookChannel;
+use App\Offers\Command\System\PerformanceCheckCommand;
+use Symfony\Component\Console\Application;
+use App\Offers\Command\Offer\Test;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
+use function HireInSocial\Offers\Infrastructure\offersFacade;
+
+$projectRootPath = dirname(__DIR__);
+
+require $projectRootPath . '/src/autoload.php';
+
+$config = bootstrap($projectRootPath);
+
+$offers = offersFacade($config);
+
+$application = new Application('Hire in Social - Offers');
+
+$application->add(new Test\PostOffer($offers, $config->getString(Config::LOCALE)));
+$application->add(new CreateSpecialization($offers));
+$application->add(new SetFacebookChannel($offers));
+$application->add(new RemoveFacebookChannel($offers));
+$application->add(new PerformanceCheckCommand($offers, $config));
+
+$application->run();

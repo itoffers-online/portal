@@ -17,7 +17,8 @@ This is a technical documentation of the project.
   * [Architecture](/docs/architecture/README.md)
   * [System Setup](/php/hireinsocial/README.md)
 * [Features](/php/hireinsocial/docs/README.md)
-  * [Social Channels](/php/hireinsocial/docs/README.md)
+  * [Contexts](/php/hireinsocial/src/HireInSocial/README.md)
+    * [Offers](/php/hireinsocial/src/HireInSocial/Offers/README.md) / [Offers UI](/php/hireinsocial/src/App/Offers/README.md)
 * [Roadmap](https://github.com/norzechowicz/hire-in-social/projects/1)
 
 ## ⚠️ Heads Up

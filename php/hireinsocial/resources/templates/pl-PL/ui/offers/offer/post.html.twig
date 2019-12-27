@@ -1,0 +1,25 @@
+{% extends '@offers/base.html.twig' %}
+
+{% block body %}
+<div class="album py-5 bg-light">
+    <div class="row">
+        {% if specializations.has('php') %}
+            {% include '@offers/offer/post/specialization.html.twig' with {specialization: specializations.get('php')} only %}
+        {% else %}
+            {% include '@offers/offer/post/not_ready.html.twig' with {'name': 'PHP Developer'} only %}
+        {% endif %}
+
+        {% if specializations.has('javascript') %}
+            {% include '@offers/offer/post/specialization.html.twig' with {specialization: specializations.get('javascript')} only %}
+        {% else %}
+            {% include '@offers/offer/post/not_ready.html.twig' with {'name': 'JS Developer'} only %}
+        {% endif %}
+
+        {% if specializations.has('devops') %}
+            {% include '@offers/offer/post/specialization.html.twig' with {specialization: specializations.get('devops')} only %}
+        {% else %}
+            {% include '@offers/offer/post/not_ready.html.twig' with {'name': 'Devops Engineer'} only %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

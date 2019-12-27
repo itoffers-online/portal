@@ -1,0 +1,91 @@
+{% extends '@offers/base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    <h2 class="text-center">We have {{ total }} offers in <strong>{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}</strong> specialization {% include '@offers/specialization/_logo_plain.html.twig' with { specialization: specialization.slug} only %}</h2>
+    <p class="alert alert-info">
+        Below you can find all job offers in this specialization. Job offers can't be added more frequently than once per day.
+        By default we are not displaying you offers older than 2 weeks, most interesting offers after that time are already outdated.
+    </p>
+    <div class="row">
+        <div class="col-2">
+            <h3 class="d-inline">
+                Filter
+                {% if queryParameters|length %}
+                    <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" class="btn btn-danger btn-sm"><i class="fas fa-times"></i></a>
+                {% endif %}
+            </h3>
+            <p>
+                <small class="text-muted">Find best job offer for you.</small>
+            </p>
+
+            {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters)) }) }}
+                {{ form_row(form.remote, {label: "Remote"}) }}
+                {{ form_row(form.with_salary, {label: "Only with salary"}) }}
+                {{ form_row(form.with_salary, {label: null}) }}
+                {{ form_row(form.sort_by, {label: "Sort Offers"}) }}
+                {{ form_row(form.submit, {label: "Search", attr: {class: "btn btn-primary btn-block"}}) }}
+            {{ form_end(form) }}
+
+        </div>
+        <div class="col-10">
+            <div class="card">
+                <div class="card-body">
+                {% for offer in offers %}
+                    <div class="job-offer" data-id="{{ offer.id }}">
+                        <h3><a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >{{ offer.position.name }} <span class="text-muted">in</span> {{ offer.company.name }}</a></h3>
+
+                        <div class="row">
+                            <div class="col-4">
+                                {{ offer.createdAt|date('Y-m-d H:i:s') }}
+                            </div>
+                            <div class="col-4">
+                                {% if offer.salary %}
+                                    <span data-salary-min="{{ offer.salary.min }}">{{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }}</span> - <span data-salary-max="{{ offer.salary.max }}">{{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }}</span> monthly
+                                {% if offer.salary.isNet %}<strong class="text-success">net</strong>{% else %}<strong class="text-warning">gross</strong>{% endif %}
+                                {% else %}
+                                    Not defined
+                                {% endif %}
+                            </div>
+                            <div class="col-4">
+                                <a href="{{ offer.company.url }}" target="_blank" rel="nofollow">{{ offer.company.name }}</a>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <p>
+                                    {{ offer.position.description|truncate(300) }}
+                                </p>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p>
+                                            {% if offer.location.name %}
+                                                Location: {{ offer.location.name }}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p>
+                                            Remote: {% if offer.location.remote %}Yes{% else %}No{% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                                <p class="text-right">
+                                    <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" class="btn btn-primary btn-sm">Read more</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                {% else %}
+                    <div class="alert alert-warning text-center">
+                        Sorry, currently we don't have any interesting offers in this specialization, please try again later or
+                        <a href="{{ url('offer_new', {specSlug: specialization.slug}) }}">add new offer.</a>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

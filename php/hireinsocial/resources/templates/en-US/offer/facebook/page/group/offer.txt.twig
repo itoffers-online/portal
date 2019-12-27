@@ -1,20 +1,30 @@
-Who: {{ offer.company.name }} ({{ offer.company.url }})
-{{ offer.company.description }}
+# **{{ offer.company.name|raw }}**
+[Homepage]({{ offer.company.url|raw }})
 
-Looking for: {{ offer.position.name }}
-{{ offer.position.description }}
+{{ offer.company.description|raw }}
 
-Contract type: {{ offer.contract.type }}
+**Looking for**: {{ offer.position.name|raw }}
+
+{{ offer.position.description|raw }}
+
+**Contract type**: {{ offer.contract.type|raw }}
 
 {% if offer.salary %}
-Salary: {{ offer.salary.min }} - {{ offer.salary.max }} ({{ offer.salary.currencyCode }}) monthly {% if offer.salary.isNet %}net{% else %}gross{% endif %}
+**Salary**: {{ offer.salary.min }} - {{ offer.salary.max }} ({{ offer.salary.currencyCode }}) monthly {% if offer.salary.isNet %}net{% else %}gross{% endif %}
+{% else %}
+**Salary**: -
+> This offer does not have specified salary range
 {% endif %}
 
-Location: {% if offer.location.isRemote %}Remote{% endif %} {% if offer.location.name %}- {{ offer.location.name }}{% endif %}
+**Location**: {% if offer.location.isRemote %}Remote -{% endif %} {% if offer.location.name %}{{ offer.location.name|raw }}{% endif %}
 
+**Requirements**:
+{{ offer.description.requirements|raw }}
 
-Requirements:
-{{ offer.description.requirements }}
+**Benefits**:
+{{ offer.description.benefits|raw }}
 
-Benefits:
-{{ offer.description.benefits }}
+**Contact**: {{ offer.contact.name|raw }} <{{ offer.contact.email|raw }}>
+{% if offer.contact.phone %}
+**Phone**: {{ offer.contact.phone|raw }}
+{% endif %}

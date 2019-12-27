@@ -1,0 +1,163 @@
+{% extends '@offers/base.html.twig' %}
+
+{% block headerjs %}
+<script src="https://www.google.com/recaptcha/api.js"></script>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(window.document).ready(function() {
+        $('#job-apply').on('click', function(event) {
+            event.preventDefault();
+
+            $(this).hide();
+
+            var recaptcha = grecaptcha.render('google-recaptcha', {
+                'sitekey' : '{{ google.recaptcha.key }}',
+                'theme' : 'light',
+                'callback' : function(token) {
+                    $('#google-recaptcha').hide();
+
+                    $.post({
+                        url: "{{ url('recaptcha_verify') }}",
+                        data: {
+                            'google-recaptcha-token': token,
+                            'offer-id': '{{ offer.id }}'
+                        }
+                    }).then(function(response) {
+                        $('#job-apply-email').html('<a href="mailto:' + response.email + '">' + response.email + '</a>');
+                        $('#job-apply-info').removeClass('d-none');
+                    }).catch(function() {
+                        grecaptcha.reset(recaptcha);
+                        $('#google-recaptcha').show();
+                    });
+                }
+            });
+        })
+    });
+</script>
+{% endblock %}
+{% block header %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-6">
+            {% if previousOffer %}
+                <a href="{{ url('offer', {'offerSlug': previousOffer.slug}) }}" class="btn btn-outline-secondary">Previous Offer</a>
+            {% else %}
+                <a href="#" class="btn btn-outline-secondary disabled">Next Offer</a>
+            {% endif %}
+        </div>
+        <div class="col-6 text-right">
+            {% if nextOffer %}
+                <a href="{{ url('offer', {'offerSlug': nextOffer.slug}) }}" class="btn btn-outline-secondary">Next Offer</a>
+            {% endif %}
+        </div>
+    </div>
+    <h1 class="mt-2">
+        {% include '@offers/specialization/_logo_plain.html.twig' with {specialization: offer.specializationSlug} only %}
+        {{ offer.position.name }} <span class="text-muted">in</span> {{ offer.company.name }}
+        {% if userId and offer.postedBy(userId)%}
+            <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger d-inline">Remove</a>
+        {% endif %}
+    </h1>
+    <div class="row">
+        <div class="col-6">
+            <h4>Description</h4>
+            {% if offer.offerPDF %}
+                <a href="{{ offer.offerpdf.url(assets.storage_url) }}" class="btn btn-link" download>Download offer in PDF</a>
+            {% endif %}
+            <div class="card">
+                <div class="card-body">
+                    <p>
+                        {{ offer.position.description }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <h4>Salary</h4>
+
+            {% if offer.salary %}
+            <div class="card">
+                <div class="card-body">
+                    {{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }} - {{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }} monthly
+                    {% if offer.salary.isNet %}<strong class="text-success">net</strong>{% else %}<strong class="text-warning">gross</strong>{% endif %}
+                </div>
+            </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    In this offer salary is not defined, please remember you can check with company if they can meet your expectations
+                    before you start recruitment process.
+                </div>
+            {% endif %}
+
+            <h4 class="mt-2">Contact</h4>
+            <div class="card">
+                <div class="card-body">
+                    <div id="job-apply-info" class="d-none">
+                        <p>Please send you resume on address: </p>
+                        <div id="job-apply-email"></div>
+                    </div>
+                    <div id="google-recaptcha"></div>
+                    <button class="btn btn-primary" id="job-apply">Apply</button>
+                </div>
+            </div>
+
+            <h4 class="mt-2">Location</h4>
+            <div class="card">
+                <div class="card-body">
+                    {% if offer.location.name %}
+                    <p>
+                            <strong>Address</strong>: {{ offer.location.name }}
+                    </p>
+                        <p>
+                            {% spaceless %}
+                            <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ offer.location.lat }},{{ offer.location.lng }}&zoom=16&size=600x300&maptype=roadmap
+                            &markers=color:blue%7C{{ offer.location.lat }},{{ offer.location.lng }}
+                            &key={{ google.maps.key }}" alt="Map with location"/>
+                            {% endspaceless %}
+                        </p>
+                    {% endif %}
+                    <p>
+                        Remote: {% if offer.location.remote %}Yes{% else %}No{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="mt-3">{{ offer.company.name }}</h2>
+    <div class="card">
+        <div class="card-body">
+            <p>
+                {{ offer.company.description }}
+            </p>
+
+            <p class="text-right">
+                <a href="{{ offer.company.url }}" class="btn-link">{{ offer.company.url }}</a>
+            </p>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-6">
+            <h3>Benefits</h3>
+            <div class="card">
+                <div class="card-body">
+                    <p>
+                        {{ offer.description.benefits }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <h3>Requirements</h3>
+            <div class="card">
+                <div class="card-body">
+                    <p>
+                        {{ offer.description.requirements }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

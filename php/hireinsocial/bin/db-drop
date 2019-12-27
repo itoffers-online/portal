@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-use HireInSocial\Application\Config;
+use HireInSocial\Offers\Application\Config;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use function HireInSocial\Infrastructure\bootstrap;
-use function HireInSocial\Infrastructure\dbal;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
+use function HireInSocial\Offers\Infrastructure\dbal;
 
 $projectRootPath = dirname(__DIR__);
 

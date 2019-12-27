@@ -1,14 +1,14 @@
 #!/usr/bin/env php
 <?php
 
-use HireInSocial\Application\Config;
-use HireInSocial\Infrastructure\Flysystem\Application\System\FlysystemStorage;
+use HireInSocial\Offers\Application\Config;
+use HireInSocial\Offers\Infrastructure\Flysystem\Application\System\FlysystemStorage;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use function HireInSocial\Infrastructure\bootstrap;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 

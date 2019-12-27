@@ -10,6 +10,12 @@ Recruiters to provide salary ranges since it's not always possible. On the other
 fresh, not duplicated offers, that's why Hire in Social has a limit of offers that can be posted by single Recruiter in
 time range.  
 
+## Contexts
+
+Hire in Social is modular monolith with following contexts:
+
+* [Offers](/php/hireinsocial/src/HireInSocial/Offers)
+
 ## Supported channels 
 
  * Website
