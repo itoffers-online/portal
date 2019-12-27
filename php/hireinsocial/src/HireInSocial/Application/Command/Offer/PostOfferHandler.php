@@ -37,6 +37,7 @@ use HireInSocial\Application\Specialization\Specialization;
 use HireInSocial\Application\Specialization\Specializations;
 use HireInSocial\Application\System\Calendar;
 use HireInSocial\Application\System\FileStorage;
+use HireInSocial\Application\System\FileStorage\File;
 use HireInSocial\Application\System\Handler;
 use HireInSocial\Application\User\User;
 use HireInSocial\Application\User\Users;
@@ -44,26 +45,59 @@ use Ramsey\Uuid\Uuid;
 
 final class PostOfferHandler implements Handler
 {
+    /**
+     * @var \HireInSocial\Application\System\Calendar
+     */
     private $calendar;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Offers
+     */
     private $offers;
 
+    /**
+     * @var \HireInSocial\Application\User\Users
+     */
     private $users;
 
+    /**
+     * @var \HireInSocial\Application\Facebook\Posts
+     */
     private $posts;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Throttling
+     */
     private $throttling;
 
+    /**
+     * @var \HireInSocial\Application\Facebook\FacebookGroupService
+     */
     private $facebookGroupService;
 
+    /**
+     * @var \HireInSocial\Application\Offer\OfferFormatter
+     */
     private $formatter;
 
+    /**
+     * @var \HireInSocial\Application\Specialization\Specializations
+     */
     private $specializations;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Slugs
+     */
     private $slugs;
 
+    /**
+     * @var \HireInSocial\Application\Offer\OfferPDFs
+     */
     private $offerPDFs;
 
+    /**
+     * @var \HireInSocial\Application\System\FileStorage
+     */
     private $fileStorage;
 
     public function __construct(
@@ -106,7 +140,7 @@ final class PostOfferHandler implements Handler
         $offer = $this->createOffer($command, $user, $specialization);
 
         if ($this->throttling->isThrottled($user, $this->offers)) {
-            throw new Exception(sprintf('User "%s" is throttled', (string) $user->id()));
+            throw new Exception(sprintf('User "%s" is throttled', $user->id()->toString()));
         }
 
         if ($command->offer()->channels()->facebookGroup()) {
@@ -129,7 +163,7 @@ final class PostOfferHandler implements Handler
 
         if ($command->offerPDFPath()) {
             $offerPDF = OfferPDF::forOffer($offer, $this->calendar);
-            $this->fileStorage->upload(FileStorage\File::pdf($offerPDF->path(), $command->offerPDFPath()));
+            $this->fileStorage->upload(File::pdf($offerPDF->path(), $command->offerPDFPath()));
             $this->offerPDFs->add($offerPDF);
         }
 

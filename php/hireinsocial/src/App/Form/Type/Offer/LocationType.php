@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 
 final class LocationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
             ->add('remote', CheckboxType::class, [

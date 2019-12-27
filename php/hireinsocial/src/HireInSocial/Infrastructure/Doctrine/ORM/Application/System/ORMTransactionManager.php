@@ -18,6 +18,9 @@ use HireInSocial\Application\System\TransactionManager;
 
 final class ORMTransactionManager implements TransactionManager
 {
+    /**
+     * @var \Doctrine\ORM\EntityManagerInterface
+     */
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)

@@ -16,6 +16,7 @@ namespace App\Command\Email;
 use App\Email\Parser;
 use Ddeboer\Imap\ConnectionInterface;
 use Ddeboer\Imap\Message\AttachmentInterface;
+use Ddeboer\Imap\MessageIterator;
 use Ddeboer\Imap\Search\Flag\Unseen;
 use HireInSocial\Application\Command\Offer\Apply\Attachment;
 use HireInSocial\Application\Command\Offer\ApplyThroughEmail;
@@ -34,12 +35,24 @@ final class ScanMessages extends Command
 
     public const NAME = 'email:scan';
 
+    /**
+     * @var string
+     */
     protected static $defaultName = self::NAME;
 
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
+    /**
+     * @var \Ddeboer\Imap\ConnectionInterface
+     */
     private $connection;
 
+    /**
+     * @var string
+     */
     private $tmpBasePath;
 
     /**
@@ -69,7 +82,7 @@ final class ScanMessages extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output) : void
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->tmpBasePath = sys_get_temp_dir() . '/' . uniqid('his_email_' . $input->getOption('mailbox') . '_');
@@ -89,6 +102,7 @@ final class ScanMessages extends Command
         }
 
         $mailbox = $this->connection->getMailbox($input->getOption('mailbox'));
+        /** @var MessageIterator $messages */
         $messages = $mailbox->getMessages(new Unseen(), \SORTDATE, false);
 
         if (!\count($messages)) {
@@ -119,7 +133,7 @@ final class ScanMessages extends Command
                 $this->io->text(\sprintf('New email for: <info>%s</info>', $offer->slug()));
 
                 $this->offers->handle(new ApplyThroughEmail(
-                    (string) $offer->id(),
+                    $offer->id()->toString(),
                     $sender,
                     $message->getSubject(),
                     $message->getBodyHtml(),

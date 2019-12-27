@@ -15,12 +15,24 @@ namespace HireInSocial\Application\Query\Offer\Model\Offer;
 
 final class Location
 {
+    /**
+     * @var bool
+     */
     private $remote;
 
+    /**
+     * @var string|null
+     */
     private $name;
 
+    /**
+     * @var float|null
+     */
     private $lat;
 
+    /**
+     * @var float|null
+     */
     private $lng;
 
     public function __construct(bool $remote, ?string $name = null, ?float $lat = null, ?float $lng = null)

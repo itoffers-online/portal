@@ -21,6 +21,9 @@ use Ramsey\Uuid\UuidInterface;
 
 final class ORMUsers implements Users
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     private $entityManager;
 
     public function __construct(EntityManager $entityManager)

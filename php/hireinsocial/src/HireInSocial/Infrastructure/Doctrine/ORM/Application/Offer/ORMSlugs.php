@@ -19,6 +19,9 @@ use HireInSocial\Application\Offer\Slugs;
 
 final class ORMSlugs implements Slugs
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     private $entityManager;
 
     public function __construct(EntityManager $entityManager)

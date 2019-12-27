@@ -17,8 +17,14 @@ use HireInSocial\Application\Assertion;
 
 final class Page
 {
+    /**
+     * @var string
+     */
     private $fbId;
 
+    /**
+     * @var string
+     */
     private $accessToken;
 
     public function __construct(string $fbId, string $accessToken)

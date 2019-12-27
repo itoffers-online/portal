@@ -26,6 +26,7 @@ trait PrivateFields
 
     /**
      * @throws \ReflectionException
+     * @return mixed
      */
     private static function getPrivatePropertyValue(object $object, string $property)
     {
@@ -36,6 +37,9 @@ trait PrivateFields
     }
 
     /**
+     * @param object $object
+     * @param string $property
+     * @param mixed $value
      * @throws \ReflectionException
      */
     private static function setPrivatePropertyValue(object $object, string $property, $value) : void

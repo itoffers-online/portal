@@ -19,6 +19,9 @@ use HireInSocial\Application\Specialization\Specializations;
 
 final class ORMSpecializations implements Specializations
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     private $entityManager;
 
     public function __construct(EntityManager $entityManager)

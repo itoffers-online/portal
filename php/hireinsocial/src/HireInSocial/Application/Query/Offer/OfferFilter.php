@@ -31,14 +31,29 @@ final class OfferFilter extends AbstractFilter
 
     public const SORT_CREATED_AT_DESC = 'created_at_desc';
 
+    /**
+     * @var string|null
+     */
     private $specialization;
 
+    /**
+     * @var \DateTimeImmutable
+     */
     private $sinceDate;
 
+    /**
+     * @var \DateTimeImmutable
+     */
     private $tillDate;
 
+    /**
+     * @var bool|null
+     */
     private $remote;
 
+    /**
+     * @var bool|null
+     */
     private $withSalary;
 
     private function __construct()

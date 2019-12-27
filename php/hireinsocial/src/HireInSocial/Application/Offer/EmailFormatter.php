@@ -15,6 +15,9 @@ namespace HireInSocial\Application\Offer;
 
 final class EmailFormatter
 {
+    /**
+     * @var \Twig_Environment
+     */
     private $twig;
 
     public function __construct(\Twig_Environment $twig)

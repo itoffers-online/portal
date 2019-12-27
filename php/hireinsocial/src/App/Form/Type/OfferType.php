@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints\File;
 
 final class OfferType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
             ->add('company', CompanyType::class)
@@ -60,7 +60,7 @@ final class OfferType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'csrf_token_id' => 'new_offer',

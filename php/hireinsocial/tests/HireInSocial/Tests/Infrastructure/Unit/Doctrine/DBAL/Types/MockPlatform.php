@@ -54,7 +54,7 @@ final class MockPlatform extends AbstractPlatform
     }
 
     /** @override */
-    public function getClobTypeDeclarationSQL(array $field)
+    public function getClobTypeDeclarationSQL(array $field) : string
     {
         return 'DUMMYCLOB';
     }
@@ -62,7 +62,7 @@ final class MockPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getJsonTypeDeclarationSQL(array $field)
+    public function getJsonTypeDeclarationSQL(array $field) : string
     {
         return 'DUMMYJSON';
     }
@@ -70,17 +70,17 @@ final class MockPlatform extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getBinaryTypeDeclarationSQL(array $field)
+    public function getBinaryTypeDeclarationSQL(array $field) : string
     {
         return 'DUMMYBINARY';
     }
 
-    public function getVarcharDefaultLength()
+    public function getVarcharDefaultLength() : int
     {
         return 255;
     }
 
-    public function getName()
+    public function getName() : string
     {
         return 'mock';
     }

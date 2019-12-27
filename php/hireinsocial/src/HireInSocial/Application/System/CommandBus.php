@@ -18,8 +18,14 @@ use HireInSocial\Application\Exception\Exception;
 
 final class CommandBus
 {
+    /**
+     * @var \HireInSocial\Application\System\Handler[]
+     */
     private $handlers;
 
+    /**
+     * @var \HireInSocial\Application\System\TransactionManager
+     */
     private $transactionManager;
 
     public function __construct(TransactionManager $transactionManager, Handler ...$handlers)

@@ -24,6 +24,9 @@ final class InMemoryOffers implements Offers
 {
     use PrivateFields;
 
+    /**
+     * @var Offer[]
+     */
     private $offers;
 
     public function __construct(Offer ...$offers)

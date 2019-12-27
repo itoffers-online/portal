@@ -15,8 +15,14 @@ namespace HireInSocial\Application\Command\Offer\Offer;
 
 final class Position
 {
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @var string
+     */
     private $description;
 
     public function __construct(string $name, string $description)

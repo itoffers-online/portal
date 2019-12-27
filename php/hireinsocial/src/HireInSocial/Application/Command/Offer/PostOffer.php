@@ -21,12 +21,24 @@ final class PostOffer implements Command
 {
     use ClassCommand;
 
+    /**
+     * @var string
+     */
     private $specialization;
 
+    /**
+     * @var string
+     */
     private $userId;
 
+    /**
+     * @var \HireInSocial\Application\Command\Offer\Offer\Offer
+     */
     private $offer;
 
+    /**
+     * @var string|null
+     */
     private $offerPDFPath;
 
     public function __construct(

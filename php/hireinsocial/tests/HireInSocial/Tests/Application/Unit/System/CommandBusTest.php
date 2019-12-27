@@ -64,40 +64,4 @@ final class CommandBusTest extends TestCase
             }
         });
     }
-
-    public function test_handling_command() : void
-    {
-        $commandBus = new CommandBus(
-            new DummyTransactionManager(),
-            new class implements Handler {
-                public function handles() : string
-                {
-                    return 'Command';
-                }
-
-                public function __invoke($command) : void
-                {
-                    $command->handle();
-                }
-            }
-        );
-
-        $command = new class implements Command {
-            public $handled = false;
-
-            public function commandName() : string
-            {
-                return 'Command';
-            }
-
-            public function handle() : void
-            {
-                $this->handled = true;
-            }
-        };
-
-        $commandBus->handle($command);
-
-        $this->assertTrue($command->handled);
-    }
 }

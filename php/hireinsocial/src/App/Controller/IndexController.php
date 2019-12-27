@@ -25,8 +25,14 @@ final class IndexController extends AbstractController
 {
     use ControllerTrait;
 
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     */
     private $templating;
 
     public function __construct(Offers $offers, EngineInterface $templating)
@@ -37,6 +43,7 @@ final class IndexController extends AbstractController
 
     public function homeAction(Request $request) : Response
     {
+        /** @var OfferFilter $offerFilter */
         $offerFilter = OfferFilter::all()
             ->changeSize(50, 0);
 

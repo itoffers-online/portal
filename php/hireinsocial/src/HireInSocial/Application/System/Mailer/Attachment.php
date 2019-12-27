@@ -15,6 +15,9 @@ namespace HireInSocial\Application\System\Mailer;
 
 final class Attachment
 {
+    /**
+     * @var string
+     */
     private $filepath;
 
     public function __construct(string $filepath)

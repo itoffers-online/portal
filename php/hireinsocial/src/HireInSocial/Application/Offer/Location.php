@@ -17,12 +17,24 @@ use HireInSocial\Application\Assertion;
 
 final class Location
 {
+    /**
+     * @var bool
+     */
     private $remote;
 
+    /**
+     * @var string|null
+     */
     private $name;
 
+    /**
+     * @var float
+     */
     private $lat;
 
+    /**
+     * @var float
+     */
     private $lng;
 
     private function __construct()

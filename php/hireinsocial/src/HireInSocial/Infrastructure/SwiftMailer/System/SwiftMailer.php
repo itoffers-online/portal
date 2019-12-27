@@ -22,8 +22,14 @@ use HireInSocial\Application\System\Mailer\Sender;
 
 final class SwiftMailer implements Mailer
 {
+    /**
+     * @var string
+     */
     private $domain;
 
+    /**
+     * @var \Swift_Mailer
+     */
     private $swiftMailer;
 
     public function __construct(string $domain, \Swift_Mailer $swiftMailer)

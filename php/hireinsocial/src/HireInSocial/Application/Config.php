@@ -63,6 +63,9 @@ final class Config
 
     public const REDIS_DB_DOCTRINE_CACHE = 2;
 
+    /**
+     * @var mixed[]|string[]
+     */
     private $config;
 
     private function __construct(array $config)

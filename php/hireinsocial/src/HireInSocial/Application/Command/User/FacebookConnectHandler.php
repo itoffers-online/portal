@@ -21,8 +21,14 @@ use HireInSocial\Application\User\Users;
 
 final class FacebookConnectHandler implements Handler
 {
+    /**
+     * @var \HireInSocial\Application\User\Users
+     */
     private $users;
 
+    /**
+     * @var \HireInSocial\Application\System\Calendar
+     */
     private $calendar;
 
     public function __construct(Users $users, Calendar $calendar)

@@ -21,10 +21,19 @@ use Ramsey\Uuid\Uuid;
 
 final class RemoveOfferHandler implements Handler
 {
+    /**
+     * @var \HireInSocial\Application\User\Users
+     */
     private $users;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Offers
+     */
     private $offers;
 
+    /**
+     * @var \HireInSocial\Application\System\Calendar
+     */
     private $calendar;
 
     public function __construct(

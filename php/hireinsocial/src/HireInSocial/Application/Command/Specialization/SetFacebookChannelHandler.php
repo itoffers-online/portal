@@ -21,6 +21,9 @@ use HireInSocial\Application\System\Handler;
 
 class SetFacebookChannelHandler implements Handler
 {
+    /**
+     * @var \HireInSocial\Application\Specialization\Specializations
+     */
     private $specializations;
 
     public function __construct(Specializations $specializations)

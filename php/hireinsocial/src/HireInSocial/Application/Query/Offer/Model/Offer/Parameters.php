@@ -15,18 +15,39 @@ namespace HireInSocial\Application\Query\Offer\Model\Offer;
 
 final class Parameters
 {
+    /**
+     * @var \HireInSocial\Application\Query\Offer\Model\Offer\Company
+     */
     private $company;
 
+    /**
+     * @var \HireInSocial\Application\Query\Offer\Model\Offer\Contact
+     */
     private $contact;
 
+    /**
+     * @var \HireInSocial\Application\Query\Offer\Model\Offer\Contract
+     */
     private $contract;
 
+    /**
+     * @var \HireInSocial\Application\Query\Offer\Model\Offer\Description
+     */
     private $description;
 
+    /**
+     * @var \HireInSocial\Application\Query\Offer\Model\Offer\Location
+     */
     private $location;
 
+    /**
+     * @var \HireInSocial\Application\Query\Offer\Model\Offer\Position
+     */
     private $position;
 
+    /**
+     * @var \HireInSocial\Application\Query\Offer\Model\Offer\Salary|null
+     */
     private $salary;
 
     public function __construct(

@@ -27,20 +27,44 @@ use Ramsey\Uuid\UuidInterface;
 
 final class Offer
 {
+    /**
+     * @var \Ramsey\Uuid\UuidInterface
+     */
     private $id;
 
+    /**
+     * @var string
+     */
     private $slug;
 
+    /**
+     * @var string
+     */
     private $emailHash;
 
+    /**
+     * @var \Ramsey\Uuid\UuidInterface|null
+     */
     private $userId;
 
+    /**
+     * @var string
+     */
     private $specializationSlug;
 
+    /**
+     * @var \DateTimeImmutable
+     */
     private $createdAt;
 
+    /**
+     * @var \HireInSocial\Application\Query\Offer\Model\Offer\Parameters
+     */
     private $parameters;
 
+    /**
+     * @var \HireInSocial\Application\Query\Offer\Model\Offer\OfferPDF|null
+     */
     private $offerPDF;
 
     public function __construct(

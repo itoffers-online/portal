@@ -19,6 +19,9 @@ use HireInSocial\Application\Offer\OfferPDFs;
 
 final class ORMOfferPDFs implements OfferPDFs
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     private $entityManager;
 
     public function __construct(EntityManager $entityManager)

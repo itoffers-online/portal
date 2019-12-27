@@ -17,6 +17,9 @@ use Assert\Assertion;
 
 final class Parser
 {
+    /**
+     * @var string
+     */
     private $raw;
 
     public function __construct(string $raw)

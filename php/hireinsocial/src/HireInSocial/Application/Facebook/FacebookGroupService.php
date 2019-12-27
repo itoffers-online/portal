@@ -18,6 +18,9 @@ use HireInSocial\Application\Specialization\Specialization;
 
 final class FacebookGroupService
 {
+    /**
+     * @var \HireInSocial\Application\Facebook\Facebook
+     */
     private $facebook;
 
     public function __construct(Facebook $facebook)

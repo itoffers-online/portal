@@ -23,12 +23,24 @@ use Psr\Log\LoggerInterface;
 
 class System
 {
+    /**
+     * @var \HireInSocial\Application\System\CommandBus
+     */
     private $commandBus;
 
+    /**
+     * @var \HireInSocial\Application\System\Queries
+     */
     private $queries;
 
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     private $logger;
 
+    /**
+     * @var \HireInSocial\Application\System\Calendar
+     */
     private $calendar;
 
     public function __construct(CommandBus $commandBus, Queries $queries, LoggerInterface $logger, Calendar $calendar)

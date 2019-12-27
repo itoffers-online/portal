@@ -19,6 +19,9 @@ use Doctrine\ORM\EntityManager;
 
 final class HireInSocialSchemaProvider implements SchemaProviderInterface
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     private $entityManager;
 
     public function __construct(EntityManager $entityManager)

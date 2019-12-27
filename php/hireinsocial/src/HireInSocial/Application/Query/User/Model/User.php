@@ -15,8 +15,14 @@ namespace HireInSocial\Application\Query\User\Model;
 
 final class User
 {
+    /**
+     * @var string
+     */
     private $id;
 
+    /**
+     * @var string|null
+     */
     private $fbAppId;
 
     public function __construct(string $id, ?string $fbAppId)

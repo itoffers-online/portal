@@ -17,8 +17,14 @@ use HireInSocial\Application\Assertion;
 
 final class Email
 {
+    /**
+     * @var string
+     */
     private $subject;
 
+    /**
+     * @var string
+     */
     private $htmlContent;
 
     public function __construct(string $subject, string $htmlBody)

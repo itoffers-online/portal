@@ -20,6 +20,8 @@ use HireInSocial\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Application\Query\User\UserQuery;
 use HireInSocial\Application\System;
+use HireInSocial\Application\System\Calendar;
+use HireInSocial\Application\System\Command;
 
 final class Offers
 {
@@ -33,18 +35,18 @@ final class Offers
      */
     private $calendar;
 
-    public function __construct(System $system, System\Calendar $calendar)
+    public function __construct(System $system, Calendar $calendar)
     {
         $this->system = $system;
         $this->calendar = $calendar;
     }
 
-    public function calendar() : System\Calendar
+    public function calendar() : Calendar
     {
         return $this->calendar;
     }
 
-    public function handle(System\Command $command) : void
+    public function handle(Command $command) : void
     {
         $this->system->handle($command);
     }

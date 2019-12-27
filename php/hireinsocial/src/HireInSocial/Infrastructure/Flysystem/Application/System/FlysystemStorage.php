@@ -29,8 +29,14 @@ use function sprintf;
 
 final class FlysystemStorage implements FileStorage
 {
+    /**
+     * @var \League\Flysystem\Filesystem
+     */
     private $filesystem;
 
+    /**
+     * @var mixed[]
+     */
     private $config;
 
     public function __construct(Filesystem $filesystem)
@@ -99,7 +105,7 @@ final class FlysystemStorage implements FileStorage
         return $storage;
     }
 
-    public function config()
+    public function config() : array
     {
         return $this->config;
     }

@@ -21,7 +21,7 @@ final class ParserTest extends TestCase
     /**
      * @dataProvider examplesProvider
      */
-    public function test_email_parser(string $email, string $local, string $tag, string $domain)
+    public function test_email_parser(string $email, string $local, string $tag, string $domain) : void
     {
         $parser = new Parser($email);
 

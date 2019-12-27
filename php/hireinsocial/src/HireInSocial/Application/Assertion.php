@@ -18,5 +18,8 @@ use HireInSocial\Application\Exception\InvalidAssertionException;
 
 final class Assertion extends BaseAssertion
 {
+    /**
+     * @var string
+     */
     protected static $exceptionClass = InvalidAssertionException::class;
 }

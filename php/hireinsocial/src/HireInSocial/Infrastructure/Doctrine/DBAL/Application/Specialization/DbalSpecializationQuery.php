@@ -16,6 +16,7 @@ namespace HireInSocial\Infrastructure\Doctrine\DBAL\Application\Specialization;
 use Doctrine\DBAL\Connection;
 use HireInSocial\Application\Query\Specialization\Model\Specialization;
 use HireInSocial\Application\Query\Specialization\Model\Specialization\FacebookChannel;
+use HireInSocial\Application\Query\Specialization\Model\Specialization\Offers;
 use HireInSocial\Application\Query\Specialization\Model\Specializations;
 use HireInSocial\Application\Query\Specialization\SpecializationQuery;
 
@@ -91,11 +92,11 @@ SQL
         );
 
         $offers = $offersData
-            ?  Specialization\Offers::create(
+            ?  Offers::create(
                 $offersData['total_count'],
                 new \DateTimeImmutable($offersData['created_at'])
             )
-            : Specialization\Offers::noOffers();
+            : Offers::noOffers();
 
         return new Specialization(
             $data['slug'],

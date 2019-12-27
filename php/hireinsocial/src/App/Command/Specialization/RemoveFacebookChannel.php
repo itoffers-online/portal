@@ -25,8 +25,14 @@ final class RemoveFacebookChannel extends Command
 {
     public const NAME = 'specialization:channel:facebook:remove';
 
+    /**
+     * @var string
+     */
     protected static $defaultName = self::NAME;
 
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
     /**
@@ -49,7 +55,7 @@ final class RemoveFacebookChannel extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output) : void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
