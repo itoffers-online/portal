@@ -17,10 +17,19 @@ use HireInSocial\Application\User\User;
 
 final class UserOffers implements \Countable
 {
+    /**
+     * @var \HireInSocial\Application\User\User
+     */
     private $user;
 
+    /**
+     * @var \DateTimeImmutable
+     */
     private $since;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Offer[]
+     */
     private $offers;
 
     public function __construct(User $user, \DateTimeImmutable $since, Offer ...$offers)

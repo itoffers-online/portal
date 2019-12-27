@@ -19,6 +19,9 @@ use HireInSocial\Application\System\Handler;
 
 final class CreateSpecializationHandler implements Handler
 {
+    /**
+     * @var \HireInSocial\Application\Specialization\Specializations
+     */
     private $specializations;
 
     public function __construct(Specializations $specializations)

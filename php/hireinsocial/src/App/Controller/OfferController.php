@@ -21,6 +21,7 @@ use HireInSocial\Application\Command\Offer\Offer\Contact;
 use HireInSocial\Application\Command\Offer\Offer\Contract;
 use HireInSocial\Application\Command\Offer\Offer\Description;
 use HireInSocial\Application\Command\Offer\Offer\Location;
+use HireInSocial\Application\Command\Offer\Offer\Location\LatLng;
 use HireInSocial\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Offer\Position;
 use HireInSocial\Application\Command\Offer\Offer\Salary;
@@ -39,12 +40,24 @@ final class OfferController extends AbstractController
     use FacebookAccess;
     use RedirectAfterLogin;
 
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     */
     private $templating;
 
+    /**
+     * @var \Facebook\Facebook
+     */
     private $facebook;
 
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     private $logger;
 
     public function __construct(
@@ -100,7 +113,7 @@ final class OfferController extends AbstractController
                             (bool)$offer['location']['remote'],
                             $offer['location']['name'],
                             ($offer['location']['lat'] && $offer['location']['lng'])
-                                ? new Location\LatLng((float) $offer['location']['lat'], (float) $offer['location']['lng'])
+                                ? new LatLng((float) $offer['location']['lat'], (float) $offer['location']['lng'])
                                 : null
                         ),
                         (null === $offer['salary']['min'] && null === $offer['salary']['max'])

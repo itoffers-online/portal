@@ -14,10 +14,14 @@ declare(strict_types=1);
 namespace HireInSocial\Infrastructure;
 
 use Facebook\Facebook;
+use HireInSocial\Application\Command\Offer\ApplyThroughEmailHandler;
+use HireInSocial\Application\Command\Offer\PostOfferHandler;
+use HireInSocial\Application\Command\Offer\RemoveOfferHandler;
+use HireInSocial\Application\Command\Specialization\CreateSpecializationHandler;
+use HireInSocial\Application\Command\Specialization\RemoveFacebookChannelHandler;
+use HireInSocial\Application\Command\Specialization\SetFacebookChannelHandler;
+use HireInSocial\Application\Command\User\FacebookConnectHandler;
 
-use HireInSocial\Application\Command\Offer;
-use HireInSocial\Application\Command\Specialization;
-use HireInSocial\Application\Command\User;
 use HireInSocial\Application\Config;
 use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
@@ -145,16 +149,16 @@ function offersFacade(Config $config) : Offers
         new System(
             new CommandBus(
                 new ORMTransactionManager($entityManager),
-                new Specialization\CreateSpecializationHandler(
+                new CreateSpecializationHandler(
                     $specializations
                 ),
-                new Specialization\SetFacebookChannelHandler(
+                new SetFacebookChannelHandler(
                     $specializations
                 ),
-                new Specialization\RemoveFacebookChannelHandler(
+                new RemoveFacebookChannelHandler(
                     $specializations
                 ),
-                new Offer\PostOfferHandler(
+                new PostOfferHandler(
                     $calendar,
                     $ormOffers,
                     $ormUsers,
@@ -167,16 +171,16 @@ function offersFacade(Config $config) : Offers
                     new ORMOfferPDFs($entityManager),
                     FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG))
                 ),
-                new Offer\RemoveOfferHandler(
+                new RemoveOfferHandler(
                     $ormUsers,
                     $ormOffers,
                     $calendar
                 ),
-                new User\FacebookConnectHandler(
+                new FacebookConnectHandler(
                     $ormUsers,
                     $calendar
                 ),
-                new Offer\ApplyThroughEmailHandler(
+                new ApplyThroughEmailHandler(
                     $mailer,
                     $ormOffers,
                     $ormApplications,

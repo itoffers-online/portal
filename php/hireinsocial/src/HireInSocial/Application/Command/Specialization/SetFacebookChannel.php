@@ -20,12 +20,24 @@ class SetFacebookChannel implements Command
 {
     use ClassCommand;
 
+    /**
+     * @var string
+     */
     private $specSlug;
 
+    /**
+     * @var string
+     */
     private $facebookPageId;
 
+    /**
+     * @var string
+     */
     private $facebookPageToken;
 
+    /**
+     * @var string
+     */
     private $facebookGroupId;
 
     public function __construct(

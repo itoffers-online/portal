@@ -15,6 +15,9 @@ namespace HireInSocial\Application\Command\Offer\Offer;
 
 final class Channels
 {
+    /**
+     * @var bool
+     */
     private $facebookGroup;
 
     public function __construct(bool $facebookGroup)

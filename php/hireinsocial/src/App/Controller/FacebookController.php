@@ -31,14 +31,29 @@ final class FacebookController extends AbstractController
 
     public const USER_SESSION_KEY = '_his_user_id';
 
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
+    /**
+     * @var \Symfony\Component\Routing\RouterInterface
+     */
     private $router;
 
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     */
     private $templating;
 
+    /**
+     * @var \Facebook\Facebook
+     */
     private $facebook;
 
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     private $logger;
 
     public function __construct(

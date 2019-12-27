@@ -19,12 +19,24 @@ use Ramsey\Uuid\Uuid;
 
 class Application
 {
+    /**
+     * @var string
+     */
     private $id;
 
+    /**
+     * @var string
+     */
     private $offerId;
 
+    /**
+     * @var string
+     */
     private $emailHash;
 
+    /**
+     * @var \DateTimeImmutable
+     */
     private $createdAt;
 
     private function __construct()

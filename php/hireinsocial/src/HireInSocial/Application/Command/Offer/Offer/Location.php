@@ -17,10 +17,19 @@ use HireInSocial\Application\Command\Offer\Offer\Location\LatLng;
 
 final class Location
 {
+    /**
+     * @var bool
+     */
     private $remote;
 
+    /**
+     * @var string|null
+     */
     private $name;
 
+    /**
+     * @var \HireInSocial\Application\Command\Offer\Offer\Location\LatLng|null
+     */
     private $latLng;
 
     public function __construct(bool $remote, ?string $name = null, ?LatLng $latLng = null)

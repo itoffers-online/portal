@@ -15,6 +15,9 @@ namespace HireInSocial\Application\Query\Offer\Model\Offer;
 
 final class OfferPDF
 {
+    /**
+     * @var string
+     */
     private $path;
 
     public function __construct(string $path)

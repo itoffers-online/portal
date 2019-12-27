@@ -15,10 +15,19 @@ namespace HireInSocial\Application\System\Mailer;
 
 final class Recipient
 {
+    /**
+     * @var string
+     */
     private $email;
 
+    /**
+     * @var string|null
+     */
     private $name;
 
+    /**
+     * @var bool
+     */
     private $bcc;
 
     public function __construct(string $email, string $name = null)
@@ -28,7 +37,7 @@ final class Recipient
         $this->bcc = false;
     }
 
-    public static function bcc(string $email, string $name = null)
+    public static function bcc(string $email, string $name = null) : self
     {
         $recipient = new self($email, $name);
         $recipient->bcc = true;

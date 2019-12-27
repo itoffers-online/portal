@@ -21,6 +21,9 @@ use HireInSocial\Application\Offer\Offer;
 
 final class ORMApplications implements Applications
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     private $entityManager;
 
     public function __construct(EntityManager $entityManager)

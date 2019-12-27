@@ -21,8 +21,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class LayoutController extends AbstractController
 {
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     */
     private $templating;
 
     public function __construct(Offers $offers, EngineInterface $templating)

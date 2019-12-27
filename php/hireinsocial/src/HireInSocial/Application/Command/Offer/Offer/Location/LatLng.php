@@ -15,8 +15,14 @@ namespace HireInSocial\Application\Command\Offer\Offer\Location;
 
 final class LatLng
 {
+    /**
+     * @var float
+     */
     private $lat;
 
+    /**
+     * @var float
+     */
     private $lng;
 
     public function __construct(float $lat, float $lng)

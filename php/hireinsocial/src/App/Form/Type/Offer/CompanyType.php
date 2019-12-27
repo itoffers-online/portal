@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints\Url;
 
 final class CompanyType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
             ->add('name', TextType::class, [

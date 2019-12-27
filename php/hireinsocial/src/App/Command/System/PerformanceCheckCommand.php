@@ -25,10 +25,19 @@ final class PerformanceCheckCommand extends Command
 {
     public const NAME = 'system:performance:check';
 
+    /**
+     * @var string
+     */
     protected static $defaultName = self::NAME;
 
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
+    /**
+     * @var \HireInSocial\Application\Config
+     */
     private $config;
 
     /**
@@ -51,7 +60,7 @@ final class PerformanceCheckCommand extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output) : void
     {
         $this->io = new SymfonyStyle($input, $output);
     }

@@ -36,10 +36,19 @@ use Twig\Extensions\TextExtension;
 
 final class SymfonyKernel extends Kernel
 {
+    /**
+     * @var string
+     */
     private $projectRootPath;
 
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
+    /**
+     * @var mixed[]
+     */
     private $frameworkConfig;
 
     public function __construct(
@@ -66,14 +75,14 @@ final class SymfonyKernel extends Kernel
         ];
     }
 
-    protected function initializeContainer()
+    protected function initializeContainer() : void
     {
         parent::initializeContainer();
 
         $this->container->set(Offers::class, $this->offers);
     }
 
-    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
+    protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader) : void
     {
         $c->loadFromExtension('framework', $this->frameworkConfig['framework']);
         $c->loadFromExtension('twig', $this->frameworkConfig['twig']);
@@ -103,22 +112,22 @@ final class SymfonyKernel extends Kernel
         $c->autowire(ReCaptchaController::class)->addTag('controller.service_arguments');
     }
 
-    public function getProjectDir()
+    public function getProjectDir() : string
     {
         return $this->projectRootPath;
     }
 
-    public function getCacheDir()
+    public function getCacheDir() : string
     {
         return $this->getProjectDir().'/var/cache/' . $this->environment . '/symfony';
     }
 
-    public function getLogDir()
+    public function getLogDir() : string
     {
         return $this->getProjectDir().'/var/logs';
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes)
+    protected function configureRoutes(RouteCollectionBuilder $routes) : void
     {
         Factory::addRoutes($routes);
         Factory::addLocalizedRoutes($routes, $this->frameworkConfig['framework']['default_locale']);

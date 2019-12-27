@@ -21,6 +21,9 @@ use HireInSocial\Tests\Application\MotherObject\Command\Specialization\CreateSpe
 
 final class SystemContext
 {
+    /**
+     * @var Offers
+     */
     private $offers;
 
     public function __construct(Offers $offers)

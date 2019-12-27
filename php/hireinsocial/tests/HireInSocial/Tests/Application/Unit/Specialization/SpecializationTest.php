@@ -25,7 +25,7 @@ final class SpecializationTest extends TestCase
     /**
      * @dataProvider invalidSlugs
      */
-    public function test_creating_specialization_with_invalid_slug(string $slug)
+    public function test_creating_specialization_with_invalid_slug(string $slug) : void
     {
         $this->expectException(InvalidAssertionException::class);
 

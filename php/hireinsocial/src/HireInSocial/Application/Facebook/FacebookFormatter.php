@@ -19,6 +19,9 @@ use Twig\Environment;
 
 final class FacebookFormatter implements OfferFormatter
 {
+    /**
+     * @var \Twig\Environment
+     */
     private $twig;
 
     public function __construct(Environment $twig)

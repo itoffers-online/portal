@@ -15,6 +15,15 @@ namespace HireInSocial\Infrastructure\Doctrine\DBAL\Application\Offer;
 
 use Doctrine\DBAL\Connection;
 use HireInSocial\Application\Query\Offer\Model\Offer;
+use HireInSocial\Application\Query\Offer\Model\Offer\Company;
+use HireInSocial\Application\Query\Offer\Model\Offer\Contact;
+use HireInSocial\Application\Query\Offer\Model\Offer\Contract;
+use HireInSocial\Application\Query\Offer\Model\Offer\Description;
+use HireInSocial\Application\Query\Offer\Model\Offer\Location;
+use HireInSocial\Application\Query\Offer\Model\Offer\OfferPDF;
+use HireInSocial\Application\Query\Offer\Model\Offer\Parameters;
+use HireInSocial\Application\Query\Offer\Model\Offer\Position;
+use HireInSocial\Application\Query\Offer\Model\Offer\Salary;
 use HireInSocial\Application\Query\Offer\Model\Offers;
 use HireInSocial\Application\Query\Offer\OfferFilter;
 use HireInSocial\Application\Query\Offer\OfferQuery;
@@ -22,6 +31,9 @@ use Ramsey\Uuid\Uuid;
 
 final class DbalOfferQuery implements OfferQuery
 {
+    /**
+     * @var \Doctrine\DBAL\Connection
+     */
     private $connection;
 
     public function __construct(Connection $connection)
@@ -253,7 +265,7 @@ final class DbalOfferQuery implements OfferQuery
     private function hydrateOffer(array $offerData) : Offer
     {
         $salary = isset($offerData['salary']) ? \json_decode($offerData['salary'], true) : null;
-        $offerPDF = isset($offerData['offer_pdf']) ? new Offer\OfferPDF($offerData['offer_pdf']) : null;
+        $offerPDF = isset($offerData['offer_pdf']) ? new OfferPDF($offerData['offer_pdf']) : null;
 
         return new Offer(
             Uuid::fromString($offerData['id']),
@@ -262,20 +274,20 @@ final class DbalOfferQuery implements OfferQuery
             Uuid::fromString($offerData['user_id']),
             $offerData['specialization_slug'],
             new \DateTimeImmutable($offerData['created_at']),
-            new Offer\Parameters(
-                new Offer\Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),
-                new Offer\Contact($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),
-                new Offer\Contract($offerData['contract_type']),
-                new Offer\Description($offerData['description_requirements'], $offerData['description_benefits']),
-                new Offer\Location(
+            new Parameters(
+                new Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),
+                new Contact($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),
+                new Contract($offerData['contract_type']),
+                new Description($offerData['description_requirements'], $offerData['description_benefits']),
+                new Location(
                     $offerData['location_remote'],
                     $offerData['location_name'],
                     $offerData['location_lat'] ? (float) $offerData['location_lat'] : null,
                     $offerData['location_lng'] ? (float) $offerData['location_lng'] : null
                 ),
-                new Offer\Position($offerData['position_name'], $offerData['position_description']),
+                new Position($offerData['position_name'], $offerData['position_description']),
                 ($salary)
-                    ? new Offer\Salary(
+                    ? new Salary(
                         $salary['min'],
                         $salary['max'],
                         $salary['currency_code'],

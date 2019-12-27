@@ -15,10 +15,19 @@ namespace HireInSocial\Application\Query\Offer\Model\Offer;
 
 final class Contact
 {
+    /**
+     * @var string
+     */
     private $email;
 
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @var string|null
+     */
     private $phone;
 
     public function __construct(string $email, string $name, ?string $phone = null)

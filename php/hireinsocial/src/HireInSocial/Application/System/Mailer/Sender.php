@@ -17,10 +17,19 @@ use HireInSocial\Application\Assertion;
 
 final class Sender
 {
+    /**
+     * @var string
+     */
     private $email;
 
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @var string
+     */
     private $replyEmail;
 
     public function __construct(string $email, string $name, string $replyEmail)

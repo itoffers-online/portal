@@ -20,8 +20,14 @@ use HireInSocial\Application\Query\Offer\ApplicationQuery;
 
 final class DbalApplicationQuery implements ApplicationQuery
 {
+    /**
+     * @var \Doctrine\DBAL\Connection
+     */
     private $connection;
 
+    /**
+     * @var \HireInSocial\Application\Hash\Encoder
+     */
     private $encoder;
 
     public function __construct(Connection $connection, Encoder $encoder)

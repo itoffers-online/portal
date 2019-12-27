@@ -23,6 +23,9 @@ use Ramsey\Uuid\UuidInterface;
 
 final class ORMOffers implements Offers
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     private $entityManager;
 
     public function __construct(EntityManager $entityManager)

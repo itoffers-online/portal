@@ -17,12 +17,24 @@ use HireInSocial\Application\Assertion;
 
 final class Salary
 {
+    /**
+     * @var int
+     */
     private $min;
 
+    /**
+     * @var int
+     */
     private $max;
 
+    /**
+     * @var string
+     */
     private $currencyCode;
 
+    /**
+     * @var bool
+     */
     private $net;
 
     public function __construct(int $min, int $max, string $currencyCode, bool $net)

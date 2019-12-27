@@ -20,6 +20,7 @@ use HireInSocial\Application\Command\Offer\Offer\Contact;
 use HireInSocial\Application\Command\Offer\Offer\Contract;
 use HireInSocial\Application\Command\Offer\Offer\Description;
 use HireInSocial\Application\Command\Offer\Offer\Location;
+use HireInSocial\Application\Command\Offer\Offer\Location\LatLng;
 use HireInSocial\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Application\Command\Offer\Offer\Position;
 use HireInSocial\Application\Command\Offer\Offer\Salary;
@@ -37,10 +38,19 @@ final class PostOffer extends Command
 {
     public const NAME = 'post:offer:test';
 
+    /**
+     * @var string
+     */
     protected static $defaultName = self::NAME;
 
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
+    /**
+     * @var string
+     */
     private $locale;
 
     /**
@@ -67,7 +77,7 @@ final class PostOffer extends Command
         ;
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output) : void
     {
         $this->io = new SymfonyStyle($input, $output);
 
@@ -109,7 +119,7 @@ final class PostOffer extends Command
                 new Offer(
                     new Company($faker->company, $faker->url, $faker->text(512)),
                     new Position('Developer', $faker->text(1024)),
-                    new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
+                    new Location($faker->boolean, $faker->country, new LatLng($faker->latitude, $faker->longitude)),
                     $noSalary ? null : new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean),
                     new Contract('B2B'),
                     new Description(

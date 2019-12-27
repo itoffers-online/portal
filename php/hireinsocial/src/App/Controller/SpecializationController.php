@@ -23,8 +23,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class SpecializationController extends AbstractController
 {
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     */
     private $templating;
 
     public function __construct(Offers $offers, EngineInterface $templating)
@@ -41,7 +47,9 @@ final class SpecializationController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $offerFilter = OfferFilter::allFor($specialization->slug());
+        /** @var OfferFilter $offerFilter */
+        $offerFilter = OfferFilter::allFor($specialization->slug())
+            ->changeSize(20, 0);
 
         $form = $this->createForm(OfferFilterType::class)->handleRequest($request);
 
@@ -59,7 +67,7 @@ final class SpecializationController extends AbstractController
             }
         }
 
-        $offers = $this->offers->offerQuery()->findAll($offerFilter->changeSize(20, 0));
+        $offers = $this->offers->offerQuery()->findAll($offerFilter);
 
         return $this->templating->renderResponse('/specialization/offers.html.twig', [
             'total' => $this->offers->offerQuery()->count($offerFilter),

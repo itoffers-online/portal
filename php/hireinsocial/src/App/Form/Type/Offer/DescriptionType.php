@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\Length;
 
 final class DescriptionType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
             ->add('requirements', TextareaType::class, [

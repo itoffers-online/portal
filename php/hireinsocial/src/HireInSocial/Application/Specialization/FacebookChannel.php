@@ -18,8 +18,14 @@ use HireInSocial\Application\Facebook\Page;
 
 final class FacebookChannel
 {
+    /**
+     * @var \HireInSocial\Application\Facebook\Page
+     */
     private $page;
 
+    /**
+     * @var \HireInSocial\Application\Facebook\Group
+     */
     private $group;
 
     public function __construct(Page $page, Group $group)

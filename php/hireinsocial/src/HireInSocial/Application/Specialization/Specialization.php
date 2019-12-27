@@ -21,14 +21,29 @@ use Ramsey\Uuid\UuidInterface;
 
 class Specialization
 {
+    /**
+     * @var string
+     */
     private $id;
 
+    /**
+     * @var string
+     */
     private $slug;
 
+    /**
+     * @var string|null
+     */
     private $facebookChannelPageId;
 
+    /**
+     * @var string|null
+     */
     private $facebookChannelPageAccessToken;
 
+    /**
+     * @var string|null
+     */
     private $facebookChannelGroupId;
 
     public function __construct(string $slug)

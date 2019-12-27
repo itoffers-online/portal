@@ -18,12 +18,19 @@ use HireInSocial\Application\Query\Filter\Column;
 
 abstract class AbstractFilter
 {
+    /**
+     * @var int
+     */
     protected $limit = 50;
 
+    /**
+     * @var int
+     */
     protected $offset = 0;
 
-    protected $order;
-
+    /**
+     * @var mixed[]
+     */
     private $sortBy = [];
 
     public function changeSize(int $limit, int $offset) : self

@@ -22,10 +22,19 @@ final class Throttling
 
     public const SINCE = 'P7D';
 
+    /**
+     * @var int
+     */
     private $limit;
 
+    /**
+     * @var \DateInterval
+     */
     private $since;
 
+    /**
+     * @var \HireInSocial\Application\System\Calendar
+     */
     private $calendar;
 
     public function __construct(int $defaultLimit, \DateInterval $since, Calendar $calendar)

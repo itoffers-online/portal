@@ -15,6 +15,9 @@ namespace HireInSocial\Application\Query\Offer\Model\Offer;
 
 final class Contract
 {
+    /**
+     * @var string
+     */
     private $type;
 
     public function __construct(string $type)

@@ -15,10 +15,19 @@ namespace App\Email;
 
 final class Email
 {
+    /**
+     * @var string
+     */
     private $local;
 
+    /**
+     * @var string
+     */
     private $tag;
 
+    /**
+     * @var string
+     */
     private $domain;
 
     public function __construct(string $local, string $tag, string $domain)

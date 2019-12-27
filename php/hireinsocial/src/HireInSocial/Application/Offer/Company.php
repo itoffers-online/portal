@@ -17,10 +17,19 @@ use HireInSocial\Application\Assertion;
 
 final class Company
 {
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @var string
+     */
     private $url;
 
+    /**
+     * @var string
+     */
     private $description;
 
     public function __construct(string $name, string $url, string $description)

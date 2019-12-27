@@ -15,8 +15,14 @@ namespace HireInSocial\Application\Query\Filter;
 
 class Column
 {
+    /**
+     * @var string
+     */
     private $column;
 
+    /**
+     * @var string
+     */
     private $direction;
 
     private function __construct()

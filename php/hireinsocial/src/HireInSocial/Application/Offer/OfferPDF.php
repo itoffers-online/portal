@@ -19,15 +19,27 @@ use Ramsey\Uuid\UuidInterface;
 
 class OfferPDF
 {
+    /**
+     * @var string
+     */
     private $id;
 
+    /**
+     * @var string
+     */
     private $path;
 
+    /**
+     * @var string
+     */
     private $offerId;
 
+    /**
+     * @var \DateTimeImmutable
+     */
     private $createdAt;
 
-    private function __construct($path, UuidInterface $offerId, \DateTimeImmutable $createdAt)
+    private function __construct(string $path, UuidInterface $offerId, \DateTimeImmutable $createdAt)
     {
         $this->id = Uuid::uuid4()->toString();
         $this->offerId = $offerId->toString();
@@ -44,7 +56,7 @@ class OfferPDF
         );
     }
 
-    public function path()
+    public function path() : string
     {
         return $this->path;
     }

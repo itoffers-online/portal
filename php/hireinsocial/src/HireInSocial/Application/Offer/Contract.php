@@ -17,6 +17,9 @@ use HireInSocial\Application\Assertion;
 
 final class Contract
 {
+    /**
+     * @var string
+     */
     private $type;
 
     public function __construct(string $type)

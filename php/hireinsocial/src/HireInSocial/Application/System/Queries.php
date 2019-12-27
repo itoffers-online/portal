@@ -17,6 +17,9 @@ use HireInSocial\Application\Exception\Exception;
 
 final class Queries
 {
+    /**
+     * @var mixed[]|\HireInSocial\Application\System\Query[]
+     */
     private $queries;
 
     public function __construct(Query ...$queries)

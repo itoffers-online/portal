@@ -20,6 +20,9 @@ class RemoveFacebookChannel implements Command
 {
     use ClassCommand;
 
+    /**
+     * @var string
+     */
     private $specSlug;
 
     public function __construct(string $specSlug)

@@ -20,6 +20,9 @@ use HireInSocial\Application\Offer\Offer;
 
 final class ORMPosts implements Posts
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
     private $entityManager;
 
     public function __construct(EntityManager $entityManager)

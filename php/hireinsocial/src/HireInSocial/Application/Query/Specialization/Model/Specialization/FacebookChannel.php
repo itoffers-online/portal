@@ -15,8 +15,14 @@ namespace HireInSocial\Application\Query\Specialization\Model\Specialization;
 
 final class FacebookChannel
 {
+    /**
+     * @var string
+     */
     private $pageId;
 
+    /**
+     * @var string
+     */
     private $groupId;
 
     public function __construct(string $pageId, string $groupId)

@@ -17,6 +17,9 @@ use HireInSocial\Application\System\FileStorage;
 
 final class FilesystemContext
 {
+    /**
+     * @var FileStorage
+     */
     private $fileStorage;
 
     public function __construct(FileStorage $fileStorage)

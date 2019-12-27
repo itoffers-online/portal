@@ -5,10 +5,12 @@ includes:
     - vendor/phpstan/phpstan-webmozart-assert/extension.neon
     - vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
-    level: 5
+    level: 6
     paths:
         - src
         - tests
         - bin
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
     autoload_files:
         - tests/bootstrap.php

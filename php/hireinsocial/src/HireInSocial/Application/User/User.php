@@ -20,10 +20,19 @@ use Ramsey\Uuid\UuidInterface;
 
 class User
 {
+    /**
+     * @var string
+     */
     private $id;
 
+    /**
+     * @var string
+     */
     private $fbUserAppId;
 
+    /**
+     * @var \DateTimeImmutable
+     */
     private $createdAt;
 
     private function __construct(\DateTimeImmutable $createdAt)

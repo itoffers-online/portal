@@ -15,8 +15,14 @@ namespace HireInSocial\Application\Query\Offer\Model\Offer;
 
 final class Description
 {
+    /**
+     * @var string
+     */
     private $requirements;
 
+    /**
+     * @var string
+     */
     private $benefits;
 
     public function __construct(string $requirements, string $benefits)

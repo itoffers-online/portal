@@ -20,10 +20,19 @@ use Ramsey\Uuid\UuidInterface;
 
 final class Draft
 {
+    /**
+     * @var \Ramsey\Uuid\UuidInterface
+     */
     private $userId;
 
+    /**
+     * @var string
+     */
     private $message;
 
+    /**
+     * @var string
+     */
     private $link;
 
     private function __construct(UuidInterface $userId, string $message, string $link)
@@ -33,7 +42,7 @@ final class Draft
         $this->link = $link;
     }
 
-    public static function createFor(User $user, OfferFormatter $formatter, Offer $offer)
+    public static function createFor(User $user, OfferFormatter $formatter, Offer $offer) : self
     {
         return new self($user->id(), $formatter->format($offer), $offer->company()->url());
     }

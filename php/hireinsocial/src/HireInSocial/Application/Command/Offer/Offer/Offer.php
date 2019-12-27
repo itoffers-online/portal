@@ -15,20 +15,44 @@ namespace HireInSocial\Application\Command\Offer\Offer;
 
 final class Offer
 {
+    /**
+     * @var \HireInSocial\Application\Command\Offer\Offer\Company
+     */
     private $company;
 
+    /**
+     * @var \HireInSocial\Application\Command\Offer\Offer\Position
+     */
     private $position;
 
+    /**
+     * @var \HireInSocial\Application\Command\Offer\Offer\Location
+     */
     private $location;
 
+    /**
+     * @var \HireInSocial\Application\Command\Offer\Offer\Salary|null
+     */
     private $salary;
 
+    /**
+     * @var \HireInSocial\Application\Command\Offer\Offer\Contract
+     */
     private $contract;
 
+    /**
+     * @var \HireInSocial\Application\Command\Offer\Offer\Description
+     */
     private $description;
 
+    /**
+     * @var \HireInSocial\Application\Command\Offer\Offer\Contact
+     */
     private $contact;
 
+    /**
+     * @var \HireInSocial\Application\Command\Offer\Offer\Channels
+     */
     private $channels;
 
     public function __construct(

@@ -20,10 +20,19 @@ use Ramsey\Uuid\UuidInterface;
 
 class Slug
 {
+    /**
+     * @var string
+     */
     private $slug;
 
+    /**
+     * @var \Ramsey\Uuid\UuidInterface
+     */
     private $offerId;
 
+    /**
+     * @var \DateTimeImmutable
+     */
     private $createdAt;
 
     private function __construct(string $value, UuidInterface $offerId, \DateTimeImmutable $createdAt)

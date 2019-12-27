@@ -17,8 +17,14 @@ use HireInSocial\Application\Assertion;
 
 final class Description
 {
+    /**
+     * @var string
+     */
     private $requirements;
 
+    /**
+     * @var string
+     */
     private $benefits;
 
     public function __construct(string $requirements, string $benefits)

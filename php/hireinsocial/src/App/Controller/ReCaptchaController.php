@@ -23,8 +23,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ReCaptchaController extends AbstractController
 {
+    /**
+     * @var \HireInSocial\Offers
+     */
     private $offers;
 
+    /**
+     * @var \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface
+     */
     private $parameterBag;
 
     public function __construct(Offers $offers, ParameterBagInterface $parameterBag)

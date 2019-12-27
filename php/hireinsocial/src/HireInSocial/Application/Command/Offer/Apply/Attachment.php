@@ -15,6 +15,9 @@ namespace HireInSocial\Application\Command\Offer\Apply;
 
 final class Attachment
 {
+    /**
+     * @var string
+     */
     private $filePath;
 
     public function __construct(string $filePath)

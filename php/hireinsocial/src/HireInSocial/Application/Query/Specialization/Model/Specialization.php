@@ -18,10 +18,19 @@ use HireInSocial\Application\Query\Specialization\Model\Specialization\Offers;
 
 final class Specialization
 {
+    /**
+     * @var string
+     */
     private $slug;
 
+    /**
+     * @var \HireInSocial\Application\Query\Specialization\Model\Specialization\Offers
+     */
     private $offers;
 
+    /**
+     * @var \HireInSocial\Application\Query\Specialization\Model\Specialization\FacebookChannel|null
+     */
     private $facebookChannel;
 
     public function __construct(string $slug, Offers $offers, ?FacebookChannel $facebookChannel)

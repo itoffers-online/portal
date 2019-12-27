@@ -23,30 +23,69 @@ use Ramsey\Uuid\UuidInterface;
 
 class Offer
 {
+    /**
+     * @var string
+     */
     private $id;
 
+    /**
+     * @var string
+     */
     private $emailHash;
 
+    /**
+     * @var string
+     */
     private $userId;
 
+    /**
+     * @var \Ramsey\Uuid\UuidInterface
+     */
     private $specializationId;
 
+    /**
+     * @var \DateTimeImmutable
+     */
     private $createdAt;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Company
+     */
     private $company;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Position
+     */
     private $position;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Location
+     */
     private $location;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Salary|null
+     */
     private $salary;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Contract
+     */
     private $contract;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Description
+     */
     private $description;
 
+    /**
+     * @var \HireInSocial\Application\Offer\Contact
+     */
     private $contact;
 
+    /**
+     * @var \DateTimeImmutable
+     */
     private $removedAt;
 
     private function __construct(

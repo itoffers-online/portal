@@ -24,8 +24,14 @@ use Psr\Log\LoggerInterface;
 
 final class FacebookGraphSDK implements Facebook
 {
+    /**
+     * @var \Facebook\Facebook
+     */
     private $facebook;
 
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
     private $logger;
 
     public function __construct(\Facebook\Facebook $facebook, LoggerInterface $logger)

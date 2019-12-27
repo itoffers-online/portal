@@ -24,12 +24,24 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
      */
     private $cache;
 
+    /**
+     * @var int
+     */
     private $limit;
 
+    /**
+     * @var \DateInterval
+     */
     private $since;
 
+    /**
+     * @var \Doctrine\DBAL\Connection
+     */
     private $connection;
 
+    /**
+     * @var \HireInSocial\Application\System\Calendar
+     */
     private $calendar;
 
     public function __construct(int $limit, \DateInterval $since, Connection $connection, Calendar $calendar)
