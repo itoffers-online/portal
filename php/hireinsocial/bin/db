@@ -10,14 +10,14 @@ use Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
-use HireInSocial\Application\System;
-use HireInSocial\Infrastructure\Doctrine\DBAL\Schema\HireInSocialSchemaProvider;
-use HireInSocial\Application\Config;
+use HireInSocial\Offers\Application\System;
+use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Schema\HireInSocialSchemaProvider;
+use HireInSocial\Offers\Application\Config;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use function HireInSocial\Infrastructure\bootstrap;
-use function HireInSocial\Infrastructure\dbal;
-use function HireInSocial\Infrastructure\orm;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
+use function HireInSocial\Offers\Infrastructure\dbal;
+use function HireInSocial\Offers\Infrastructure\orm;
 
 $projectRootPath = dirname(__DIR__);
 

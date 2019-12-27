@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Console;
 
-use App\Tests\Functional\SymfonyKernelTestCase;
+use App\Tests\Functional\Web\SymfonyKernelTestCase;
 
 class ConsoleTestCase extends SymfonyKernelTestCase
 {

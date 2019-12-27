@@ -2,8 +2,8 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use function App\symfony;
-use function HireInSocial\Infrastructure\bootstrap;
-use function HireInSocial\Infrastructure\offersFacade;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
+use function HireInSocial\Offers\Infrastructure\offersFacade;
 
 $projectRootPath = dirname(__DIR__);
 

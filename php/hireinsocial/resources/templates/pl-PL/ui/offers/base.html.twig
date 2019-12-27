@@ -24,11 +24,11 @@
 </head>
 <body class="bg-light">
 
-{{ render(controller('App\\Controller\\LayoutController::navbarAction')) }}
+{{ render(controller('App\\Offers\\Controller\\LayoutController::navbarAction')) }}
 
 <div class="container">
     {% block header %}
-        {{ render(controller('App\\Controller\\LayoutController::headerAction')) }}
+        {{ render(controller('App\\Offers\\Controller\\LayoutController::headerAction')) }}
     {% endblock %}
 
     {% for label, messages in app.flashes(['warning', 'error', 'success']) %}

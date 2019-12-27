@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="HireInSocial\Application\Offer\Offer" table="his_job_offer">
+    <entity name="HireInSocial\Offers\Application\Offer\Offer" table="his_job_offer">
 
         <id name="id" type="guid">
             <generator strategy="NONE" />
@@ -14,11 +14,11 @@
         <field name="salary" type="his_offer_salary" nullable="true"/>
         <field name="removedAt" type="datetime_immutable" nullable="true"/>
 
-        <embedded name="company" class="HireInSocial\Application\Offer\Company" />
-        <embedded name="position" class="HireInSocial\Application\Offer\Position" />
-        <embedded name="location" class="HireInSocial\Application\Offer\Location" />
-        <embedded name="contract" class="HireInSocial\Application\Offer\Contract" />
-        <embedded name="description" class="HireInSocial\Application\Offer\Description" />
-        <embedded name="contact" class="HireInSocial\Application\Offer\Contact" />
+        <embedded name="company" class="HireInSocial\Offers\Application\Offer\Company" />
+        <embedded name="position" class="HireInSocial\Offers\Application\Offer\Position" />
+        <embedded name="location" class="HireInSocial\Offers\Application\Offer\Location" />
+        <embedded name="contract" class="HireInSocial\Offers\Application\Offer\Contract" />
+        <embedded name="description" class="HireInSocial\Offers\Application\Offer\Description" />
+        <embedded name="contact" class="HireInSocial\Offers\Application\Offer\Contact" />
     </entity>
 </doctrine-mapping>

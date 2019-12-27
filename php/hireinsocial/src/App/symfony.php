@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use HireInSocial\Application\Config;
-use HireInSocial\Offers;
+use HireInSocial\Offers\Application\Config;
+use HireInSocial\Offers\Offers;
 
 function symfony(Config $config, Offers $offers) : SymfonyKernel
 {

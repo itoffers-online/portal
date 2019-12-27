@@ -14,8 +14,8 @@
 
     <filter>
         <whitelist>
-            <directory>./src/HireInSocial/Application</directory>
-            <directory>./src/HireInSocial/Common</directory>
+            <directory>./src/HireInSocial/Offers/Application</directory>
+            <directory>./src/HireInSocial/Offers/Common</directory>
         </whitelist>
     </filter>
 
@@ -24,11 +24,11 @@
             <directory>tests/App/Tests</directory>
         </testsuite>
         <testsuite name="integration">
-            <directory>tests/HireInSocial/Tests/Application/Integration</directory>
+            <directory>tests/HireInSocial/Tests/Offers/Application/Integration</directory>
         </testsuite>
         <testsuite name="unit">
-            <directory>tests/HireInSocial/Tests/Application/Unit</directory>
-            <directory>tests/HireInSocial/Tests/Infrastructure/Unit</directory>
+            <directory>tests/HireInSocial/Tests/Offers/Application/Unit</directory>
+            <directory>tests/HireInSocial/Tests/Offers/Infrastructure/Unit</directory>
         </testsuite>
     </testsuites>
 </phpunit>
