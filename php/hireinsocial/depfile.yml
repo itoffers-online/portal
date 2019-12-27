@@ -3,22 +3,22 @@ paths:
 exclude_files:
   - .*test.*
 layers:
-  - name: Symfony
+  - name: app_gateway
     collectors:
       - type: directory
         regex: src/App
-  - name: Application
+  - name: offers_application
     collectors:
       - type: directory
-        regex: src/HireInSocial/Application
-  - name: Infrastructure
+        regex: src/HireInSocial/Offers/Application
+  - name: offers_infrastructure
     collectors:
       - type: directory
-        regex: src/HireInSocial/Infrastructure
+        regex: src/HireInSocial/Offers/Infrastructure
 ruleset:
-  Symfony:
-    - Application
-    - Infrastructure
-  Infrastructure:
-    - Application
-  Application: ~
+  app_gateway:
+    - offers_application
+    - offers_infrastructure
+  offers_infrastructure:
+    - offers_application
+  offers_application: ~
