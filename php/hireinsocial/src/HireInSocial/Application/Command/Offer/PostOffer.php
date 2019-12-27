@@ -32,7 +32,7 @@ final class PostOffer implements Command
     private $userId;
 
     /**
-     * @var \HireInSocial\Application\Command\Offer\Offer\Offer
+     * @var Offer
      */
     private $offer;
 

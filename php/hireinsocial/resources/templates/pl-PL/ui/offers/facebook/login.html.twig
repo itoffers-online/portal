@@ -1,0 +1,15 @@
+{% extends '@offers/base.html.twig' %}
+
+{% block body %}
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Facebook Connect</h1>
+            <p class="lead text-muted">
+                W celu weryfikacji musimy poprosić Cię o potwierdzenie swojej tożsamości za pomocą Facebooka.
+            </p>
+            <p>
+                <a href="{{ facebook_login_url }}" class="btn btn-primary my-2"><i class="fab fa-facebook-f"></i> Connect</a>
+            </p>
+        </div>
+    </section>
+{% endblock %}

@@ -32,14 +32,14 @@ final class LayoutController extends AbstractController
 
     public function navbarAction(Request $request) : Response
     {
-        return $this->render('layout/navbar.html.twig', [
+        return $this->render('@offers/layout/navbar.html.twig', [
             'facebook_logged_in' => (bool) $request->getSession()->get(FacebookController::USER_SESSION_KEY, false),
         ]);
     }
 
     public function headerAction(Request $request) : Response
     {
-        return $this->render('layout/header.html.twig', [
+        return $this->render('@offers/layout/header.html.twig', [
             'headerSpecializations' => $this->offers->specializationQuery()->all(),
         ]);
     }

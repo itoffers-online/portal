@@ -66,7 +66,7 @@ final class OfferController extends AbstractController
 
     public function postAction(Request $request) : Response
     {
-        return $this->render('/offer/post.html.twig', [
+        return $this->render('@offers/offer/post.html.twig', [
             'specializations' => $this->offers->specializationQuery()->all(),
         ]);
     }
@@ -126,7 +126,7 @@ final class OfferController extends AbstractController
             }
         }
 
-        return $this->render('/offer/new.html.twig', [
+        return $this->render('@offers/offer/new.html.twig', [
             'specialization' => $specialization,
             'form' => $form->createView(),
             'throttled' => $this->offers->offerThrottleQuery()->isThrottled($userId),
@@ -144,7 +144,7 @@ final class OfferController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        return $this->render('/offer/success.html.twig', [
+        return $this->render('@offers/offer/success.html.twig', [
             'specialization' => $specSlug,
         ]);
     }
@@ -160,7 +160,7 @@ final class OfferController extends AbstractController
         $nextOffer = $this->offers->offerQuery()->findOneAfter($offer);
         $previousOffer = $this->offers->offerQuery()->findOneBefore($offer);
 
-        return $this->render('offer/offer.html.twig', [
+        return $this->render('@offers/offer/offer.html.twig', [
             'userId' => $request->getSession()->get(FacebookController::USER_SESSION_KEY),
             'offer' => $offer,
             'nextOffer' => $nextOffer,
@@ -179,7 +179,7 @@ final class OfferController extends AbstractController
 
         $this->offers->handle(new RemoveOffer($offer->id()->toString(), $userId));
 
-        $this->addFlash('success', $this->renderView('alert/offer_removed.txt'));
+        $this->addFlash('success', $this->renderView('@offers/alert/offer_removed.txt'));
 
         return $this->redirectToRoute('home');
     }
@@ -187,7 +187,7 @@ final class OfferController extends AbstractController
     public function removeConfirmationAction(Request $request, string $offerSlug) : Response
     {
         return $this->render(
-            'offer/remove_confirmation.html.twig',
+            '@offers/offer/remove_confirmation.html.twig',
             ['offerSlug' => $offerSlug]
         );
     }

@@ -21,7 +21,6 @@ use HireInSocial\Application\Command\Specialization\CreateSpecializationHandler;
 use HireInSocial\Application\Command\Specialization\RemoveFacebookChannelHandler;
 use HireInSocial\Application\Command\Specialization\SetFacebookChannelHandler;
 use HireInSocial\Application\Command\User\FacebookConnectHandler;
-
 use HireInSocial\Application\Config;
 use HireInSocial\Application\Facebook\FacebookFormatter;
 use HireInSocial\Application\Facebook\FacebookGroupService;
@@ -61,12 +60,8 @@ function offersFacade(Config $config) : Offers
 {
     $logDir = $config->getString(Config::ROOT_PATH) . '/var/logs';
 
-    $phpLogger = new Logger('php');
     $systemLogger = new Logger('system');
-    $facebookLogger = new Logger('facebook');
     $systemLogger->pushHandler(new StreamHandler($logDir . sprintf('/%s_system.log', $config->getString(Config::ENV)), Logger::DEBUG));
-    $facebookLogger->pushHandler(new StreamHandler($logDir . sprintf('/%s_facebook.log', $config->getString(Config::ENV)), Logger::DEBUG));
-    $phpLogger->pushHandler(new StreamHandler($logDir . sprintf('/%s_php.log', $config->getString(Config::ENV)), Logger::ERROR));
 
     $loader = new FilesystemLoader($config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE));
     $twig = new Environment($loader, [
@@ -82,7 +77,7 @@ function offersFacade(Config $config) : Offers
                     'app_id' => $config->getString(Config::FB_APP_ID),
                     'app_secret' => $config->getString(Config::FB_APP_SECRET),
                 ]),
-                $facebookLogger
+                $systemLogger
             );
             $transport = (new \Swift_SmtpTransport(
                 $config->getJson(Config::MAILER_CONFIG)['host'],
@@ -93,7 +88,7 @@ function offersFacade(Config $config) : Offers
                 ->setTimeout(10)
             ;
             $mailer = new SwiftMailer($config->getJson(Config::MAILER_CONFIG)['domain'], new \Swift_Mailer($transport));
-            ErrorHandler::register($phpLogger);
+            ErrorHandler::register($systemLogger);
 
             break;
         case 'dev':
@@ -103,7 +98,7 @@ function offersFacade(Config $config) : Offers
                     'app_id' => $config->getString(Config::FB_APP_ID),
                     'app_secret' => $config->getString(Config::FB_APP_SECRET),
                 ]),
-                $facebookLogger
+                $systemLogger
             );
 
             $transport = (new \Swift_SmtpTransport(

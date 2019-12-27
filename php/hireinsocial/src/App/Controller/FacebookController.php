@@ -68,7 +68,7 @@ final class FacebookController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('facebook/login.html.twig', [
+        return $this->render('@offers/facebook/login.html.twig', [
             'facebook_login_url' => $this->facebook->getRedirectLoginHelper()->getLoginUrl(
                 $this->generateUrl('facebook_login_success', [], UrlGeneratorInterface::ABSOLUTE_URL)
             ),

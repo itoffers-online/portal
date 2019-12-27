@@ -27,12 +27,15 @@ use HireInSocial\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Application\Command\Offer\PostOffer as SystemPostOffer;
 use HireInSocial\Application\Command\User\FacebookConnect;
 use HireInSocial\Offers;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
+use function file_exists;
 
 final class PostOffer extends Command
 {
@@ -44,7 +47,7 @@ final class PostOffer extends Command
     protected static $defaultName = self::NAME;
 
     /**
-     * @var \HireInSocial\Offers
+     * @var Offers
      */
     private $offers;
 
@@ -83,8 +86,8 @@ final class PostOffer extends Command
 
         $offerPDFPath = (string) $input->getOption('offer-pdf');
 
-        if ($offerPDFPath && !\file_exists($offerPDFPath)) {
-            throw new \RuntimeException(sprintf('Offer PDF "%s" file does not exists.', $offerPDFPath));
+        if ($offerPDFPath && !file_exists($offerPDFPath)) {
+            throw new RuntimeException(sprintf('Offer PDF "%s" file does not exists.', $offerPDFPath));
         }
     }
 
@@ -117,25 +120,33 @@ final class PostOffer extends Command
                 $specialization->slug(),
                 $user->id(),
                 new Offer(
-                    new Company($faker->company, $faker->url, $faker->text(512)),
-                    new Position('Developer', $faker->text(1024)),
+                    new Company(
+                        'Hire in Social',
+                        'https://hirein.social/best-developers-company',
+                        'Hire in Social is recruiting portal that connects recruiters with candidates'
+                    ),
+                    new Position(
+                        'Software Developer',
+                        'Full stack Software developer position, you will work mostly on web applications with automated and scalable infrastructure.'
+                    ),
                     new Location($faker->boolean, $faker->country, new LatLng($faker->latitude, $faker->longitude)),
                     $noSalary ? null : new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean),
                     new Contract('B2B'),
                     new Description(
-                        $faker->text(1024),
-                        $faker->text(1024)
+                        'Candidate for this position needs to be solid, reliable and meet all our expectations. You need to have at least 5 years of commercial experience.',
+                        'We don\'t have strict number of days off, you take as much as you need, you can work remotely or in the office'
                     ),
                     new Contact(
-                        $faker->email,
-                        $faker->name,
+                        'contact@hirein.social',
+                        'Hire Manager',
                         '+1 333333333'
                     ),
                     new Channels($postFacebookGroup)
                 ),
                 $offerPDFpath
             ));
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
+            $this->io->error($e->getMessage());
             $this->io->error('Can\'t post job offer at facebook group as a page. Please check logs for more details.');
 
             return 1;

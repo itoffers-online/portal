@@ -39,7 +39,7 @@ final class IndexController extends AbstractController
 
         $offers = $this->offers->offerQuery()->findAll($offerFilter);
 
-        return $this->render('/home/index.html.twig', [
+        return $this->render('@offers/home/index.html.twig', [
             'specializations' => $this->offers->specializationQuery()->all(),
             'offers' => $offers,
         ]);
@@ -47,6 +47,6 @@ final class IndexController extends AbstractController
 
     public function faqAction(Request $request) : Response
     {
-        return $this->render('/home/faq.html.twig', []);
+        return $this->render('@offers/home/faq.html.twig', []);
     }
 }

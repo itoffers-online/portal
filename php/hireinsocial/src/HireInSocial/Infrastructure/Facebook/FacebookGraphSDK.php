@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace HireInSocial\Infrastructure\Facebook;
 
 use Facebook\Exceptions\FacebookSDKException;
+use Facebook\Facebook as FacebookSDK;
 use Facebook\FacebookResponse;
 use HireInSocial\Application\Exception\Exception;
 use HireInSocial\Application\Facebook\Draft;
@@ -21,20 +22,23 @@ use HireInSocial\Application\Facebook\Facebook;
 use HireInSocial\Application\Facebook\Group;
 use HireInSocial\Application\Facebook\Page;
 use Psr\Log\LoggerInterface;
+use Throwable;
+use function get_class;
+use function mb_substr;
 
 final class FacebookGraphSDK implements Facebook
 {
     /**
-     * @var \Facebook\Facebook
+     * @var FacebookSDK
      */
     private $facebook;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
 
-    public function __construct(\Facebook\Facebook $facebook, LoggerInterface $logger)
+    public function __construct(FacebookSDK $facebook, LoggerInterface $logger)
     {
         $this->facebook = $facebook;
         $this->logger = $logger;
@@ -44,7 +48,8 @@ final class FacebookGraphSDK implements Facebook
     {
         try {
             $response = $this->post(sprintf('/%s/feed', $group->fbId()), [
-                'message' => (string)$post,
+                'message' => (string) $post,
+                'formatting' => 'MARKDOWN',
                 'link' => $post->link(),
             ], $page->accessToken());
 
@@ -76,7 +81,7 @@ final class FacebookGraphSDK implements Facebook
             ]);
 
             return $response;
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $this->logException($url, $accessToken ?: (string) $this->facebook->getApp()->getAccessToken(), $exception);
 
             throw $exception;
@@ -107,7 +112,7 @@ final class FacebookGraphSDK implements Facebook
             ]);
 
             return $response;
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $this->logException($url, $accessToken ?: (string) $this->facebook->getApp()->getAccessToken(), $exception);
 
             throw $exception;
@@ -138,14 +143,14 @@ final class FacebookGraphSDK implements Facebook
             ]);
 
             return $response;
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $this->logException($url, $accessToken ?: (string) $this->facebook->getApp()->getAccessToken(), $exception);
 
             throw $exception;
         }
     }
 
-    private function logException(string $url, string $accessToken, \Throwable $exception) : void
+    private function logException(string $url, string $accessToken, Throwable $exception) : void
     {
         $this->logger->error('Facebook SDK exception', [
             'appId' => $this->facebook->getApp()->getId(),
@@ -153,7 +158,7 @@ final class FacebookGraphSDK implements Facebook
             'url' => $url,
             'graph_version' => $this->facebook->getDefaultGraphVersion(),
             'access_token' => $accessToken,
-            'exception' => \get_class($exception),
+            'exception' => get_class($exception),
             'message' => $exception->getMessage(),
             'code' => $exception->getCode(),
         ]);

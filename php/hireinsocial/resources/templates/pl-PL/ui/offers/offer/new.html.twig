@@ -1,0 +1,216 @@
+{% extends '@offers/base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+
+<style type="text/css">
+    #location-map {
+        height: 400px;
+    }
+</style>
+{% endblock %}
+{% block body %}
+    {% if throttled %}
+    <div class="alert alert-warning text-center" role="alert">
+        Nie możesz jeszcze dodać kolejnego ogłoszenia, dodałeś już {{ throttleLimit }} w przeciągu ostatnich {{ throttleSince.format('%d') }} dni. Musisz poczekać.<br/>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        Możesz dodać maksymalnie {{ throttleLimit }} oferty na {{ throttleSince.format('%d') }} dni. Ilość ofert, które możesz dodać natychmiast: {{ offersLeft }}
+    </div>
+    {% endif %}
+    {{ form_start(form) }}
+    <h3 class="mb-3">Dodaj nową ofertę</h3>
+    <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">Zasady</span>
+                    </h3>
+                    <ul>
+                        <li>W ogłoszeniu <strong>musi</strong> być informacja o docelowym pracodawcy.</li>
+                        <li>Widełki wynagrodzenia mogą być szerokie, jednak musza być realne.</li>
+                        <li>Duplikaty ogłoszenia będą usuwane, jeśli chcesz dodać to samo ogłoszenie musisz odczekać co najmniej 30 dni.</li>
+                        <li>Możesz dodać maksymalnie {{ throttleLimit }} oferty na {{ throttleSince.format('%d') }} dni.</li>
+                    </ul>
+                    <h5>Masz Pytania?</h5>
+                    <p>
+                        Odwiedź dział <a href="{{ url('faq') }}">FAQ</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 order-md-1">
+            <h5>Firma</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.company.name, {label: "Nazwa Firmy"}) }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_row(form.company.url, {label: "Strona Firmowa", attr:{placeholder:"Strona główna firmy"}}) }}
+                </div>
+            </div>
+            {{ form_row(form.company.description, {label: "Opis Firmy", attr:{rows: 5, placeholder: "od 10 do 512 znaków..."}}) }}
+            <hr />
+            <h5>Stanowisko</h5>
+            {{ form_row(form.position.name, {label: "Nazwa Stanowiska", attr:{placeholder: "PHP Developer"}}) }}
+            {{ form_row(form.position.description, {label: "Opis Stanowiska", attr:{rows: 5, placeholder: "od 50 do 1024 znaków..."}}) }}
+            <hr />
+            <h5>Wynagrodzenie</h5>
+            <div class="alert alert-warning" role="alert">
+                Podawanie wyngarodzenia nie jest obowiązkowe, pamiętaj jednak że w ten sposób możesz znacząco zredukować
+                potencjalną liczbę kandydatów. Ludzie nie lubią marnować czasu na skomplikowane procesy rekrutacji, po których
+                dowiadują się, że oferowane zarobki nie są dla nich zadowalające. Jeżeli decydujesz się nie podać widełek
+                postara się wyjaśnić w opisie stanowiska jaka jest tego przyczyna.
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    {{ form_row(form.salary.min, {label: false, attr:{placeholder:"Od"}}) }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    {{ form_row(form.salary.max, {label: false, attr:{placeholder:"Do"}}) }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    {{ form_row(form.salary.currency, {label: false}) }}
+                </div>
+            </div>
+            {{ form_row(form.salary.net, {label: "Kwota netto"}) }}
+            {{ form_row(form.contract, {label: "Forma Zatrudnienia"}) }}
+            <hr />
+            <h5>Lokalizacja</h5>
+            {{ form_row(form.location.remote, {label: "Możliwość pracy zdalnej"}) }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(form.location.name, {label:"Lokalizacja (opcjonalne)", attr:{placeholder:"Polska, Kraków...", autocomplete: 'disabled'}}) }}
+                    {{ form_row(form.location.lat) }}
+                    {{ form_row(form.location.lng) }}
+                </div>
+                <div class="col-md-6">
+                    <div id="location-map"></div>
+                </div>
+            </div>
+            <hr/>
+
+            <h5>Opis Stanowiska</h5>
+            {{ form_row(form.description.requirements, {label: "Wymagania", attr:{rows: 5, placeholder: "od 100 do 1024 znaków..."}}) }}
+            {{ form_row(form.description.benefits, {label: "Benefity", attr:{rows: 5, placeholder: "od 100 do 1024 znaków..."}}) }}
+            <hr />
+            <h5>Kontakt</h5>
+            {{ form_row(form.contact.name, {label: "Imię i nazwisko osoby do kontaktu (rekturetera)"}) }}
+            {{ form_row(form.contact.email, {label: "Adres email na który należy wysyłać CV"}) }}
+            {{ form_row(form.contact.phone, {label: "Numer telefonu (opcjonalny)"}) }}
+
+            <h5>Oferta PDF</h5>
+            {{ form_row(form.offer_pdf, {label: false, help: "Oferta w formie PDF"}) }}
+            <p class="alert alert-warning">
+                Oferta w formie PDF musi być 100% zgodna z ofertą opisaną powyżej. Oferty z pikami PDF zawierającymi
+                inne parametry będą usuwane.
+            </p>
+
+
+            <h5 class="mb-3">Na których kanałach opublikować ogłoszenie</h5>
+            <div class="form-group">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input disabled" checked disabled value="1">
+                    <label class="form-check-label" for="offer_post_at_facebook">Wrzuć na stronę główną portalu</label>
+                </div>
+            </div>
+            {% if specialization.facebookChannel %}
+                {{ form_row(form.channels.facebook_group, {label: "Wrzuć ogłoszenie na grupę na Facebooku", attr: {checked:"checked"}}) }}
+            {% else %}
+                {{ form_row(form.channels.facebook_group, {
+                    label: "Wrzuć ogłoszenie na grupę na Facebooku",
+                    attr: {disabled:"disabled"},
+                    help: "Ta specializacja nie ma jeszcze grupy na Facebooku"
+                }) }}
+            {% endif %}
+
+            {% if throttled %}
+                {{ form_row(form.submit, {label: "poczekaj", attr:{disabled:disabled}}) }}
+            {% else %}
+                {{ form_row(form.submit, {label: "Wyślij"}) }}
+            {% endif %}
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    $('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+    });
+
+    function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('location-map'), {
+            zoom: 14,
+            center: {lat: 50.06212, lng: 19.9353153}
+        });
+        var geocoder = new google.maps.Geocoder;
+
+        var marker = new google.maps.Marker({
+            map: map,
+            center: {lat: 50.06212, lng: 19.9353153},
+            visible: false
+        });
+
+        let searchInput = document.getElementById('{{ form.location.name.vars.id }}');
+        var autocomplete = new google.maps.places.Autocomplete(searchInput);
+
+        marker.addListener('position_changed', function(e) {
+            document.getElementById('{{ form.location.lat.vars.id }}').value = this.getPosition().lat();
+            document.getElementById('{{ form.location.lng.vars.id }}').value = this.getPosition().lng();
+        });
+
+        map.addListener('click', function(e) {
+            marker.setPosition(e.latLng);
+            marker.setVisible(true);
+
+            geocoder.geocode(
+                {'location' : e.latLng},
+                function (results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            searchInput.value = results[0].formatted_address;
+                        }
+                    }
+                }
+            );
+
+            map.panTo(e.latLng);
+        });
+
+        autocomplete.bindTo('bounds', map);
+
+        autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                searchInput.value = "";
+                document.getElementById('{{ form.location.lat.vars.id }}').value = "";
+                document.getElementById('{{ form.location.lng.vars.id }}').value = "";
+
+                return;
+            }
+
+            marker.setPosition(place.geometry.location);
+            map.panTo(place.geometry.location);
+            marker.setVisible(true);
+        });
+
+        searchInput.addEventListener('keypress', (event) => {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
+    }
+
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google.maps.key }}&libraries=places&&callback=initMap">
+</script>
+{% endblock %}

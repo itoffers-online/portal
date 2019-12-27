@@ -1,0 +1,21 @@
+{% extends '@offers/base.html.twig' %}
+
+{% block body %}
+    <div id="accordion">
+        {% include '@offers/home/faq/_question.html.twig' with {
+            number: 1,
+            question: "Jak mogę usunąc ogłoszenie?",
+            answer: "Aby usunąc ogłoszenie znajdź je na naszej grupie na Facebooku i w komentarzu poproś o jego usunięcie."
+        } only %}
+        {% include '@offers/home/faq/_question.html.twig' with {
+            number: 2,
+            question: "Czy mogę edytować ogłoszenie?",
+            answer: "Nie, ogłoszenie po dodaniu nie może być przez Ciebie edytowane, możesz jednak poprosić o jego usunięcie i dodać je od nowa."
+        } only %}
+        {% include '@offers/home/faq/_question.html.twig' with {
+            number: 3,
+            question: "Z jaką częstotliwościa mogę dodawać ogłoszenia?",
+            answer: "Ogłoszenie może być dodane tylko raz na 12 godzin. To samo ogłoszenie nie może być dodane częściej niż raz na 30 dni."
+        } only %}
+    </div>
+{% endblock %}

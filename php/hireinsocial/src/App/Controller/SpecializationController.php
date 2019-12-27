@@ -62,7 +62,7 @@ final class SpecializationController extends AbstractController
 
         $offers = $this->offers->offerQuery()->findAll($offerFilter);
 
-        return $this->render('/specialization/offers.html.twig', [
+        return $this->render('@offers/specialization/offers.html.twig', [
             'total' => $this->offers->offerQuery()->count($offerFilter),
             'specialization' => $specialization,
             'offers' => $offers,
