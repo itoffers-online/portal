@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 
+use function array_map;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Company;
@@ -27,12 +30,13 @@ use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offers;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Offers\Application\Query\Offer\OfferQuery;
+use function json_decode;
 use Ramsey\Uuid\Uuid;
 
 final class DbalOfferQuery implements OfferQuery
 {
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var Connection
      */
     private $connection;
 
@@ -90,15 +94,15 @@ final class DbalOfferQuery implements OfferQuery
         $queryBuilder->setParameters(
             [
                 'specializationSlug' => $filter->specialization(),
-                'sinceDate' => $filter->sinceDate()->format(\DateTimeInterface::ISO8601),
-                'tillDate' => $filter->tillDate()->format(\DateTimeInterface::ISO8601),
+                'sinceDate' => $filter->sinceDate()->format(DateTimeInterface::ISO8601),
+                'tillDate' => $filter->tillDate()->format(DateTimeInterface::ISO8601),
             ]
         );
 
         $offersData = $queryBuilder->execute()
             ->fetchAll();
 
-        return new Offers(...\array_map(
+        return new Offers(...array_map(
             [$this, 'hydrateOffer'],
             $offersData
         ));
@@ -128,8 +132,8 @@ final class DbalOfferQuery implements OfferQuery
         return (int) $queryBuilder->setParameters(
             [
                     'specializationSlug' => $filter->specialization(),
-                    'sinceDate' => $filter->sinceDate()->format(\DateTimeInterface::ISO8601),
-                    'tillDate' => $filter->tillDate()->format(\DateTimeInterface::ISO8601),
+                    'sinceDate' => $filter->sinceDate()->format(DateTimeInterface::ISO8601),
+                    'tillDate' => $filter->tillDate()->format(DateTimeInterface::ISO8601),
                 ]
         )
             ->execute()
@@ -223,7 +227,7 @@ final class DbalOfferQuery implements OfferQuery
             ->setParameters(
                 [
                     'specializationSlug' => $offer->specializationSlug(),
-                    'sinceDate' => $offer->createdAt()->format(\DateTimeInterface::ISO8601),
+                    'sinceDate' => $offer->createdAt()->format(DateTimeInterface::ISO8601),
                 ]
             )->execute()
             ->fetch();
@@ -250,7 +254,7 @@ final class DbalOfferQuery implements OfferQuery
             ->setParameters(
                 [
                     'specializationSlug' => $offer->specializationSlug(),
-                    'beforeDate' => $offer->createdAt()->format(\DateTimeInterface::ISO8601),
+                    'beforeDate' => $offer->createdAt()->format(DateTimeInterface::ISO8601),
                 ]
             )->execute()
             ->fetch();
@@ -264,7 +268,7 @@ final class DbalOfferQuery implements OfferQuery
 
     private function hydrateOffer(array $offerData) : Offer
     {
-        $salary = isset($offerData['salary']) ? \json_decode($offerData['salary'], true) : null;
+        $salary = isset($offerData['salary']) ? json_decode($offerData['salary'], true) : null;
         $offerPDF = isset($offerData['offer_pdf']) ? new OfferPDF($offerData['offer_pdf']) : null;
 
         return new Offer(
@@ -273,7 +277,7 @@ final class DbalOfferQuery implements OfferQuery
             $offerData['email_hash'],
             Uuid::fromString($offerData['user_id']),
             $offerData['specialization_slug'],
-            new \DateTimeImmutable($offerData['created_at']),
+            new DateTimeImmutable($offerData['created_at']),
             new Parameters(
                 new Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),
                 new Contact($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),

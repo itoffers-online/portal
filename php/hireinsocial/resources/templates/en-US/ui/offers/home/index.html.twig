@@ -19,7 +19,7 @@
                         </div>
                         <div class="col-4">
                             {% if offer.salary %}
-                                {{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }} - {{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }} montlhy
+                                <strong>{{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }} - {{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }}</strong> {% if offer.salary.periodTypeTotal %}in total{% else %}per {{ offer.salary.periodType }}{% endif %}
                                 {% if offer.salary.isNet %}<strong class="text-success">net</strong>{% else %}<strong class="text-warning">gross</strong>{% endif %}
                             {% else %}
                                 Not defined

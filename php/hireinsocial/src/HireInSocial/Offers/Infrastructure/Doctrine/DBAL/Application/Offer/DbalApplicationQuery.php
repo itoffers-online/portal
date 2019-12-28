@@ -21,12 +21,12 @@ use HireInSocial\Offers\Application\Query\Offer\ApplicationQuery;
 final class DbalApplicationQuery implements ApplicationQuery
 {
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var Connection
      */
     private $connection;
 
     /**
-     * @var \HireInSocial\Offers\Application\Hash\Encoder
+     * @var Encoder
      */
     private $encoder;
 

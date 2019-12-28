@@ -22,11 +22,23 @@ final class FacebookExtension extends AbstractExtension
     {
         return [
             new TwigFilter('fb_group_url', [$this, 'fbGroupUrl']),
+            new TwigFilter('fb_group_post', [$this, 'fbGroupPostUrl']),
         ];
     }
 
     public function fbGroupUrl(string $facebookGroupId) : string
     {
         return sprintf('https://www.facebook.com/groups/%s/', $facebookGroupId);
+    }
+
+    public function fbGroupPostUrl(string $fbPostId) : string
+    {
+        $idParts = \explode('_', $fbPostId);
+
+        if (\count($idParts) === 2) {
+            return \sprintf('https://www.facebook.com/groups/%s/permalink/%s', $idParts[0], $idParts[1]);
+        }
+
+        return '#';
     }
 }

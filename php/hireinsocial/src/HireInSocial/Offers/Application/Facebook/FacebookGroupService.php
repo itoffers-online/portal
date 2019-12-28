@@ -19,7 +19,7 @@ use HireInSocial\Offers\Application\Specialization\Specialization;
 final class FacebookGroupService
 {
     /**
-     * @var \HireInSocial\Offers\Application\Facebook\Facebook
+     * @var Facebook
      */
     private $facebook;
 

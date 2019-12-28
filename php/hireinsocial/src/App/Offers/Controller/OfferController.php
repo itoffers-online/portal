@@ -157,6 +157,8 @@ final class OfferController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $facebookPost = $this->offers->facebookPostQuery()->findFacebookPost($offer->id()->toString());
+
         $nextOffer = $this->offers->offerQuery()->findOneAfter($offer);
         $previousOffer = $this->offers->offerQuery()->findOneBefore($offer);
 
@@ -165,6 +167,7 @@ final class OfferController extends AbstractController
             'offer' => $offer,
             'nextOffer' => $nextOffer,
             'previousOffer' => $previousOffer,
+            'facebookPost' => $facebookPost,
         ]);
     }
 
@@ -186,9 +189,18 @@ final class OfferController extends AbstractController
 
     public function removeConfirmationAction(Request $request, string $offerSlug) : Response
     {
-        return $this->render(
-            '@offers/offer/remove_confirmation.html.twig',
-            ['offerSlug' => $offerSlug]
-        );
+        $offer = $this->offers->offerQuery()->findBySlug($offerSlug);
+
+        if (!$offer) {
+            throw $this->createNotFoundException();
+        }
+
+        $facebookPost = $this->offers->facebookPostQuery()->findFacebookPost($offer->id()->toString());
+
+
+        return $this->render('@offers/offer/remove_confirmation.html.twig', [
+            'offerSlug' => $offerSlug,
+            'facebookPost' => $facebookPost,
+        ]);
     }
 }

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 
+use function array_key_exists;
+use DateInterval;
+use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use HireInSocial\Offers\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Offers\Application\System\Calendar;
@@ -30,21 +33,21 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
     private $limit;
 
     /**
-     * @var \DateInterval
+     * @var DateInterval
      */
     private $since;
 
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var Connection
      */
     private $connection;
 
     /**
-     * @var \HireInSocial\Offers\Application\System\Calendar
+     * @var Calendar
      */
     private $calendar;
 
-    public function __construct(int $limit, \DateInterval $since, Connection $connection, Calendar $calendar)
+    public function __construct(int $limit, DateInterval $since, Connection $connection, Calendar $calendar)
     {
         $this->limit = $limit;
         $this->since = $since;
@@ -58,14 +61,14 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
         return $this->limit;
     }
 
-    public function since() : \DateInterval
+    public function since() : DateInterval
     {
         return $this->since;
     }
 
     public function isThrottled(string $userId) : bool
     {
-        if (\array_key_exists($userId, $this->cache)) {
+        if (array_key_exists($userId, $this->cache)) {
             return $this->cache[$userId] >= $this->limit;
         }
 
@@ -78,7 +81,7 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
 
     public function offersLeft(string $userId) : int
     {
-        if (\array_key_exists($userId, $this->cache)) {
+        if (array_key_exists($userId, $this->cache)) {
             return $this->limit - $this->cache[$userId];
         }
 
@@ -98,7 +101,7 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
             ->andWhere('o.created_at >= :since')
             ->setParameters([
                 'userId' => $userId,
-                'since' => $this->calendar->currentTime()->sub($this->since)->format(\DateTimeInterface::ISO8601),
+                'since' => $this->calendar->currentTime()->sub($this->since)->format(DateTimeInterface::ISO8601),
             ])
             ->execute()
             ->fetchColumn();
