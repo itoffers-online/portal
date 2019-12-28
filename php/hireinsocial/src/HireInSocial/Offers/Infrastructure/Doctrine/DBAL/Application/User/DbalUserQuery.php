@@ -49,11 +49,32 @@ final class DbalUserQuery implements UserQuery
         return $this->hydrateUser($userData);
     }
 
+    public function findById(string $id) : ?User
+    {
+        $userData = $this->connection->createQueryBuilder()
+            ->select('u.*')
+            ->from('his_user', 'u')
+            ->where('u.id = :id')
+            ->setParameters(
+                [
+                    'id' => $id,
+                ]
+            )->execute()
+            ->fetch();
+
+        if (!$userData) {
+            return null;
+        }
+
+        return $this->hydrateUser($userData);
+    }
+
     private function hydrateUser(array $userData) : User
     {
         return new User(
             $userData['id'],
-            $userData['fb_user_app_id']
+            $userData['fb_user_app_id'],
+            (bool) $userData['blocked_at']
         );
     }
 }

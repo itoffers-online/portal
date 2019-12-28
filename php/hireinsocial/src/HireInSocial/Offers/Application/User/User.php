@@ -35,6 +35,11 @@ class User
      */
     private $createdAt;
 
+    /**
+     * @var \DateTimeImmutable
+     */
+    private $blockedAt;
+
     private function __construct(\DateTimeImmutable $createdAt)
     {
         $this->id = Uuid::uuid4()->toString();
@@ -54,5 +59,10 @@ class User
     public function id() : UuidInterface
     {
         return Uuid::fromString($this->id);
+    }
+
+    public function block(Calendar $calendar) : void
+    {
+        $this->blockedAt = $calendar->currentTime();
     }
 }

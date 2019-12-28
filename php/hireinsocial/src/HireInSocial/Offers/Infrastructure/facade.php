@@ -20,6 +20,7 @@ use HireInSocial\Offers\Application\Command\Offer\RemoveOfferHandler;
 use HireInSocial\Offers\Application\Command\Specialization\CreateSpecializationHandler;
 use HireInSocial\Offers\Application\Command\Specialization\RemoveFacebookChannelHandler;
 use HireInSocial\Offers\Application\Command\Specialization\SetFacebookChannelHandler;
+use HireInSocial\Offers\Application\Command\User\BlockUserHandler;
 use HireInSocial\Offers\Application\Command\User\FacebookConnectHandler;
 use HireInSocial\Offers\Application\Config;
 use HireInSocial\Offers\Application\Facebook\FacebookFormatter;
@@ -174,6 +175,10 @@ function offersFacade(Config $config) : Offers
                     $calendar
                 ),
                 new FacebookConnectHandler(
+                    $ormUsers,
+                    $calendar
+                ),
+                new BlockUserHandler(
                     $ormUsers,
                     $calendar
                 ),

@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\User;
 
-use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\System\Calendar;
 use HireInSocial\Offers\Application\System\Handler;
-use HireInSocial\Offers\Application\User\User;
 use HireInSocial\Offers\Application\User\Users;
+use Ramsey\Uuid\Uuid;
 
-final class FacebookConnectHandler implements Handler
+class BlockUserHandler implements Handler
 {
     /**
      * @var Users
@@ -39,15 +38,12 @@ final class FacebookConnectHandler implements Handler
 
     public function handles() : string
     {
-        return FacebookConnect::class;
+        return BlockUser::class;
     }
 
-    public function __invoke(FacebookConnect $command) : void
+    public function __invoke(BlockUser $command) : void
     {
-        try {
-            $this->users->getByFB($command->fbUserAppId());
-        } catch (Exception $e) {
-            $this->users->add(User::fromFacebook($command->fbUserAppId(), $this->calendar));
-        }
+        $this->users->getById(Uuid::fromString($command->getUserId()))
+            ->block($this->calendar);
     }
 }

@@ -74,6 +74,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
                 'assets' => [
                     'storage_url' => $config->getJson(Config::FILESYSTEM_CONFIG)['storage_url'],
                 ],
+                'contact_email' => $config->getString(Config::CONTACT_EMAIL),
             ],
             'auto_reload' => $config->getString(Config::ENV) !== 'prod',
         ],

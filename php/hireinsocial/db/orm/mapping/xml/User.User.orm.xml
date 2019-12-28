@@ -8,6 +8,7 @@
             <generator strategy="NONE" />
         </id>
         <field name="createdAt" type="datetime_immutable" />
+        <field name="blockedAt" type="datetime_immutable" nullable="true"/>
         <field name="fbUserAppId" nullable="true" />
         <unique-constraints>
             <unique-constraint columns="fb_user_app_id" />

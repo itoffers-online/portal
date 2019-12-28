@@ -95,6 +95,10 @@ final class FacebookController extends AbstractController
 
         $user = $this->offers->userQuery()->findByFacebook($fbUserAppId);
 
+        if ($user->isBlocked()) {
+            return $this->redirectToRoute('user_blocked');
+        }
+
         $request->getSession()->set(self::USER_SESSION_KEY, $user->id());
 
         if ($this->hasRedirection($request->getSession())) {

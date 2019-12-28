@@ -17,6 +17,7 @@ use App\Offers\Controller\FacebookController;
 use App\Offers\Controller\IndexController;
 use App\Offers\Controller\OfferController;
 use App\Offers\Controller\ReCaptchaController;
+use App\Offers\Controller\SecurityController;
 use App\Offers\Controller\SpecializationController;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -49,6 +50,10 @@ final class Factory
             new Route('/facebook/login/success', ['_controller' => [FacebookController::class, 'loginSuccessAction']]),
             'facebook_login_success'
         );
+        $routes->addRoute(
+            new Route('/user/blocked', ['_controller' => [SecurityController::class, 'userBlockedAction']]),
+            'user_blocked'
+        );
     }
 
     public static function addLocalizedRoutes(RouteCollectionBuilder $routes, string $locale) : void
@@ -72,6 +77,7 @@ final class Factory
                 $routes->addRoute(new Route('/job-offer//{offerSlug}/remove-confirmation', ['_controller' => [OfferController::class, 'removeConfirmationAction']]), 'offer_remove_confirmation');
                 $routes->addRoute(new Route('/job-offer/{offerSlug}/remove', ['_controller' => [OfferController::class, 'removeAction']]), 'offer_remove');
                 $routes->addRoute(new Route('/job-offer/{offerSlug}', ['_controller' => [OfferController::class, 'offerAction']]), 'offer');
+                $routes->addRoute(new Route('/user/blocked', ['_controller' => [SecurityController::class, 'userBlockedAction']]), 'user_blocked');
 
                 break;
             default:
