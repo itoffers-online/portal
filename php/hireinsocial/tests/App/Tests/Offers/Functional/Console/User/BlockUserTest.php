@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Offers\Functional\Console\Offer;
+namespace App\Tests\Offers\Functional\Console\User;
 
-use App\Offers\Command\Offer\RemoveOffer;
+use App\Offers\Command\User\BlockUser;
 use App\Tests\Functional\Console\ConsoleTestCase;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
@@ -21,20 +21,20 @@ use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMo
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class OfferRemoveTest extends ConsoleTestCase
+class BlockUserTest extends ConsoleTestCase
 {
     public function test_removing_offer() : void
     {
         $offer = $this->createOffer();
 
-        $command = new RemoveOffer(self::$offersFacade);
+        $command = new BlockUser(self::$offersFacade);
         $application = new Application('test');
         $application->add($command);
 
-        $commandTester = new CommandTester($application->find(RemoveOffer::NAME));
+        $commandTester = new CommandTester($application->find(BlockUser::NAME));
         $commandTester->execute(
             [
-                'command'  => RemoveOffer::NAME,
+                'command'  => BlockUser::NAME,
                 'slug' => $offer->slug(),
             ],
             [
@@ -43,7 +43,7 @@ class OfferRemoveTest extends ConsoleTestCase
         );
 
         $this->assertEquals(0, $commandTester->getStatusCode());
-        $this->assertNull($this->systemContext->offersFacade()->offerQuery()->findById($offer->id()->toString()));
+        $this->assertTrue($this->systemContext->offersFacade()->userQuery()->findById($offer->userId()->toString())->isBlocked());
     }
 
     public function createOffer() : Offer
@@ -52,8 +52,6 @@ class OfferRemoveTest extends ConsoleTestCase
         $this->systemContext->createSpecialization('spec');
         $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), 'spec'));
 
-        $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor('spec'))->first();
-
-        return $offer;
+        return $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor('spec'))->first();
     }
 }

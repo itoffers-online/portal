@@ -14,10 +14,15 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Application;
 
 use function \Safe\json_decode;
+use function array_key_exists;
+use RuntimeException;
+use Safe\Exceptions\JsonException;
 
 final class Config
 {
     public const ROOT_PATH = 'root_path';
+
+    public const CONTACT_EMAIL = 'contact_email';
 
     public const ENV = 'env';
 
@@ -80,6 +85,7 @@ final class Config
             self::ENV => getenv('HIS_ENV'),
             self::LOCALE => getenv('HIS_LOCALE'),
             self::TIMEZONE => getenv('HIS_TIMEZONE'),
+            self::CONTACT_EMAIL => 'contact@hirein.social',
             self::SYMFONY_SECRET => getenv('HIS_SYMFONY_SECRET'),
             self::REDIS_DSN => getenv('HIS_REDIS_DSN'),
             self::APPLY_EMAIL_TEMPLATE => getenv('HIS_APPLY_EMAIL_TEMPLATE'),
@@ -103,14 +109,14 @@ final class Config
     public function getString(string $key) : string
     {
         if (!$this->has($key)) {
-            throw new \RuntimeException(sprintf('Missing config key: %s', $key));
+            throw new RuntimeException(sprintf('Missing config key: %s', $key));
         }
 
         return (string) $this->config[$key];
     }
 
     /**
-     * @throws \Safe\Exceptions\JsonException
+     * @throws JsonException
      */
     public function getJson(string $key) : array
     {
@@ -120,7 +126,7 @@ final class Config
     public function getInt(string $key) : int
     {
         if (!$this->has($key)) {
-            throw new \RuntimeException(sprintf('Missing config key: %s', $key));
+            throw new RuntimeException(sprintf('Missing config key: %s', $key));
         }
 
         return (int) $this->config[$key];
@@ -129,7 +135,7 @@ final class Config
     public function override(string $key, string $value) : void
     {
         if (!$this->has($key)) {
-            throw new \RuntimeException(sprintf('Missing config key: %s', $key));
+            throw new RuntimeException(sprintf('Missing config key: %s', $key));
         }
 
         $this->config[$key] = $value;
@@ -137,6 +143,6 @@ final class Config
 
     private function has(string $key) : bool
     {
-        return \array_key_exists($key, $this->config);
+        return array_key_exists($key, $this->config);
     }
 }

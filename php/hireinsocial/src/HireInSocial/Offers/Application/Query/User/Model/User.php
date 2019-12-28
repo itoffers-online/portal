@@ -50,7 +50,7 @@ final class User
     /**
      * @return bool
      */
-    public function isBlocked(): bool
+    public function isBlocked() : bool
     {
         return $this->isBlocked;
     }

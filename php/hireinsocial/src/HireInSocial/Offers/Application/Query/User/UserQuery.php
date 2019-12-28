@@ -19,4 +19,6 @@ use HireInSocial\Offers\Application\System\Query;
 interface UserQuery extends Query
 {
     public function findByFacebook(string $facebookUserAppId) : ?User;
+
+    public function findById(string $id) : ?User;
 }
