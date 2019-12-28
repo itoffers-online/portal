@@ -56,7 +56,7 @@ final class PerformanceCheckCommand extends Command
     protected function configure() : void
     {
         $this
-            ->setDescription('<info>[System]</info> Dump basic data about system bootstrap performance.')
+            ->setDescription('Dump basic data about system bootstrap performance.')
         ;
     }
 

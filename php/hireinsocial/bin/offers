@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use App\Offers\Command\Offer\RemoveOffer;
 use HireInSocial\Offers\Application\Config;
 use App\Offers\Command\Specialization\CreateSpecialization;
 use App\Offers\Command\Specialization\RemoveFacebookChannel;
@@ -26,5 +27,6 @@ $application->add(new CreateSpecialization($offers));
 $application->add(new SetFacebookChannel($offers));
 $application->add(new RemoveFacebookChannel($offers));
 $application->add(new PerformanceCheckCommand($offers, $config));
+$application->add(new RemoveOffer($offers));
 
 $application->run();
