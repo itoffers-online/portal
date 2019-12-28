@@ -17,6 +17,7 @@ use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Query\Offer\ApplicationQuery;
 use HireInSocial\Offers\Application\Query\Offer\OfferQuery;
 use HireInSocial\Offers\Application\Query\Offer\OfferThrottleQuery;
+use HireInSocial\Offers\Application\Query\SocialChannel\Facebook\FacebookQuery;
 use HireInSocial\Offers\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Offers\Application\Query\User\UserQuery;
 use HireInSocial\Offers\Application\System;
@@ -101,6 +102,17 @@ final class Offers
 
         if (!$query instanceof UserQuery) {
             throw new Exception("Expected UserQuery but got " . \get_class($query));
+        }
+
+        return $query;
+    }
+
+    public function facebookPostQuery() : FacebookQuery
+    {
+        $query = $this->system->query(FacebookQuery::class);
+
+        if (!$query instanceof FacebookQuery) {
+            throw new Exception("Expected FacebookQuery but got " . \get_class($query));
         }
 
         return $query;

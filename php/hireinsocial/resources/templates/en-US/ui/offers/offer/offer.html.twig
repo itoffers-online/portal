@@ -61,11 +61,25 @@
             <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger d-inline">Remove</a>
         {% endif %}
     </h1>
+    {% if facebookPost %}
+    <div class="row mb-2">
+        <div class="col-12">
+            <h4>Social Channels</h4>
+            <div class="card">
+                <div class="card-body">
+                    <a target="_blank" href="{{ facebookPost.id|fb_group_post }}"><i class="fab fa-facebook"></i> {{ facebookPost.id|fb_group_post }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     <div class="row">
         <div class="col-6">
             <h4>Description</h4>
             {% if offer.offerPDF %}
-                <a href="{{ offer.offerpdf.url(assets.storage_url) }}" class="btn btn-link" download>Download offer in PDF</a>
+                <p>
+                    <a href="{{ offer.offerpdf.url(assets.storage_url) }}" class="btn btn-primary" download>Download PDF</a>
+                </p>
             {% endif %}
             <div class="card">
                 <div class="card-body">
@@ -81,7 +95,7 @@
             {% if offer.salary %}
             <div class="card">
                 <div class="card-body">
-                    {{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }} - {{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }} {% if offer.salary.periodTypeTotal %}in total{% else %}per {{ offer.salary.periodType }}{% endif %}
+                    <strong>{{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }} - {{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }}</strong> {% if offer.salary.periodTypeTotal %}in total{% else %}per {{ offer.salary.periodType }}{% endif %}
                     {% if offer.salary.isNet %}<strong class="text-success">net</strong>{% else %}<strong class="text-warning">gross</strong>{% endif %}
                 </div>
             </div>

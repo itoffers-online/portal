@@ -22,17 +22,17 @@ use Ramsey\Uuid\Uuid;
 final class RemoveOfferHandler implements Handler
 {
     /**
-     * @var \HireInSocial\Offers\Application\User\Users
+     * @var Users
      */
     private $users;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Offers
+     * @var Offers
      */
     private $offers;
 
     /**
-     * @var \HireInSocial\Offers\Application\System\Calendar
+     * @var Calendar
      */
     private $calendar;
 

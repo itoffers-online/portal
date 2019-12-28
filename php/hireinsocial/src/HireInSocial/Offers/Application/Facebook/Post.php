@@ -25,7 +25,7 @@ class Post
     private $fbId;
 
     /**
-     * @var \Ramsey\Uuid\UuidInterface
+     * @var UuidInterface
      */
     private $jobOfferId;
 

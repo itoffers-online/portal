@@ -8,6 +8,9 @@
                 <h4 class="alert-heading">Are you sure?</h4>
                 <p class="mb-0">This operation can't be undone.</p>
                 <p class="mb-0">Removing offer will not regenerate quota for adding new offers.</p>
+                {% if facebookPost %}
+                    <p class="mb-0">Removing offer will not remove it from <a target="_blank" href="{{ facebookPost.id|fb_group_post }}">Facebook</a>.</p>
+                {% endif %}
             </div>
             <div class="text-center">
                 <a href="{{ url('offer', {offerSlug: offerSlug}) }}" class="btn btn-primary">Don't remove</a>

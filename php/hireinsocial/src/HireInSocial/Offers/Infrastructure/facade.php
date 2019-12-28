@@ -32,6 +32,7 @@ use HireInSocial\Offers\Application\System\Queries;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalApplicationQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferThrottleQuery;
+use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\SocialChannel\Facebook\DbalFacebookFacebookQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Specialization\DbalSpecializationQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalUserQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
@@ -189,7 +190,8 @@ function offersFacade(Config $config) : Offers
                 new DbalOfferQuery($dbalConnection),
                 new DbalSpecializationQuery($dbalConnection),
                 new DbalUserQuery($dbalConnection),
-                new DbalApplicationQuery($dbalConnection, $encoder)
+                new DbalApplicationQuery($dbalConnection, $encoder),
+                new DbalFacebookFacebookQuery($dbalConnection),
             ),
             $systemLogger,
             $calendar

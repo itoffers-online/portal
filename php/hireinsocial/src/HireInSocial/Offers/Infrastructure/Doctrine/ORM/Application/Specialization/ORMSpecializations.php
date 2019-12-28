@@ -20,7 +20,7 @@ use HireInSocial\Offers\Application\Specialization\Specializations;
 final class ORMSpecializations implements Specializations
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $entityManager;
 
