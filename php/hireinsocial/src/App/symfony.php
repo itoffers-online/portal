@@ -59,6 +59,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
             ],
             'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/twig',
             'globals' => [
+                'apply_email_template' => $config->getString(Config::APPLY_EMAIL_TEMPLATE),
                 'facebook' => [
                     'app_id' => $config->getString(Config::FB_APP_ID),
                 ],

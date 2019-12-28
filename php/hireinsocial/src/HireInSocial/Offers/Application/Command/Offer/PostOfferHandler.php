@@ -41,62 +41,63 @@ use HireInSocial\Offers\Application\System\FileStorage\File;
 use HireInSocial\Offers\Application\System\Handler;
 use HireInSocial\Offers\Application\User\User;
 use HireInSocial\Offers\Application\User\Users;
+use function mb_strtoupper;
 use Ramsey\Uuid\Uuid;
 
 final class PostOfferHandler implements Handler
 {
     /**
-     * @var \HireInSocial\Offers\Application\System\Calendar
+     * @var Calendar
      */
     private $calendar;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Offers
+     * @var Offers
      */
     private $offers;
 
     /**
-     * @var \HireInSocial\Offers\Application\User\Users
+     * @var Users
      */
     private $users;
 
     /**
-     * @var \HireInSocial\Offers\Application\Facebook\Posts
+     * @var Posts
      */
     private $posts;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Throttling
+     * @var Throttling
      */
     private $throttling;
 
     /**
-     * @var \HireInSocial\Offers\Application\Facebook\FacebookGroupService
+     * @var FacebookGroupService
      */
     private $facebookGroupService;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\OfferFormatter
+     * @var OfferFormatter
      */
     private $formatter;
 
     /**
-     * @var \HireInSocial\Offers\Application\Specialization\Specializations
+     * @var Specializations
      */
     private $specializations;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Slugs
+     * @var Slugs
      */
     private $slugs;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\OfferPDFs
+     * @var OfferPDFs
      */
     private $offerPDFs;
 
     /**
-     * @var \HireInSocial\Offers\Application\System\FileStorage
+     * @var FileStorage
      */
     private $fileStorage;
 
@@ -199,7 +200,7 @@ final class PostOfferHandler implements Handler
                     $command->offer()->salary()->max(),
                     $command->offer()->salary()->currencyCode(),
                     $command->offer()->salary()->isNet(),
-                    Salary\Period::fromString(\mb_strtoupper($command->offer()->salary()->periodType()))
+                    Salary\Period::fromString(mb_strtoupper($command->offer()->salary()->periodType()))
                 )
                 : null,
             new Contract(

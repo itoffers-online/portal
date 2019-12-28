@@ -69,6 +69,7 @@ function offersFacade(Config $config) : Offers
         'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/twig',
         'debug' => $config->getString(Config::ENV) !== 'prod',
     ]);
+    $twig->addGlobal('apply_email_template', $config->getString(Config::APPLY_EMAIL_TEMPLATE));
 
     switch ($config->getString(Config::ENV)) {
         case 'prod':
