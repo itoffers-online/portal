@@ -22,12 +22,12 @@ use HireInSocial\Offers\Application\User\Users;
 final class FacebookConnectHandler implements Handler
 {
     /**
-     * @var \HireInSocial\Offers\Application\User\Users
+     * @var Users
      */
     private $users;
 
     /**
-     * @var \HireInSocial\Offers\Application\System\Calendar
+     * @var Calendar
      */
     private $calendar;
 

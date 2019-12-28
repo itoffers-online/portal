@@ -25,10 +25,16 @@ final class User
      */
     private $fbAppId;
 
-    public function __construct(string $id, ?string $fbAppId)
+    /**
+     * @var bool
+     */
+    private $isBlocked;
+
+    public function __construct(string $id, ?string $fbAppId, bool $isBlocked)
     {
         $this->id = $id;
         $this->fbAppId = $fbAppId;
+        $this->isBlocked = $isBlocked;
     }
 
     public function id() : string
@@ -39,5 +45,13 @@ final class User
     public function fbAppId() : ?string
     {
         return $this->fbAppId;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBlocked(): bool
+    {
+        return $this->isBlocked;
     }
 }
