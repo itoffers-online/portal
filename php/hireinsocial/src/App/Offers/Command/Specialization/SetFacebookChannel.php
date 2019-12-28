@@ -15,11 +15,13 @@ namespace App\Offers\Command\Specialization;
 
 use HireInSocial\Offers\Application\Command\Specialization\SetFacebookChannel as SystemSetFacebookChannel;
 use HireInSocial\Offers\Offers;
+use function mb_strtolower;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 final class SetFacebookChannel extends Command
 {
@@ -31,7 +33,7 @@ final class SetFacebookChannel extends Command
     protected static $defaultName = self::NAME;
 
     /**
-     * @var \HireInSocial\Offers\Offers
+     * @var Offers
      */
     private $offers;
 
@@ -50,7 +52,7 @@ final class SetFacebookChannel extends Command
     protected function configure() : void
     {
         $this
-            ->setDescription('<info>[Specialization]</info> Set facebook channel for specialization.')
+            ->setDescription('Set facebook channel for specialization.')
             ->addArgument('slug', InputArgument::REQUIRED, 'Specialization slug')
             ->addArgument('facebook_page_id', InputArgument::REQUIRED, 'Facebook page id that will post offers into group')
             ->addArgument('facebook_page_token', InputArgument::REQUIRED, 'Facebook page id access token with publish_to_groups permission')
@@ -70,7 +72,7 @@ final class SetFacebookChannel extends Command
         if ($input->isInteractive()) {
             $answer = $this->io->ask('Are you sure you want set facebook channel to the specialization?', 'yes');
 
-            if (\mb_strtolower($answer) !== 'yes') {
+            if (mb_strtolower($answer) !== 'yes') {
                 $this->io->note('Ok, action cancelled.');
 
                 return 1;
@@ -90,7 +92,7 @@ final class SetFacebookChannel extends Command
                 $input->getArgument('facebook_page_token'),
                 $input->getArgument('facebook_group_id')
             ));
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->io->error('Can\'t set specialization facebook channel, check logs for more details.');
 
             return 1;

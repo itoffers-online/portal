@@ -40,7 +40,7 @@ use Throwable;
 
 final class PostOffer extends Command
 {
-    public const NAME = 'post:offer:test';
+    public const NAME = 'offer:post:test';
 
     /**
      * @var string
@@ -73,7 +73,7 @@ final class PostOffer extends Command
     protected function configure() : void
     {
         $this
-            ->setDescription('<info>[Offer]</info> Test posting job offer with automatically generated fake data. This offer also generate fake user.')
+            ->setDescription('Test posting job offer with automatically generated fake data. This offer also generate fake user.')
             ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
             ->addOption('no-salary', null, InputOption::VALUE_OPTIONAL, 'Pass this option when you want to test offer without salary', false)
             ->addOption('post-facebook-group', null, InputOption::VALUE_OPTIONAL, 'Post offer to facebook group assigned to the specialization', false)

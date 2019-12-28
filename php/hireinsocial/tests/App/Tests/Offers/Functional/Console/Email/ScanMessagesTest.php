@@ -50,7 +50,6 @@ final class ScanMessagesTest extends ConsoleTestCase
 
         $commandTester = new CommandTester($application->find(ScanMessages::NAME));
 
-
         $message = $this->createMessage(
             sprintf('apply+%s', $offer->emailHash()),
             'doe',
