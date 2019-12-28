@@ -146,6 +146,11 @@ class Offer
         return Uuid::fromString($this->id);
     }
 
+    public function emailHash() : string
+    {
+        return $this->emailHash;
+    }
+
     public function createdAt() : DateTimeImmutable
     {
         return $this->createdAt;
