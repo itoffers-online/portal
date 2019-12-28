@@ -68,6 +68,8 @@ final class SpecializationController extends AbstractController
             'offers' => $offers,
             'form' => $form->createView(),
             'queryParameters' => $request->query->all(),
+            'throttleLimit' => $this->offers->offerThrottleQuery()->limit(),
+            'throttleSince' => $this->offers->offerThrottleQuery()->since(),
         ]);
     }
 }

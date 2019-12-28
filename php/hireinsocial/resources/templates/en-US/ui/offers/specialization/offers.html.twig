@@ -5,8 +5,8 @@
 {% block body %}
     <h2 class="text-center">We have {{ total }} offers in <strong>{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}</strong> specialization {% include '@offers/specialization/_logo_plain.html.twig' with { specialization: specialization.slug} only %}</h2>
     <p class="alert alert-info">
-        Below you can find all job offers in this specialization. Job offers can't be added more frequently than once per day.
-        By default we are not displaying you offers older than 2 weeks, most interesting offers after that time are already outdated.
+        Below you can find all job offers in this specialization. Job offers can't be added more frequently than {{ throttleLimit }} per {{ throttleSince.format('%d') }} days.
+        By default, we are not displaying you offers older than 14 days, most interesting offers after that time are already outdated.
     </p>
     <div class="row">
         <div class="col-2">
