@@ -25,13 +25,24 @@ final class FacebookConnect implements Command
      */
     private $fbUserAppId;
 
-    public function __construct(string $fbUserAppId)
+    /**
+     * @var string
+     */
+    private $email;
+
+    public function __construct(string $fbUserAppId, string $email)
     {
         $this->fbUserAppId = $fbUserAppId;
+        $this->email = $email;
     }
 
     public function fbUserAppId() : string
     {
         return $this->fbUserAppId;
+    }
+
+    public function email() : string
+    {
+        return $this->email;
     }
 }

@@ -15,13 +15,11 @@ namespace HireInSocial\Offers\Application\User;
 
 use Ramsey\Uuid\UuidInterface;
 
-interface Users
+interface ExtraOffers
 {
-    public function add(User $user) : void;
+    public function add(ExtraOffer ...$extraOffers) : void;
 
-    public function getById(UuidInterface $id) : User;
+    public function findClosesToExpire(UuidInterface $userId) : ?ExtraOffer;
 
-    public function getByFB(string $userAppId) : User;
-
-    public function emailExists(string $email) : bool;
+    public function countNotExpired(UuidInterface $userId) : int;
 }

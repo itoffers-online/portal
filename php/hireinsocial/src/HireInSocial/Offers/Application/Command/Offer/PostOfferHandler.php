@@ -39,6 +39,7 @@ use HireInSocial\Offers\Application\System\Calendar;
 use HireInSocial\Offers\Application\System\FileStorage;
 use HireInSocial\Offers\Application\System\FileStorage\File;
 use HireInSocial\Offers\Application\System\Handler;
+use HireInSocial\Offers\Application\User\ExtraOffers;
 use HireInSocial\Offers\Application\User\User;
 use HireInSocial\Offers\Application\User\Users;
 use function mb_strtoupper;
@@ -101,9 +102,15 @@ final class PostOfferHandler implements Handler
      */
     private $fileStorage;
 
+    /**
+     * @var ExtraOffers
+     */
+    private $extraOffers;
+
     public function __construct(
         Calendar $calendar,
         Offers $offers,
+        ExtraOffers $extraOffers,
         Users $users,
         Posts $posts,
         Throttling $throttling,
@@ -125,6 +132,7 @@ final class PostOfferHandler implements Handler
         $this->slugs = $slugs;
         $this->offerPDFs = $offerPDFs;
         $this->fileStorage = $fileStorage;
+        $this->extraOffers = $extraOffers;
     }
 
     public function handles() : string
@@ -141,7 +149,13 @@ final class PostOfferHandler implements Handler
         $offer = $this->createOffer($command, $user, $specialization);
 
         if ($this->throttling->isThrottled($user, $this->offers)) {
-            throw new Exception(sprintf('User "%s" is throttled', $user->id()->toString()));
+            $extraOffer = $this->extraOffers->findClosesToExpire($user->id());
+
+            if ($extraOffer) {
+                $extraOffer->useFor($offer, $this->calendar);
+            } else {
+                throw new Exception(sprintf('User "%s" is throttled', $user->id()->toString()));
+            }
         }
 
         if ($command->offer()->channels()->facebookGroup()) {

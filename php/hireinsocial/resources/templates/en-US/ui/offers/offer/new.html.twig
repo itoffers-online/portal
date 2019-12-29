@@ -12,14 +12,17 @@
 </style>
 {% endblock %}
 {% block body %}
-    {% if throttled %}
+    {% if throttled and extraOffersCount <= 0 %}
     <div class="alert alert-warning text-center" role="alert">
-        Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait.
+        Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait.<br/>
+        Still have some really cool offers? <br/>
+        Email us some details at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
+        grant you couple <strong>extra offers</strong>!
     </div>
     {% else %}
     <div class="alert alert-info text-center" role="alert">
         You can add only {{ throttleLimit }} offers for {{ throttleSince.format('%d') }} days.
-        Number of offers you can add immediately: {{ offersLeft }}
+        Number of offers you can add immediately: {{ offersLeft }} {% if (extraOffersCount) %}<strong>+ {{ extraOffersCount }} extra offers!</strong>{% endif %}
     </div>
     {% endif %}
     {{ form_start(form) }}
@@ -30,7 +33,7 @@
                 <div class="card-body">
                     <h5>Questions?</h5>
                     <p>
-                        Please look into our<a href="{{ url('faq') }}">FAQ</a> section.
+                        Please look into our <a href="{{ url('faq') }}">FAQ</a> section.
                     </p>
                 </div>
             </div>
@@ -119,7 +122,7 @@
                 }) }}
             {% endif %}
 
-            {% if throttled %}
+            {% if throttled and extraOffersCount <= 0 %}
                 {{ form_row(form.submit, {label: "wait", attr:{disabled:disabled}}) }}
             {% else %}
                 {{ form_row(form.submit, {label: "Submit"}) }}

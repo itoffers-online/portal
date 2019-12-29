@@ -70,4 +70,28 @@ final class PostOfferTest extends HireInSocialTestCase
 
         $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $specialization));
     }
+
+    public function test_posting_offer_too_fast_with_extra_offer() : void
+    {
+        $user = $this->systemContext->createUser();
+        $this->systemContext->createSpecialization($specialization = 'spec');
+
+        $this->systemContext->addExtraOffer($user, $expiresInDays = 1);
+        $this->systemContext->addExtraOffer($user, $expiresInDays = 3);
+
+        for ($postedOffers = 0; $postedOffers < Throttling::LIMIT; $postedOffers++) {
+            $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $specialization));
+        }
+
+        $this->assertSame(2, $this->systemContext->offersFacade()->extraOffersQuery()->countNotExpired($user->id()));
+        $this->assertTrue($this->systemContext->offersFacade()->offerThrottleQuery()->isThrottled($user->id()));
+
+        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $specialization));
+
+        $this->assertSame(1, $this->systemContext->offersFacade()->extraOffersQuery()->countNotExpired($user->id()));
+        $this->assertGreaterThanOrEqual(
+            2,
+            $this->systemContext->offersFacade()->extraOffersQuery()->findClosesToExpire($user->id())->expiresAt()->diff(new \DateTimeImmutable())->days
+        );
+    }
 }

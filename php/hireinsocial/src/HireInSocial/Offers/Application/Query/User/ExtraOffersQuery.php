@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\User;
 
-use HireInSocial\Offers\Application\Query\User\Model\User;
+use HireInSocial\Offers\Application\Query\User\Model\ExtraOffer;
 use HireInSocial\Offers\Application\System\Query;
 
-interface UserQuery extends Query
+interface ExtraOffersQuery extends Query
 {
-    public function findByFacebook(string $facebookUserAppId) : ?User;
+    public function countNotExpired(string $userId) : int;
 
-    public function findById(string $id) : ?User;
-
-    public function findByEmail(string $email) : ?User;
+    public function findClosesToExpire(string $userId) : ?ExtraOffer;
 }

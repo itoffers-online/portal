@@ -14,17 +14,35 @@ declare(strict_types=1);
 namespace App\Offers\Controller;
 
 use Facebook\Authentication\AccessToken;
+use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
 use Psr\Log\LoggerInterface;
 
 trait FacebookAccess
 {
-    public function getUserId(Facebook $facebook, AccessToken $accessToken, LoggerInterface $logger) : string
+    /**
+     * @param Facebook $facebook
+     * @param AccessToken $accessToken
+     * @param LoggerInterface $logger
+     * @return array{id: string, email: string}
+     * @throws FacebookSDKException
+     */
+    public function getFbUser(Facebook $facebook, AccessToken $accessToken, LoggerInterface $logger) : array
     {
-        $facebookResponse = $facebook->get('me', $accessToken);
+        $facebookResponse = $facebook->get('me?fields=email, name', $accessToken);
 
         $logger->debug('Facebook /me response', ['body' => $facebookResponse->getBody()]);
 
-        return $facebookResponse->getDecodedBody()['id'];
+        return [
+            'id' => $facebookResponse->getDecodedBody()['id'],
+            'email' => \array_key_exists('email', $facebookResponse->getDecodedBody()) ? $facebookResponse->getDecodedBody()['email'] : null,
+        ];
+    }
+
+    public function clearFbPermissions(Facebook $facebook, string $fbUserId, AccessToken $accessToken, LoggerInterface $logger) : void
+    {
+        $facebookResponse = $facebook->delete(\sprintf('%s/permissions', $fbUserId), [], $accessToken);
+
+        $logger->debug('Facebook DELETE permissions response', ['body' => $facebookResponse->getBody()]);
     }
 }

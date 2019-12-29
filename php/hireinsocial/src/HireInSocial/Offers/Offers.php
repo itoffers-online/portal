@@ -19,6 +19,7 @@ use HireInSocial\Offers\Application\Query\Offer\OfferQuery;
 use HireInSocial\Offers\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Offers\Application\Query\SocialChannel\Facebook\FacebookQuery;
 use HireInSocial\Offers\Application\Query\Specialization\SpecializationQuery;
+use HireInSocial\Offers\Application\Query\User\ExtraOffersQuery;
 use HireInSocial\Offers\Application\Query\User\UserQuery;
 use HireInSocial\Offers\Application\System;
 use HireInSocial\Offers\Application\System\Calendar;
@@ -113,6 +114,17 @@ final class Offers
 
         if (!$query instanceof FacebookQuery) {
             throw new Exception("Expected FacebookQuery but got " . \get_class($query));
+        }
+
+        return $query;
+    }
+
+    public function extraOffersQuery() : ExtraOffersQuery
+    {
+        $query = $this->system->query(ExtraOffersQuery::class);
+
+        if (!$query instanceof ExtraOffersQuery) {
+            throw new Exception("Expected ExtraOffersQuery but got " . \get_class($query));
         }
 
         return $query;
