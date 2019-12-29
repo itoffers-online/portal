@@ -133,6 +133,7 @@ final class OfferController extends AbstractController
             'offersLeft' => $this->offers->offerThrottleQuery()->offersLeft($userId),
             'throttleLimit' => $this->offers->offerThrottleQuery()->limit(),
             'throttleSince' => $this->offers->offerThrottleQuery()->since(),
+            'extraOffersCount' => $this->offers->extraOffersQuery()->countNotExpired($userId),
         ]);
     }
 

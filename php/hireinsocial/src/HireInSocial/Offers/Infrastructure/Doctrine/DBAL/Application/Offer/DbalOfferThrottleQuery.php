@@ -82,14 +82,18 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
     public function offersLeft(string $userId) : int
     {
         if (array_key_exists($userId, $this->cache)) {
-            return $this->limit - $this->cache[$userId];
+            $offersLeft = $this->limit - $this->cache[$userId];
+
+            return $offersLeft < 0 ? 0 : $offersLeft;
         }
 
         $postedOffers = $this->postedOffers($userId);
 
         $this->cache[$userId] = $postedOffers;
 
-        return $this->limit - $postedOffers;
+        $offersLeft = $this->limit - $postedOffers;
+
+        return $offersLeft < 0 ? 0 : $offersLeft;
     }
 
     private function postedOffers(string $userId) : int

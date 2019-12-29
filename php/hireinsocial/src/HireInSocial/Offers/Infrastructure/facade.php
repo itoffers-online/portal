@@ -20,6 +20,7 @@ use HireInSocial\Offers\Application\Command\Offer\RemoveOfferHandler;
 use HireInSocial\Offers\Application\Command\Specialization\CreateSpecializationHandler;
 use HireInSocial\Offers\Application\Command\Specialization\RemoveFacebookChannelHandler;
 use HireInSocial\Offers\Application\Command\Specialization\SetFacebookChannelHandler;
+use HireInSocial\Offers\Application\Command\User\AddExtraOffersHandler;
 use HireInSocial\Offers\Application\Command\User\BlockUserHandler;
 use HireInSocial\Offers\Application\Command\User\FacebookConnectHandler;
 use HireInSocial\Offers\Application\Config;
@@ -35,6 +36,7 @@ use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOffer
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferThrottleQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\SocialChannel\Facebook\DbalFacebookFacebookQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Specialization\DbalSpecializationQuery;
+use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalExtraOffersQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalUserQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMApplications;
@@ -43,6 +45,7 @@ use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMSlugs;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSpecializations;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
+use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\User\ORMExtraOffers;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\User\ORMUsers;
 use HireInSocial\Offers\Infrastructure\Facebook\FacebookGraphSDK;
 use HireInSocial\Offers\Infrastructure\Flysystem\Application\System\FlysystemStorage;
@@ -138,6 +141,7 @@ function offersFacade(Config $config) : Offers
     $throttling = Throttling::createDefault($calendar);
     $ormOffers = new ORMOffers($entityManager);
     $ormUsers = new ORMUsers($entityManager);
+    $ormExtraOffers = new ORMExtraOffers($entityManager);
     $ormApplications = new ORMApplications($entityManager);
 
     $encoder = new SHA256Encoder();
@@ -159,6 +163,7 @@ function offersFacade(Config $config) : Offers
                 new PostOfferHandler(
                     $calendar,
                     $ormOffers,
+                    $ormExtraOffers,
                     $ormUsers,
                     new ORMPosts($entityManager),
                     $throttling,
@@ -182,6 +187,11 @@ function offersFacade(Config $config) : Offers
                     $ormUsers,
                     $calendar
                 ),
+                new AddExtraOffersHandler(
+                    $ormUsers,
+                    $ormExtraOffers,
+                    $calendar
+                ),
                 new ApplyThroughEmailHandler(
                     $mailer,
                     $ormOffers,
@@ -196,6 +206,7 @@ function offersFacade(Config $config) : Offers
                 new DbalOfferQuery($dbalConnection),
                 new DbalSpecializationQuery($dbalConnection),
                 new DbalUserQuery($dbalConnection),
+                new DbalExtraOffersQuery($dbalConnection),
                 new DbalApplicationQuery($dbalConnection, $encoder),
                 new DbalFacebookFacebookQuery($dbalConnection),
             ),

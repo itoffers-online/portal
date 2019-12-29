@@ -146,6 +146,11 @@ class Offer
         return Uuid::fromString($this->id);
     }
 
+    public function getUserId() : UuidInterface
+    {
+        return Uuid::fromString($this->userId);
+    }
+
     public function emailHash() : string
     {
         return $this->emailHash;

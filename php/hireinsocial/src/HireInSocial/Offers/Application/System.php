@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application;
 
+use function get_class;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\System\Calendar;
 use HireInSocial\Offers\Application\System\Command;
@@ -20,26 +21,27 @@ use HireInSocial\Offers\Application\System\CommandBus;
 use HireInSocial\Offers\Application\System\Queries;
 use HireInSocial\Offers\Application\System\Query;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 class System
 {
     /**
-     * @var \HireInSocial\Offers\Application\System\CommandBus
+     * @var CommandBus
      */
     private $commandBus;
 
     /**
-     * @var \HireInSocial\Offers\Application\System\Queries
+     * @var Queries
      */
     private $queries;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
 
     /**
-     * @var \HireInSocial\Offers\Application\System\Calendar
+     * @var Calendar
      */
     private $calendar;
 
@@ -55,10 +57,10 @@ class System
     {
         try {
             $this->commandBus->handle($command);
-        } catch (\Throwable $exception) {
-            $this->logger->error(sprintf('Failed to handle command %s', \get_class($command)), [
+        } catch (Throwable $exception) {
+            $this->logger->error(sprintf('Failed to handle command %s', get_class($command)), [
                 'system_time' => $this->calendar->currentTime()->format('c'),
-                'exception' => \get_class($exception),
+                'exception' => get_class($exception),
                 'message' => $exception->getMessage(),
                 'code' => $exception->getCode(),
                 'trace' => $exception->getTraceAsString(),

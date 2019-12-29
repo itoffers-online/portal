@@ -1,0 +1,2 @@
+It looks that your facebook email was already used to connect other facebook account. If you think this is a mistake
+please contact us at <a target="_blank" href="mailto:{{ contact_email }}">{{ contact_email }}</a>.

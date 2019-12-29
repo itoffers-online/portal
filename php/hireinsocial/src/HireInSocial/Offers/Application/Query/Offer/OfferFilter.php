@@ -56,6 +56,11 @@ final class OfferFilter extends AbstractFilter
      */
     private $withSalary;
 
+    /**
+     * @var string|null
+     */
+    private $userId;
+
     private function __construct()
     {
         $this->newerThan(new \DateTimeImmutable('-2 weeks', new \DateTimeZone('UTC')));
@@ -130,6 +135,18 @@ final class OfferFilter extends AbstractFilter
     public function withSalary() : ?bool
     {
         return $this->withSalary;
+    }
+
+    public function belongsTo(string $userId) : self
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    public function userId() : ?string
+    {
+        return $this->userId;
     }
 
     public function sortBy(string $columnType) : self

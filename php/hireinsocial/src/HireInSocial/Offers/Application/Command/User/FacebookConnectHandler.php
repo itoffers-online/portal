@@ -47,7 +47,11 @@ final class FacebookConnectHandler implements Handler
         try {
             $this->users->getByFB($command->fbUserAppId());
         } catch (Exception $e) {
-            $this->users->add(User::fromFacebook($command->fbUserAppId(), $this->calendar));
+            if ($this->users->emailExists($command->email())) {
+                throw new Exception(\sprintf("Email %s already used by different account", $command->email()), 0, $e);
+            }
+
+            $this->users->add(User::fromFacebook($command->fbUserAppId(), $command->email(), $this->calendar));
         }
     }
 }

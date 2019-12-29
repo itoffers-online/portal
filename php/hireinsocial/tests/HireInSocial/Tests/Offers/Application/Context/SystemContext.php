@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace HireInSocial\Tests\Offers\Application\Context;
 
+use Faker\Factory;
+use HireInSocial\Offers\Application\Command\User\AddExtraOffers;
 use HireInSocial\Offers\Application\Command\User\FacebookConnect;
 use HireInSocial\Offers\Application\Query\Specialization\Model\Specialization;
 use HireInSocial\Offers\Application\Query\User\Model\User;
@@ -39,7 +41,8 @@ final class SystemContext
     public function createUser() : User
     {
         $fbUserAppId = \uniqid('facebook_user_id');
-        $this->offers->handle(new FacebookConnect($fbUserAppId));
+        $email = Factory::create()->email;
+        $this->offers->handle(new FacebookConnect($fbUserAppId, $email));
 
         return $this->offers->userQuery()->findByFacebook($fbUserAppId);
     }
@@ -49,5 +52,10 @@ final class SystemContext
         $this->offers->handle(CreateSpecializationMother::create($slug));
 
         return $this->offers->specializationQuery()->findBySlug($slug);
+    }
+
+    public function addExtraOffer(User $user, int $expiresInDays) : void
+    {
+        $this->offers->handle(new AddExtraOffers($user->id(), 1, $expiresInDays));
     }
 }

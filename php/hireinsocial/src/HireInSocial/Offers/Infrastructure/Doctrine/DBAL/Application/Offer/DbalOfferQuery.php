@@ -73,6 +73,11 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->andWhere('o.salary IS NOT NULL');
         }
 
+        if ($filter->userId()) {
+            $queryBuilder->andWhere('o.user_id = :userId');
+            $queryBuilder->setParameter('userId', $filter->userId());
+        }
+
         $queryBuilder
             ->setMaxResults($filter->limit())
             ->setFirstResult($filter->offset());
@@ -91,13 +96,10 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->orderBy('o.created_at', 'DESC');
         }
 
-        $queryBuilder->setParameters(
-            [
-                'specializationSlug' => $filter->specialization(),
-                'sinceDate' => $filter->sinceDate()->format(DateTimeInterface::ISO8601),
-                'tillDate' => $filter->tillDate()->format(DateTimeInterface::ISO8601),
-            ]
-        );
+        $queryBuilder->setParameter('specializationSlug', $filter->specialization());
+        $queryBuilder->setParameter('sinceDate', $filter->sinceDate()->format(DateTimeInterface::ISO8601));
+        $queryBuilder->setParameter('tillDate', $filter->tillDate()->format(DateTimeInterface::ISO8601));
+
 
         $offersData = $queryBuilder->execute()
             ->fetchAll();
@@ -129,13 +131,16 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->andWhere('o.salary IS NOT NULL');
         }
 
-        return (int) $queryBuilder->setParameters(
-            [
-                    'specializationSlug' => $filter->specialization(),
-                    'sinceDate' => $filter->sinceDate()->format(DateTimeInterface::ISO8601),
-                    'tillDate' => $filter->tillDate()->format(DateTimeInterface::ISO8601),
-                ]
-        )
+        if ($filter->userId()) {
+            $queryBuilder->andWhere('o.user_id = :userId');
+            $queryBuilder->setParameter('userId', $filter->userId());
+        }
+
+        $queryBuilder->setParameter('specializationSlug', $filter->specialization());
+        $queryBuilder->setParameter('sinceDate', $filter->sinceDate()->format(DateTimeInterface::ISO8601));
+        $queryBuilder->setParameter('tillDate', $filter->tillDate()->format(DateTimeInterface::ISO8601));
+
+        return (int) $queryBuilder
             ->execute()
             ->fetchColumn();
     }

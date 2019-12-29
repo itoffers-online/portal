@@ -24,7 +24,7 @@ final class UserMother
 
     public static function withId(UuidInterface $id) : User
     {
-        $user = User::fromFacebook('facebook_id', CalendarMother::utc());
+        $user = User::fromFacebook('facebook_id', 'user@hirein.social', CalendarMother::utc());
         self::setPrivatePropertyValue($user, 'id', $id);
 
         return $user;
@@ -32,6 +32,6 @@ final class UserMother
 
     public static function random() : User
     {
-        return User::fromFacebook('facebook_id', CalendarMother::utc());
+        return User::fromFacebook('facebook_id', 'user@hirein.social', CalendarMother::utc());
     }
 }

@@ -22,9 +22,9 @@ class CalendarStub implements Calendar
      */
     private $currentTime;
 
-    public function __construct(\DateTimeImmutable $currentTime)
+    public function __construct(\DateTimeImmutable $currentTime = null)
     {
-        $this->currentTime = $currentTime;
+        $this->currentTime = $currentTime ? $currentTime : new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
     }
 
     public function currentTime() : \DateTimeImmutable
@@ -35,5 +35,10 @@ class CalendarStub implements Calendar
     public function goBack(int $seconds) : void
     {
         $this->currentTime = $this->currentTime->modify(sprintf('-%d seconds', $seconds));
+    }
+
+    public function addDays(int $days) : void
+    {
+        $this->currentTime = $this->currentTime->modify(sprintf('+%d days', $days));
     }
 }

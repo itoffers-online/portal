@@ -31,6 +31,11 @@ class User
     private $fbUserAppId;
 
     /**
+     * @var string
+     */
+    private $email;
+
+    /**
      * @var \DateTimeImmutable
      */
     private $createdAt;
@@ -40,17 +45,20 @@ class User
      */
     private $blockedAt;
 
-    private function __construct(\DateTimeImmutable $createdAt)
+    private function __construct(\DateTimeImmutable $createdAt, string $email)
     {
+        Assertion::email($email);
+
         $this->id = Uuid::uuid4()->toString();
         $this->createdAt = $createdAt;
+        $this->email = \mb_strtolower($email);
     }
 
-    public static function fromFacebook(string $userAppId, Calendar $calendar) : self
+    public static function fromFacebook(string $userAppId, string $email, Calendar $calendar) : self
     {
         Assertion::betweenLength($userAppId, 0, 255);
 
-        $user = new self($calendar->currentTime());
+        $user = new self($calendar->currentTime(), $email);
         $user->fbUserAppId = $userAppId;
 
         return $user;

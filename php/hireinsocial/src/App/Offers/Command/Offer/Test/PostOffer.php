@@ -112,8 +112,9 @@ final class PostOffer extends Command
             $faker = Factory::create($this->locale);
 
             $fbUserAppId = $faker->uuid;
+            $email = $faker->email;
 
-            $this->offers->handle(new FacebookConnect($fbUserAppId));
+            $this->offers->handle(new FacebookConnect($fbUserAppId, $email));
 
             $user = $this->offers->userQuery()->findByFacebook($fbUserAppId);
 

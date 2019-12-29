@@ -22,7 +22,7 @@ use Ramsey\Uuid\UuidInterface;
 final class ORMUsers implements Users
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $entityManager;
 
@@ -56,5 +56,10 @@ final class ORMUsers implements Users
         }
 
         return $user;
+    }
+
+    public function emailExists(string $email) : bool
+    {
+        return (bool) $this->entityManager->getRepository(User::class)->findOneBy(['email' => \mb_strtolower($email)]);
     }
 }

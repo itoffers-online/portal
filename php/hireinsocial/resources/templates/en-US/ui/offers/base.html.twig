@@ -34,7 +34,7 @@
     {% for label, messages in app.flashes(['warning', 'error', 'success']) %}
         {% for message in messages %}
             <div data-alert-{{ label }} class="alert alert-{{ label }} text-center">
-                {{ message }}
+                {{ message|raw }}
             </div>
         {% endfor %}
     {% endfor %}
@@ -47,7 +47,7 @@
             <div class="col-4 col-md">
             </div>
             <div class="col-4 col-md text-right">
-                <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+                <a target="_blank" href="mailto:{{ contact_email }}">{{ contact_email }}</a>
             </div>
         </div>
     </footer>

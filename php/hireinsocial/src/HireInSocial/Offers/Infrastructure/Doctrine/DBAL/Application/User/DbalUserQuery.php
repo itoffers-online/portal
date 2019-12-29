@@ -69,6 +69,26 @@ final class DbalUserQuery implements UserQuery
         return $this->hydrateUser($userData);
     }
 
+    public function findByEmail(string $email) : ?User
+    {
+        $userData = $this->connection->createQueryBuilder()
+            ->select('u.*')
+            ->from('his_user', 'u')
+            ->where('u.email = :email')
+            ->setParameters(
+                [
+                    'email' => \mb_strtolower($email),
+                ]
+            )->execute()
+            ->fetch();
+
+        if (!$userData) {
+            return null;
+        }
+
+        return $this->hydrateUser($userData);
+    }
+
     private function hydrateUser(array $userData) : User
     {
         return new User(

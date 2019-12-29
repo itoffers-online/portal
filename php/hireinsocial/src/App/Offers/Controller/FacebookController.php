@@ -70,7 +70,8 @@ final class FacebookController extends AbstractController
 
         return $this->render('@offers/facebook/login.html.twig', [
             'facebook_login_url' => $this->facebook->getRedirectLoginHelper()->getLoginUrl(
-                $this->generateUrl('facebook_login_success', [], UrlGeneratorInterface::ABSOLUTE_URL)
+                $this->generateUrl('facebook_login_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                ['email']
             ),
         ]);
     }
@@ -90,10 +91,26 @@ final class FacebookController extends AbstractController
             $this->generateUrl('facebook_login_success', [], UrlGeneratorInterface::ABSOLUTE_URL)
         );
 
-        $fbUserAppId = $this->getUserId($this->facebook, $accessToken, $this->logger);
-        $this->offers->handle(new FacebookConnect($fbUserAppId));
+        $fbUser = $this->getFbUser($this->facebook, $accessToken, $this->logger);
 
-        $user = $this->offers->userQuery()->findByFacebook($fbUserAppId);
+        if (!$fbUser['email']) {
+            $this->clearFbPermissions($this->facebook, $fbUser['id'], $accessToken, $this->logger);
+            $this->addFlash('warning', $this->renderView('@offers/alert/fb_email_required.txt'));
+
+            return $this->redirectToRoute('facebook_login');
+        }
+
+        if ($user = $this->offers->userQuery()->findByEmail($fbUser['email'])) {
+            if ($user->id() !== $fbUser['id']) {
+                $this->addFlash('warning', $this->renderView('@offers/alert/fb_email_already_used.txt'));
+
+                return $this->redirectToRoute('facebook_login');
+            }
+        }
+
+        $this->offers->handle(new FacebookConnect($fbUser['id'], $fbUser['email']));
+
+        $user = $this->offers->userQuery()->findByFacebook($fbUser['id']);
 
         if ($user->isBlocked()) {
             return $this->redirectToRoute('user_blocked');
