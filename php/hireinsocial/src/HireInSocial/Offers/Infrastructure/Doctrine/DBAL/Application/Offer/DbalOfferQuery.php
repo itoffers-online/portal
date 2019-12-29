@@ -53,7 +53,14 @@ final class DbalOfferQuery implements OfferQuery
     public function findAll(OfferFilter $filter) : Offers
     {
         $queryBuilder = $this->connection->createQueryBuilder()
-            ->select('o.*, op.path as offer_pdf, os.slug, s.slug as specialization_slug, CAST(o.salary->>\'max\' as INTEGER) as salary_max')
+            ->select('
+                o.*, 
+                op.path as offer_pdf, 
+                os.slug, 
+                s.slug as specialization_slug, 
+                CAST(o.salary->>\'max\' as INTEGER) as salary_max,
+                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+            ')
             ->from('his_job_offer', 'o')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
@@ -148,7 +155,13 @@ final class DbalOfferQuery implements OfferQuery
     public function findById(string $id) : ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
-            ->select('o.*, op.path as offer_pdf, os.slug, s.slug as specialization_slug')
+            ->select('
+                o.*, 
+                op.path as offer_pdf, 
+                os.slug, 
+                s.slug as specialization_slug,
+                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+            ')
             ->from('his_job_offer_slug', 'os')
             ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
             ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
@@ -172,7 +185,12 @@ final class DbalOfferQuery implements OfferQuery
     public function findByEmailHash(string $emailHah) : ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
-            ->select('o.*, os.slug, s.slug as specialization_slug')
+            ->select('
+                o.*, 
+                os.slug, 
+                s.slug as specialization_slug,
+                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+            ')
             ->from('his_job_offer_slug', 'os')
             ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
             ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
@@ -196,7 +214,13 @@ final class DbalOfferQuery implements OfferQuery
     public function findBySlug(string $slug) : ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
-            ->select('o.*, op.path as offer_pdf, os.slug, s.slug as specialization_slug')
+            ->select('
+                o.*, 
+                op.path as offer_pdf, 
+                os.slug, 
+                s.slug as specialization_slug,
+                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+            ')
             ->from('his_job_offer_slug', 'os')
             ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
             ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
@@ -220,7 +244,13 @@ final class DbalOfferQuery implements OfferQuery
     public function findOneAfter(Offer $offer) : ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
-            ->select('o.*, op.path as offer_pdf, os.slug, s.slug as specialization_slug')
+            ->select('
+                o.*, 
+                op.path as offer_pdf, 
+                os.slug, 
+                s.slug as specialization_slug,
+                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+            ')
             ->from('his_job_offer', 'o')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
@@ -247,7 +277,13 @@ final class DbalOfferQuery implements OfferQuery
     public function findOneBefore(Offer $offer) : ?Offer
     {
         $offerData = $this->connection->createQueryBuilder()
-            ->select('o.*, op.path as offer_pdf, os.slug, s.slug as specialization_slug')
+            ->select('
+                o.*, 
+                op.path as offer_pdf,
+                os.slug, 
+                s.slug as specialization_slug,
+                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+            ')
             ->from('his_job_offer', 'o')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
@@ -305,6 +341,7 @@ final class DbalOfferQuery implements OfferQuery
                     )
                     : null
             ),
+            $offerData['applications_count'],
             $offerPDF
         );
     }

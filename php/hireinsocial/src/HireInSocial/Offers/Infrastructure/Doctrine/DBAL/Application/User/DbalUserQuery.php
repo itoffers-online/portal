@@ -93,6 +93,7 @@ final class DbalUserQuery implements UserQuery
     {
         return new User(
             $userData['id'],
+            $userData['email'],
             $userData['fb_user_app_id'],
             (bool) $userData['blocked_at']
         );

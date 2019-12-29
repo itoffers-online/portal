@@ -9,7 +9,10 @@
                 </ul>
                 <a href="{{ url('offer_post') }}" class="btn btn-primary mr-2">Post Offer</a>
                 {% if facebook_logged_in %}
-                    <a class="btn btn-secondary" href="{{ url('facebook_logout') }}">Logout</a>
+                    <a class="btn btn-secondary mr-2" href="{{ url('user_profile') }}">Profile</a>
+                    <a class="btn btn-light" href="{{ url('facebook_logout') }}">Logout</a>
+                {% else %}
+                    <a class="btn btn-light" href="{{ url('facebook_login') }}">Login</a>
                 {% endif %}
             </div>
         </div>

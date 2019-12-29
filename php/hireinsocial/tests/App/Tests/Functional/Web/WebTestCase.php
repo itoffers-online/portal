@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Tests\Offers\Functional\Web;
+namespace App\Tests\Functional\Web;
 
 use App\Offers\Controller\FacebookController;
-use App\Tests\Functional\Web\SymfonyKernelTestCase;
 use HireInSocial\Offers\Application\Query\User\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -28,7 +27,7 @@ class WebTestCase extends SymfonyKernelTestCase
      *
      * @return Client A Client instance
      */
-    protected static function createClient(array $options = [], array $server = [])
+    protected static function createClient(array $options = [], array $server = []) : Client
     {
         $kernel = static::bootKernel($options);
 

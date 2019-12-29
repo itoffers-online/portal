@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Offers\Functional\Web;
 
+use App\Tests\Functional\Web\WebTestCase;
+
 final class AuthenticationTest extends WebTestCase
 {
     public function test_redirect_to_login_page_when_want_to_add_new_offer_not_logged() : void

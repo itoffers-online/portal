@@ -19,6 +19,7 @@ use App\Offers\Controller\LayoutController;
 use App\Offers\Controller\OfferController;
 use App\Offers\Controller\ReCaptchaController;
 use App\Offers\Controller\SpecializationController;
+use App\Offers\Controller\UserController;
 use App\Offers\Routing\Factory;
 use App\Offers\Twig\Extension\FacebookExtension;
 use Facebook\Facebook;
@@ -31,6 +32,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
+use Twig\Extensions\DateExtension;
 use Twig\Extensions\IntlExtension;
 use Twig\Extensions\TextExtension;
 
@@ -103,6 +105,7 @@ final class SymfonyKernel extends Kernel
         $c->register(FacebookExtension::class)->addTag('twig.extension');
         $c->register(IntlExtension::class)->addTag('twig.extension');
         $c->register(TextExtension::class)->addTag('twig.extension');
+        $c->register(DateExtension::class)->addTag('twig.extension');
 
         $c->autowire(IndexController::class)->addTag('controller.service_arguments');
         $c->autowire(FacebookController::class)->addTag('controller.service_arguments');
@@ -110,6 +113,7 @@ final class SymfonyKernel extends Kernel
         $c->autowire(LayoutController::class)->addTag('controller.service_arguments');
         $c->autowire(SpecializationController::class)->addTag('controller.service_arguments');
         $c->autowire(ReCaptchaController::class)->addTag('controller.service_arguments');
+        $c->autowire(UserController::class)->addTag('controller.service_arguments');
     }
 
     public function getProjectDir() : string

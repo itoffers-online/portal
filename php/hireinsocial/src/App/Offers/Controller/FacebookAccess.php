@@ -31,7 +31,7 @@ trait FacebookAccess
     {
         $facebookResponse = $facebook->get('me?fields=email, name', $accessToken);
 
-        $logger->debug('Facebook /me response', ['body' => $facebookResponse->getBody()]);
+        $logger->debug('acebook /me response', ['body' => $facebookResponse->getBody()]);
 
         return [
             'id' => $facebookResponse->getDecodedBody()['id'],

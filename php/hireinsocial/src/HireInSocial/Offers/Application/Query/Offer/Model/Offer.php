@@ -28,7 +28,7 @@ use Ramsey\Uuid\UuidInterface;
 final class Offer
 {
     /**
-     * @var \Ramsey\Uuid\UuidInterface
+     * @var UuidInterface
      */
     private $id;
 
@@ -43,7 +43,7 @@ final class Offer
     private $emailHash;
 
     /**
-     * @var \Ramsey\Uuid\UuidInterface|null
+     * @var UuidInterface|null
      */
     private $userId;
 
@@ -58,12 +58,17 @@ final class Offer
     private $createdAt;
 
     /**
-     * @var \HireInSocial\Offers\Application\Query\Offer\Model\Offer\Parameters
+     * @var Parameters
      */
     private $parameters;
 
     /**
-     * @var \HireInSocial\Offers\Application\Query\Offer\Model\Offer\OfferPDF|null
+     * @var int
+     */
+    private $applicationsCount;
+
+    /**
+     * @var OfferPDF|null
      */
     private $offerPDF;
 
@@ -75,6 +80,7 @@ final class Offer
         string $specializationSlug,
         \DateTimeImmutable $createdAt,
         Parameters $parameters,
+        int $applicationsCount,
         ?OfferPDF $offerPDF
     ) {
         $this->slug = $slug;
@@ -84,6 +90,7 @@ final class Offer
         $this->createdAt = $createdAt;
         $this->specializationSlug = $specializationSlug;
         $this->parameters = $parameters;
+        $this->applicationsCount = $applicationsCount;
         $this->offerPDF = $offerPDF;
     }
 
@@ -160,5 +167,10 @@ final class Offer
     public function postedBy(string $userId) : bool
     {
         return $this->userId->equals(Uuid::fromString($userId));
+    }
+
+    public function applicationsCount() : int
+    {
+        return $this->applicationsCount;
     }
 }
