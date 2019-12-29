@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Offers\Functional\Web;
 
+use App\Tests\Functional\Web\WebTestCase;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Tests\Offers\Application\Double\Stub\CalendarStub;
 use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;

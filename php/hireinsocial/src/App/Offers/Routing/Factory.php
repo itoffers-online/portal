@@ -19,6 +19,7 @@ use App\Offers\Controller\OfferController;
 use App\Offers\Controller\ReCaptchaController;
 use App\Offers\Controller\SecurityController;
 use App\Offers\Controller\SpecializationController;
+use App\Offers\Controller\UserController;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
@@ -54,6 +55,10 @@ final class Factory
             new Route('/user/blocked', ['_controller' => [SecurityController::class, 'userBlockedAction']]),
             'user_blocked'
         );
+        $routes->addRoute(
+            new Route('/user/profile', ['_controller' => [UserController::class, 'profileAction']]),
+            'user_profile'
+        );
     }
 
     public static function addLocalizedRoutes(RouteCollectionBuilder $routes, string $locale) : void
@@ -78,6 +83,7 @@ final class Factory
                 $routes->addRoute(new Route('/job-offer/{offerSlug}/remove', ['_controller' => [OfferController::class, 'removeAction']]), 'offer_remove');
                 $routes->addRoute(new Route('/job-offer/{offerSlug}', ['_controller' => [OfferController::class, 'offerAction']]), 'offer');
                 $routes->addRoute(new Route('/user/blocked', ['_controller' => [SecurityController::class, 'userBlockedAction']]), 'user_blocked');
+                $routes->addRoute(new Route('/user/profile', ['_controller' => [UserController::class, 'profileAction']]), 'user_profile');
 
                 break;
             default:

@@ -101,7 +101,7 @@ final class FacebookController extends AbstractController
         }
 
         if ($user = $this->offers->userQuery()->findByEmail($fbUser['email'])) {
-            if ($user->id() !== $fbUser['id']) {
+            if ($user->fbAppId() !== $fbUser['id']) {
                 $this->addFlash('warning', $this->renderView('@offers/alert/fb_email_already_used.txt'));
 
                 return $this->redirectToRoute('facebook_login');

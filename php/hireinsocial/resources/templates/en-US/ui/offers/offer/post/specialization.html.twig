@@ -5,7 +5,7 @@
         </div>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Offers: {{ specialization.offers.count }}</li>
-            <li class="list-group-item">Latest offer: {% if specialization.offers.count > 0 %}{{ specialization.offers.latestOfferDate|date('Y-m-d H:i:s') }}{% endif %}</li>
+            <li class="list-group-item">Latest offer: {% if specialization.offers.count > 0 %}{{ specialization.offers.latestOfferDate|time_diff }}{% else %}never{% endif %}</li>
         </ul>
         <div class="card-body text-center">
             <p class="card-text">

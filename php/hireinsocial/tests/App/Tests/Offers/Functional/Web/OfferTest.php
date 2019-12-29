@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Offers\Functional\Web;
 
-use App\Offers\Controller\FacebookController;
+use App\Tests\Functional\Web\WebTestCase;
 use Faker\Factory;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
@@ -54,9 +54,7 @@ final class OfferTest extends WebTestCase
         $user = $this->systemContext->createUser();
 
         $client = static::createClient();
-        $client->getContainer()
-            ->get('session')
-            ->set(FacebookController::USER_SESSION_KEY, (string) $user->id());
+        $this->authenticate($client, $user);
 
         $crawler = $client->request(
             'GET',

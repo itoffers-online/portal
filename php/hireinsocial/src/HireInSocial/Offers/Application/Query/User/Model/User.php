@@ -21,6 +21,11 @@ final class User
     private $id;
 
     /**
+     * @var string
+     */
+    private $email;
+
+    /**
      * @var string|null
      */
     private $fbAppId;
@@ -30,9 +35,10 @@ final class User
      */
     private $isBlocked;
 
-    public function __construct(string $id, ?string $fbAppId, bool $isBlocked)
+    public function __construct(string $id, string $email, ?string $fbAppId, bool $isBlocked)
     {
         $this->id = $id;
+        $this->email = $email;
         $this->fbAppId = $fbAppId;
         $this->isBlocked = $isBlocked;
     }
@@ -40,6 +46,14 @@ final class User
     public function id() : string
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function email() : string
+    {
+        return $this->email;
     }
 
     public function fbAppId() : ?string
