@@ -19,7 +19,7 @@ class UserTest extends WebTestCase
 {
     public function test_user_profile_page() : void
     {
-        $user = $this->systemContext->createUser();
+        $user = $this->offersContext->createUser();
 
         $client = static::createClient();
         $this->authenticate($client, $user);

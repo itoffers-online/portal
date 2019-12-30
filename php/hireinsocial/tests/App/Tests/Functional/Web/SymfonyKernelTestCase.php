@@ -21,7 +21,7 @@ use function HireInSocial\Offers\Infrastructure\dbal;
 use function HireInSocial\Offers\Infrastructure\offersFacade;
 use HireInSocial\Offers\Offers;
 use HireInSocial\Tests\Offers\Application\Context\DatabaseContext;
-use HireInSocial\Tests\Offers\Application\Context\SystemContext;
+use HireInSocial\Tests\Offers\Application\Context\OffersContext;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class SymfonyKernelTestCase extends KernelTestCase
@@ -37,9 +37,9 @@ class SymfonyKernelTestCase extends KernelTestCase
     protected static $offersFacade;
 
     /**
-     * @var SystemContext
+     * @var OffersContext
      */
-    protected $systemContext;
+    protected $offersContext;
 
     /**
      * @var DatabaseContext
@@ -82,7 +82,7 @@ class SymfonyKernelTestCase extends KernelTestCase
     {
         $config = static::config();
 
-        $this->systemContext = new SystemContext(static::offersFacade());
+        $this->offersContext = new OffersContext(static::offersFacade());
         $this->databaseContext = new DatabaseContext(dbal($config));
 
         $this->databaseContext->purgeDatabase();

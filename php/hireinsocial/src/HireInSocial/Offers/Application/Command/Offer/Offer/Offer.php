@@ -16,42 +16,42 @@ namespace HireInSocial\Offers\Application\Command\Offer\Offer;
 final class Offer
 {
     /**
-     * @var \HireInSocial\Offers\Application\Command\Offer\Offer\Company
+     * @var Company
      */
     private $company;
 
     /**
-     * @var \HireInSocial\Offers\Application\Command\Offer\Offer\Position
+     * @var Position
      */
     private $position;
 
     /**
-     * @var \HireInSocial\Offers\Application\Command\Offer\Offer\Location
+     * @var Location
      */
     private $location;
 
     /**
-     * @var \HireInSocial\Offers\Application\Command\Offer\Offer\Salary|null
+     * @var Salary|null
      */
     private $salary;
 
     /**
-     * @var \HireInSocial\Offers\Application\Command\Offer\Offer\Contract
+     * @var Contract
      */
     private $contract;
 
     /**
-     * @var \HireInSocial\Offers\Application\Command\Offer\Offer\Description
+     * @var Description
      */
     private $description;
 
     /**
-     * @var \HireInSocial\Offers\Application\Command\Offer\Offer\Contact
+     * @var Contact
      */
     private $contact;
 
     /**
-     * @var \HireInSocial\Offers\Application\Command\Offer\Offer\Channels
+     * @var Channels
      */
     private $channels;
 

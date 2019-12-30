@@ -25,6 +25,9 @@
                         {% for offer in offers %}
                             {{ include('@offers/offer/_list_entry.html.twig', {offer: offer}, false) }}
                             Received applications: {{ offer.applicationsCount }}
+                            <div class="mt-2">
+                                <a class="btn btn-primary btn-sm" href="{{ url('offer_new', {specSlug: offer.specializationSlug, 'offer-slug': offer.slug }) }}">Post Again</a>
+                            </div>
                             {% if not loop.last %}
                                 <hr />
                             {% endif %}

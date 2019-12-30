@@ -20,13 +20,13 @@ use HireInSocial\Offers\Infrastructure\Flysystem\Application\System\FlysystemSto
 use function HireInSocial\Offers\Infrastructure\offersFacade;
 use HireInSocial\Tests\Offers\Application\Context\DatabaseContext;
 use HireInSocial\Tests\Offers\Application\Context\FilesystemContext;
-use HireInSocial\Tests\Offers\Application\Context\SystemContext;
+use HireInSocial\Tests\Offers\Application\Context\OffersContext;
 use PHPUnit\Framework\TestCase;
 
 class HireInSocialTestCase extends TestCase
 {
     /**
-     * @var SystemContext
+     * @var OffersContext
      */
     protected $systemContext;
 
@@ -48,7 +48,7 @@ class HireInSocialTestCase extends TestCase
             $this->fail(sprintf('Expected environment "test" but got "%s"', $config->getString(Config::ENV)));
         }
 
-        $this->systemContext = new SystemContext(offersFacade($config));
+        $this->systemContext = new OffersContext(offersFacade($config));
         $this->databaseContext = new DatabaseContext(dbal($config));
         $this->filesystemContext = new FilesystemContext(FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG)));
 

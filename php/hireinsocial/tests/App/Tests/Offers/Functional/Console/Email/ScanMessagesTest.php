@@ -25,6 +25,7 @@ use HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
 use PHPUnit\Framework\MockObject\MockObject;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
@@ -127,9 +128,9 @@ final class ScanMessagesTest extends ConsoleTestCase
 
     public function createOffer() : Offer
     {
-        $user = $this->systemContext->createUser();
-        $this->systemContext->createSpecialization('spec');
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), 'spec'));
+        $user = $this->offersContext->createUser();
+        $this->offersContext->createSpecialization('spec');
+        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), 'spec'));
 
         $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor('spec'))->first();
 

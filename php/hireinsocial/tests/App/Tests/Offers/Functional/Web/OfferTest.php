@@ -17,6 +17,7 @@ use App\Tests\Functional\Web\WebTestCase;
 use Faker\Factory;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,12 +32,12 @@ final class OfferTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->systemContext->createSpecialization($this->specialization);
+        $this->offersContext->createSpecialization($this->specialization);
     }
 
     public function test_new_offer_page() : void
     {
-        $user = $this->systemContext->createUser();
+        $user = $this->offersContext->createUser();
 
         $client = static::createClient();
         $this->authenticate($client, $user);
@@ -51,7 +52,7 @@ final class OfferTest extends WebTestCase
 
     public function test_success_page_after_posting_offer() : void
     {
-        $user = $this->systemContext->createUser();
+        $user = $this->offersContext->createUser();
 
         $client = static::createClient();
         $this->authenticate($client, $user);
@@ -101,8 +102,8 @@ final class OfferTest extends WebTestCase
     public function test_offer_details_page() : void
     {
         $client = static::createClient();
-        $user = $this->systemContext->createUser();
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $this->specialization));
+        $user = $this->offersContext->createUser();
+        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $this->specialization));
 
         $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($this->specialization))->first();
 
@@ -112,11 +113,11 @@ final class OfferTest extends WebTestCase
 
     public function test_deleting_offer() : void
     {
-        $user = $this->systemContext->createUser();
+        $user = $this->offersContext->createUser();
         $client = static::createClient();
         $this->authenticate($client, $user);
 
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $this->specialization));
+        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $this->specialization));
 
         $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($this->specialization))->first();
 
@@ -135,12 +136,50 @@ final class OfferTest extends WebTestCase
 
     public function test_attempt_to_remove_offer_that_does_not_belong_to_the_user() : void
     {
-        $user = $this->systemContext->createUser();
+        $user = $this->offersContext->createUser();
         $client = static::createClient();
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $this->specialization));
+        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $this->specialization));
         $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($this->specialization))->first();
 
         $client->request('GET', $client->getContainer()->get('router')->generate('offer_remove', ['offerSlug' => $offer->slug()]));
         $this->assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
+    }
+
+    public function test_posting_offer_again() : void
+    {
+        $user = $this->offersContext->createUser();
+
+        $client = static::createClient();
+        $this->authenticate($client, $user);
+
+
+        $offer = $this->offersContext->createOffer($user->id(), $this->specialization);
+
+        $crawler = $client->request(
+            'GET',
+            $client->getContainer()->get('router')->generate('offer_new', ['specSlug' => $this->specialization, 'offer-slug' => $offer->slug()])
+        );
+
+        $this->assertSame($offer->company()->name(), $crawler->filter('form[name="offer"]')->form()->get('offer[company][name]')->getValue());
+        $this->assertSame($offer->company()->description(), $crawler->filter('form[name="offer"]')->form()->get('offer[company][description]')->getValue());
+    }
+
+    public function test_attempt_to_post_not_own_offer_again() : void
+    {
+        $authorOffer = $this->offersContext->createUser();
+        $user = $this->offersContext->createUser();
+
+        $client = static::createClient();
+        $this->authenticate($client, $user);
+
+
+        $offer = $this->offersContext->createOffer($authorOffer->id(), $this->specialization);
+
+        $client->request(
+            'GET',
+            $client->getContainer()->get('router')->generate('offer_new', ['specSlug' => $this->specialization, 'offer-slug' => $offer->slug()])
+        );
+
+        $this->assertSame(403, $client->getResponse()->getStatusCode());
     }
 }

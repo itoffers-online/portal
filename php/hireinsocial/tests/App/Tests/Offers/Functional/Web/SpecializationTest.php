@@ -17,6 +17,7 @@ use App\Tests\Functional\Web\WebTestCase;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Tests\Offers\Application\Double\Stub\CalendarStub;
 use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
+use Ramsey\Uuid\Uuid;
 
 final class SpecializationTest extends WebTestCase
 {
@@ -29,15 +30,15 @@ final class SpecializationTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->systemContext->createSpecialization($this->specialization);
+        $this->offersContext->createSpecialization($this->specialization);
     }
 
     public function test_specialization_offers_list() : void
     {
         $client = static::createClient();
 
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random($this->systemContext->createUser()->id(), $this->specialization));
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random($this->systemContext->createUser()->id(), $this->specialization));
+        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
+        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
 
         $crawler = $client->request(
             'GET',
@@ -50,9 +51,9 @@ final class SpecializationTest extends WebTestCase
 
     public function test_filter_out_offers_without_salary() : void
     {
-        $this->offersFacade()->handle(PostOfferMother::withoutSalary($this->systemContext->createUser()->id(), $this->specialization));
-        $this->offersFacade()->handle(PostOfferMother::withoutSalary($this->systemContext->createUser()->id(), $this->specialization));
-        $this->offersFacade()->handle(PostOfferMother::random($this->systemContext->createUser()->id(), $this->specialization));
+        $this->offersFacade()->handle(PostOfferMother::withoutSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
+        $this->offersFacade()->handle(PostOfferMother::withoutSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
+        $this->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
 
         $client = static::createClient();
 
@@ -72,9 +73,9 @@ final class SpecializationTest extends WebTestCase
 
     public function test_filter_out_not_remote_offers() : void
     {
-        $this->offersFacade()->handle(PostOfferMother::notRemote($this->systemContext->createUser()->id(), $this->specialization));
-        $this->offersFacade()->handle(PostOfferMother::notRemote($this->systemContext->createUser()->id(), $this->specialization));
-        $this->offersFacade()->handle(PostOfferMother::remote($this->systemContext->createUser()->id(), $this->specialization));
+        $this->offersFacade()->handle(PostOfferMother::notRemote(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
+        $this->offersFacade()->handle(PostOfferMother::notRemote(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
+        $this->offersFacade()->handle(PostOfferMother::remote(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
 
         $client = static::createClient();
 
@@ -97,11 +98,11 @@ final class SpecializationTest extends WebTestCase
         /** @var CalendarStub $calendar */
         $calendar = $this->offersFacade()->calendar();
         $calendar->goBack($seconds = 15);
-        $this->offersFacade()->handle(PostOfferMother::withSalary($this->systemContext->createUser()->id(), $this->specialization, $min = 1000, $max = 5000));
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 5000));
         $calendar->goBack($seconds = 10);
-        $this->offersFacade()->handle(PostOfferMother::withSalary($this->systemContext->createUser()->id(), $this->specialization, $min = 1000, $max = 3000));
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 3000));
         $calendar->goBack($seconds = 5);
-        $this->offersFacade()->handle(PostOfferMother::withSalary($this->systemContext->createUser()->id(), $this->specialization, $min = 1000, $max = 7000));
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 7000));
 
 
         $client = static::createClient();
