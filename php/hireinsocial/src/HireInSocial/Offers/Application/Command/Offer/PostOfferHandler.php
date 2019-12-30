@@ -42,7 +42,6 @@ use HireInSocial\Offers\Application\System\Handler;
 use HireInSocial\Offers\Application\User\ExtraOffers;
 use HireInSocial\Offers\Application\User\User;
 use HireInSocial\Offers\Application\User\Users;
-use function mb_strtoupper;
 use Ramsey\Uuid\Uuid;
 
 final class PostOfferHandler implements Handler
@@ -188,7 +187,8 @@ final class PostOfferHandler implements Handler
 
     private function createOffer(PostOffer $command, User $user, Specialization $specialization) : Offer
     {
-        return Offer::postIn(
+        return Offer::post(
+            Uuid::fromString($command->offerId()),
             $specialization,
             $user,
             new Company(
@@ -214,7 +214,7 @@ final class PostOfferHandler implements Handler
                     $command->offer()->salary()->max(),
                     $command->offer()->salary()->currencyCode(),
                     $command->offer()->salary()->isNet(),
-                    Salary\Period::fromString(mb_strtoupper($command->offer()->salary()->periodType()))
+                    Salary\Period::fromString(\mb_strtoupper($command->offer()->salary()->periodType()))
                 )
                 : null,
             new Contract(

@@ -24,6 +24,11 @@ final class PostOffer implements Command
     /**
      * @var string
      */
+    private $offerId;
+
+    /**
+     * @var string
+     */
     private $specialization;
 
     /**
@@ -42,6 +47,7 @@ final class PostOffer implements Command
     private $offerPDFPath;
 
     public function __construct(
+        string $offerId,
         string $specialization,
         string $userId,
         Offer $offer,
@@ -51,6 +57,12 @@ final class PostOffer implements Command
         $this->offer = $offer;
         $this->specialization = $specialization;
         $this->offerPDFPath = $offerPDFPath;
+        $this->offerId = $offerId;
+    }
+
+    public function offerId() : string
+    {
+        return $this->offerId;
     }
 
     public function specialization() : string

@@ -90,6 +90,7 @@ class Offer
     private $removedAt;
 
     private function __construct(
+        UuidInterface $id,
         UuidInterface $userId,
         UuidInterface $specializationId,
         Company $company,
@@ -101,7 +102,7 @@ class Offer
         Contact $contact,
         DateTimeImmutable $createdAt
     ) {
-        $this->id = Uuid::uuid4()->toString();
+        $this->id = $id->toString();
         $this->userId = $userId->toString();
         $this->emailHash = (new Hashids())->encode(time() + \random_int(0, 5000));
         $this->specializationId = $specializationId;
@@ -115,7 +116,8 @@ class Offer
         $this->createdAt = $createdAt;
     }
 
-    public static function postIn(
+    public static function post(
+        UuidInterface $id,
         Specialization $specialization,
         User $user,
         Company $company,
@@ -128,6 +130,7 @@ class Offer
         Calendar $calendar
     ) : self {
         return new self(
+            $id,
             $user->id(),
             $specialization->id(),
             $company,

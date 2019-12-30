@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Controller;
 
+use App\Offers\Controller\Offer\OfferToForm;
 use App\Offers\Form\Type\OfferType;
 use Facebook\Facebook;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Channels;
@@ -30,9 +31,11 @@ use HireInSocial\Offers\Application\Command\Offer\RemoveOffer;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Offers;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class OfferController extends AbstractController
 {
@@ -87,7 +90,15 @@ final class OfferController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(OfferType::class);
+        try {
+            $offerData = $request->query->get('offer-slug')
+                ? (new OfferToForm($request->query->get('offer-slug'), $userId))($this->offers)
+                : null;
+        } catch (AccessDeniedException $accessDeniedException) {
+            return new Response($accessDeniedException->getMessage(), 403);
+        }
+
+        $form = $this->createForm(OfferType::class, $offerData);
 
         $form->handleRequest($request);
 
@@ -96,6 +107,7 @@ final class OfferController extends AbstractController
 
             try {
                 $this->offers->handle(new PostOffer(
+                    Uuid::uuid4()->toString(),
                     $specSlug,
                     $userId,
                     new Offer(

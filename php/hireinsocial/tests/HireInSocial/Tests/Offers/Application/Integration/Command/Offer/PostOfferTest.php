@@ -18,6 +18,7 @@ use HireInSocial\Offers\Application\Offer\Throttling;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
 use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
+use Ramsey\Uuid\Uuid;
 
 final class PostOfferTest extends HireInSocialTestCase
 {
@@ -27,6 +28,7 @@ final class PostOfferTest extends HireInSocialTestCase
 
         $this->systemContext->createSpecialization($specialization = 'spec');
         $this->systemContext->offersFacade()->handle(PostOfferMother::randomWithPDF(
+            Uuid::uuid4()->toString(),
             $user->id(),
             $specialization,
             __DIR__ . '/fixtures/blank.pdf'
@@ -51,7 +53,7 @@ final class PostOfferTest extends HireInSocialTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Specialization "spec" does not have facebook channel assigned.');
 
-        $this->systemContext->offersFacade()->handle(PostOfferMother::onFB($user->id(), $specialization));
+        $this->systemContext->offersFacade()->handle(PostOfferMother::onFB(Uuid::uuid4()->toString(), $user->id(), $specialization));
     }
 
     public function test_posting_offer_too_fast() : void
@@ -60,7 +62,7 @@ final class PostOfferTest extends HireInSocialTestCase
         $this->systemContext->createSpecialization($specialization = 'spec');
 
         for ($postedOffers = 0; $postedOffers < Throttling::LIMIT; $postedOffers++) {
-            $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $specialization));
+            $this->systemContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
         }
 
         $this->expectException(Exception::class);
@@ -68,7 +70,7 @@ final class PostOfferTest extends HireInSocialTestCase
 
         $this->assertTrue($this->systemContext->offersFacade()->offerThrottleQuery()->isThrottled($user->id()));
 
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $specialization));
+        $this->systemContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
     }
 
     public function test_posting_offer_too_fast_with_extra_offer() : void
@@ -80,13 +82,13 @@ final class PostOfferTest extends HireInSocialTestCase
         $this->systemContext->addExtraOffer($user, $expiresInDays = 3);
 
         for ($postedOffers = 0; $postedOffers < Throttling::LIMIT; $postedOffers++) {
-            $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $specialization));
+            $this->systemContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
         }
 
         $this->assertSame(2, $this->systemContext->offersFacade()->extraOffersQuery()->countNotExpired($user->id()));
         $this->assertTrue($this->systemContext->offersFacade()->offerThrottleQuery()->isThrottled($user->id()));
 
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random($user->id(), $specialization));
+        $this->systemContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
 
         $this->assertSame(1, $this->systemContext->offersFacade()->extraOffersQuery()->countNotExpired($user->id()));
         $this->assertGreaterThanOrEqual(

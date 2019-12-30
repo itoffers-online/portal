@@ -16,12 +16,15 @@ namespace HireInSocial\Tests\Offers\Application\Context;
 use Faker\Factory;
 use HireInSocial\Offers\Application\Command\User\AddExtraOffers;
 use HireInSocial\Offers\Application\Command\User\FacebookConnect;
+use HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 use HireInSocial\Offers\Application\Query\Specialization\Model\Specialization;
 use HireInSocial\Offers\Application\Query\User\Model\User;
 use HireInSocial\Offers\Offers;
+use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
 use HireInSocial\Tests\Offers\Application\MotherObject\Command\Specialization\CreateSpecializationMother;
+use Ramsey\Uuid\Uuid;
 
-final class SystemContext
+final class OffersContext
 {
     /**
      * @var Offers
@@ -57,5 +60,12 @@ final class SystemContext
     public function addExtraOffer(User $user, int $expiresInDays) : void
     {
         $this->offers->handle(new AddExtraOffers($user->id(), 1, $expiresInDays));
+    }
+
+    public function createOffer(string $userId, string $specializationSlug) : Offer
+    {
+        $this->offers->handle(PostOfferMother::random($offerId = Uuid::uuid4()->toString(), $userId, $specializationSlug));
+
+        return $this->offers->offerQuery()->findById($offerId);
     }
 }

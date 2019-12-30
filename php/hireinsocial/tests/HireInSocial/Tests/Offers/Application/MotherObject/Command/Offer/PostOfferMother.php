@@ -28,11 +28,12 @@ use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary as SalaryView
 
 final class PostOfferMother
 {
-    public static function random(string $userId, string $specialization) : PostOffer
+    public static function random(string $offerId, string $userId, string $specialization) : PostOffer
     {
         $faker = Factory::create();
 
         return new PostOffer(
+            $offerId,
             $specialization,
             $userId,
             new Offer(
@@ -57,11 +58,12 @@ final class PostOfferMother
         );
     }
 
-    public static function randomWithPDF(string $userId, string $specialization, string $offerPDFPath) : PostOffer
+    public static function randomWithPDF(string $offerId, string $userId, string $specialization, string $offerPDFPath) : PostOffer
     {
         $faker = Factory::create();
 
         return new PostOffer(
+            $offerId,
             $specialization,
             $userId,
             new Offer(
@@ -87,11 +89,12 @@ final class PostOfferMother
         );
     }
 
-    public static function withoutSalary(string $userId, string $specialization) : PostOffer
+    public static function withoutSalary(string $offerId, string $userId, string $specialization) : PostOffer
     {
         $faker = Factory::create();
 
         return new PostOffer(
+            $offerId,
             $specialization,
             $userId,
             new Offer(
@@ -116,11 +119,12 @@ final class PostOfferMother
         );
     }
 
-    public static function withSalary(string $userId, string $specialization, int $min, int $max, string $currency = 'USD') : PostOffer
+    public static function withSalary(string $offerId, string $userId, string $specialization, int $min, int $max, string $currency = 'USD') : PostOffer
     {
         $faker = Factory::create();
 
         return new PostOffer(
+            $offerId,
             $specialization,
             $userId,
             new Offer(
@@ -145,11 +149,12 @@ final class PostOfferMother
         );
     }
 
-    public static function notRemote(string $userId, string $specialization) : PostOffer
+    public static function notRemote(string $offerId, string $userId, string $specialization) : PostOffer
     {
         $faker = Factory::create();
 
         return new PostOffer(
+            $offerId,
             $specialization,
             $userId,
             new Offer(
@@ -174,11 +179,12 @@ final class PostOfferMother
         );
     }
 
-    public static function remote(string $userId, string $specialization) : PostOffer
+    public static function remote(string $offerId, string $userId, string $specialization) : PostOffer
     {
         $faker = Factory::create();
 
         return new PostOffer(
+            $offerId,
             $specialization,
             $userId,
             new Offer(
@@ -203,11 +209,12 @@ final class PostOfferMother
         );
     }
 
-    public static function onFB(string $fbUserId, string $specialization) : PostOffer
+    public static function onFB(string $offerId, string $fbUserId, string $specialization) : PostOffer
     {
         $faker = Factory::create();
 
         return new PostOffer(
+            $offerId,
             $specialization,
             $fbUserId,
             new Offer(

@@ -18,6 +18,7 @@ use HireInSocial\Offers\Application\Offer;
 use HireInSocial\Tests\Offers\Application\MotherObject\Facebook\CalendarMother;
 use HireInSocial\Tests\Offers\Application\MotherObject\Specialization\SpecializationMother;
 use HireInSocial\Tests\Offers\Application\MotherObject\User\UserMother;
+use Ramsey\Uuid\Uuid;
 
 final class OfferMother
 {
@@ -30,7 +31,8 @@ final class OfferMother
     {
         $faker = Factory::create();
 
-        return Offer\Offer::postIn(
+        return Offer\Offer::post(
+            Uuid::uuid4(),
             SpecializationMother::random(),
             UserMother::random(),
             new Offer\Company($companyName, $faker->url, $faker->text(512)),

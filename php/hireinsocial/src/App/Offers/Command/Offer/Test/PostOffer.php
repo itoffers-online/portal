@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Offers\Command\Offer\Test;
 
 use Faker\Factory;
-use function file_exists;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Channels;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Company;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Contact;
@@ -29,6 +28,7 @@ use HireInSocial\Offers\Application\Command\Offer\PostOffer as SystemPostOffer;
 use HireInSocial\Offers\Application\Command\User\FacebookConnect;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary as SalaryView;
 use HireInSocial\Offers\Offers;
+use Ramsey\Uuid\Uuid;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -87,7 +87,7 @@ final class PostOffer extends Command
 
         $offerPDFPath = (string) $input->getOption('offer-pdf');
 
-        if ($offerPDFPath && !file_exists($offerPDFPath)) {
+        if ($offerPDFPath && !\file_exists($offerPDFPath)) {
             throw new RuntimeException(sprintf('Offer PDF "%s" file does not exists.', $offerPDFPath));
         }
     }
@@ -119,6 +119,7 @@ final class PostOffer extends Command
             $user = $this->offers->userQuery()->findByFacebook($fbUserAppId);
 
             $this->offers->handle(new SystemPostOffer(
+                $offerId = Uuid::uuid4()->toString(),
                 $specialization->slug(),
                 $user->id(),
                 new Offer(
