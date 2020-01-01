@@ -74,7 +74,7 @@ final class DbalUserQuery implements UserQuery
         $userData = $this->connection->createQueryBuilder()
             ->select('u.*')
             ->from('his_user', 'u')
-            ->where('u.email = :email')
+            ->where('u.email_address = :email')
             ->setParameters(
                 [
                     'email' => \mb_strtolower($email),
@@ -93,7 +93,7 @@ final class DbalUserQuery implements UserQuery
     {
         return new User(
             $userData['id'],
-            $userData['email'],
+            $userData['email_address'],
             $userData['fb_user_app_id'],
             (bool) $userData['blocked_at']
         );

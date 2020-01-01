@@ -42,7 +42,7 @@
     {% block body %}{% endblock %}
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
-            <div class="col-4 col-md">
+            <div class="col-md-3">
                 <h6>Resources</h6>
                 <ul>
                     <li><a href="{{ url('terms_and_conditions') }}">Terms & conditions</a></li>
@@ -50,11 +50,14 @@
                     <li><a href="{{ url('cookies_policy') }}">Cookies</a></li>
                 </ul>
             </div>
-            <div class="col-4 col-md">
+            <div class="col-6">
             </div>
-            <div class="col-4 col-md text-right">
+            <div class="col-3 col-md-3">
                 <h6>Contact</h6>
-                <a target="_blank" href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+                <ul>
+                    <li><a target="_blank" href="mailto:{{ contact_email }}"><i class="fas fa-envelope-square"></i> {{ contact_email }}</a></li>
+                    <li><a target="_blank" href="{{ facebook.page_url }}"><i class="fab fa-facebook"></i> Page</a> </li>
+                </ul>
             </div>
         </div>
     </footer>

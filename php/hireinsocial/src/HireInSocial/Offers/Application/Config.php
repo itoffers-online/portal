@@ -24,6 +24,8 @@ final class Config
 
     public const CONTACT_EMAIL = 'contact_email';
 
+    public const FB_PAGE_URL = 'fb_page_url';
+
     public const ENV = 'env';
 
     public const LOCALE = 'locale';
@@ -86,6 +88,7 @@ final class Config
             self::LOCALE => getenv('HIS_LOCALE'),
             self::TIMEZONE => getenv('HIS_TIMEZONE'),
             self::CONTACT_EMAIL => 'contact@hirein.social',
+            self::FB_PAGE_URL => 'https://www.facebook.com/Hire-in-Social-105145667672738',
             self::SYMFONY_SECRET => getenv('HIS_SYMFONY_SECRET'),
             self::REDIS_DSN => getenv('HIS_REDIS_DSN'),
             self::APPLY_EMAIL_TEMPLATE => getenv('HIS_APPLY_EMAIL_TEMPLATE'),

@@ -65,6 +65,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
                 'apply_email_template' => $config->getString(Config::APPLY_EMAIL_TEMPLATE),
                 'facebook' => [
                     'app_id' => $config->getString(Config::FB_APP_ID),
+                    'page_url' => $config->getString(Config::FB_PAGE_URL),
                 ],
                 'google' => [
                     'recaptcha' => [
