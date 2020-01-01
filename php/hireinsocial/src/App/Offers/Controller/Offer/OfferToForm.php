@@ -77,7 +77,7 @@ class OfferToForm
                 'benefits' => $offer->description()->benefits(),
             ],
             'contact'=> [
-                'name' => $offer->contact()->phone(),
+                'name' => $offer->contact()->name(),
                 'email' => $offer->contact()->email(),
                 'phone' => $offer->contact()->phone(),
             ],

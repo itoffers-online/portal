@@ -42,7 +42,7 @@ final class SpecializationController extends AbstractController
 
         /** @var OfferFilter $offerFilter */
         $offerFilter = OfferFilter::allFor($specialization->slug())
-            ->changeSize(20, 0);
+            ->max(20);
 
         $form = $this->createForm(OfferFilterType::class)->handleRequest($request);
 
@@ -60,12 +60,21 @@ final class SpecializationController extends AbstractController
             }
         }
 
+        $total = $this->offers->offerQuery()->count($offerFilter);
+
+        if ($request->query->has('after')) {
+            $offerFilter->showAfter($request->query->get('after'));
+        }
+
         $offers = $this->offers->offerQuery()->findAll($offerFilter);
+        $offerMore = $this->offers->offerQuery()->count($offerFilter);
 
         return $this->render('@offers/specialization/offers.html.twig', [
-            'total' => $this->offers->offerQuery()->count($offerFilter),
-            'specialization' => $specialization,
+            'total' => $total,
             'offers' => $offers,
+            'offersMore' => $offerMore,
+            'showingOlder' => $request->query->has('after'),
+            'specialization' => $specialization,
             'form' => $form->createView(),
             'queryParameters' => $request->query->all(),
             'throttleLimit' => $this->offers->offerThrottleQuery()->limit(),

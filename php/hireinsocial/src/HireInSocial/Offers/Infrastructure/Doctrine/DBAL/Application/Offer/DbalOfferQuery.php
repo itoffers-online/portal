@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 
-use function array_map;
-use DateTimeImmutable;
-use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Company;
@@ -30,7 +27,6 @@ use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offers;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Offers\Application\Query\Offer\OfferQuery;
-use function json_decode;
 use Ramsey\Uuid\Uuid;
 
 final class DbalOfferQuery implements OfferQuery
@@ -65,8 +61,7 @@ final class DbalOfferQuery implements OfferQuery
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
             ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
-            ->where('o.created_at >= :sinceDate AND o.created_at <= :tillDate')
-            ->andWhere('o.removed_at IS NULL');
+            ->where('o.removed_at IS NULL');
 
         if ($filter->specialization()) {
             $queryBuilder->andWhere('s.slug = :specializationSlug');
@@ -85,9 +80,20 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->setParameter('userId', $filter->userId());
         }
 
-        $queryBuilder
-            ->setMaxResults($filter->limit())
-            ->setFirstResult($filter->offset());
+        if ($filter->afterOfferId()) {
+            $queryBuilder->andWhere('o.id <> :afterOfferId')
+                ->setParameter('afterOfferId', $filter->afterOfferId());
+            $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM his_job_offer WHERE id = :afterOfferId)');
+        } else {
+            $queryBuilder->andWhere('o.created_at >= :sinceDate')
+                ->setParameter('sinceDate', $filter->sinceDate()->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()));
+        }
+
+        $queryBuilder->setMaxResults($filter->limit());
+
+        if ($filter->offset()) {
+            $queryBuilder->setFirstResult($filter->offset());
+        }
 
         if ($filter->isSorted()) {
             foreach ($filter->sortByColumns() as $column) {
@@ -104,14 +110,11 @@ final class DbalOfferQuery implements OfferQuery
         }
 
         $queryBuilder->setParameter('specializationSlug', $filter->specialization());
-        $queryBuilder->setParameter('sinceDate', $filter->sinceDate()->format(DateTimeInterface::ISO8601));
-        $queryBuilder->setParameter('tillDate', $filter->tillDate()->format(DateTimeInterface::ISO8601));
-
 
         $offersData = $queryBuilder->execute()
             ->fetchAll();
 
-        return new Offers(...array_map(
+        return new Offers(...\array_map(
             [$this, 'hydrateOffer'],
             $offersData
         ));
@@ -123,8 +126,7 @@ final class DbalOfferQuery implements OfferQuery
             ->select('COUNT(o.id)')
             ->from('his_job_offer', 'o')
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
-            ->where('o.created_at >= :sinceDate AND o.created_at <= :tillDate')
-            ->andWhere('o.removed_at IS NULL');
+            ->where('o.removed_at IS NULL');
 
         if ($filter->specialization()) {
             $queryBuilder->andWhere('s.slug = :specializationSlug');
@@ -143,9 +145,16 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->setParameter('userId', $filter->userId());
         }
 
+        if ($filter->afterOfferId()) {
+            $queryBuilder->andWhere('o.id <> :afterOfferId')
+                ->setParameter('afterOfferId', $filter->afterOfferId());
+            $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM his_job_offer WHERE id = :afterOfferId)');
+        } else {
+            $queryBuilder->andWhere('o.created_at >= :sinceDate')
+                ->setParameter('sinceDate', $filter->sinceDate()->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()));
+        }
+
         $queryBuilder->setParameter('specializationSlug', $filter->specialization());
-        $queryBuilder->setParameter('sinceDate', $filter->sinceDate()->format(DateTimeInterface::ISO8601));
-        $queryBuilder->setParameter('tillDate', $filter->tillDate()->format(DateTimeInterface::ISO8601));
 
         return (int) $queryBuilder
             ->execute()
@@ -255,14 +264,16 @@ final class DbalOfferQuery implements OfferQuery
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
             ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
-            ->where('s.slug = :specializationSlug AND o.created_at < :sinceDate')
+            ->where('s.slug = :specializationSlug')
+            ->andWhere('o.created_at < (SELECT created_at FROM his_job_offer WHERE id = :previousOfferId)')
+            ->andWhere('o.id <> :previousOfferId')
             ->andWhere('o.removed_at IS NULL')
             ->orderBy('o.created_at', 'DESC')
             ->setMaxResults(1)
             ->setParameters(
                 [
                     'specializationSlug' => $offer->specializationSlug(),
-                    'sinceDate' => $offer->createdAt()->format(DateTimeInterface::ISO8601),
+                    'previousOfferId' => $offer->id()->toString(),
                 ]
             )->execute()
             ->fetch();
@@ -288,14 +299,16 @@ final class DbalOfferQuery implements OfferQuery
             ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
             ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
-            ->where('s.slug = :specializationSlug AND o.created_at > :beforeDate')
+            ->where('s.slug = :specializationSlug')
+            ->andWhere('o.created_at > (SELECT created_at FROM his_job_offer WHERE id = :previousOfferId)')
+            ->andWhere('o.id <> :previousOfferId')
             ->andWhere('o.removed_at IS NULL')
             ->orderBy('o.created_at', 'ASC')
             ->setMaxResults(1)
             ->setParameters(
                 [
                     'specializationSlug' => $offer->specializationSlug(),
-                    'beforeDate' => $offer->createdAt()->format(DateTimeInterface::ISO8601),
+                    'previousOfferId' => $offer->id()->toString(),
                 ]
             )->execute()
             ->fetch();
@@ -309,7 +322,7 @@ final class DbalOfferQuery implements OfferQuery
 
     private function hydrateOffer(array $offerData) : Offer
     {
-        $salary = isset($offerData['salary']) ? json_decode($offerData['salary'], true) : null;
+        $salary = isset($offerData['salary']) ? \json_decode($offerData['salary'], true) : null;
         $offerPDF = isset($offerData['offer_pdf']) ? new OfferPDF($offerData['offer_pdf']) : null;
 
         return new Offer(
@@ -318,7 +331,7 @@ final class DbalOfferQuery implements OfferQuery
             $offerData['email_hash'],
             Uuid::fromString($offerData['user_id']),
             $offerData['specialization_slug'],
-            new DateTimeImmutable($offerData['created_at']),
+            new \DateTimeImmutable($offerData['created_at']),
             new Parameters(
                 new Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),
                 new Contact($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),

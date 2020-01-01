@@ -35,13 +35,21 @@ final class IndexController extends AbstractController
     {
         /** @var OfferFilter $offerFilter */
         $offerFilter = OfferFilter::all()
-            ->changeSize(50, 0);
+            ->max(20);
 
         $offers = $this->offers->offerQuery()->findAll($offerFilter);
+
+        if ($request->query->has('after')) {
+            $offerFilter->showAfter($request->query->get('after'));
+        }
+
+        $offerMore = $this->offers->offerQuery()->count($offerFilter);
 
         return $this->render('@offers/home/index.html.twig', [
             'specializations' => $this->offers->specializationQuery()->all(),
             'offers' => $offers,
+            'offersMore' => $offerMore,
+            'showingOlder' => $request->query->has('after'),
         ]);
     }
 

@@ -55,16 +55,24 @@ final class UserController extends AbstractController
         /** @var OfferFilter $offerFilter */
         $offerFilter = OfferFilter::all()
             ->belongsTo($userId)
-            ->changeSize(20, 0);
+            ->max(5);
+
+        if ($request->query->has('after')) {
+            $offerFilter->showAfter($request->query->get('after'));
+        }
 
         $offers = $this->offers->offerQuery()->findAll($offerFilter);
+        $offerMore = $this->offers->offerQuery()->count($offerFilter);
 
         return $this->render('@offers/user/profile.html.twig', [
+            'showingOlder' => $request->query->has('after'),
             'user' => $this->offers->userQuery()->findById($userId),
+            'offersMore' => $offerMore,
             'offersLeft' => $this->offers->offerThrottleQuery()->offersLeft($userId),
             'extraOffersCount' => $this->offers->extraOffersQuery()->countNotExpired($userId),
             'extraOffer' => $this->offers->extraOffersQuery()->findClosesToExpire($userId),
             'offers' => $offers,
+            'totalOffers' => $this->offers->offerQuery()->count($offerFilter),
         ]);
     }
 }

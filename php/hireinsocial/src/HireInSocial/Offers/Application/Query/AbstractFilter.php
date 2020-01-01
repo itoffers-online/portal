@@ -24,9 +24,9 @@ abstract class AbstractFilter
     protected $limit = 50;
 
     /**
-     * @var int
+     * @var int|null
      */
-    protected $offset = 0;
+    protected $offset;
 
     /**
      * @var mixed[]
@@ -37,9 +37,20 @@ abstract class AbstractFilter
     {
         Assertion::greaterOrEqualThan($offset, 0);
         Assertion::greaterThan($limit, 0);
+        Assertion::lessOrEqualThan($limit, 50);
 
         $this->limit = $limit;
         $this->offset = $offset;
+
+        return $this;
+    }
+
+    public function max(int $limit) : self
+    {
+        Assertion::greaterThan($limit, 0);
+        Assertion::lessOrEqualThan($limit, 50);
+
+        $this->limit = $limit;
 
         return $this;
     }
@@ -49,7 +60,7 @@ abstract class AbstractFilter
         return $this->limit;
     }
 
-    public function offset() : int
+    public function offset() : ?int
     {
         return $this->offset;
     }

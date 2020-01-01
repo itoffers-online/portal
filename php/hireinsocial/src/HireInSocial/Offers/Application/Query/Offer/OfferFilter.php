@@ -42,7 +42,7 @@ final class OfferFilter extends AbstractFilter
     private $sinceDate;
 
     /**
-     * @var \DateTimeImmutable
+     * @var \DateTimeImmutable|null
      */
     private $tillDate;
 
@@ -61,10 +61,14 @@ final class OfferFilter extends AbstractFilter
      */
     private $userId;
 
+    /**
+     * @var string|null
+     */
+    private $afterOffer;
+
     private function __construct()
     {
         $this->newerThan(new \DateTimeImmutable('-2 weeks', new \DateTimeZone('UTC')));
-        $this->olderThan(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
     }
 
     public static function allFor(string $specialization) : self
@@ -98,12 +102,19 @@ final class OfferFilter extends AbstractFilter
         return $this;
     }
 
+    public function showAfter(string $offerId) : self
+    {
+        $this->afterOffer = $offerId;
+
+        return $this;
+    }
+
     public function sinceDate() : \DateTimeImmutable
     {
         return $this->sinceDate;
     }
 
-    public function tillDate() : \DateTimeImmutable
+    public function tillDate() : ?\DateTimeImmutable
     {
         return $this->tillDate;
     }
@@ -147,6 +158,11 @@ final class OfferFilter extends AbstractFilter
     public function userId() : ?string
     {
         return $this->userId;
+    }
+
+    public function afterOfferId() : ?string
+    {
+        return $this->afterOffer;
     }
 
     public function sortBy(string $columnType) : self

@@ -24,4 +24,13 @@ final class Offers extends \ArrayObject
     {
         return \current((array) $this);
     }
+
+    public function last() : Offer
+    {
+        $offers = (array) $this;
+        /** @var Offer $offer */
+        $offer = \end($offers);
+
+        return $offer;
+    }
 }

@@ -26,6 +26,9 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
         'framework' => [
             'secret' => $config->getString(Config::SYMFONY_SECRET),
             'csrf_protection' => null,
+            'esi' => [
+                'enabled' => true,
+            ],
             'validation' => [
                 'enabled' => true,
                 'enable_annotations' => false,
