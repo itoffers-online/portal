@@ -107,7 +107,7 @@ final class OfferController extends AbstractController
 
             try {
                 $this->offers->handle(new PostOffer(
-                    Uuid::uuid4()->toString(),
+                    $offerId = Uuid::uuid4()->toString(),
                     $specSlug,
                     $userId,
                     new Offer(
@@ -131,7 +131,9 @@ final class OfferController extends AbstractController
                     $offer['offer_pdf'] ? $offer['offer_pdf']->getPathname() : null
                 ));
 
-                return $this->redirectToRoute('offer_success', ['specSlug' => $specSlug]);
+                $offer = $this->offers->offerQuery()->findById($offerId);
+
+                return $this->redirectToRoute('offer_success', ['specSlug' => $specSlug, 'offer-slug' => $offer->slug()]);
             } catch (Exception $exception) {
                 // TODO: Show some user friendly error message in UI.
                 throw $exception;
@@ -149,8 +151,14 @@ final class OfferController extends AbstractController
         ]);
     }
 
-    public function successAction(string $specSlug) : Response
+    public function successAction(Request $request, string $specSlug) : Response
     {
+        $offer = $this->offers->offerQuery()->findBySlug($request->query->get('offer-slug'));
+
+        if (!$offer) {
+            throw $this->createNotFoundException();
+        }
+
         $specSlug = $this->offers->specializationQuery()->findBySlug($specSlug);
 
         if (!$specSlug) {
@@ -159,6 +167,7 @@ final class OfferController extends AbstractController
 
         return $this->render('@offers/offer/success.html.twig', [
             'specialization' => $specSlug,
+            'offer' => $offer,
         ]);
     }
 
