@@ -15,7 +15,6 @@ namespace HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 
 use function array_key_exists;
 use DateInterval;
-use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 use HireInSocial\Offers\Application\Query\Offer\OfferThrottleQuery;
 use HireInSocial\Offers\Application\System\Calendar;
@@ -105,7 +104,7 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
             ->andWhere('o.created_at >= :since')
             ->setParameters([
                 'userId' => $userId,
-                'since' => $this->calendar->currentTime()->sub($this->since)->format(DateTimeInterface::ISO8601),
+                'since' => $this->calendar->currentTime()->sub($this->since)->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()),
             ])
             ->execute()
             ->fetchColumn();

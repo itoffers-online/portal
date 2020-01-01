@@ -18,6 +18,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
 use HireInSocial\Offers\Application\Config;
+use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Platform\PostgreSQL11Platform;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\SalaryType;
 
 function dbal(Config $config) : Connection
@@ -34,6 +35,7 @@ function dbal(Config $config) : Connection
             'host' => $config->getString(Config::DB_HOST),
             'port' => $config->getInt(Config::DB_PORT),
             'driver' => 'pdo_pgsql',
+            'platform' => new PostgreSQL11Platform(),
         ],
         new Configuration()
     );

@@ -85,7 +85,7 @@ final class ScanMessages extends Command
     protected function initialize(InputInterface $input, OutputInterface $output) : void
     {
         $this->io = new SymfonyStyle($input, $output);
-        $this->tmpBasePath = sys_get_temp_dir() . '/' . uniqid('his_email_' . $input->getOption('mailbox') . '_');
+        $this->tmpBasePath = sys_get_temp_dir() . '/' . uniqid('his_email_' . $input->getOption('mailbox') . '_', true);
         $this->fs->mkdir($this->tmpBasePath);
 
         $this->io->title('Mailbox Scan');

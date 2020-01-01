@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <h3>Last 20 Offers</h3>
+                <h3>Your Offers</h3>
                 <div class="card">
                     <div class="card-body">
                         {% for offer in offers %}
@@ -41,6 +41,20 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% if offersMore > offers|length %}
+                    <p class="mt-2">
+                        {% if showingOlder %}
+                            <a class="btn btn-primary mr-2" href="{{ url('user_profile') }}">Show latest</a>
+                        {% endif %}
+                        <a class="btn btn-secondary" href="{{ url('user_profile', {after: offers.last.id.toString}) }}">Show older</a>
+                    </p>
+                {% else %}
+                    {% if showingOlder %}
+                        <p class="mt-2">
+                            <a class="btn btn-primary" href="{{ url('user_profile') }}">Show latest</a>
+                        </p>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>

@@ -75,6 +75,7 @@ final class PostOffer extends Command
         $this
             ->setDescription('Test posting job offer with automatically generated fake data. This offer also generate fake user.')
             ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
+            ->addOption('title', null, InputOption::VALUE_OPTIONAL, 'Offer title', 'Software Developer')
             ->addOption('no-salary', null, InputOption::VALUE_OPTIONAL, 'Pass this option when you want to test offer without salary', false)
             ->addOption('post-facebook-group', null, InputOption::VALUE_OPTIONAL, 'Post offer to facebook group assigned to the specialization', false)
             ->addOption('offer-pdf', null, InputOption::VALUE_OPTIONAL, 'Path to offer PDF file.')
@@ -129,7 +130,7 @@ final class PostOffer extends Command
                         'Hire in Social is recruiting portal that connects recruiters with candidates'
                     ),
                     new Position(
-                        'Software Developer',
+                        $input->getOption('title'),
                         'Full stack Software developer position, you will work mostly on web applications with automated and scalable infrastructure.'
                     ),
                     new Location($faker->boolean, $faker->country, new LatLng($faker->latitude, $faker->longitude)),
