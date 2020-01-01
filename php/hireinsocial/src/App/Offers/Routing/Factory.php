@@ -19,6 +19,7 @@ use App\Offers\Controller\OfferController;
 use App\Offers\Controller\ReCaptchaController;
 use App\Offers\Controller\SecurityController;
 use App\Offers\Controller\SpecializationController;
+use App\Offers\Controller\StaticController;
 use App\Offers\Controller\UserController;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -51,14 +52,6 @@ final class Factory
             new Route('/facebook/login/success', ['_controller' => [FacebookController::class, 'loginSuccessAction']]),
             'facebook_login_success'
         );
-        $routes->addRoute(
-            new Route('/user/blocked', ['_controller' => [SecurityController::class, 'userBlockedAction']]),
-            'user_blocked'
-        );
-        $routes->addRoute(
-            new Route('/user/profile', ['_controller' => [UserController::class, 'profileAction']]),
-            'user_profile'
-        );
     }
 
     public static function addLocalizedRoutes(RouteCollectionBuilder $routes, string $locale) : void
@@ -84,6 +77,9 @@ final class Factory
                 $routes->addRoute(new Route('/job-offer/{offerSlug}', ['_controller' => [OfferController::class, 'offerAction']]), 'offer');
                 $routes->addRoute(new Route('/user/blocked', ['_controller' => [SecurityController::class, 'userBlockedAction']]), 'user_blocked');
                 $routes->addRoute(new Route('/user/profile', ['_controller' => [UserController::class, 'profileAction']]), 'user_profile');
+                $routes->addRoute(new Route('/terms-and-conditions', ['_controller' => [StaticController::class, 'termsAndConditionsAction']]), 'terms_and_conditions');
+                $routes->addRoute(new Route('/privacy-policy', ['_controller' => [StaticController::class, 'privacyPolicyAction']]), 'privacy_policy');
+                $routes->addRoute(new Route('/cookies-policy', ['_controller' => [StaticController::class, 'cookiesPolicyAction']]), 'cookies_policy');
 
                 break;
             default:

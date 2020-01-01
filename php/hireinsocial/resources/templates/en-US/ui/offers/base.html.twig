@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
-
+    <link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/>
     {% block stylesheets %}
         <style type="text/css">
             @media (min-width: 1360px) {
@@ -43,10 +43,17 @@
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
             <div class="col-4 col-md">
+                <h6>Resources</h6>
+                <ul>
+                    <li><a href="{{ url('terms_and_conditions') }}">Terms & conditions</a></li>
+                    <li><a href="{{ url('terms_and_conditions') }}">Privacy policy</a></li>
+                    <li><a href="{{ url('cookies_policy') }}">Cookies</a></li>
+                </ul>
             </div>
             <div class="col-4 col-md">
             </div>
             <div class="col-4 col-md text-right">
+                <h6>Contact</h6>
                 <a target="_blank" href="mailto:{{ contact_email }}">{{ contact_email }}</a>
             </div>
         </div>
@@ -78,6 +85,8 @@
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
+<script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>
+<script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"/cookies-policy"}})});</script>
 {% block javascripts %}
 {% endblock %}
 </body>

@@ -19,6 +19,7 @@ use App\Offers\Controller\LayoutController;
 use App\Offers\Controller\OfferController;
 use App\Offers\Controller\ReCaptchaController;
 use App\Offers\Controller\SpecializationController;
+use App\Offers\Controller\StaticController;
 use App\Offers\Controller\UserController;
 use App\Offers\Routing\Factory;
 use App\Offers\Twig\Extension\FacebookExtension;
@@ -114,6 +115,7 @@ final class SymfonyKernel extends Kernel
         $c->autowire(SpecializationController::class)->addTag('controller.service_arguments');
         $c->autowire(ReCaptchaController::class)->addTag('controller.service_arguments');
         $c->autowire(UserController::class)->addTag('controller.service_arguments');
+        $c->autowire(StaticController::class)->addTag('controller.service_arguments');
     }
 
     public function getProjectDir() : string
