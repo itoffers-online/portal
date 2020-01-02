@@ -24,6 +24,7 @@ use HireInSocial\Offers\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Position;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Offers\Application\Command\Offer\PostOffer;
+use HireInSocial\Offers\Application\Offer\Description\SeniorityLevels;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary as SalaryView;
 
 final class PostOfferMother
@@ -43,6 +44,7 @@ final class PostOfferMother
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
+                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -73,6 +75,7 @@ final class PostOfferMother
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
+                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -104,6 +107,7 @@ final class PostOfferMother
                 null,
                 new Contract('B2B'),
                 new Description(
+                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -134,6 +138,7 @@ final class PostOfferMother
                 new Salary($min, $max, $currency, $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
+                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -164,6 +169,7 @@ final class PostOfferMother
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
+                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -194,6 +200,7 @@ final class PostOfferMother
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
+                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -224,6 +231,7 @@ final class PostOfferMother
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
+                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),

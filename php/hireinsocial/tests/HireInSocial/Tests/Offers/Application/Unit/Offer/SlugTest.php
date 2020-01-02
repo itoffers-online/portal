@@ -22,10 +22,10 @@ final class SlugTest extends TestCase
 {
     public function test_creating_offer_slug() : void
     {
-        $order = OfferMother::withName('Senior PHP Developer', 'Super Company');
+        $order = OfferMother::withName('PHP Developer', 'Super Company');
 
         $this->assertRegExp(
-            '/^senior-php-developer-super-company-(.)+/',
+            '/^(interne|junior|mid|senior|expert)-php-developer-super-company-(.)+/',
             (string) Slug::from($order, CalendarMother::utc())
         );
     }

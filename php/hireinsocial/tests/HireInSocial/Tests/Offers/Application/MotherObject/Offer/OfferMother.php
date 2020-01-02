@@ -41,6 +41,7 @@ final class OfferMother
             new Offer\Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, Offer\Salary\Period::perMonth()),
             new Offer\Contract('B2B'),
             new Offer\Description(
+                \random_int(Offer\Description\SeniorityLevels::INTERN, Offer\Description\SeniorityLevels::EXPERT),
                 $faker->text(1024),
                 $faker->text(1024)
             ),
