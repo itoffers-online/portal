@@ -14,15 +14,9 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Application\Offer;
 
 use HireInSocial\Offers\Application\Assertion;
-use HireInSocial\Offers\Application\Offer\Description\SeniorityLevels;
 
 final class Description
 {
-    /**
-     * @var int
-     */
-    private $seniorityLevel;
-
     /**
      * @var string
      */
@@ -33,23 +27,13 @@ final class Description
      */
     private $benefits;
 
-    public function __construct(int $seniorityLevel, string $requirements, string $benefits)
+    public function __construct(string $requirements, string $benefits)
     {
-        Assertion::inArray($seniorityLevel, SeniorityLevels::all());
         Assertion::betweenLength($requirements, 100, 1024);
         Assertion::betweenLength($benefits, 100, 1024);
 
-        $this->seniorityLevel = $seniorityLevel;
         $this->requirements = $requirements;
         $this->benefits = $benefits;
-    }
-
-    /**
-     * @return int
-     */
-    public function seniorityLevel() : int
-    {
-        return $this->seniorityLevel;
     }
 
     public function requirements() : string

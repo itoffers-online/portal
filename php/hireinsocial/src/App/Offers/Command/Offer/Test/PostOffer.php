@@ -130,6 +130,7 @@ final class PostOffer extends Command
                         'Hire in Social is recruiting portal that connects recruiters with candidates'
                     ),
                     new Position(
+                        \random_int(0, 4),
                         $input->getOption('title'),
                         'Full stack Software developer position, you will work mostly on web applications with automated and scalable infrastructure.'
                     ),
@@ -137,7 +138,6 @@ final class PostOffer extends Command
                     $noSalary ? null : new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                     new Contract('Contract'),
                     new Description(
-                        \random_int(0, 4),
                         'Candidate for this position needs to be solid, reliable and meet all our expectations. You need to have at least 5 years of commercial experience.',
                         'We don\'t have strict number of days off, you take as much as you need, you can work remotely or in the office'
                     ),

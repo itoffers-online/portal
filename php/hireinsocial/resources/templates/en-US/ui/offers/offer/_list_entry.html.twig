@@ -1,5 +1,5 @@
 <div class="job-offer" data-id="{{ offer.id }}">
-    <h3><span class="badge badge-primary">{{ offer.description.seniorityLevel }}</span> <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >{{ offer.position.name }} <span class="text-muted">in</span> {{ offer.company.name }}</a></h3>
+    <h3><span class="badge badge-primary">{{ offer.position.seniorityLevel }}</span> <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >{{ offer.position.name }} <span class="text-muted">in</span> {{ offer.company.name }}</a></h3>
 
     <div class="row">
         <div class="col-4">

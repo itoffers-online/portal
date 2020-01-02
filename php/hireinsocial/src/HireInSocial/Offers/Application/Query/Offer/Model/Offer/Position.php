@@ -13,8 +13,15 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 
+use HireInSocial\Offers\Application\Exception\Exception;
+
 final class Position
 {
+    /**
+     * @var int
+     */
+    private $seniorityLevel;
+
     /**
      * @var string
      */
@@ -25,10 +32,29 @@ final class Position
      */
     private $description;
 
-    public function __construct(string $name, string $description)
+    public function __construct(int $seniorityLevel, string $name, string $description)
     {
+        $this->seniorityLevel = $seniorityLevel;
         $this->name = $name;
         $this->description = $description;
+    }
+
+    public function seniorityLevel() : string
+    {
+        switch ($this->seniorityLevel) {
+            case 0:
+                return 'Intern';
+            case 1:
+                return 'Junior';
+            case 2:
+                return 'Mid';
+            case 3:
+                return 'Senior';
+            case 4:
+                return 'Expert';
+            default:
+                throw new Exception("Unknown seniority level");
+        }
     }
 
     public function name() : string

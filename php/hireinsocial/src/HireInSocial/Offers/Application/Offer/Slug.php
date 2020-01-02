@@ -16,7 +16,7 @@ namespace HireInSocial\Offers\Application\Offer;
 use Cocur\Slugify\Slugify;
 use DateTimeImmutable;
 use Hashids\Hashids;
-use HireInSocial\Offers\Application\Offer\Description\SeniorityLevels;
+use HireInSocial\Offers\Application\Offer\Position\SeniorityLevels;
 use HireInSocial\Offers\Application\System\Calendar;
 use Ramsey\Uuid\UuidInterface;
 use function random_int;
@@ -51,7 +51,7 @@ class Slug
         $slugify = new Slugify();
 
         return new self(
-            sprintf('%s-%s', $slugify->slugify(SeniorityLevels::toString($offer->description()->seniorityLevel()) . ' ' . $offer->position()->name() . ' ' . $offer->company()->name()), $hashids->encode(time() + random_int(0, 5000))),
+            sprintf('%s-%s', $slugify->slugify(SeniorityLevels::toString($offer->position()->seniorityLevel()) . ' ' . $offer->position()->name() . ' ' . $offer->company()->name()), $hashids->encode(time() + random_int(0, 5000))),
             $offer->id(),
             $calendar->currentTime()
         );

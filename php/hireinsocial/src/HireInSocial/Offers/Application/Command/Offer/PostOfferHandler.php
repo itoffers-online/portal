@@ -197,6 +197,7 @@ final class PostOfferHandler implements Handler
                 $command->offer()->company()->description()
             ),
             new Position(
+                $command->offer()->position()->seniorityLevel(),
                 $command->offer()->position()->name(),
                 $command->offer()->position()->description()
             ),
@@ -221,7 +222,6 @@ final class PostOfferHandler implements Handler
                 $command->offer()->contract()->type()
             ),
             new Description(
-                $command->offer()->description()->seniorityLevel(),
                 $command->offer()->description()->requirements(),
                 $command->offer()->description()->benefits()
             ),

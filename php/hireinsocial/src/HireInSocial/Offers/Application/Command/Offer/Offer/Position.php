@@ -16,6 +16,11 @@ namespace HireInSocial\Offers\Application\Command\Offer\Offer;
 final class Position
 {
     /**
+     * @var int
+     */
+    private $seniorityLevel;
+
+    /**
      * @var string
      */
     private $name;
@@ -25,10 +30,16 @@ final class Position
      */
     private $description;
 
-    public function __construct(string $name, string $description)
+    public function __construct(int $seniorityLevel, string $name, string $description)
     {
+        $this->seniorityLevel = $seniorityLevel;
         $this->name = $name;
         $this->description = $description;
+    }
+
+    public function seniorityLevel() : int
+    {
+        return $this->seniorityLevel;
     }
 
     public function name() : string

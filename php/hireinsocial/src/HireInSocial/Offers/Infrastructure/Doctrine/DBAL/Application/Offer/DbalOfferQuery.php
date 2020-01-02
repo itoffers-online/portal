@@ -336,14 +336,14 @@ final class DbalOfferQuery implements OfferQuery
                 new Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),
                 new Contact($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),
                 new Contract($offerData['contract_type']),
-                new Description($offerData['description_seniority_level'], $offerData['description_requirements'], $offerData['description_benefits']),
+                new Description($offerData['description_requirements'], $offerData['description_benefits']),
                 new Location(
                     $offerData['location_remote'],
                     $offerData['location_name'],
                     $offerData['location_lat'] ? (float) $offerData['location_lat'] : null,
                     $offerData['location_lng'] ? (float) $offerData['location_lng'] : null
                 ),
-                new Position($offerData['position_name'], $offerData['position_description']),
+                new Position($offerData['position_seniority_level'], $offerData['position_name'], $offerData['position_description']),
                 ($salary)
                     ? new Salary(
                         $salary['min'],
