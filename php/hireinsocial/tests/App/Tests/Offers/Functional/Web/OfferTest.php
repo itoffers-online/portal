@@ -67,7 +67,7 @@ final class OfferTest extends WebTestCase
             'offer[company][name]' => 'Company name',
             'offer[company][url]' => 'http://company.com',
             'offer[company][description]' => $faker->text(512),
-            'offer[position][seniority_level]' => \random_int(0, 4),
+            'offer[position][seniorityLevel]' => \random_int(0, 4),
             'offer[position][name]' => 'Software Developer',
             'offer[position][description]' => $faker->text(1024),
             'offer[salary][min]' => 1000,

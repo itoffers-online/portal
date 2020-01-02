@@ -112,7 +112,7 @@ final class OfferController extends AbstractController
                     $userId,
                     new Offer(
                         new Company($offer['company']['name'], $offer['company']['url'], $offer['company']['description']),
-                        new Position($offer['position']['seniority_level'], $offer['position']['name'], $offer['position']['description']),
+                        new Position($offer['position']['seniorityLevel'], $offer['position']['name'], $offer['position']['description']),
                         new Location(
                             (bool)$offer['location']['remote'],
                             $offer['location']['name'],

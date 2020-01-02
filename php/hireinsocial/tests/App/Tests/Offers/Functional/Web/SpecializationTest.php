@@ -46,7 +46,7 @@ final class SpecializationTest extends WebTestCase
         );
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertCount(2, $crawler->filter('.job-offer'));
+        $this->assertCount(2, $crawler->filter('[data-offer-id]'));
     }
 
     public function test_filter_out_offers_without_salary() : void
@@ -68,7 +68,7 @@ final class SpecializationTest extends WebTestCase
 
         $crawler = $client->submit($form);
 
-        $this->assertCount(1, $crawler->filter('.job-offer'));
+        $this->assertCount(1, $crawler->filter('[data-offer-id]'));
     }
 
     public function test_filter_out_not_remote_offers() : void
@@ -90,7 +90,7 @@ final class SpecializationTest extends WebTestCase
 
         $crawler = $client->submit($form);
 
-        $this->assertCount(1, $crawler->filter('.job-offer'));
+        $this->assertCount(1, $crawler->filter('[data-offer-id]'));
     }
 
     public function test_sort_by_salary_ASC() : void

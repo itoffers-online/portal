@@ -55,6 +55,7 @@ class OfferToForm
                 'description' => $offer->company()->description(),
             ],
             'position' => [
+                'seniorityLevel' => $offer->position()->seniorityLevel(),
                 'name' => $offer->position()->name(),
                 'description' => $offer->position()->description(),
             ],
