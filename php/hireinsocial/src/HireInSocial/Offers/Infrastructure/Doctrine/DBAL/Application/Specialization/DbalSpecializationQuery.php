@@ -43,9 +43,10 @@ final class DbalSpecializationQuery implements SpecializationQuery
                      s.id,
                      s.slug, 
                      s.facebook_channel_page_id as fb_page_id, 
-                     s.facebook_channel_group_id as fb_group_id 
+                     s.facebook_channel_group_id as fb_group_id,
+                     (SELECT COUNT(*) FROM his_job_offer WHERE specialization_id = s.id) as offers_count
                   FROM his_specialization s 
-                  ORDER BY s.slug
+                  ORDER BY offers_count desc
 SQL
                 )
             )

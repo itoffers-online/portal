@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Offers\Controller;
 
-use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Offers\Offers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,23 +32,8 @@ final class IndexController extends AbstractController
 
     public function homeAction(Request $request) : Response
     {
-        /** @var OfferFilter $offerFilter */
-        $offerFilter = OfferFilter::all()
-            ->max(20);
-
-        $offers = $this->offers->offerQuery()->findAll($offerFilter);
-
-        if ($request->query->has('after')) {
-            $offerFilter->showAfter($request->query->get('after'));
-        }
-
-        $offerMore = $this->offers->offerQuery()->count($offerFilter);
-
         return $this->render('@offers/home/index.html.twig', [
             'specializations' => $this->offers->specializationQuery()->all(),
-            'offers' => $offers,
-            'offersMore' => $offerMore,
-            'showingOlder' => $request->query->has('after'),
         ]);
     }
 

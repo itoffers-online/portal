@@ -15,6 +15,7 @@ namespace HireInSocial\Offers\Application\Query\Specialization\Model;
 
 use HireInSocial\Offers\Application\Query\Specialization\Model\Specialization\FacebookChannel;
 use HireInSocial\Offers\Application\Query\Specialization\Model\Specialization\Offers;
+use function mb_strtolower;
 
 final class Specialization
 {
@@ -24,12 +25,12 @@ final class Specialization
     private $slug;
 
     /**
-     * @var \HireInSocial\Offers\Application\Query\Specialization\Model\Specialization\Offers
+     * @var Offers
      */
     private $offers;
 
     /**
-     * @var \HireInSocial\Offers\Application\Query\Specialization\Model\Specialization\FacebookChannel|null
+     * @var FacebookChannel|null
      */
     private $facebookChannel;
 
@@ -57,6 +58,6 @@ final class Specialization
 
     public function is(string $slug) : bool
     {
-        return \mb_strtolower($slug) === $this->slug;
+        return mb_strtolower($slug) === $this->slug;
     }
 }
