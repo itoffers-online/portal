@@ -38,7 +38,7 @@
                 </div>
                 <div class="col-10">
                     {% if seniorityLevel is not null %}
-                        {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers_seniority', {seniorityLevel: seniorityLevel|offer_seniority_level_name, specSlug: specialization.slug}|merge(queryParameters)), attr: {class: "row form-inline"} }) }}
+                        {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers_seniority', {seniorityLevel: seniorityLevel|offer_seniority_level_name|lower, specSlug: specialization.slug}|merge(queryParameters)), attr: {class: "row form-inline"} }) }}
                     {% else %}
                         {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters)), attr: {class: "row form-inline"} }) }}
                     {% endif %}
