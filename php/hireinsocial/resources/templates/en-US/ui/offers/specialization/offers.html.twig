@@ -9,27 +9,34 @@
         By default, we are not displaying you offers older than 14 days, most interesting offers after that time are already outdated.
     </p>
     <div class="row">
-        <div class="col-2">
-            <h3 class="d-inline">
-                Filter
-                {% if queryParameters|length %}
-                    <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" class="btn btn-danger btn-sm"><i class="fas fa-times"></i></a>
-                {% endif %}
-            </h3>
-            <p>
-                <small class="text-muted">Find best job offer for you.</small>
-            </p>
-
-            {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters)) }) }}
-                {{ form_row(form.remote, {label: "Remote"}) }}
-                {{ form_row(form.with_salary, {label: "Only with salary"}) }}
-                {{ form_row(form.with_salary, {label: null}) }}
-                {{ form_row(form.sort_by, {label: "Sort Offers"}) }}
-                {{ form_row(form.submit, {label: "Search", attr: {class: "btn btn-primary btn-block"}}) }}
-            {{ form_end(form) }}
-
+        <div class="col-12">
+            <div class="row">
+                <div class="col-2">
+                    <h3 class="d-inline">
+                        Filter
+                    </h3>
+                    <p>
+                        <small class="text-muted">Find best job offer for you.</small>
+                    </p>
+                </div>
+                <div class="col-10">
+                    {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters)), attr: {class: "row form-inline"} }) }}
+                    <div class="col-2">{{ form_row(form.remote, {label: "Remote"}) }}</div>
+                    <div class="col-2">{{ form_row(form.with_salary, {label: "Only with salary"}) }}</div>
+                    <div class="col-4">{{ form_row(form.sort_by, {label: "Sort By", label_attr: {class: "mr-2"}, row_attr: {class: "form-group-inline"}}) }}</div>
+                    <div class="col-3 text-right">
+                        {{ form_widget(form.submit, {label: "Search", attr: {class: "btn btn-primary mr-2"}}) }}
+                        {% if queryParameters|length %}
+                            <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" class="btn btn-danger"><i class="fas fa-times"></i> Reset</a>
+                        {% endif %}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
         </div>
-        <div class="col-10">
+    </div>
+    <div class="row">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
                 {% for offer in offers %}
