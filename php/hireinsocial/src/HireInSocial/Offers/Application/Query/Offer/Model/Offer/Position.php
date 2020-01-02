@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 
-use HireInSocial\Offers\Application\Exception\Exception;
-
 final class Position
 {
     /**
@@ -39,22 +37,9 @@ final class Position
         $this->description = $description;
     }
 
-    public function seniorityLevel() : string
+    public function seniorityLevel() : int
     {
-        switch ($this->seniorityLevel) {
-            case 0:
-                return 'Intern';
-            case 1:
-                return 'Junior';
-            case 2:
-                return 'Mid';
-            case 3:
-                return 'Senior';
-            case 4:
-                return 'Expert';
-            default:
-                throw new Exception("Unknown seniority level");
-        }
+        return $this->seniorityLevel;
     }
 
     public function name() : string

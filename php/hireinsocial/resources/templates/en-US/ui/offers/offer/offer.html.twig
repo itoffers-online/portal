@@ -56,7 +56,7 @@
     </div>
     <h1 class="mt-2">
         {% include '@offers/specialization/_logo_plain.html.twig' with {specialization: offer.specializationSlug} only %}
-        <span class="badge badge-primary">{{ offer.position.seniorityLevel }}</span> {{ offer.position.name }} <span class="text-muted">in</span> {{ offer.company.name }}
+        <span class="badge badge-primary">{{ offer.position.seniorityLevel|offer_seniority_level_name }}</span> {{ offer.position.name }} <span class="text-muted">in</span> {{ offer.company.name }}
         {% if userId and offer.postedBy(userId)%}
             <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger d-inline">Remove</a>
         {% endif %}

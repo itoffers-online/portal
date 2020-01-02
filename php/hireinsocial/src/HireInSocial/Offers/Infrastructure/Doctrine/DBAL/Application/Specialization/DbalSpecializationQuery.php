@@ -76,7 +76,7 @@ SQL
         return $this->hydrateSpecialization($specialization);
     }
 
-    public function hydrateSpecialization(array $data) : Specialization
+    private function hydrateSpecialization(array $data) : Specialization
     {
         // TODO: Optimize this, maybe try to merge this into main query or migrate to projections
         $offersData = $this->connection->fetchAssoc(

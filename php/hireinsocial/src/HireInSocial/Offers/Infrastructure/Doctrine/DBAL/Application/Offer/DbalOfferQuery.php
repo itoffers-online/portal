@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Query\QueryBuilder;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Company;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Contact;
@@ -25,6 +27,8 @@ use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Parameters;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Position;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offers;
+use HireInSocial\Offers\Application\Query\Offer\Model\OfferSeniorityLevel;
+use HireInSocial\Offers\Application\Query\Offer\Model\OffersSeniorityLevel;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Offers\Application\Query\Offer\OfferQuery;
 use Ramsey\Uuid\Uuid;
@@ -56,60 +60,9 @@ final class DbalOfferQuery implements OfferQuery
                 s.slug as specialization_slug, 
                 CAST(o.salary->>\'max\' as INTEGER) as salary_max,
                 (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
-            ')
-            ->from('his_job_offer', 'o')
-            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
-            ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
-            ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
-            ->where('o.removed_at IS NULL');
+            ');
 
-        if ($filter->specialization()) {
-            $queryBuilder->andWhere('s.slug = :specializationSlug');
-        }
-
-        if ($filter->remote()) {
-            $queryBuilder->andWhere('o.location_remote = true');
-        }
-
-        if ($filter->withSalary()) {
-            $queryBuilder->andWhere('o.salary IS NOT NULL');
-        }
-
-        if ($filter->userId()) {
-            $queryBuilder->andWhere('o.user_id = :userId');
-            $queryBuilder->setParameter('userId', $filter->userId());
-        }
-
-        if ($filter->afterOfferId()) {
-            $queryBuilder->andWhere('o.id <> :afterOfferId')
-                ->setParameter('afterOfferId', $filter->afterOfferId());
-            $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM his_job_offer WHERE id = :afterOfferId)');
-        } else {
-            $queryBuilder->andWhere('o.created_at >= :sinceDate')
-                ->setParameter('sinceDate', $filter->sinceDate()->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()));
-        }
-
-        $queryBuilder->setMaxResults($filter->limit());
-
-        if ($filter->offset()) {
-            $queryBuilder->setFirstResult($filter->offset());
-        }
-
-        if ($filter->isSorted()) {
-            foreach ($filter->sortByColumns() as $column) {
-                if ($column->is(OfferFilter::COLUMN_SALARY)) {
-                    $queryBuilder->addOrderBy('salary_max', $column->direction());
-                }
-
-                if ($column->is(OfferFilter::COLUMN_CREATED_AT)) {
-                    $queryBuilder->addOrderBy('o.created_at', $column->direction());
-                }
-            }
-        } else {
-            $queryBuilder->orderBy('o.created_at', 'DESC');
-        }
-
-        $queryBuilder->setParameter('specializationSlug', $filter->specialization());
+        $this->prepareFindQueryBuilder($filter, $queryBuilder);
 
         $offersData = $queryBuilder->execute()
             ->fetchAll();
@@ -117,6 +70,30 @@ final class DbalOfferQuery implements OfferQuery
         return new Offers(...\array_map(
             [$this, 'hydrateOffer'],
             $offersData
+        ));
+    }
+
+    public function offersSeniorityLevels(OfferFilter $filter) : OffersSeniorityLevel
+    {
+        $queryBuilder = $this->connection->createQueryBuilder()
+            ->select('
+                o.position_seniority_level,
+                COUNT(o.*)
+            ');
+
+        $this->prepareFindQueryBuilder($filter, $queryBuilder);
+
+        $queryBuilder->groupBy('o.position_seniority_level');
+        $queryBuilder->orderBy('o.position_seniority_level', 'ASC');
+
+        $offersCountData = $queryBuilder->execute()
+            ->fetchAll();
+
+        return new OffersSeniorityLevel(...\array_map(
+            function (array $data) {
+                return new OfferSeniorityLevel($data['position_seniority_level'], $data['count']);
+            },
+            $offersCountData
         ));
     }
 
@@ -138,6 +115,11 @@ final class DbalOfferQuery implements OfferQuery
 
         if ($filter->withSalary()) {
             $queryBuilder->andWhere('o.salary IS NOT NULL');
+        }
+
+        if ($filter->seniorityLevel()) {
+            $queryBuilder->andWhere('o.position_seniority_level = :seniorityLevel');
+            $queryBuilder->setParameter('seniorityLevel', $filter->seniorityLevel());
         }
 
         if ($filter->userId()) {
@@ -357,5 +339,73 @@ final class DbalOfferQuery implements OfferQuery
             $offerData['applications_count'],
             $offerPDF
         );
+    }
+
+    /**
+     * @param OfferFilter $filter
+     * @param QueryBuilder $queryBuilder
+     * @throws DBALException
+     */
+    private function prepareFindQueryBuilder(OfferFilter $filter, QueryBuilder $queryBuilder) : void
+    {
+        $queryBuilder
+            ->from('his_job_offer', 'o')
+            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
+            ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->where('o.removed_at IS NULL');
+
+        if ($filter->specialization()) {
+            $queryBuilder->andWhere('s.slug = :specializationSlug');
+        }
+
+        if ($filter->remote()) {
+            $queryBuilder->andWhere('o.location_remote = true');
+        }
+
+        if ($filter->withSalary()) {
+            $queryBuilder->andWhere('o.salary IS NOT NULL');
+        }
+
+        if ($filter->userId()) {
+            $queryBuilder->andWhere('o.user_id = :userId');
+            $queryBuilder->setParameter('userId', $filter->userId());
+        }
+
+        if ($filter->seniorityLevel()) {
+            $queryBuilder->andWhere('o.position_seniority_level = :seniorityLevel');
+            $queryBuilder->setParameter('seniorityLevel', $filter->seniorityLevel());
+        }
+
+        if ($filter->afterOfferId()) {
+            $queryBuilder->andWhere('o.id <> :afterOfferId')
+                ->setParameter('afterOfferId', $filter->afterOfferId());
+            $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM his_job_offer WHERE id = :afterOfferId)');
+        } else {
+            $queryBuilder->andWhere('o.created_at >= :sinceDate')
+                ->setParameter('sinceDate', $filter->sinceDate()->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()));
+        }
+
+        $queryBuilder->setMaxResults($filter->limit());
+
+        if ($filter->offset()) {
+            $queryBuilder->setFirstResult($filter->offset());
+        }
+
+        if ($filter->isSorted()) {
+            foreach ($filter->sortByColumns() as $column) {
+                if ($column->is(OfferFilter::COLUMN_SALARY)) {
+                    $queryBuilder->addOrderBy('salary_max', $column->direction());
+                }
+
+                if ($column->is(OfferFilter::COLUMN_CREATED_AT)) {
+                    $queryBuilder->addOrderBy('o.created_at', $column->direction());
+                }
+            }
+        } else {
+            $queryBuilder->orderBy('o.created_at', 'DESC');
+        }
+
+        $queryBuilder->setParameter('specializationSlug', $filter->specialization());
     }
 }

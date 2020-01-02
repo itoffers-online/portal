@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Offers\Controller;
 
 use App\Offers\Form\Type\OfferFilterType;
+use App\Offers\Twig\Extension\OfferExtension;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Offers\Offers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,13 +33,17 @@ final class SpecializationController extends AbstractController
         $this->offers = $offers;
     }
 
-    public function offersAction(Request $request, string $specSlug) : Response
+    public function offersAction(Request $request, string $specSlug, string $seniorityLevel = null) : Response
     {
         $specialization = $this->offers->specializationQuery()->findBySlug($specSlug);
 
         if (!$specialization) {
             throw $this->createNotFoundException();
         }
+
+        $seniorityLevel = $seniorityLevel
+            ? OfferExtension::seniorityLevelFromName($seniorityLevel)
+            : null;
 
         /** @var OfferFilter $offerFilter */
         $offerFilter = OfferFilter::allFor($specialization->slug())
@@ -60,6 +65,12 @@ final class SpecializationController extends AbstractController
             }
         }
 
+        $offersSeniorityLevels = $this->offers->offerQuery()->offersSeniorityLevels($offerFilter);
+
+        if ($seniorityLevel) {
+            $offerFilter->onlyFor($seniorityLevel);
+        }
+
         $total = $this->offers->offerQuery()->count($offerFilter);
 
         if ($request->query->has('after')) {
@@ -68,6 +79,7 @@ final class SpecializationController extends AbstractController
 
         $offers = $this->offers->offerQuery()->findAll($offerFilter);
         $offerMore = $this->offers->offerQuery()->count($offerFilter);
+
 
         return $this->render('@offers/specialization/offers.html.twig', [
             'total' => $total,
@@ -79,6 +91,8 @@ final class SpecializationController extends AbstractController
             'queryParameters' => $request->query->all(),
             'throttleLimit' => $this->offers->offerThrottleQuery()->limit(),
             'throttleSince' => $this->offers->offerThrottleQuery()->since(),
+            'offersSeniorityLevels' => $offersSeniorityLevels,
+            'seniorityLevel' => $seniorityLevel,
         ]);
     }
 }
