@@ -3,6 +3,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <embeddable name="HireInSocial\Offers\Application\Offer\Description">
+        <field name="seniorityLevel" type="smallint"/>
         <field name="requirements" length="1024"/>
         <field name="benefits" length="1024"/>
     </embeddable>

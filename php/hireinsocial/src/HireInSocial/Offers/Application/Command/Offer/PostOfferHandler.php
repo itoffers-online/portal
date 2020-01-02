@@ -221,6 +221,7 @@ final class PostOfferHandler implements Handler
                 $command->offer()->contract()->type()
             ),
             new Description(
+                $command->offer()->description()->seniorityLevel(),
                 $command->offer()->description()->requirements(),
                 $command->offer()->description()->benefits()
             ),
