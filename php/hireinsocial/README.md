@@ -9,6 +9,7 @@ all instructions in this readme are prepared for it.
 $ vagrant ssh
 $ cd /var/www/hireinsocial/php/hireinsocial
 $ composer install
+$ composer assets:install
 ```
 
 ## Configuration
@@ -18,6 +19,17 @@ Check [.env.dist file](/php/hireinsocial/.env.dist) and create your own local co
 ```
 $ cp /var/www/hireinsocial/php/hireinsocial/.env.dist /var/www/hireinsocial/php/hireinsocial/.env
 ```
+ 
+## User interface
+
+User interface is using [Bootstrap 4.0](https://getbootstrap.com/). Most javascripts are written directly in twig, in special
+block `javascripts`, just like custom css are using `stylesheets` block. 
+
+In order to rebuild bootstrap use 
+
+```
+composer assets:build
+``` 
  
 ## Command Line Interface
 
