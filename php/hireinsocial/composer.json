@@ -93,6 +93,13 @@
         "symfony/http-client": "^5.0"
     },
     "scripts": {
+        "assets:install": [
+            "npm ci",
+            "@assets:build"
+        ],
+        "assets:build": [
+            "npm run assets:build"
+        ],
         "build": [
             "@test",
             "@composer:install:prod",

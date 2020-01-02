@@ -28,3 +28,6 @@
 
 - name: iroquoisorg.postgresql
   version: "1.0.6"
+
+- name: geerlingguy.nodejs
+  version: "5.0.0"

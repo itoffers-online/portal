@@ -98,6 +98,8 @@
     blackfire_install_agent: true
     blackfire_php_module_service: 'php{{ php_version }}-fpm'
 
+    nodejs_version: "12.x"
+
   roles:
     - { role: "iroquoisorg.env" }
     - { role: "iroquoisorg.tools" }
@@ -110,3 +112,4 @@
     - { role: "iroquoisorg.blackfire" }
     - { role: "iroquoisorg.redis" }
     - { role: "iroquoisorg.postgresql" }
+    - { role: "geerlingguy.nodejs" }

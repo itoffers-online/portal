@@ -5,3 +5,5 @@
 /build/
 *.cache
 /public/upload
+/node_modules
+/public/assets/dist
