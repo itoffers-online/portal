@@ -66,6 +66,11 @@ final class OfferFilter extends AbstractFilter
      */
     private $afterOffer;
 
+    /**
+     * @var int|null
+     */
+    private $seniorityLevel;
+
     private function __construct()
     {
         $this->newerThan(new \DateTimeImmutable('-2 weeks', new \DateTimeZone('UTC')));
@@ -153,6 +158,21 @@ final class OfferFilter extends AbstractFilter
         $this->userId = $userId;
 
         return $this;
+    }
+
+    public function onlyFor(int $seniorityLevel) : self
+    {
+        $this->seniorityLevel = $seniorityLevel;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function seniorityLevel() : ?int
+    {
+        return $this->seniorityLevel;
     }
 
     public function userId() : ?string

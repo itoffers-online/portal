@@ -1,5 +1,11 @@
 {% spaceless %}
-{% if specialization == 'php' %}PHP{% endif %}
-{% if specialization == 'javascript' %}Java Script{% endif %}
-{% if specialization == 'devops' %}DevOps{% endif %}
+{% if specialization == 'php' %}PHP
+{% elseif specialization == 'javascript' %}Java Script
+{% elseif specialization == 'devops' %}DevOps
+{% elseif specialization == 'java' %}Java
+{% elseif specialization == 'scala' %}Scala
+{% elseif specialization == 'dot-net' %}.NET
+{% elseif specialization == 'ruby' %}Ruby
+{% elseif specialization == 'python' %}Python
+{% else %}No Name{% endif %}
 {% endspaceless %}

@@ -1,11 +1,19 @@
 {% spaceless %}
     {% if specialization == 'php' %}
         <i class="devicon-php-plain"></i>
-    {% endif %}
-    {% if specialization == 'javascript' %}
+    {% elseif specialization == 'javascript' %}
         <i class="devicon-javascript-plain"></i>
-    {% endif %}
-    {% if specialization == 'devops' %}
+    {% elseif specialization == 'devops' %}
         <i class="devicon-linux-plain"></i>
+    {% elseif specialization == 'java' %}
+        <i class="devicon-java-plain"></i>
+    {% elseif specialization == 'dot-net' %}
+        <i class="devicon-dot-net-plain"></i>
+    {% elseif specialization == 'ruby' %}
+        <i class="devicon-ruby-plain"></i>
+    {% elseif specialization == 'python' %}
+        <i class="devicon-python-plain"></i>
+    {% else %}
+        <i class="fas fa-cog"></i>
     {% endif %}
 {% endspaceless %}

@@ -15,6 +15,7 @@ namespace HireInSocial\Offers\Application\Query\Offer;
 
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offers;
+use HireInSocial\Offers\Application\Query\Offer\Model\OffersSeniorityLevel;
 use HireInSocial\Offers\Application\System\Query;
 
 interface OfferQuery extends Query
@@ -24,6 +25,8 @@ interface OfferQuery extends Query
     public function count(OfferFilter $filter) : int;
 
     public function findAll(OfferFilter $filter) : Offers;
+
+    public function offersSeniorityLevels(OfferFilter $filter) : OffersSeniorityLevel;
 
     public function findByEmailHash(string $emailHash) : ?Offer;
 

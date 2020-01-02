@@ -3,33 +3,62 @@
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
-    <h2 class="text-center">We have {{ total }} offers in <strong>{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}</strong> specialization {% include '@offers/specialization/_logo_plain.html.twig' with { specialization: specialization.slug} only %}</h2>
+    <h2 class="text-center">We have {{ total }}{% if seniorityLevel is not null %} <strong>{{ seniorityLevel|offer_seniority_level_name }}</strong>{% endif %} offers in <strong>{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}</strong> specialization {% include '@offers/specialization/_logo_plain.html.twig' with { specialization: specialization.slug} only %}</h2>
     <p class="alert alert-info text-center">
         Below you can find all job offers in this specialization. Job offers can't be added more frequently than {{ throttleLimit }} per {{ throttleSince.format('%d') }} days.<br/>
         By default, we are not displaying you offers older than 14 days, most interesting offers after that time are already outdated.
     </p>
+    {% if offersSeniorityLevels|length %}
+    <p>
+        <h3 class="d-inline mr-4">Seniority Level</h3>
+        {% for offerSeniorityLevel in offersSeniorityLevels %}
+            <a
+            {% if seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}
+                href="{{ url('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters) ) }}"
+                class="btn {% if seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}btn-primary{% else %}btn-outline-primary{% endif %}"
+            {% else %}
+                href="{{ url('specialization_offers_seniority', {specSlug: specialization.slug, seniorityLevel: offerSeniorityLevel.level|offer_seniority_level_name|lower}|merge(queryParameters) ) }}"
+                class="btn {% if seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}btn-primary{% else %}btn-outline-primary{% endif %}"
+            {% endif %}
+            >
+                {{ offerSeniorityLevel.level|offer_seniority_level_name }} - {{ offerSeniorityLevel.offersCount }}
+            </a>
+        {% endfor %}
+    </p>
     <div class="row">
-        <div class="col-2">
-            <h3 class="d-inline">
-                Filter
-                {% if queryParameters|length %}
-                    <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" class="btn btn-danger btn-sm"><i class="fas fa-times"></i></a>
-                {% endif %}
-            </h3>
-            <p>
-                <small class="text-muted">Find best job offer for you.</small>
-            </p>
-
-            {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters)) }) }}
-                {{ form_row(form.remote, {label: "Remote"}) }}
-                {{ form_row(form.with_salary, {label: "Only with salary"}) }}
-                {{ form_row(form.with_salary, {label: null}) }}
-                {{ form_row(form.sort_by, {label: "Sort Offers"}) }}
-                {{ form_row(form.submit, {label: "Search", attr: {class: "btn btn-primary btn-block"}}) }}
-            {{ form_end(form) }}
-
+        <div class="col-12">
+            <div class="row">
+                <div class="col-2">
+                    <h3 class="d-inline">
+                        Filter
+                    </h3>
+                    <p>
+                        <small class="text-muted">Find best job offer for you.</small>
+                    </p>
+                </div>
+                <div class="col-10">
+                    {% if seniorityLevel is not null %}
+                        {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers_seniority', {seniorityLevel: seniorityLevel|offer_seniority_level_name|lower, specSlug: specialization.slug}|merge(queryParameters)), attr: {class: "row form-inline"} }) }}
+                    {% else %}
+                        {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters)), attr: {class: "row form-inline"} }) }}
+                    {% endif %}
+                    <div class="col-2">{{ form_row(form.remote, {label: "Remote"}) }}</div>
+                    <div class="col-2">{{ form_row(form.with_salary, {label: "Only with salary"}) }}</div>
+                    <div class="col-4">{{ form_row(form.sort_by, {label: "Sort By", label_attr: {class: "mr-2"}, row_attr: {class: "form-group-inline"}}) }}</div>
+                    <div class="col-3 text-right">
+                        {{ form_widget(form.submit, {label: "Search", attr: {class: "btn btn-primary mr-2"}}) }}
+                        {% if queryParameters|length %}
+                            <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" class="btn btn-danger"><i class="fas fa-times"></i> Reset</a>
+                        {% endif %}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
         </div>
-        <div class="col-10">
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
                 {% for offer in offers %}

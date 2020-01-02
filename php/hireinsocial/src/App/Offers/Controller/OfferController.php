@@ -112,7 +112,7 @@ final class OfferController extends AbstractController
                     $userId,
                     new Offer(
                         new Company($offer['company']['name'], $offer['company']['url'], $offer['company']['description']),
-                        new Position($offer['position']['name'], $offer['position']['description']),
+                        new Position($offer['position']['seniority_level'], $offer['position']['name'], $offer['position']['description']),
                         new Location(
                             (bool)$offer['location']['remote'],
                             $offer['location']['name'],
@@ -124,7 +124,7 @@ final class OfferController extends AbstractController
                             ? null
                             : new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool) $offer['salary']['net'], $offer['salary']['period_type']),
                         new Contract($offer['contract']),
-                        new Description($offer['description']['seniority_level'], $offer['description']['requirements'], $offer['description']['benefits']),
+                        new Description($offer['description']['requirements'], $offer['description']['benefits']),
                         new Contact($offer['contact']['email'], $offer['contact']['name'], $offer['contact']['phone']),
                         new Channels((bool) $offer['channels']['facebook_group'])
                     ),

@@ -1,39 +1,47 @@
 {% extends '@offers/base.html.twig' %}
 
+{% block stylesheets %}
+{{ parent() }}
+<style type="text/css">
+    .specialization .logo svg {
+        max-width: 250px;
+    }
+    .specialization .logo img {
+        max-width: 250px;
+        max-height: 250px;
+    }
+</style>
+{% endblock %}
+
+{% block header %}
+<div class="pt-5 text-center">
+    <h1><a href="{{ url('home') }}">Hire in Social!</a></h1>
+    <p class="lead">
+        We have only best job offers!
+    </p>
+</div>
+{% endblock %}
+
 {% block body %}
-<div class="card">
-    <div class="card-body">
-    {% for offer in offers %}
-        <div class="job-offer">
-            <div class="row">
-                <div class="col-2">
-                    <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >
-                        {% include '@offers/specialization/_logo.html.twig' with {specialization: specializations.getFor(offer).slug } only %}
+<div class="row">
+    {% for specialization in specializations %}
+    <div class="col-md-4 mb-4">
+        <div class="card specialization">
+            <div class="card-title text-center mt-2">
+                <h1>
+                    <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
+                    {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
+                    </a>
+                </h1>
+                <div class="logo">
+                    <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
+                        {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
                     </a>
                 </div>
-                <div class="col-10">
-                    {{ include('@offers/offer/_list_entry.html.twig', {offer: offer}, false) }}
-                </div>
+                offers: {{ specialization.offers.count }}
             </div>
         </div>
-        {% if not loop.last %}
-            <hr />
-        {% endif %}
-    {% endfor %}
     </div>
+    {% endfor %}
 </div>
-{% if offersMore > offers|length %}
-    <p class="mt-2">
-        {% if showingOlder %}
-            <a class="btn btn-primary mr-2" href="{{ url('home') }}">Show latest</a>
-        {% endif %}
-        <a class="btn btn-secondary" href="{{ url('home', {specSlug: specialization.slug, after: offers.last.id.toString}) }}">Show more</a>
-    </p>
-{% else %}
-    {% if showingOlder %}
-        <p class="mt-2">
-            <a class="btn btn-primary" href="{{ url('home') }}">Show latest</a>
-        </p>
-    {% endif %}
-{% endif %}
 {% endblock %}

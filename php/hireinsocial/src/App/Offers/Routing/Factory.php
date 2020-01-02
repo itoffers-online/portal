@@ -71,8 +71,9 @@ final class Factory
                 $routes->addRoute(new Route('/offers/post', ['_controller' => [OfferController::class, 'postAction']]), 'offer_post');
                 $routes->addRoute(new Route('/offers/{specSlug}/new', ['_controller' => [OfferController::class, 'newAction']]), 'offer_new');
                 $routes->addRoute(new Route('/offers/{specSlug}/new/success', ['_controller' => [OfferController::class, 'successAction']]), 'offer_success');
+                $routes->addRoute(new Route('/offers/{specSlug}/{seniorityLevel}', ['_controller' => [SpecializationController::class, 'offersAction']]), 'specialization_offers_seniority');
                 $routes->addRoute(new Route('/offers/{specSlug}', ['_controller' => [SpecializationController::class, 'offersAction']]), 'specialization_offers');
-                $routes->addRoute(new Route('/job-offer//{offerSlug}/remove-confirmation', ['_controller' => [OfferController::class, 'removeConfirmationAction']]), 'offer_remove_confirmation');
+                $routes->addRoute(new Route('/job-offer/{offerSlug}/remove-confirmation', ['_controller' => [OfferController::class, 'removeConfirmationAction']]), 'offer_remove_confirmation');
                 $routes->addRoute(new Route('/job-offer/{offerSlug}/remove', ['_controller' => [OfferController::class, 'removeAction']]), 'offer_remove');
                 $routes->addRoute(new Route('/job-offer/{offerSlug}', ['_controller' => [OfferController::class, 'offerAction']]), 'offer');
                 $routes->addRoute(new Route('/user/blocked', ['_controller' => [SecurityController::class, 'userBlockedAction']]), 'user_blocked');

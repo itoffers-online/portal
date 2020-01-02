@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Offers\Form\Type\Offer;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,6 +25,18 @@ final class PositionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
+            ->add('seniority_level', ChoiceType::class, [
+                'required' => true,
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => [
+                    'Intern'  => 0,
+                    'Junior'  => 1,
+                    'Mid'  => 2,
+                    'Senior'  => 3,
+                    'Expert'  => 4,
+                ],
+            ])
             ->add('name', TextType::class, [
                 'constraints' => [
                     new Length(['min' => 3, 'max' => 255]),

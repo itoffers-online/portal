@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Offers\Application\Offer\Description;
+namespace HireInSocial\Offers\Application\Offer\Position;
 
 use HireInSocial\Offers\Application\Exception\Exception;
 

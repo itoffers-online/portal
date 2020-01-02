@@ -24,7 +24,7 @@ use HireInSocial\Offers\Application\Command\Offer\Offer\Offer;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Position;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Offers\Application\Command\Offer\PostOffer;
-use HireInSocial\Offers\Application\Offer\Description\SeniorityLevels;
+use HireInSocial\Offers\Application\Offer\Position\SeniorityLevels;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary as SalaryView;
 
 final class PostOfferMother
@@ -39,12 +39,11 @@ final class PostOfferMother
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
-                new Position('PHP Developer', $faker->text(1024)),
+                new Position(\random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT), 'PHP Developer', $faker->text(1024)),
                 new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
-                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -70,12 +69,11 @@ final class PostOfferMother
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
-                new Position('PHP Developer', $faker->text(1024)),
+                new Position(\random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT), 'PHP Developer', $faker->text(1024)),
                 new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
-                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -102,12 +100,11 @@ final class PostOfferMother
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
-                new Position('PHP Developer', $faker->text(1024)),
+                new Position(\random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT), 'PHP Developer', $faker->text(1024)),
                 new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 null,
                 new Contract('B2B'),
                 new Description(
-                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -133,12 +130,11 @@ final class PostOfferMother
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
-                new Position('PHP Developer', $faker->text(1024)),
+                new Position(\random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT), 'PHP Developer', $faker->text(1024)),
                 new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 new Salary($min, $max, $currency, $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
-                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -164,12 +160,11 @@ final class PostOfferMother
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
-                new Position('PHP Developer', $faker->text(1024)),
+                new Position(\random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT), 'PHP Developer', $faker->text(1024)),
                 new Location(false, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
-                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -195,12 +190,11 @@ final class PostOfferMother
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
-                new Position('PHP Developer', $faker->text(1024)),
+                new Position(\random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT), 'PHP Developer', $faker->text(1024)),
                 new Location(true),
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
-                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
@@ -226,12 +220,11 @@ final class PostOfferMother
             $fbUserId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
-                new Position('PHP Developer', $faker->text(1024)),
+                new Position(\random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT), 'PHP Developer', $faker->text(1024)),
                 new Location($faker->boolean, $faker->country, new Location\LatLng($faker->latitude, $faker->longitude)),
                 new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                 new Contract('B2B'),
                 new Description(
-                    \random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT),
                     $faker->text(1024),
                     $faker->text(1024)
                 ),
