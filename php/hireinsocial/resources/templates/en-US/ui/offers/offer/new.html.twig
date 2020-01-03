@@ -1,6 +1,6 @@
 {% extends '@offers/base.html.twig' %}
 
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% form_theme form '@offers/form/theme.html.twig'  %}
 
 {% block stylesheets %}
 {{ parent() }}
@@ -11,6 +11,7 @@
     }
 </style>
 {% endblock %}
+
 {% block body %}
     {% if throttled and extraOffersCount <= 0 %}
     <div class="alert alert-warning text-center" role="alert">
