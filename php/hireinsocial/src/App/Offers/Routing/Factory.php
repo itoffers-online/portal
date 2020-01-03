@@ -81,6 +81,7 @@ final class Factory
                 $routes->addRoute(new Route('/terms-and-conditions', ['_controller' => [StaticController::class, 'termsAndConditionsAction']]), 'terms_and_conditions');
                 $routes->addRoute(new Route('/privacy-policy', ['_controller' => [StaticController::class, 'privacyPolicyAction']]), 'privacy_policy');
                 $routes->addRoute(new Route('/cookies-policy', ['_controller' => [StaticController::class, 'cookiesPolicyAction']]), 'cookies_policy');
+                $routes->addRoute(new Route('/how-it-works', ['_controller' => [StaticController::class, 'howItWorksAction']]), 'how_it_works');
 
                 break;
             default:

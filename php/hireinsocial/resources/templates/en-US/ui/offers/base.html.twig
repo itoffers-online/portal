@@ -35,8 +35,9 @@
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
             <div class="col-md-3">
-                <h6>Resources</h6>
-                <ul>
+                <h5 class="font-weight-bold">Resources</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{{ url('how_it_works') }}">How it works</a></li>
                     <li><a href="{{ url('terms_and_conditions') }}">Terms & conditions</a></li>
                     <li><a href="{{ url('terms_and_conditions') }}">Privacy policy</a></li>
                     <li><a href="{{ url('cookies_policy') }}">Cookies</a></li>
@@ -45,8 +46,8 @@
             <div class="col-6">
             </div>
             <div class="col-3 col-md-3">
-                <h6>Contact</h6>
-                <ul>
+                <h5 class="font-weight-bold">Contact</h5>
+                <ul class="list-unstyled">
                     <li><a target="_blank" href="mailto:{{ contact_email }}"><i class="fas fa-envelope-square"></i> {{ contact_email }}</a></li>
                     <li><a target="_blank" href="{{ facebook.page_url }}"><i class="fab fa-facebook"></i> Page</a> </li>
                 </ul>
