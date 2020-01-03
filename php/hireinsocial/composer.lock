@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "080858a9c4d5179dc73c80c3540f96e8",
+    "content-hash": "aa2b769f3dd90f02604af3f32bd2b6ea",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2077,6 +2077,47 @@
                 "service proxies"
             ],
             "time": "2019-08-10T08:37:15+00:00"
+        },
+        {
+            "name": "p3k/emoji-detector",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aaronpk/emoji-detector-php.git",
+                "reference": "fb0765845e554f04ccd2b594a7ab8ca44d804bab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aaronpk/emoji-detector-php/zipball/fb0765845e554f04ccd2b594a7ab8ca44d804bab",
+                "reference": "fb0765845e554f04ccd2b594a7ab8ca44d804bab",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Emoji.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Parecki",
+                    "email": "aaron@parecki.com",
+                    "homepage": "https://aaronparecki.com/"
+                }
+            ],
+            "description": "Detect and return all emoji found in a string",
+            "homepage": "https://github.com/aaronpk/emoji-detector-php",
+            "time": "2017-11-30T21:02:53+00:00"
         },
         {
             "name": "paragonie/random_compat",
