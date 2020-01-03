@@ -25,7 +25,7 @@ final class PositionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
-            ->add('seniority_level', ChoiceType::class, [
+            ->add('seniorityLevel', ChoiceType::class, [
                 'required' => true,
                 'expanded' => true,
                 'multiple' => false,

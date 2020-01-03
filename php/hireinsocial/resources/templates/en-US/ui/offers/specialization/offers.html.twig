@@ -59,35 +59,77 @@
     {% endif %}
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                {% for offer in offers %}
-                    {{ include('@offers/offer/_list_entry.html.twig', {offer: offer}, false) }}
-                    {% if not loop.last %}
-                    <hr />
+                <div class="row">
+                    {% for offer in offers %}
+                        <div data-offer-id="{{ offer.id }}" class="col-md-4 mb-4">
+                            <div class="card specialization">
+                                <div class="card-body">
+                                    <div class="card-title">
+                                        <h3>
+                                            <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >{{ offer.position.seniorityLevel|offer_seniority_level_name }} - {{ offer.position.name }}</a>
+                                        </h3>
+                                    </div>
+                                    <p>
+                                        <a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a>
+                                    </p>
+                                    <p>
+                                        {% if offer.salary %}
+                                            <strong><span data-salary-min="{{ offer.salary.min }}">{{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }}</span> - <span data-salary-max="{{ offer.salary.max }}">{{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }}</span></strong> {% if offer.salary.periodTypeTotal %}in total{% else %}per {{ offer.salary.periodType }}{% endif %}
+                                            {% if offer.salary.isNet %}<strong class="text-success">net</strong>{% else %}<strong class="text-warning">gross</strong>{% endif %}
+                                        {% else %}
+                                            Not defined
+                                        {% endif %}
+                                    </p>
+                                    <hr />
+                                    {% if offer.location.name %}
+                                        <p>
+                                            Location: {{ offer.location.name }}
+                                        </p>
+                                        <hr/>
+                                    {% endif %}
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <span>{{ offer.createdAt|time_diff }}</span> <span class="btn btn-outline-primary btn-sm disabled">{{ offer.contract.type }}</span>
+                                        </div>
+                                        <div class="col-4">
+                                            <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" class="btn btn-primary btn-sm">Read more</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="alert alert-warning text-center">
+                                        Sorry, currently we don't have any interesting offers in this specialization, please try again later or
+                                        <a href="{{ url('offer_new', {specSlug: specialization.slug}) }}">add new offer.</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            <div class="row">
+                <div class="col-12">
+                {% if offersMore > offers|length %}
+                <p class="mt-2">
+                    {% if showingOlder %}
+                        <a class="btn btn-primary mr-2" href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">Show latest</a>
                     {% endif %}
+                    <a class="btn btn-secondary" href="{{ url('specialization_offers', {specSlug: specialization.slug, after: offers.last.id.toString}) }}">Show more</a>
+                </p>
                 {% else %}
-                    <div class="alert alert-warning text-center">
-                        Sorry, currently we don't have any interesting offers in this specialization, please try again later or
-                        <a href="{{ url('offer_new', {specSlug: specialization.slug}) }}">add new offer.</a>
-                    </div>
-                {% endfor %}
+                    {% if showingOlder %}
+                        <p class="mt-2">
+                            <a class="btn btn-primary" href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">Show latest</a>
+                        </p>
+                    {% endif %}
+                {% endif %}
                 </div>
             </div>
-            {% if offersMore > offers|length %}
-            <p class="mt-2">
-                {% if showingOlder %}
-                    <a class="btn btn-primary mr-2" href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">Show latest</a>
-                {% endif %}
-                <a class="btn btn-secondary" href="{{ url('specialization_offers', {specSlug: specialization.slug, after: offers.last.id.toString}) }}">Show more</a>
-            </p>
-            {% else %}
-                {% if showingOlder %}
-                    <p class="mt-2">
-                        <a class="btn btn-primary" href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">Show latest</a>
-                    </p>
-                {% endif %}
-            {% endif %}
         </div>
     </div>
 {% endblock %}
