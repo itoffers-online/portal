@@ -18,6 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StaticController extends AbstractController
 {
+    public function howItWorksAction() : Response
+    {
+        return $this->render('@offers/static/how_it_works.html.twig');
+    }
+
     public function termsAndConditionsAction() : Response
     {
         // generated with https://www.websitepolicies.com/
