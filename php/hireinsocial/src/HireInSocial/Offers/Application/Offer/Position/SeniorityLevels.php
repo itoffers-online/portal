@@ -15,7 +15,7 @@ namespace HireInSocial\Offers\Application\Offer\Position;
 
 use HireInSocial\Offers\Application\Exception\Exception;
 
-class SeniorityLevels
+final class SeniorityLevels
 {
     public const INTERN = 0;
 

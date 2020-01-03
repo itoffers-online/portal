@@ -17,7 +17,7 @@ use App\Offers\Controller\FacebookController;
 use HireInSocial\Offers\Application\Query\User\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 
-class WebTestCase extends SymfonyKernelTestCase
+abstract class WebTestCase extends SymfonyKernelTestCase
 {
     /**
      * Creates a Client.

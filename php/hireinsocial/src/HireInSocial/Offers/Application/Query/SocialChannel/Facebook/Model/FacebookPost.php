@@ -15,7 +15,7 @@ namespace HireInSocial\Offers\Application\Query\SocialChannel\Facebook\Model;
 
 use Ramsey\Uuid\UuidInterface;
 
-class FacebookPost
+final class FacebookPost
 {
     /**
      * @var string

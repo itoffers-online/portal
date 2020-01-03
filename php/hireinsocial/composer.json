@@ -75,6 +75,7 @@
         "twig/twig": "^2.6"
     },
     "require-dev": {
+        "ergebnis/phpstan-rules": "^0.14.2",
         "friendsofphp/php-cs-fixer": "^2.14",
         "infection/infection": "^0.15.0",
         "norberttech/md-link-linter": "@dev",

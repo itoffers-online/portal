@@ -20,7 +20,7 @@ use HireInSocial\Offers\Application\System\Handler;
 final class CreateSpecializationHandler implements Handler
 {
     /**
-     * @var \HireInSocial\Offers\Application\Specialization\Specializations
+     * @var Specializations
      */
     private $specializations;
 

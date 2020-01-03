@@ -16,7 +16,7 @@ namespace HireInSocial\Offers\Application\Command\Specialization;
 use HireInSocial\Offers\Application\Command\ClassCommand;
 use HireInSocial\Offers\Application\System\Command;
 
-class RemoveFacebookChannel implements Command
+final class RemoveFacebookChannel implements Command
 {
     use ClassCommand;
 

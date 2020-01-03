@@ -15,7 +15,7 @@ namespace HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Platform;
 
 use Doctrine\DBAL\Platforms\Keywords\PostgreSQL94Keywords;
 
-class PostgreSQL11Keywords extends PostgreSQL94Keywords
+final class PostgreSQL11Keywords extends PostgreSQL94Keywords
 {
     /**
      * {@inheritdoc}

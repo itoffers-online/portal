@@ -16,10 +16,10 @@ namespace HireInSocial\Offers\Application\Command\Specialization;
 use HireInSocial\Offers\Application\Specialization\Specializations;
 use HireInSocial\Offers\Application\System\Handler;
 
-class RemoveFacebookChannelHandler implements Handler
+final class RemoveFacebookChannelHandler implements Handler
 {
     /**
-     * @var \HireInSocial\Offers\Application\Specialization\Specializations
+     * @var Specializations
      */
     private $specializations;
 

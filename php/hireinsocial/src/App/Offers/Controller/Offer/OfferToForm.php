@@ -18,7 +18,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class OfferToForm
+final class OfferToForm
 {
     /**
      * @var string

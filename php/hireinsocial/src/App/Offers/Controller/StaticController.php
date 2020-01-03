@@ -16,7 +16,7 @@ namespace App\Offers\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class StaticController extends AbstractController
+final class StaticController extends AbstractController
 {
     public function howItWorksAction() : Response
     {

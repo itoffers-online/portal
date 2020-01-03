@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\Filter;
 
-class Column
+final class Column
 {
     /**
      * @var string

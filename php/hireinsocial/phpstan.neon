@@ -4,6 +4,8 @@ includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
     - vendor/phpstan/phpstan-webmozart-assert/extension.neon
     - vendor/phpstan/phpstan-symfony/extension.neon
+rules:
+    - Ergebnis\PHPStan\Rules\Expressions\NoEvalRule
 parameters:
     level: 6
     paths:
@@ -14,3 +16,24 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
     autoload_files:
         - tests/bootstrap.php
+services:
+        -
+            class: Ergebnis\PHPStan\Rules\Classes\FinalRule
+            arguments:
+                allowAbstractClasses: true
+                classesNotRequiredToBeAbstractOrFinal:
+                    # Doctrine ORM Entities
+                    - HireInSocial\Offers\Application\User\User
+                    - HireInSocial\Offers\Application\User\ExtraOffer
+                    - HireInSocial\Offers\Application\Offer\Offer
+                    - HireInSocial\Offers\Application\Offer\Slug
+                    - HireInSocial\Offers\Application\Offer\OfferPDF
+                    - HireInSocial\Offers\Application\Offer\Application
+                    - HireInSocial\Offers\Application\User\ExtraOffer
+                    - HireInSocial\Offers\Application\Facebook\Post
+                    - HireInSocial\Offers\Application\Specialization\Specialization
+                    # Exceptions
+                    - HireInSocial\Offers\Application\Exception\Exception
+                    - HireInSocial\Offers\Application\Exception\InvalidAssertionException
+            tags:
+                - phpstan.rules.rule

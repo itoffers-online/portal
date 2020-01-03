@@ -15,7 +15,7 @@ namespace HireInSocial\Tests\Offers\Application\Double\Stub;
 
 use HireInSocial\Offers\Application\System\Calendar;
 
-class CalendarStub implements Calendar
+final class CalendarStub implements Calendar
 {
     /**
      * @var \DateTimeImmutable

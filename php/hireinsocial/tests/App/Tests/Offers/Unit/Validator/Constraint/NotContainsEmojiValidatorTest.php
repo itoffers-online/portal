@@ -18,7 +18,7 @@ use App\Offers\Validator\Constraints\NotContainsEmojiValidator;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
-class NotContainsEmojiValidatorTest extends ConstraintValidatorTestCase
+final class NotContainsEmojiValidatorTest extends ConstraintValidatorTestCase
 {
     protected function createValidator() : ConstraintValidatorInterface
     {

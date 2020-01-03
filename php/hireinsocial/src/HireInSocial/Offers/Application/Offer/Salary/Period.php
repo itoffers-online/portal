@@ -15,7 +15,7 @@ namespace HireInSocial\Offers\Application\Offer\Salary;
 
 use HireInSocial\Offers\Application\Assertion;
 
-class Period
+final class Period
 {
     private const HOUR = 'HOUR';
 

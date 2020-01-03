@@ -22,7 +22,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class OfferRemoveTest extends ConsoleTestCase
+final class OfferRemoveTest extends ConsoleTestCase
 {
     public function test_removing_offer() : void
     {

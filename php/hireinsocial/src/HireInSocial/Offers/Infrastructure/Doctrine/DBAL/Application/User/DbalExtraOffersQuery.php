@@ -17,7 +17,7 @@ use Doctrine\DBAL\Connection;
 use HireInSocial\Offers\Application\Query\User\ExtraOffersQuery;
 use HireInSocial\Offers\Application\Query\User\Model\ExtraOffer;
 
-class DbalExtraOffersQuery implements ExtraOffersQuery
+final class DbalExtraOffersQuery implements ExtraOffersQuery
 {
     /**
      * @var Connection

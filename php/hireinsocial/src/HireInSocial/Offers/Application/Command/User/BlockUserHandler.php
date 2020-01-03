@@ -18,7 +18,7 @@ use HireInSocial\Offers\Application\System\Handler;
 use HireInSocial\Offers\Application\User\Users;
 use Ramsey\Uuid\Uuid;
 
-class BlockUserHandler implements Handler
+final class BlockUserHandler implements Handler
 {
     /**
      * @var Users

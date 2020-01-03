@@ -16,10 +16,10 @@ namespace HireInSocial\Offers\Application\Command\User;
 use HireInSocial\Offers\Application\Command\ClassCommand;
 use HireInSocial\Offers\Application\System\Command;
 
-class BlockUser implements Command
+final class BlockUser implements Command
 {
     use ClassCommand;
-    
+
     /**
      * @var string
      */
