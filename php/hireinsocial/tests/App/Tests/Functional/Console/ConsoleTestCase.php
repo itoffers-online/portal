@@ -15,6 +15,6 @@ namespace App\Tests\Functional\Console;
 
 use App\Tests\Functional\Web\SymfonyKernelTestCase;
 
-class ConsoleTestCase extends SymfonyKernelTestCase
+abstract class ConsoleTestCase extends SymfonyKernelTestCase
 {
 }

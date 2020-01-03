@@ -17,7 +17,7 @@ use HireInSocial\Offers\Application\Exception\Exception;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class OfferExtension extends AbstractExtension
+final class OfferExtension extends AbstractExtension
 {
     public function getFilters()
     {

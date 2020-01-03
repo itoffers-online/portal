@@ -18,7 +18,7 @@ use HireInSocial\Offers\Application\Query\SocialChannel\Facebook\FacebookQuery;
 use HireInSocial\Offers\Application\Query\SocialChannel\Facebook\Model\FacebookPost;
 use Ramsey\Uuid\Uuid;
 
-class DbalFacebookFacebookQuery implements FacebookQuery
+final class DbalFacebookFacebookQuery implements FacebookQuery
 {
     /**
      * @var Connection

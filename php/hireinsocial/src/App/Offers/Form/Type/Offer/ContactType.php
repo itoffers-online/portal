@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Form\Type\Offer;
 
+use App\Offers\Validator\Constraints\NotContainsEmoji;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,6 +29,7 @@ final class ContactType extends AbstractType
             ->add('name', TextType::class, [
                 'constraints' => [
                     new Length(['min' => 3, 'max' => 255]),
+                    new NotContainsEmoji(),
                 ],
             ])
             ->add('email', TextType::class, [
@@ -40,6 +42,7 @@ final class ContactType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Length(['max' => 16]),
+                    new NotContainsEmoji(),
                 ],
             ])
         ;

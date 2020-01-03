@@ -19,7 +19,7 @@ use HireInSocial\Offers\Application\User\ExtraOffer;
 use HireInSocial\Offers\Application\User\ExtraOffers;
 use Ramsey\Uuid\UuidInterface;
 
-class ORMExtraOffers implements ExtraOffers
+final class ORMExtraOffers implements ExtraOffers
 {
     /**
      * @var EntityManager

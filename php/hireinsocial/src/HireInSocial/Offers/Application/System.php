@@ -23,7 +23,7 @@ use HireInSocial\Offers\Application\System\Query;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class System
+final class System
 {
     /**
      * @var CommandBus

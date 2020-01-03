@@ -16,7 +16,7 @@ namespace HireInSocial\Offers\Application\Command\User;
 use HireInSocial\Offers\Application\Command\ClassCommand;
 use HireInSocial\Offers\Application\System\Command;
 
-class AddExtraOffers implements Command
+final class AddExtraOffers implements Command
 {
     use ClassCommand;
 

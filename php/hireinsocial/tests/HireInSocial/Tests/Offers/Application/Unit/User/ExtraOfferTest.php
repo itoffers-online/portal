@@ -20,7 +20,7 @@ use HireInSocial\Tests\Offers\Application\MotherObject\Offer\OfferMother;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class ExtraOfferTest extends TestCase
+final class ExtraOfferTest extends TestCase
 {
     public function test_creating_extra_offer_with_negative_interval() : void
     {

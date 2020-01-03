@@ -19,10 +19,10 @@ use HireInSocial\Offers\Application\Specialization\FacebookChannel;
 use HireInSocial\Offers\Application\Specialization\Specializations;
 use HireInSocial\Offers\Application\System\Handler;
 
-class SetFacebookChannelHandler implements Handler
+final class SetFacebookChannelHandler implements Handler
 {
     /**
-     * @var \HireInSocial\Offers\Application\Specialization\Specializations
+     * @var Specializations
      */
     private $specializations;
 

@@ -16,7 +16,7 @@ namespace HireInSocial\Tests\Offers\Application\Integration\Command\User;
 use HireInSocial\Offers\Application\Command\User\AddExtraOffers;
 use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
 
-class AddExtraOffersTest extends HireInSocialTestCase
+final class AddExtraOffersTest extends HireInSocialTestCase
 {
     public function test_adding_extra_offers() : void
     {

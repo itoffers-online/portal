@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\User\Model;
 
-class ExtraOffer
+final class ExtraOffer
 {
     /**
      * @var string

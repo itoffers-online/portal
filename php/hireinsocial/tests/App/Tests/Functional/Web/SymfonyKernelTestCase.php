@@ -24,7 +24,7 @@ use HireInSocial\Tests\Offers\Application\Context\DatabaseContext;
 use HireInSocial\Tests\Offers\Application\Context\OffersContext;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class SymfonyKernelTestCase extends KernelTestCase
+abstract class SymfonyKernelTestCase extends KernelTestCase
 {
     /**
      * @var Config

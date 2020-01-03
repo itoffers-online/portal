@@ -21,7 +21,7 @@ use HireInSocial\Offers\Application\User\ExtraOffers;
 use HireInSocial\Offers\Application\User\Users;
 use Ramsey\Uuid\Uuid;
 
-class AddExtraOffersHandler implements Handler
+final class AddExtraOffersHandler implements Handler
 {
     /**
      * @var Users

@@ -15,7 +15,7 @@ namespace HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Platform;
 
 use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
 
-class PostgreSQL11Platform extends PostgreSQL100Platform
+final class PostgreSQL11Platform extends PostgreSQL100Platform
 {
     /**
      * {@inheritDoc}

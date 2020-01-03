@@ -47,6 +47,7 @@
         "league/flysystem": "^1.0",
         "league/flysystem-azure": "^1.0",
         "monolog/monolog": "^1.24",
+        "p3k/emoji-detector": "^0.2.1",
         "predis/predis": "^1.1",
         "psr/log": "^1.1",
         "psr/simple-cache": "^1.0",
@@ -74,6 +75,7 @@
         "twig/twig": "^2.6"
     },
     "require-dev": {
+        "ergebnis/phpstan-rules": "^0.14.2",
         "friendsofphp/php-cs-fixer": "^2.14",
         "infection/infection": "^0.15.0",
         "norberttech/md-link-linter": "@dev",

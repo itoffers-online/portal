@@ -18,7 +18,7 @@ use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
 use Ramsey\Uuid\Uuid;
 
-class FacebookConnectHandlerTest extends HireInSocialTestCase
+final class FacebookConnectHandlerTest extends HireInSocialTestCase
 {
     public function test_adding_extra_offers() : void
     {

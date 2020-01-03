@@ -15,7 +15,7 @@ namespace App\Tests\Offers\Functional\Web;
 
 use App\Tests\Functional\Web\WebTestCase;
 
-class UserTest extends WebTestCase
+final class UserTest extends WebTestCase
 {
     public function test_user_profile_page() : void
     {

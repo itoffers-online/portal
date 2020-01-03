@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Form\Type\Offer;
 
+use App\Offers\Validator\Constraints\NotContainsEmoji;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -34,6 +35,7 @@ final class LocationType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new Length(['max' => 255]),
+                    new NotContainsEmoji(),
                 ],
             ])
             ->add('lat', HiddenType::class, [
