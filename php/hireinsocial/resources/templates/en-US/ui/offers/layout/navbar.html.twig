@@ -1,19 +1,19 @@
-<header class="pb-3">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<header class="border-bottom">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
         <div class="container">
             <div class="collapse navbar-collapse" id="navbarsExample07">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ url('home') }}">Hire in Social</a>
+                        <a class="nav-link btn btn-sqr border-left border-right p-3 pl-4 pr-4" href="{{ url('home') }}"><small>Offers</small></a>
                     </li>
                 </ul>
-                <a href="{{ url('offer_post') }}" class="btn btn-primary mr-2">Post Offer</a>
                 {% if facebook_logged_in %}
-                    <a class="btn btn-secondary mr-2" href="{{ url('user_profile') }}">Profile</a>
-                    <a class="btn btn-light" href="{{ url('facebook_logout') }}">Logout</a>
+                    <a class="nav-link btn btn-sqr border-right p-3 pl-4 pr-4" href="{{ url('user_profile') }}"><small>Profile</small></a>
+                    <a class="nav-link btn btn-sqr p-3 pl-4 pr-4" href="{{ url('facebook_logout') }}"><small>Logout</small></a>
                 {% else %}
-                    <a class="btn btn-light" href="{{ url('facebook_login') }}">Login</a>
+                    <a class="nav-link btn btn-sqr p-3 pl-4 pr-4" href="{{ url('facebook_login') }}"><small>Sign In</small></a>
                 {% endif %}
+                <a class="nav-link btn btn-primary btn-sqr p-3 pl-4 pr-4" href="{{ url('offer_post') }}"><small class="font-weight-bolder">Post a Job</small></a>
             </div>
         </div>
     </nav>
