@@ -1,2 +1,12 @@
 @import "bootstrap/custom";
 @import "~bootstrap/scss/bootstrap";
+
+@import "page/offer_details";
+
+.text-gray-500 {
+  color: $gray-500;
+}
+
+.text-turquoise {
+  color: $turquoise;
+}

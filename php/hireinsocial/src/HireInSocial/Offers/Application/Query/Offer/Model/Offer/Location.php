@@ -62,4 +62,19 @@ final class Location
     {
         return $this->lng;
     }
+
+    public function isRemote() : bool
+    {
+        return $this->remote === true && $this->name === null;
+    }
+
+    public function isAtOffice() : bool
+    {
+        return $this->remote === false && $this->name !== null;
+    }
+
+    public function isPartiallyRemote() : bool
+    {
+        return $this->remote === true && $this->name !== null;
+    }
 }
