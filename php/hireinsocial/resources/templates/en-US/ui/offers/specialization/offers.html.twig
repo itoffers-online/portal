@@ -3,7 +3,7 @@
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
-<div class="container-fluid bg-light pt-4">
+<div class="container-fluid pt-4">
     <div class="container">
         <h2 class="text-center">We have {{ total }}{% if seniorityLevel is not null %} <strong>{{ seniorityLevel|offer_seniority_level_name }}</strong>{% endif %} offers in <strong>{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}</strong> specialization {% include '@offers/specialization/_logo_plain.html.twig' with { specialization: specialization.slug} only %}</h2>
         <p class="alert alert-info text-center">
