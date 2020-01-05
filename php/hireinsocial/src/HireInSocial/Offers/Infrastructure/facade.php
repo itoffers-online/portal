@@ -72,6 +72,7 @@ function offersFacade(Config $config) : Offers
     $twig = new Environment($loader, [
         'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/twig',
         'debug' => $config->getString(Config::ENV) !== 'prod',
+        'auto_reload' => $config->getString(Config::ENV) !== 'prod',
     ]);
     $twig->addGlobal('apply_email_template', $config->getString(Config::APPLY_EMAIL_TEMPLATE));
 

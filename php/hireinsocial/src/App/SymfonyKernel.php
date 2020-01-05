@@ -108,7 +108,9 @@ final class SymfonyKernel extends Kernel
         $c->register(IntlExtension::class)->addTag('twig.extension');
         $c->register(TextExtension::class)->addTag('twig.extension');
         $c->register(DateExtension::class)->addTag('twig.extension');
-        $c->register(OfferExtension::class)->addTag('twig.extension');
+        $c->register(OfferExtension::class)
+            ->addArgument($this->frameworkConfig['framework']['default_locale'])
+            ->addTag('twig.extension');
 
         $c->autowire(IndexController::class)->addTag('controller.service_arguments');
         $c->autowire(FacebookController::class)->addTag('controller.service_arguments');

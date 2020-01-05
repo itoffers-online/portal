@@ -17,7 +17,6 @@ use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -47,7 +46,6 @@ final class OfferFilterType extends AbstractType
                 },
                 'required' => false,
             ])
-            ->add('submit', SubmitType::class)
         ;
     }
 

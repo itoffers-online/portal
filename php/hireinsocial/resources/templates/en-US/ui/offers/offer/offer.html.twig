@@ -25,7 +25,7 @@
                             'offer-id': '{{ offer.id }}'
                         }
                     }).then(function(response) {
-                        $('#job-apply-email').html('<a href="mailto:' + response.email + '">' + response.email + '</a>');
+                        $('#job-apply-email').html('<a target="_blank" href="mailto:' + response.email + '">' + response.email + '</a>');
                         $('#job-apply-info').removeClass('d-none');
                     }).catch(function() {
                         grecaptcha.reset(recaptcha);
@@ -37,139 +37,242 @@
     });
 </script>
 {% endblock %}
-{% block header %}{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-6">
-            {% if previousOffer %}
-                <a href="{{ url('offer', {'offerSlug': previousOffer.slug}) }}" class="btn btn-outline-secondary">Previous Offer</a>
-            {% else %}
-                <a href="#" class="btn btn-outline-secondary disabled">Next Offer</a>
-            {% endif %}
+<div class="container-fluid bg-light pt-4 border-bottom">
+    <div class="container">
+        <div class="row pb-4">
+            <div class="col-6 text-left">
+                {% if previousOffer %}
+                    <a href="{{ url('offer', {'offerSlug': previousOffer.slug}) }}" class="btn btn-link">Prev</a>
+                {% else %}
+                    <a href="#" class="btn btn-link disabled">Prev</a>
+                {% endif %}
+            </div>
+            <div class="col-6 text-right">
+                {% if nextOffer %}
+                    <a href="{{ url('offer', {'offerSlug': nextOffer.slug}) }}" class="btn btn-link">Next</a>
+                {% endif %}
+            </div>
         </div>
-        <div class="col-6 text-right">
-            {% if nextOffer %}
-                <a href="{{ url('offer', {'offerSlug': nextOffer.slug}) }}" class="btn btn-outline-secondary">Next Offer</a>
-            {% endif %}
+        <div class="row offer-header">
+            <div class="col-2">
+                <section class="mb-4">
+                    <a href="{{ url('specialization_offers', {specSlug: offer.specializationSlug}) }}"><img src="https://via.placeholder.com/120" alt="technology"/></a>
+                </section>
+                <section class="text-gray-500 mb-2 small">
+                    Created at
+                </section>
+                <section class="small">
+                    <i class="fas fa-clock mr-2 text-gray-500"></i> {{ offer.createdAt|time_diff }}
+                </section>
+            </div>
+            <div class="col-5">
+                <h1 class="font-weight-light mb-4">{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</h1>
+                <h4 class="font-weight-light"><a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a></h4>
+                {% if userId and offer.postedBy(userId)%}
+                    <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger mt-3">Remove</a>
+                {% endif %}
+            </div>
+            <div class="col-5"></div>
         </div>
     </div>
-    <h1 class="mt-2">
-        {% include '@offers/specialization/_logo_plain.html.twig' with {specialization: offer.specializationSlug} only %}
-        <span class="badge badge-primary">{{ offer.position.seniorityLevel|offer_seniority_level_name }}</span> {{ offer.position.name }} <span class="text-muted">in</span> {{ offer.company.name }}
-        {% if userId and offer.postedBy(userId)%}
-            <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger d-inline">Remove</a>
-        {% endif %}
-    </h1>
-    {% if facebookPost %}
-    <div class="row mb-2">
-        <div class="col-12">
-            <h4>Social Channels</h4>
-            <div class="card">
-                <div class="card-body">
-                    <a target="_blank" href="{{ facebookPost.id|fb_group_post }}"><i class="fab fa-facebook"></i> {{ facebookPost.id|fb_group_post }}</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    <div class="row">
-        <div class="col-6">
-            <h4>Description</h4>
-            {% if offer.offerPDF %}
-                <p>
-                    <a href="{{ offer.offerpdf.url(assets.storage_url) }}" class="btn btn-primary" download>Download PDF</a>
-                </p>
-            {% endif %}
-            <div class="card">
-                <div class="card-body">
-                    <p>
-                        {{ offer.position.description }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <h4>Salary</h4>
-
-            {% if offer.salary %}
-            <div class="card">
-                <div class="card-body">
-                    <strong>{{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }} - {{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }}</strong> {% if offer.salary.periodTypeTotal %}in total{% else %}per {{ offer.salary.periodType }}{% endif %}
-                    {% if offer.salary.isNet %}<strong class="text-success">net</strong>{% else %}<strong class="text-warning">gross</strong>{% endif %}
-                </div>
-            </div>
-            {% else %}
-                <div class="alert alert-warning">
-                    In this offer salary is not defined, please remember you can check with company if they can meet your expectations
-                    before you start recruitment process.
-                </div>
-            {% endif %}
-
-            <h4 class="mt-2">Contact</h4>
-            <div class="card">
-                <div class="card-body">
-                    <div id="job-apply-info" class="d-none">
-                        <p>Please send you resume on address: </p>
-                        <div id="job-apply-email"></div>
+</div>
+<div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="row border-bottom pt-5 pb-4">
+                    <div class="col-3">
+                        <h4 class="offer-description-headline">Salary</h4>
                     </div>
-                    <div id="google-recaptcha"></div>
-                    <button class="btn btn-primary" id="job-apply">Apply</button>
+                    <div class="col-9">
+                        {% if offer.salary is defined %}
+                        <div class="row">
+                            <div class="col-3">
+                                <h6 class="small text-gray-500 font-weight-bold">Remuneration</h6>
+                                <small><i class="text-hins-turquoise fas fa-coins mr-2"></i> {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }}</small>
+                            </div>
+                            <div class="col-3 border-right">
+                                <h6 class="small text-gray-500 font-weight-bold">Periodicity</h6>
+                                <small>per {{ offer.salary.periodType }}</small>
+                            </div>
+                            <div class="col-3">
+                                <h6 class="small text-gray-500 font-weight-bold">Currency</h6>
+                                <small>{{ offer.salary.currencyCode }}</small>
+                            </div>
+                            <div class="col-3">
+                                <h6 class="small text-gray-500 font-weight-bold">Income</h6>
+                                <small>{% if offer.salary.net %}net{% else %}gross{% endif %}</small>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-
-            <h4 class="mt-2">Location</h4>
-            <div class="card">
-                <div class="card-body">
-                    {% if offer.location.name %}
-                    <p>
-                            <strong>Address</strong>: {{ offer.location.name }}
-                    </p>
-                        <p>
-                            {% spaceless %}
-                            <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&zoom=16&size=600x300&maptype=roadmap&markers=color:blue%7C{{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&key={{ google.maps.key|raw }}" alt="Map with location"/>
-                            {% endspaceless %}
-                        </p>
-                    {% endif %}
-                    <p>
-                        Remote: {% if offer.location.remote %}Yes{% else %}No{% endif %}
-                    </p>
+                <div class="row border-bottom pt-5 pb-4">
+                    <div class="col-3">
+                        <h4 class="offer-description-headline mb-4">Job Description</h4>
+                        {% if offer.offerPDF %}
+                            <p>
+                                <a href="{{ offer.offerpdf.url(assets.storage_url) }}" download><i class="fas fa-file-alt mr-2 text-hins-turquoise"></i> Download in PDF</a>
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="col-9">
+                        <div class="row border-bottom mb-4">
+                            <div class="col-6 mb-4">
+                                <h6 class="small text-gray-500 font-weight-bold">Job Type</h6>
+                                <small><i class="text-hins-turquoise fas fa-file-alt mr-2"></i> {{ offer.contract.type }}</small>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <h6 class="small text-gray-500 font-weight-bold">Work Type</h6>
+                                {% spaceless %}
+                                <small>
+                                    <i class="text-hins-turquoise fas fa-laptop-code mr-2"></i>
+                                    {% if offer.location.partiallyRemote %}
+                                        Partially Remote
+                                    {% elseif offer.location.atOffice %}
+                                        At Office
+                                    {% else %}
+                                        Remote
+                                    {% endif %}
+                                </small>
+                                {% endspaceless %}
+                            </div>
+                            <div class="col-6 mb-4">
+                                <h6 class="small text-gray-500 font-weight-bold">Seniority Level</h6>
+                                <small><i class="text-hins-turquoise fas fa-layer-group mr-2"></i> {{ offer.position.seniorityLevel|offer_seniority_level_name }}</small>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <h6 class="small text-gray-500 font-weight-bold">Position</h6>
+                                <small>{{ offer.position.name }}</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                            {{ offer.position.description }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <h2 class="mt-3">{{ offer.company.name }}</h2>
-    <div class="card">
-        <div class="card-body">
-            <p>
-                {{ offer.company.description }}
-            </p>
-
-            <p class="text-right">
-                <a href="{{ offer.company.url }}" class="btn-link">{{ offer.company.url }}</a>
-            </p>
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col-6">
-            <h3>Benefits</h3>
-            <div class="card">
-                <div class="card-body">
-                    <p>
-                        {{ offer.description.benefits }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <h3>Requirements</h3>
-            <div class="card">
-                <div class="card-body">
-                    <p>
+                <div class="row border-bottom pt-5 pb-4">
+                    <div class="col-3">
+                        <h4 class="offer-description-headline">Requirements</h4>
+                    </div>
+                    <div class="col-8">
                         {{ offer.description.requirements }}
-                    </p>
+                    </div>
+                </div>
+                <div class="row border-bottom pt-5 pb-4">
+                    <div class="col-3">
+                        <h4 class="offer-description-headline">Benefits</h4>
+                    </div>
+                    <div class="col-9">
+                        {{ offer.description.benefits }}
+                    </div>
+                </div>
+                <div class="row pt-5 pb-4">
+                    <div class="col-3">
+                        <h4 class="offer-description-headline">Company</h4>
+                    </div>
+                    <div class="col-9">
+                        <div class="row border-bottom">
+                            <div class="col-6 mb-4">
+                                <h6 class="small text-gray-500 font-weight-bold">Name</h6>
+                                <small>{{ offer.company.name }}</small>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <h6 class="small text-gray-500 font-weight-bold">Website</h6>
+                                <a target="_blank" href="{{ offer.company.url }}">{{ offer.company.url }}</a>
+                            </div>
+                        </div>
+                        <div class="row {% if offer.location.partiallyRemote or offer.location.atOffice %}border-bottom{% endif %}">
+                            <div class="col-12 pb-4 pt-4">
+                                <section>
+                                {{ offer.company.description }}
+                                </section>
+                            </div>
+                        </div>
+                        {% if offer.location.partiallyRemote or offer.location.atOffice %}
+                        <div class="row">
+                            <div class="col-12 pb-4 pt-4">
+                                <h6 class="small text-gray-500 font-weight-bold">Location</h6>
+                                <small><i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> {{ offer.location.name }}</small>
+                                <section class="mt-4">
+                                    <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&zoom=16&size=556x274&maptype=roadmap&markers=color:blue%7C{{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&key={{ google.maps.key|raw }}" alt="Map with location"/>
+                                </section>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div id="offer-apply" class="card">
+                    <div class="card-body pl-5 pr-5 pt-4 border-bottom">
+                        <div class="card-title text-center">
+                            <h5 class="font-weight-light">{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</h5>
+                        </div>
+                        <p class="text-center">
+                            <a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a>
+                        </p>
+                        {% if offer.salary %}
+                            <section class="text-center">
+                                <h5 class="font-weight-bold">{{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }}</h5>
+                                <h5>{% if offer.salary.isNet %}net{% else %}gross{% endif %} per {{ offer.salary.periodType }}</h5>
+                            </section>
+                        {% endif %}
+
+                        <section class="text-center mt-5">
+                            <div id="job-apply-info" class="d-none">
+                                <p>Please send you resume on address: </p>
+                                <div id="job-apply-email"></div>
+                            </div>
+                            <section id="google-recaptcha"></section>
+                            <button class="btn btn-primary btn-block btn-lg p-3" id="job-apply">Apply</button>
+                        </section>
+                    </div>
+                    <div class="card-body border-bottom small pl-5 pr-5">
+                        <i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}{{ offer.location.name }}{% else %}Remote{% endif %}
+                    </div>
+                    <div class="card-body small font-weight-light pl-5 pr-5">
+                        <div class="row">
+                            <div class="col-6">
+                                <i class="text-gray-500 fas fa-clock mr-2"></i> {{ offer.createdAt|time_diff }}
+                            </div>
+                            <div class="col-6 text-right">
+                                {% if facebookPost %}
+                                    <a href="{{ facebookPost.id|fb_group_post }}"><i class="fab fa-facebook"></i> hireinsocial/{{ offer.specializationSlug }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tags" class="pt-4 text-right">
+                    <section class="mb-2">
+                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted mr-2">{% include '@offers/specialization/_name.html.twig' with {specialization: offer.specializationSlug} only %}</span>
+                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">{{ offer.position.seniorityLevel|offer_seniority_level_name }}</span>
+                    </section>
+                    <section class="mb-2">
+                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted mr-2">{{ offer.contract.type }}</span>
+                        {% if offer.location.partiallyRemote %}
+                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">Partially Remote</span>
+                        {% elseif offer.location.atOffice %}
+                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">At Office</span>
+                        {% else %}
+                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">Remote</span>
+                        {% endif %}
+                    </section>
+                    <section class="mb-2">
+                        {% if offer.salary is defined %}
+                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted mr-2">{{ offer.salary.currencyCode }}</span>
+                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted mr-2">Per {{ offer.salary.periodType|capitalize }}</span>
+                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">{% if offer.salary.net %}Net{% else %}Gross{% endif %}</span>
+                        {% endif %}
+                    </section>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

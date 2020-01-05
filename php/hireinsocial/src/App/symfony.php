@@ -81,6 +81,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
                 'contact_email' => $config->getString(Config::CONTACT_EMAIL),
             ],
             'auto_reload' => $config->getString(Config::ENV) !== 'prod',
+            'debug' => $config->getString(Config::ENV) !== 'prod',
         ],
         'monolog' => [
             'handlers' => [

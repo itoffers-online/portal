@@ -19,11 +19,27 @@ use Twig\TwigFilter;
 
 final class OfferExtension extends AbstractExtension
 {
-    public function getFilters()
+    /**
+     * @var string
+     */
+    private $locale;
+
+    public function __construct(string $locale)
+    {
+        $this->locale = $locale;
+    }
+
+    public function getFilters() : array
     {
         return [
             new TwigFilter('offer_seniority_level_name', [$this, 'seniorityLevelName']),
+            new TwigFilter('offer_salary_integer', [$this, 'salaryInteger']),
         ];
+    }
+
+    public function salaryInteger(int $amount) : string
+    {
+        return (\NumberFormatter::create($this->locale, \NumberFormatter::DEFAULT_STYLE))->format($amount);
     }
 
     public function seniorityLevelName(int $level) : string

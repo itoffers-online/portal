@@ -2,81 +2,85 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>{% block title %}Hire in Social!{% endblock %}</title>
+    <title>{% block title %}Hire in Social{% endblock %} - best job offers!</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <script src="/assets/dist/js/offers.js"></script>
     {% block headerjs %}{% endblock %}
     <!-- Bootstrap CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
     <link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/>
     {% block stylesheets %}{% endblock %}
 </head>
-<body class="bg-light">
+<body class="bg-white">
+    {{ render_esi(controller('App\\Offers\\Controller\\LayoutController::navbarAction')) }}
 
-{{ render_esi(controller('App\\Offers\\Controller\\LayoutController::navbarAction')) }}
-
-<div class="container">
     {% block header %}
         {{ render_esi(controller('App\\Offers\\Controller\\LayoutController::headerAction')) }}
     {% endblock %}
 
     {% for label, messages in app.flashes(['warning', 'error', 'success']) %}
         {% for message in messages %}
-            <div data-alert-{{ label }} class="alert alert-{{ label }} text-center">
-                {{ message|raw }}
+            <div class="container">
+                <div data-alert-{{ label }} class="alert alert-{{ label }} text-center">
+                    {{ message|raw }}
+                </div>
             </div>
         {% endfor %}
     {% endfor %}
 
     {% block body %}{% endblock %}
-    <footer class="pt-4 my-md-5 pt-md-5 border-top">
-        <div class="row">
-            <div class="col-md-3">
-                <h5 class="font-weight-bold">Resources</h5>
-                <ul class="list-unstyled">
-                    <li><a href="{{ url('how_it_works') }}">How it works</a></li>
-                    <li><a href="{{ url('terms_and_conditions') }}">Terms & conditions</a></li>
-                    <li><a href="{{ url('terms_and_conditions') }}">Privacy policy</a></li>
-                    <li><a href="{{ url('cookies_policy') }}">Cookies</a></li>
-                </ul>
-            </div>
-            <div class="col-6">
-            </div>
-            <div class="col-3 col-md-3">
-                <h5 class="font-weight-bold">Contact</h5>
-                <ul class="list-unstyled">
-                    <li><a target="_blank" href="mailto:{{ contact_email }}"><i class="fas fa-envelope-square"></i> {{ contact_email }}</a></li>
-                    <li><a target="_blank" href="{{ facebook.page_url }}"><i class="fab fa-facebook"></i> Page</a> </li>
-                </ul>
-            </div>
+    <div class="container-fluid pt-2">
+        <div class="container">
+            <footer class="my-md-5">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5 class="font-weight-bold">Resources</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="{{ url('how_it_works') }}">How it works</a></li>
+                            <li><a href="{{ url('terms_and_conditions') }}">Terms & conditions</a></li>
+                            <li><a href="{{ url('terms_and_conditions') }}">Privacy policy</a></li>
+                            <li><a href="{{ url('cookies_policy') }}">Cookies</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                    </div>
+                    <div class="col-3 col-md-3">
+                        <h5 class="font-weight-bold">Contact</h5>
+                        <ul class="list-unstyled">
+                            <li><a target="_blank" href="mailto:{{ contact_email }}"><i class="fas fa-envelope-square"></i> {{ contact_email }}</a></li>
+                            <li><a target="_blank" href="{{ facebook.page_url }}"><i class="fab fa-facebook"></i> Page</a> </li>
+                        </ul>
+                    </div>
+                </div>
+            </footer>
         </div>
-    </footer>
-</div>
+    </div>
 
-<script>
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId      : '{{ facebook.app_id }}',
-            xfbml      : true,
-            version    : 'v3.1'
-        });
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '{{ facebook.app_id }}',
+                xfbml      : true,
+                version    : 'v3.1'
+            });
 
-        FB.AppEvents.logPageView();
-    };
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script>
-<script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>
-<script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"/cookies-policy"}})});</script>
-{% block javascripts %}
-{% endblock %}
+            FB.AppEvents.logPageView();
+        };
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>
+    <script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"/cookies-policy"}})});</script>
+    {% block javascripts %}
+    {% endblock %}
 </body>
 </html>

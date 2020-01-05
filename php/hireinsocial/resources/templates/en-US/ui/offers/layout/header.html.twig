@@ -1,13 +1,13 @@
-<div class="pt-5 text-center">
-    <h1><a href="{{ url('home') }}">Hire in Social!</a></h1>
-    <p class="lead">
-        We have only best job offers!
-    </p>
-</div>
-<div class="my-4 text-center">
-    {% for headerSpec in headerSpecializations %}
-        <a href="{{ url('specialization_offers', {specSlug: headerSpec.slug}) }}" class="btn btn-outline-primary">
-            {% include '@offers/specialization/_logo_plain.html.twig' with {specialization: headerSpec.slug} only %} {% include '@offers/specialization/_name.html.twig' with {specialization: headerSpec.slug} only %}
-        </a>
-    {% endfor %}
+<div class="container-fluid bg-light border-bottom">
+    <div class="container">
+        <header>
+            {% for headerSpec in headerSpecializations %}
+                <a class="btn btn-sqr p-3 pl-4 pr-4" href="{{ url('specialization_offers', {specSlug: headerSpec.slug}) }}">
+                    <small>
+                        {% include '@offers/specialization/_name.html.twig' with {specialization: headerSpec.slug} only %}
+                    </small>
+                </a>
+            {% endfor %}
+        </header>
+    </div>
 </div>
