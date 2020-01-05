@@ -60,7 +60,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
             'date' => [
                 'timezone' => $config->getString(Config::TIMEZONE),
             ],
-            'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/twig',
+            'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/symfony/twig',
             'globals' => [
                 'apply_email_template' => $config->getString(Config::APPLY_EMAIL_TEMPLATE),
                 'facebook' => [
@@ -81,6 +81,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
                 'contact_email' => $config->getString(Config::CONTACT_EMAIL),
             ],
             'auto_reload' => $config->getString(Config::ENV) !== 'prod',
+            'debug' => $config->getString(Config::ENV) !== 'prod',
         ],
         'monolog' => [
             'handlers' => [
