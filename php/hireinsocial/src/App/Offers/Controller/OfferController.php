@@ -33,6 +33,8 @@ use HireInSocial\Offers\Offers;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -53,6 +55,11 @@ final class OfferController extends AbstractController
     private $facebook;
 
     /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -60,11 +67,13 @@ final class OfferController extends AbstractController
     public function __construct(
         Offers $offers,
         Facebook $facebook,
+        ParameterBagInterface $parameterBag,
         LoggerInterface $logger
     ) {
         $this->offers = $offers;
         $this->facebook = $facebook;
         $this->logger = $logger;
+        $this->parameterBag = $parameterBag;
     }
 
     public function postAction(Request $request) : Response
@@ -224,5 +233,13 @@ final class OfferController extends AbstractController
             'offerSlug' => $offerSlug,
             'facebookPost' => $facebookPost,
         ]);
+    }
+
+    public function applyAction(Request $request) : Response
+    {
+        $offer = $this->offers->offerQuery()->findById($request->request->get('offer-id'));
+        $email = sprintf($this->parameterBag->get('apply_email_template'), $offer->emailHash());
+
+        return new JsonResponse(['email' => $email]);
     }
 }
