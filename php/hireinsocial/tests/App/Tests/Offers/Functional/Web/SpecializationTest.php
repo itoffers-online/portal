@@ -63,8 +63,8 @@ final class SpecializationTest extends WebTestCase
         );
 
         $form = $crawler
-            ->filter("form[name=\"offer_filter\"]")
-            ->form(['offer_filter[with_salary]' => true], 'GET');
+            ->filter("form[name=\"offers\"]")
+            ->form(['offers[with_salary]' => true], 'GET');
 
         $crawler = $client->submit($form);
 
@@ -85,8 +85,8 @@ final class SpecializationTest extends WebTestCase
         );
 
         $form = $crawler
-            ->filter("form[name=\"offer_filter\"]")
-            ->form(['offer_filter[remote]' => true], 'GET');
+            ->filter("form[name=\"offers\"]")
+            ->form(['offers[remote]' => true], 'GET');
 
         $crawler = $client->submit($form);
 
@@ -114,9 +114,48 @@ final class SpecializationTest extends WebTestCase
 
         $crawler = $client->submit(
             $crawler
-                ->filter("form[name=\"offer_filter\"]")
-                ->form(['offer_filter[sort_by]' => OfferFilter::SORT_CREATED_AT_ASC], 'GET')
+                ->filter("form[name=\"offers\"]")
+                ->form(['offers[sort_by]' => OfferFilter::SORT_SALARY_ASC], 'GET')
         );
+
+
+        $salaries = \array_map(
+            function (\DOMElement $node) {
+                return (int) $node->getAttribute('data-salary-max');
+            },
+            (array) $crawler->filter('[data-salary-max]')->getIterator()
+        );
+
+        $this->assertEquals(3000, $salaries[0]);
+        $this->assertEquals(5000, $salaries[1]);
+        $this->assertEquals(7000, $salaries[2]);
+    }
+
+    public function test_sort_by_created_at_ASC() : void
+    {
+        /** @var CalendarStub $calendar */
+        $calendar = $this->offersFacade()->calendar();
+        $calendar->goBack($seconds = 15);
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 5000));
+        $calendar->goBack($seconds = 10);
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 3000));
+        $calendar->goBack($seconds = 5);
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 7000));
+
+
+        $client = static::createClient();
+
+        $crawler = $client->request(
+            'GET',
+            $client->getContainer()->get('router')->generate('specialization_offers', ['specSlug' => $this->specialization])
+        );
+
+        $crawler = $client->submit(
+            $crawler
+                ->filter("form[name=\"offers\"]")
+                ->form(['offers[sort_by]' => OfferFilter::SORT_CREATED_AT_ASC], 'GET')
+        );
+
 
         $salaries = \array_map(
             function (\DOMElement $node) {

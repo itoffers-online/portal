@@ -47,9 +47,9 @@ final class SpecializationController extends AbstractController
 
         /** @var OfferFilter $offerFilter */
         $offerFilter = OfferFilter::allFor($specialization->slug())
-            ->max(20);
+            ->max(12);
 
-        $form = $this->createForm(OfferFilterType::class)->handleRequest($request);
+        $form = $this->get('form.factory')->createNamed('offers', OfferFilterType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('remote')->getData()) {

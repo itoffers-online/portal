@@ -3,11 +3,16 @@
 
 @import "buttons";
 @import "page/offer_details";
+@import "page/specialization";
+
+.text-hins-blue {
+  color: $hins-blue;
+}
 
 .text-gray-500 {
   color: $gray-500;
 }
 
-.text-turquoise {
+.text-hins-turquoise {
   color: $turquoise;
 }

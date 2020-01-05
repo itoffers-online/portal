@@ -58,7 +58,7 @@
         <div class="row offer-header">
             <div class="col-2">
                 <section class="mb-4">
-                    <img src="https://via.placeholder.com/120" alt="technology"/>
+                    <a href="{{ url('specialization_offers', {specSlug: offer.specializationSlug}) }}"><img src="https://via.placeholder.com/120" alt="technology"/></a>
                 </section>
                 <section class="text-gray-500 mb-2 small">
                     Created at
@@ -91,7 +91,7 @@
                         <div class="row">
                             <div class="col-3">
                                 <h6 class="small text-gray-500 font-weight-bold">Remuneration</h6>
-                                <small><i class="text-turquoise fas fa-coins mr-2"></i> {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }}</small>
+                                <small><i class="text-hins-turquoise fas fa-coins mr-2"></i> {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }}</small>
                             </div>
                             <div class="col-3 border-right">
                                 <h6 class="small text-gray-500 font-weight-bold">Periodicity</h6>
@@ -111,19 +111,24 @@
                 </div>
                 <div class="row border-bottom pt-5 pb-4">
                     <div class="col-3">
-                        <h4 class="offer-description-headline">Job Description</h4>
+                        <h4 class="offer-description-headline mb-4">Job Description</h4>
+                        {% if offer.offerPDF %}
+                            <p>
+                                <a href="{{ offer.offerpdf.url(assets.storage_url) }}" download><i class="fas fa-file-alt mr-2 text-hins-turquoise"></i> Download in PDF</a>
+                            </p>
+                        {% endif %}
                     </div>
                     <div class="col-9">
                         <div class="row border-bottom mb-4">
                             <div class="col-6 mb-4">
                                 <h6 class="small text-gray-500 font-weight-bold">Job Type</h6>
-                                <small><i class="text-turquoise fas fa-file-alt mr-2"></i> {{ offer.contract.type }}</small>
+                                <small><i class="text-hins-turquoise fas fa-file-alt mr-2"></i> {{ offer.contract.type }}</small>
                             </div>
                             <div class="col-6 mb-4">
                                 <h6 class="small text-gray-500 font-weight-bold">Work Type</h6>
                                 {% spaceless %}
                                 <small>
-                                    <i class="text-turquoise fas fa-laptop-code mr-2"></i>
+                                    <i class="text-hins-turquoise fas fa-laptop-code mr-2"></i>
                                     {% if offer.location.partiallyRemote %}
                                         Partially Remote
                                     {% elseif offer.location.atOffice %}
@@ -136,7 +141,7 @@
                             </div>
                             <div class="col-6 mb-4">
                                 <h6 class="small text-gray-500 font-weight-bold">Seniority Level</h6>
-                                <small><i class="text-turquoise fas fa-layer-group mr-2"></i> {{ offer.position.seniorityLevel|offer_seniority_level_name }}</small>
+                                <small><i class="text-hins-turquoise fas fa-layer-group mr-2"></i> {{ offer.position.seniorityLevel|offer_seniority_level_name }}</small>
                             </div>
                             <div class="col-6 mb-4">
                                 <h6 class="small text-gray-500 font-weight-bold">Position</h6>
@@ -192,7 +197,7 @@
                         <div class="row">
                             <div class="col-12 pb-4 pt-4">
                                 <h6 class="small text-gray-500 font-weight-bold">Location</h6>
-                                <small><i class="text-turquoise fas fa-map-marker-alt mr-2"></i> {{ offer.location.name }}</small>
+                                <small><i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> {{ offer.location.name }}</small>
                                 <section class="mt-4">
                                     <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&zoom=16&size=556x274&maptype=roadmap&markers=color:blue%7C{{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&key={{ google.maps.key|raw }}" alt="Map with location"/>
                                 </section>
@@ -228,7 +233,7 @@
                         </section>
                     </div>
                     <div class="card-body border-bottom small pl-5 pr-5">
-                        <i class="text-turquoise fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}{{ offer.location.name }}{% else %}Remote{% endif %}
+                        <i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}{{ offer.location.name }}{% else %}Remote{% endif %}
                     </div>
                     <div class="card-body small font-weight-light pl-5 pr-5">
                         <div class="row">
