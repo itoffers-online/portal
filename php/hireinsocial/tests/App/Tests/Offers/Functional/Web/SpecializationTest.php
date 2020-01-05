@@ -45,7 +45,7 @@ final class SpecializationTest extends WebTestCase
             $client->getContainer()->get('router')->generate('specialization_offers', ['specSlug' => $this->specialization])
         );
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), $client->getResponse()->getContent());
         $this->assertCount(2, $crawler->filter('[data-offer-id]'));
     }
 
