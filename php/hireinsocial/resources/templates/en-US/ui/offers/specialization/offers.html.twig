@@ -5,11 +5,11 @@
 {% block body %}
 <div class="container-fluid bg-dark text-white">
     <div class="container">
-        <div class="row pt-5 pb-5">
-            <div class="col-2">
+        <div class="row align-items-center pt-2 pb-2 pt-lg-5 pb-lg-5">
+            <div class="col-lg-2 d-none d-lg-flex">
                 <img src="https://via.placeholder.com/40" alt="technology"/>
             </div>
-            <div class="col-8 text-center">
+            <div class="col-lg-8 text-center">
                 <h3 class="font-weight-light">
                     {% if seniorityLevel is not null %}
                         {{ seniorityLevel|offer_seniority_level_name }} -
@@ -17,7 +17,7 @@
                     {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
                 </h3>
             </div>
-            <div class="col-2">
+            <div class="col-lg-2 d-none d-lg-flex">
                 <small><i class="fas fa-briefcase text-hins-turquoise mr-2"></i> {{ total }} Offers found</small>
             </div>
         </div>
@@ -26,48 +26,48 @@
 <div class="container-fluid bg-light border-bottom">
     <div class="container">
         {% if seniorityLevel is not null %}
-            {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers_seniority', {seniorityLevel: seniorityLevel|offer_seniority_level_name|lower, specSlug: specialization.slug}|merge(queryParameters)), attr: {class: "row form-inline pt-4 pb-4 align-items-start"} }) }}
+            {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers_seniority', {seniorityLevel: seniorityLevel|offer_seniority_level_name|lower, specSlug: specialization.slug}|merge(queryParameters)), attr: {class: "row form-inline pt-2 pb-2 pt-lg-4 align-items-start"} }) }}
         {% else %}
-            {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters)), attr: {class: "row form-inline pt-4 pb-4 align-items-start"} }) }}
+            {{ form_start(form, {'method': 'GET', 'action': path('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters)), attr: {class: "row form-inline pt-2 pb-2 pt-lg-4 align-items-start"} }) }}
         {% endif %}
-            <div class="col-2">
+            <div class="col-lg-2">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-lg-12">
                         <h5 class="text-gray-500">Filters</h5>
                     </div>
                 </div>
             </div>
-            <div class="col-7">
-                <div class="row align-items-center">
-                    <div class="col-3">
+            <div class="col-lg-7">
+                <div class="row align-items-center mb-sm-3 mb-lg-0">
+                    <div class="col-lg-3 col-sm-3">
                         {{ form_row(form.remote, {label: "Remote"}) }}
                     </div>
-                    <div class="col-3">
+                    <div class="col-lg-3 col-sm-3">
                         {{ form_row(form.with_salary, {label: "Only with salary"}) }}
                     </div>
-                    <div class="col-6">
+                    <div class="col-lg-6 col-sm-6">
                         {{ form_row(form.sort_by, {label: "Sort By", label_attr: {class: "mr-2"}}) }}
                     </div>
                 </div>
                 <div class="row align-items-start">
-                    <div class="col-12 pt-3">
+                    <div class="col-lg-12 pt-lg-3 mb-3">
                         {% for offerSeniorityLevel in offersSeniorityLevels %}
                             <a
                             {% if seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}
                                 href="{{ url('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters) ) }}"
-                                class="mr-2 btn btn-sm {% if seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}btn-primary{% else %}btn-outline-primary{% endif %}"
+                                class="mr-sm-2 btn btn-sm {% if seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}btn-primary{% else %}btn-outline-primary{% endif %}"
                             {% else %}
                                 href="{{ url('specialization_offers_seniority', {specSlug: specialization.slug, seniorityLevel: offerSeniorityLevel.level|offer_seniority_level_name|lower}|merge(queryParameters) ) }}"
-                                class="mr-2 btn btn-sm {% if seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}btn-primary{% else %}btn-outline-primary{% endif %}"
+                                class="mr-sm-2 btn btn-sm {% if seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}btn-primary{% else %}btn-outline-primary{% endif %}"
                             {% endif %}
                             >
-                                {{ offerSeniorityLevel.level|offer_seniority_level_name }}  {{ offerSeniorityLevel.offersCount }}
+                                {{ offerSeniorityLevel.level|offer_seniority_level_name }}  <span class="d-none d-sm-inline">{{ offerSeniorityLevel.offersCount }}</span>
                             </a>
                         {% endfor %}
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-lg-3">
                 <button type="submit" id="offers_submit" class="btn btn-primary mr-2 btn">Search</button>
                 {% if queryParameters|length %}
                     <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" class="btn btn-danger"><i class="fas fa-times"></i> Reset</a>
@@ -78,8 +78,8 @@
 </div>
 <div class="container-fluid pt-3 bg-light">
     <div class="container">
-        <div class="row">
-            <div class="col-12">
+        <div class="row d-none d-lg-block">
+            <div class="col-lg-12">
                 <p class="alert alert-info text-center">
                     Below you can find all job offers in this specialization. Job offers can't be added more frequently than {{ throttleLimit }} per {{ throttleSince.format('%d') }} days.<br/>
                     By default, we are not displaying you offers older than 14 days, most interesting offers after that time are already outdated.
@@ -88,9 +88,9 @@
         </div>
         <div class="row offers">
             {% for offer in offers %}
-                <div data-offer-id="{{ offer.id }}" class="col-4 mb-4">
+                <div data-offer-id="{{ offer.id }}" class="col-lg-4 mb-4">
                     <div class="card h-100 offer">
-                        <div class="card-body pl-5 pr-5 pt-4 border-bottom h-70">
+                        <div class="card-body pl-lg-5 pr-lg-5 pt-lg-4 border-bottom h-70">
                             <div class="card-title mb-6">
                                 <h4 class="font-weight-light">
                                     <a class="text-dark text-decoration-none" href="{{ url('offer', {'offerSlug': offer.slug}) }}">{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</a>
@@ -107,15 +107,15 @@
                             {% endif %}
 
                         </div>
-                        <div class="card-body border-bottom small pl-5 pr-5">
+                        <div class="card-body border-bottom small pl-lg-5 pr-lg-5">
                             <i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}{{ offer.location.name }}{% else %}Remote{% endif %}
                         </div>
-                        <div class="card-body small font-weight-light pl-5 pr-5">
+                        <div class="card-body small font-weight-light pl-lg-5 pr-lg-5">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-6 col-lg-6">
                                     <i class="text-gray-500 fas fa-clock mr-2"></i> {{ offer.createdAt|time_diff }}
                                 </div>
-                                <div class="col-6 text-right">
+                                <div class="col-6 col-lg-6 text-right">
                                     <a class="btn btn-primary" href="{{ url('offer', {'offerSlug': offer.slug}) }}">read</a>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@
                     </div>
                 </div>
             {% else %}
-                <div class="col-12">
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="alert alert-warning text-center">
@@ -136,7 +136,7 @@
             {% endfor %}
         </div>
         <div class="row">
-            <div class="col-12 text-right">
+            <div class="col-lg-12 text-right">
                 {% if offersMore > offers|length %}
                     <p class="mt-2">
                         {% if showingOlder %}

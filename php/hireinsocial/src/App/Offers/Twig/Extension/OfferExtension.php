@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Twig\Extension;
 
+use App\Offers\Twig\Extension\OfferExtension\MetricSuffix;
 use HireInSocial\Offers\Application\Exception\Exception;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -34,12 +35,18 @@ final class OfferExtension extends AbstractExtension
         return [
             new TwigFilter('offer_seniority_level_name', [$this, 'seniorityLevelName']),
             new TwigFilter('offer_salary_integer', [$this, 'salaryInteger']),
+            new TwigFilter('offer_salary_integer_short', [$this, 'salaryIntegerShort']),
         ];
     }
 
     public function salaryInteger(int $amount) : string
     {
         return (\NumberFormatter::create($this->locale, \NumberFormatter::DEFAULT_STYLE))->format($amount);
+    }
+
+    public function salaryIntegerShort(int $amount) : string
+    {
+        return (new MetricSuffix($amount, $this->locale))->convert();
     }
 
     public function seniorityLevelName(int $level) : string

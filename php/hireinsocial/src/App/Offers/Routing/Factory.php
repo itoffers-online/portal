@@ -37,6 +37,10 @@ final class Factory
             'faq'
         );
         $routes->addRoute(
+            new Route('/offer/apply', ['_controller' => [OfferController::class, 'applyAction']]),
+            'offer_apply'
+        );
+        $routes->addRoute(
             new Route('/recaptcha/verify', ['_controller' => [ReCaptchaController::class, 'verifyAction']]),
             'recaptcha_verify'
         );
