@@ -60,7 +60,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
             'date' => [
                 'timezone' => $config->getString(Config::TIMEZONE),
             ],
-            'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/symfony/twig',
+            'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/twig',
             'globals' => [
                 'apply_email_template' => $config->getString(Config::APPLY_EMAIL_TEMPLATE),
                 'facebook' => [

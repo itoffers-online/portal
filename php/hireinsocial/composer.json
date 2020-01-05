@@ -120,7 +120,7 @@
             "./vendor/bin/deptrac",
             "@test:php:cs",
             "@db:reset:test",
-            "@symfony:cache:purge:test",
+            "@symfony:cache:clear:test",
             "phpunit --testsuite=unit",
             "phpunit --testsuite=integration",
             "phpunit --testsuite=functional"
@@ -151,7 +151,7 @@
         "db:drop:test": "HIS_ENV=test bin/db-drop -n",
         "db:migrate:test": "HIS_ENV=test bin/db migrations:migrate -n",
         "symfony:cache:clear": "bin/symfony cache:clear",
-        "symfony:cache:purge:test": "rm -rf var/cache/test"
+        "symfony:cache:clear:test": "HIS_ENV=test bin/symfony cache:clear"
     },
     "config": {
         "sort-packages": true

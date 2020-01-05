@@ -70,7 +70,7 @@ function offersFacade(Config $config) : Offers
 
     $loader = new FilesystemLoader($config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE));
     $twig = new Environment($loader, [
-        'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/symfony/twig',
+        'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/twig',
         'debug' => $config->getString(Config::ENV) !== 'prod',
         'auto_reload' => $config->getString(Config::ENV) !== 'prod',
     ]);
