@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0c1127963ad2b7df7701d4a70d4974d",
+    "content-hash": "26e11aa234d9cada4d112e12a0a6d5f6",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -2626,6 +2626,56 @@
             ],
             "description": "A security checker for your composer.lock",
             "time": "2018-12-19T17:14:59+00:00"
+        },
+        {
+            "name": "stidges/country-flags",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stidges/country-flags.git",
+                "reference": "9ae96df3f4f3649716d09fa0af24c5806ac192be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stidges/country-flags/zipball/9ae96df3f4f3649716d09fa0af24c5806ac192be",
+                "reference": "9ae96df3f4f3649716d09fa0af24c5806ac192be",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~5.6|~7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=5.4.3",
+                "squizlabs/php_codesniffer": "^2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Stidges\\CountryFlags\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stidges",
+                    "email": "info@stidges.com",
+                    "homepage": "https://stidges.com"
+                }
+            ],
+            "description": "A small package to convert a country code to the corresponding country flag emoji",
+            "homepage": "https://github.com/stidges/country-flags",
+            "keywords": [
+                "countries",
+                "country",
+                "country-flags",
+                "emoji",
+                "flag",
+                "unicode"
+            ],
+            "time": "2018-01-29T13:27:13+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
