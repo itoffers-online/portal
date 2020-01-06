@@ -187,6 +187,26 @@ final class PostOfferHandler implements Handler
 
     private function createOffer(PostOffer $command, User $user, Specialization $specialization) : Offer
     {
+        $location = Location::remote();
+
+        if ($command->offer()->location()->remote() && $command->offer()->location()->latLng()) {
+            $location = Location::partiallyRemote(
+                $command->offer()->location()->countryCode(),
+                $command->offer()->location()->city(),
+                $command->offer()->location()->latLng()->lat(),
+                $command->offer()->location()->latLng()->lng(),
+            );
+        }
+
+        if (!$command->offer()->location()->remote() && $command->offer()->location()->latLng()) {
+            $location = Location::atOffice(
+                $command->offer()->location()->countryCode(),
+                $command->offer()->location()->city(),
+                $command->offer()->location()->latLng()->lat(),
+                $command->offer()->location()->latLng()->lng(),
+            );
+        }
+
         return Offer::post(
             Uuid::fromString($command->offerId()),
             $specialization,
@@ -201,14 +221,7 @@ final class PostOfferHandler implements Handler
                 $command->offer()->position()->name(),
                 $command->offer()->position()->description()
             ),
-            $command->offer()->location()->name()
-                ? Location::atPlace(
-                    $command->offer()->location()->remote(),
-                    $command->offer()->location()->name(),
-                    $command->offer()->location()->latLng()->lat(),
-                    $command->offer()->location()->latLng()->lng(),
-                )
-                : Location::onlyRemote(),
+            $location,
             $command->offer()->salary()
                 ? new Salary(
                     $command->offer()->salary()->min(),

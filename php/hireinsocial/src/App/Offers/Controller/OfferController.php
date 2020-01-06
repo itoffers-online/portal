@@ -115,6 +115,23 @@ final class OfferController extends AbstractController
             $offer = $form->getData();
 
             try {
+                switch ($offer['location']['type']) {
+                    case 1:
+                    case 2:
+                        $location = new Location(
+                            true,
+                            $offer['location']['country'],
+                            $offer['location']['city'],
+                            new LatLng((float) $offer['location']['lat'], (float) $offer['location']['lng'])
+                        );
+
+                        break;
+                    default:
+                        $location = new Location(true);
+
+                        break;
+                }
+
                 $this->offers->handle(new PostOffer(
                     $offerId = Uuid::uuid4()->toString(),
                     $specSlug,
@@ -122,13 +139,7 @@ final class OfferController extends AbstractController
                     new Offer(
                         new Company($offer['company']['name'], $offer['company']['url'], $offer['company']['description']),
                         new Position($offer['position']['seniorityLevel'], $offer['position']['name'], $offer['position']['description']),
-                        new Location(
-                            (bool)$offer['location']['remote'],
-                            $offer['location']['name'],
-                            ($offer['location']['lat'] && $offer['location']['lng'])
-                                ? new LatLng((float) $offer['location']['lat'], (float) $offer['location']['lng'])
-                                : null
-                        ),
+                        $location,
                         (null === $offer['salary']['min'] && null === $offer['salary']['max'])
                             ? null
                             : new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool) $offer['salary']['net'], $offer['salary']['period_type']),

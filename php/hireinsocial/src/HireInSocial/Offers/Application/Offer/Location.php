@@ -23,9 +23,14 @@ final class Location
     private $remote;
 
     /**
+     * @var string |null
+     */
+    private $countryCode;
+
+    /**
      * @var string|null
      */
-    private $name;
+    private $city;
 
     /**
      * @var float
@@ -41,7 +46,7 @@ final class Location
     {
     }
 
-    public static function onlyRemote() : self
+    public static function remote() : self
     {
         $location = new self();
         $location->remote = true;
@@ -49,30 +54,41 @@ final class Location
         return $location;
     }
 
-    public static function atPlace(bool $remote, string $name, float $lat, float $lng) : self
+    public static function partiallyRemote(string $countryCode, string $city, float $lat, float $lng) : self
     {
-        Assertion::betweenLength($name, 3, 512);
+        Assertion::length($countryCode, 2);
+        Assertion::betweenLength($city, 3, 512);
         Assertion::greaterOrEqualThan($lat, -90.0);
         Assertion::lessOrEqualThan($lat, 90.0);
         Assertion::greaterOrEqualThan($lng, -180.0);
         Assertion::lessOrEqualThan($lng, 180.0);
 
         $location = new self();
-        $location->name = $name;
-        $location->remote = $remote;
+        $location->countryCode = $countryCode;
+        $location->city = $city;
+        $location->remote = true;
         $location->lat = $lat;
         $location->lng = $lng;
 
         return $location;
     }
 
-    public function isRemote() : bool
+    public static function atOffice(string $countryCode, string $city, float $lat, float $lng) : self
     {
-        return $this->remote;
-    }
+        Assertion::length($countryCode, 2);
+        Assertion::betweenLength($city, 3, 512);
+        Assertion::greaterOrEqualThan($lat, -90.0);
+        Assertion::lessOrEqualThan($lat, 90.0);
+        Assertion::greaterOrEqualThan($lng, -180.0);
+        Assertion::lessOrEqualThan($lng, 180.0);
 
-    public function name() : ?string
-    {
-        return $this->name;
+        $location = new self();
+        $location->countryCode = $countryCode;
+        $location->city = $city;
+        $location->remote = false;
+        $location->lat = $lat;
+        $location->lng = $lng;
+
+        return $location;
     }
 }

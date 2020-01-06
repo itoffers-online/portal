@@ -75,8 +75,10 @@ final class OfferTest extends WebTestCase
             'offer[salary][currency]' => 'USD',
             'offer[salary][net]' => 1,
             'offer[contract]' => 'Contract (B2B)',
-            'offer[location][remote]' => 1,
-            'offer[location][name]' => 'Cracow',
+            'offer[location][type]' => "1",
+            'offer[location][address]' => 'Kraków, Plac Szczepański 15',
+            'offer[location][country]' => 'PL',
+            'offer[location][city]' => 'Cracow',
             'offer[location][lat]' => '50.06212',
             'offer[location][lng]' => '19.9353153',
             'offer[description][requirements]' => $faker->text(1024),
@@ -96,7 +98,7 @@ final class OfferTest extends WebTestCase
 
         $crawler = $client->followRedirect();
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), $client->getResponse()->getContent());
         $this->assertEquals(1, $crawler->filter('.alert-success')->count());
     }
 

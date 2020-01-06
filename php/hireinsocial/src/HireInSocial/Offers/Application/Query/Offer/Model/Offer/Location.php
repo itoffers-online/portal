@@ -23,7 +23,12 @@ final class Location
     /**
      * @var string|null
      */
-    private $name;
+    private $countryCode;
+
+    /**
+     * @var string|null
+     */
+    private $city;
 
     /**
      * @var float|null
@@ -35,12 +40,13 @@ final class Location
      */
     private $lng;
 
-    public function __construct(bool $remote, ?string $name = null, ?float $lat = null, ?float $lng = null)
+    public function __construct(bool $remote, ?string $countryCode = null, ?string $city = null, ?float $lat = null, ?float $lng = null)
     {
         $this->remote = $remote;
-        $this->name = $name;
         $this->lat = $lat;
         $this->lng = $lng;
+        $this->countryCode = $countryCode;
+        $this->city = $city;
     }
 
     public function remote() : bool
@@ -48,9 +54,14 @@ final class Location
         return $this->remote;
     }
 
-    public function name() : ?string
+    public function countryCode() : ?string
     {
-        return $this->name;
+        return $this->countryCode;
+    }
+
+    public function city() : ?string
+    {
+        return $this->city;
     }
 
     public function lat() : ?float
@@ -65,16 +76,16 @@ final class Location
 
     public function isRemote() : bool
     {
-        return $this->remote === true && $this->name === null;
+        return $this->remote === true && $this->countryCode === null;
     }
 
     public function isAtOffice() : bool
     {
-        return $this->remote === false && $this->name !== null;
+        return $this->remote === false && $this->countryCode !== null;
     }
 
     public function isPartiallyRemote() : bool
     {
-        return $this->remote === true && $this->name !== null;
+        return $this->remote === true && $this->countryCode !== null;
     }
 }
