@@ -108,7 +108,7 @@
 
                         </div>
                         <div class="card-body border-bottom small pl-lg-5 pr-lg-5">
-                            <i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}{{ offer.location.countryCode }}, {{ offer.location.city }}{% else %}Remote{% endif %}
+                            <i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}<span data-toggle="tooltip" data-placement="top" title="{{ offer.location.countryCode|offer_location_country_name }}">{{ offer.location.countryCode|offer_location_country_flag }}</span> {{ offer.location.city }}{% else %}Remote{% endif %}
                         </div>
                         <div class="card-body small font-weight-light pl-lg-5 pr-lg-5">
                             <div class="row">

@@ -22,6 +22,8 @@ final class Config
 {
     public const ROOT_PATH = 'root_path';
 
+    public const DOMAIN = 'domain';
+
     public const CONTACT_EMAIL = 'contact_email';
 
     public const FB_PAGE_URL = 'fb_page_url';
@@ -87,6 +89,7 @@ final class Config
             self::ENV => getenv('HIS_ENV'),
             self::LOCALE => getenv('HIS_LOCALE'),
             self::TIMEZONE => getenv('HIS_TIMEZONE'),
+            self::DOMAIN => 'hirein.social',
             self::CONTACT_EMAIL => 'contact@hirein.social',
             self::FB_PAGE_URL => 'https://www.facebook.com/Hire-in-Social-105145667672738',
             self::SYMFONY_SECRET => getenv('HIS_SYMFONY_SECRET'),

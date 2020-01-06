@@ -146,6 +146,7 @@ final class PostOfferHandler implements Handler
         $specialization = $this->specializations->get($command->specialization());
 
         $offer = $this->createOffer($command, $user, $specialization);
+        $slug = Slug::from($offer, $this->calendar);
 
         if ($this->throttling->isThrottled($user, $this->offers)) {
             $extraOffer = $this->extraOffers->findClosesToExpire($user->id());
@@ -161,7 +162,8 @@ final class PostOfferHandler implements Handler
             $draft = Draft::createFor(
                 $user,
                 $this->formatter,
-                $offer
+                $offer,
+                (string) $slug
             );
 
             $this->posts->add(
@@ -182,7 +184,7 @@ final class PostOfferHandler implements Handler
         }
 
         $this->offers->add($offer);
-        $this->slugs->add(Slug::from($offer, $this->calendar));
+        $this->slugs->add($slug);
     }
 
     private function createOffer(PostOffer $command, User $user, Specialization $specialization) : Offer

@@ -242,7 +242,7 @@
                         <div class="row">
                             <div class="col-lg-12 pb-4 pt-4">
                                 <h6 class="small text-gray-500 font-weight-bold">Location</h6>
-                                <small><i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> {{ offer.location.countryCode }}, {{ offer.location.city }}</small>
+                                <small><i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> <span data-toggle="tooltip" data-placement="top" title="{{ offer.location.countryCode|offer_location_country_name }}">{{ offer.location.countryCode|offer_location_country_flag }}</span> {{ offer.location.city }}</small>
                                 <section class="mt-4 d-none d-lg-block">
                                     <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&zoom=16&size=556x274&maptype=roadmap&markers=color:blue%7C{{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&key={{ google.maps.key|raw }}" alt="Map with location"/>
                                 </section>
@@ -278,7 +278,7 @@
                         </section>
                     </div>
                     <div class="card-body border-bottom small pl-5 pr-5">
-                        <i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}{{ offer.location.countryCode }}, {{ offer.location.city }}{% else %}Remote{% endif %}
+                        <i class="text-hins-turquoise fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}<span data-toggle="tooltip" data-placement="top" title="{{ offer.location.countryCode|offer_location_country_name }}">{{ offer.location.countryCode|offer_location_country_flag }}</span> {{ offer.location.city }}{% else %}Remote{% endif %}
                     </div>
                     <div class="card-body small font-weight-light pl-5 pr-5">
                         <div class="row">

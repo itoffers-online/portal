@@ -75,6 +75,7 @@ function offersFacade(Config $config) : Offers
         'auto_reload' => $config->getString(Config::ENV) !== 'prod',
     ]);
     $twig->addGlobal('apply_email_template', $config->getString(Config::APPLY_EMAIL_TEMPLATE));
+    $twig->addGlobal('domain', $config->getString(Config::DOMAIN));
 
     switch ($config->getString(Config::ENV)) {
         case 'prod':

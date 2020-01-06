@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace App\Offers\Twig\Extension;
 
+use App\Offers\Country\Countries;
 use App\Offers\Twig\Extension\OfferExtension\MetricSuffix;
 use HireInSocial\Offers\Application\Exception\Exception;
+use Stidges\CountryFlags\CountryFlag;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -36,6 +38,8 @@ final class OfferExtension extends AbstractExtension
             new TwigFilter('offer_seniority_level_name', [$this, 'seniorityLevelName']),
             new TwigFilter('offer_salary_integer', [$this, 'salaryInteger']),
             new TwigFilter('offer_salary_integer_short', [$this, 'salaryIntegerShort']),
+            new TwigFilter('offer_location_country_flag', [$this, 'locationCountryFlag']),
+            new TwigFilter('offer_location_country_name', [$this, 'locationCountryName']),
         ];
     }
 
@@ -83,5 +87,19 @@ final class OfferExtension extends AbstractExtension
             default:
                 throw new Exception("Unknown seniority level");
         }
+    }
+
+    public function locationCountryFlag(string $countryCode) : string
+    {
+        try {
+            return (new CountryFlag)->get($countryCode);
+        } catch (\Throwable $e) {
+            return $countryCode;
+        }
+    }
+
+    public function locationCountryName(string $countryCode) : string
+    {
+        return Countries::name($countryCode);
     }
 }

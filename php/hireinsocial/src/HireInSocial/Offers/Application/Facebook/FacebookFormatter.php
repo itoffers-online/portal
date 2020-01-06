@@ -29,10 +29,11 @@ final class FacebookFormatter implements OfferFormatter
         $this->twig = $twig;
     }
 
-    public function format(Offer $offer) : string
+    public function format(Offer $offer, string $slug) : string
     {
         return $this->twig->render('/offer/facebook/page/group/offer.txt.twig', [
             'offer' => $offer,
+            'offerSlug' => $slug,
         ]);
     }
 }
