@@ -37,7 +37,7 @@ final class OfferMother
             UserMother::random(),
             new Offer\Company($companyName, $faker->url, $faker->text(512)),
             new Offer\Position(\random_int(Offer\Position\SeniorityLevels::INTERN, Offer\Position\SeniorityLevels::EXPERT), $positionName, $faker->text(1024)),
-            Offer\Location::onlyRemote(),
+            Offer\Location::remote(),
             new Offer\Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, Offer\Salary\Period::perMonth()),
             new Offer\Contract('B2B'),
             new Offer\Description(

@@ -15,30 +15,29 @@
 {% block body %}
 <div class="container-fluid pt-4">
     <div class="container">
-        {% if throttled and extraOffersCount <= 0 %}
-        <div class="alert alert-warning text-center" role="alert">
-            Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait.<br/>
-            Still have some really cool offers? <br/>
-            Email us some details at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
-            grant you couple <strong>extra offers</strong>!
-        </div>
-        {% else %}
-        <div class="alert alert-info text-center" role="alert">
-            You can add only {{ throttleLimit }} offers for {{ throttleSince.format('%d') }} days.
-            Number of offers you can add immediately: {{ offersLeft }} {% if (extraOffersCount) %}<strong>+ {{ extraOffersCount }} extra offers!</strong>{% endif %}
-        </div>
-        {% endif %}
         {{ form_start(form) }}
         <h3 class="mb-3">Post Offer</h3>
         <div class="row">
             <div class="col-md-4 order-md-2 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Questions?</h5>
-                        <p>
-                            Please look into our <a href="{{ url('faq') }}">FAQ</a> section.
-                        </p>
+                <div class="sticky-top">
+                {% if throttled and extraOffersCount <= 0 %}
+                    <div class="alert alert-warning text-center" role="alert">
+                        Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait.<br/>
+                        Still have some really cool offers? <br/>
+                        Email us some details at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
+                        grant you couple <strong>extra offers</strong>!
                     </div>
+                {% else %}
+                    <div class="alert alert-info text-center" role="alert">
+                        You can add only {{ throttleLimit }} offers for {{ throttleSince.format('%d') }} days.
+                        Number of offers you can add immediately: {{ offersLeft }} {% if (extraOffersCount) %}<strong>+ {{ extraOffersCount }} extra offers!</strong>{% endif %}
+                    </div>
+                {% endif %}
+                    {% if not form.vars.valid %}
+                        <div class="alert alert-danger text-center" role="alert">
+                            Your offer has errors, please scroll down and fix them before posting offer.
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-8 order-md-1">
@@ -80,15 +79,23 @@
                 {{ form_row(form.contract, {label: "Job Type"}) }}
                 <hr />
                 <h5>Location</h5>
-                {{ form_row(form.location.remote, {label: "Possibility to work remotly"}) }}
                 <div class="row">
-                    <div class="col-md-6">
-                        {{ form_row(form.location.name, {label:"Location (optional)", attr:{placeholder:"Polska, Kraków...", autocomplete: 'disabled'}}) }}
+                    <div class="col"><a id="location-fully-remote" class="btn btn-block btn-outline-primary{% if form.location.type.vars.value == 0 %} active{% endif %}" href="#">Fully Remote</a></div>
+                    <div class="col"><a id="location-partially-remote" class="btn btn-block btn-outline-primary{% if form.location.type.vars.value == 1 %} active{% endif %}" href="#">Partially Remote</a></div>
+                    <div class="col"><a id="location-at-office" class="btn btn-block btn-outline-primary{% if form.location.type.vars.value == 2 %} active{% endif %}" href="#">At Office</a></div>
+                </div>
+                {{ form_row(form.location.type, {label: false, attr: {class: 'd-none'}}) }}
+                <div class="row d-none" id="location-group">
+                    <div class="col-md-12">
+                        {{ form_row(form.location.address, {label: false, placeholder: "Find address...", attr: {autocomplete: "off"}}) }}
+                        {{ form_row(form.location.country) }}
+                        {{ form_row(form.location.city) }}
+
+                        <div id="location-map" class="mb-4"></div>
+                    </div>
+                    <div class="col-md-12">
                         {{ form_row(form.location.lat) }}
                         {{ form_row(form.location.lng) }}
-                    </div>
-                    <div class="col-md-6">
-                        <div id="location-map"></div>
                     </div>
                 </div>
                 <hr/>
@@ -145,21 +152,84 @@
         $('.custom-file-label').html(fileName);
     });
 
-    function initMap() {
+    function fullyRemote() {
+        $('#location-fully-remote').addClass('active');
+        $('#location-partially-remote').removeClass('active');
+        $('#location-at-office').removeClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', true);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
+        $('#location-group').addClass('d-none');
+    };
 
+    function partiallyRemote() {
+        $('#location-fully-remote').removeClass('active');
+        $('#location-partially-remote').addClass('active');
+        $('#location-at-office').removeClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', true);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
+        $('#location-group').removeClass('d-none');
+    };
+
+    function atOffice() {
+        $('#location-fully-remote').removeClass('active');
+        $('#location-partially-remote').removeClass('active');
+        $('#location-at-office').addClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', true);
+        $('#location-group').removeClass('d-none');
+    };
+
+    $('#location-fully-remote').click((e => {
+        e.preventDefault();
+
+        fullyRemote();
+    }));
+    $('#location-partially-remote').click((e => {
+        e.preventDefault();
+
+        partiallyRemote();
+    }));
+    $('#location-at-office').click((e => {
+        e.preventDefault();
+
+        atOffice();
+    }));
+
+    {% if form.location.type.vars.value == 0 %}
+        fullyRemote();
+    {% elseif form.location.type.vars.value == 1 %}
+        partiallyRemote();
+    {% else %}
+        atOffice();
+    {% endif %}
+
+    function initMap() {
         var map = new google.maps.Map(document.getElementById('location-map'), {
             zoom: 14,
-            center: {lat: 50.06212, lng: 19.9353153}
+            center: {lat: {{ form.location.lat.vars.value|default(50.06212) }}, lng: {{ form.location.lng.vars.value|default(19.9353153) }}}
         });
         var geocoder = new google.maps.Geocoder;
 
-        var marker = new google.maps.Marker({
-            map: map,
-            center: {lat: 50.06212, lng: 19.9353153},
-            visible: false
-        });
+        {% if form.location.lat.vars.value %}
+            var marker = new google.maps.Marker({
+                map: map,
+                center: {lat: {{ form.location.lat.vars.value|default(50.06212) }}, lng: {{ form.location.lng.vars.value|default(19.9353153) }}},
+                position: {lat: {{ form.location.lat.vars.value|default(50.06212) }}, lng: {{ form.location.lng.vars.value|default(19.9353153) }}},
+            });
+        {% else %}
+            var marker = new google.maps.Marker({
+                map: map,
+                center: {lat: {{ form.location.lat.vars.value|default(50.06212) }}, lng: {{ form.location.lng.vars.value|default(19.9353153) }}},
+            });
+        {% endif %}
 
-        let searchInput = document.getElementById('{{ form.location.name.vars.id }}');
+        let searchInput = document.getElementById('{{ form.location.address.vars.id }}');
+        let countryInput = document.getElementById('{{ form.location.country.vars.id }}');
+        let cityInput = document.getElementById('{{ form.location.city.vars.id }}');
+
         var autocomplete = new google.maps.places.Autocomplete(searchInput);
 
         marker.addListener('position_changed', function(e) {
@@ -167,20 +237,53 @@
             document.getElementById('{{ form.location.lng.vars.id }}').value = this.getPosition().lng();
         });
 
-        map.addListener('click', function(e) {
-            marker.setPosition(e.latLng);
-            marker.setVisible(true);
-
+        function geocode(location) {
             geocoder.geocode(
-                {'location' : e.latLng},
+                {'location' : location},
                 function (results, status) {
                     if (status === 'OK') {
                         if (results[0]) {
                             searchInput.value = results[0].formatted_address;
+
+                            console.log(results[0].address_components);
+
+                            countryInput.value = Array.from(results[0].address_components)
+                                .find(component => component.types[0] === 'country' && component.types[1] === "political")['short_name'];
+
+                            let city = false;
+
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('locality') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('sublocality') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_3') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_2') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_1') && component.types.includes("political"));
+                            }
+
+                            cityInput.value = city ? city['short_name'] : '';
                         }
                     }
                 }
             );
+        };
+
+        {% if form.location.lat.vars.value %}
+            geocode({lat: {{ form.location.lat.vars.value|default(50.06212) }}, lng: {{ form.location.lng.vars.value|default(19.9353153) }}});
+        {% endif %}
+
+        map.addListener('click', function(e) {
+            marker.setPosition(e.latLng);
+            marker.setVisible(true);
+
+            geocode(e.latLng);
 
             map.panTo(e.latLng);
         });
@@ -197,6 +300,29 @@
                 return;
             }
 
+            countryInput.value = Array.from(place.address_components)
+                .find(component => component.types[0] === 'country' && component.types[1] === "political")['short_name'];
+
+            let city = false;
+
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('locality') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('sublocality') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_3') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_2') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_1') && component.types.includes("political"));
+            }
+
+            cityInput.value = city ? city['short_name'] : '';
+
             marker.setPosition(place.geometry.location);
             map.panTo(place.geometry.location);
             marker.setVisible(true);
@@ -209,7 +335,6 @@
             }
         });
     }
-
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google.maps.key }}&libraries=places&&callback=initMap">
 </script>

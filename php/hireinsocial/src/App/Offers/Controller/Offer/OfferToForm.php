@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Controller\Offer;
 
+use App\Offers\Form\Type\Offer\LocationType;
 use HireInSocial\Offers\Offers;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -48,6 +49,16 @@ final class OfferToForm
             throw new AccessDeniedException();
         }
 
+        $locationType = LocationType::LOCATION_REMOTE;
+
+        if ($offer->location()->isPartiallyRemote()) {
+            $locationType = LocationType::LOCATION_PARTIALLY_REMOTE;
+        }
+
+        if ($offer->location()->isAtOffice()) {
+            $locationType = LocationType::LOCATION_AT_OFFICE;
+        }
+
         return [
             'company' => [
                 'name' => $offer->company()->name(),
@@ -60,17 +71,18 @@ final class OfferToForm
                 'description' => $offer->position()->description(),
             ],
             'location' => [
-                'remote' => $offer->location()->remote(),
-                'name' => $offer->location()->name(),
+                'type' => $locationType,
+                'country' => $offer->location()->countryCode(),
+                'city' => $offer->location()->city(),
                 'lat' => $offer->location()->lat(),
                 'lng' => $offer->location()->lng(),
             ],
             'salary' => [
-                'min' => $offer->salary()->min(),
-                'max' => $offer->salary()->max(),
-                'currency' => $offer->salary()->currencyCode(),
-                'net' => $offer->salary()->isNet(),
-                'periodType' => $offer->salary()->periodType(),
+                'min' => $offer->salary() ? $offer->salary()->min() : null,
+                'max' => $offer->salary() ? $offer->salary()->max() : null,
+                'currency' => $offer->salary() ? $offer->salary()->currencyCode() : null,
+                'net' => $offer->salary() ? $offer->salary()->isNet() : null,
+                'periodType' => $offer->salary() ? $offer->salary()->periodType() : null,
             ],
             'contract' => $offer->contract()->type(),
             'description' => [

@@ -25,28 +25,39 @@ final class Location
     /**
      * @var string|null
      */
-    private $name;
+    private $countryCode;
 
     /**
-     * @var \HireInSocial\Offers\Application\Command\Offer\Offer\Location\LatLng|null
+     * @var string|null
+     */
+    private $city;
+
+    /**
+     * @var LatLng|null
      */
     private $latLng;
 
-    public function __construct(bool $remote, ?string $name = null, ?LatLng $latLng = null)
+    public function __construct(bool $remote, ?string $countryCode = null, ?string $city = null, ?LatLng $latLng = null)
     {
         $this->remote = $remote;
-        $this->name = $name;
+        $this->countryCode = $countryCode;
+        $this->city = $city;
         $this->latLng = $latLng;
+    }
+
+    public function countryCode() : ?string
+    {
+        return $this->countryCode;
+    }
+
+    public function city() : ?string
+    {
+        return $this->city;
     }
 
     public function remote() : bool
     {
         return $this->remote;
-    }
-
-    public function name() : ?string
-    {
-        return $this->name;
     }
 
     public function latLng() : ?LatLng

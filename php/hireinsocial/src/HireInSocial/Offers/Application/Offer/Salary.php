@@ -46,7 +46,7 @@ final class Salary
     public function __construct(int $min, int $max, string $currencyCode, bool $net, Period $period)
     {
         Assertion::greaterThan($min, 0);
-        Assertion::greaterThan($max, $min);
+        Assertion::greaterOrEqualThan($max, $min);
         Assertion::length($currencyCode, 3);
 
         $this->min = $min;

@@ -13,11 +13,11 @@
                     </li>
                 </ul>
                 {% if facebook_logged_in %}
-                    <a class="nav-link btn btn-sqr p-3 pl-4 pr-4 d-lg-none" href="{{ url('user_profile') }}"><small>Profile</small></a>
-                    <a class="nav-link btn btn-sqr border-right p-3 pl-4 pr-4 d-none d-lg-inline" href="{{ url('user_profile') }}"><small>Profile</small></a>
+                    <a class="nav-link btn btn-sqr p-3 pl-4 pr-4 d-lg-none" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
+                    <a class="nav-link btn btn-sqr border-right p-3 pl-4 pr-4 d-none d-lg-inline" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
                     <a class="nav-link btn btn-sqr p-3 pl-4 pr-4" href="{{ url('facebook_logout') }}"><small>Logout</small></a>
                 {% else %}
-                    <a class="nav-link btn btn-sqr p-3 pl-4 pr-4" href="{{ url('facebook_login') }}"><small>Sign In</small></a>
+                    <a class="nav-link btn btn-sqr p-3 pl-4 pr-4" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
                 {% endif %}
                 <a class="nav-link btn btn-primary btn-sqr p-3 pl-4 pr-4" href="{{ url('offer_post') }}"><small class="font-weight-bolder">Post a Job</small></a>
             </div>

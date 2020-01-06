@@ -4,7 +4,8 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <embeddable name="HireInSocial\Offers\Application\Offer\Location">
         <field name="remote" type="boolean"/>
-        <field name="name" length="512" nullable="true"/>
+        <field name="countryCode" length="2" nullable="true"/>
+        <field name="city" length="512" nullable="true"/>
         <field name="lat" type="float" nullable="true"/>
         <field name="lng" type="float" nullable="true"/>
     </embeddable>
