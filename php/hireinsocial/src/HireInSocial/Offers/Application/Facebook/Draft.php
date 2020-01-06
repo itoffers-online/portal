@@ -42,9 +42,9 @@ final class Draft
         $this->link = $link;
     }
 
-    public static function createFor(User $user, OfferFormatter $formatter, Offer $offer) : self
+    public static function createFor(User $user, OfferFormatter $formatter, Offer $offer, string $slug) : self
     {
-        return new self($user->id(), $formatter->format($offer), $offer->company()->url());
+        return new self($user->id(), $formatter->format($offer, $slug), $offer->company()->url());
     }
 
     public function __toString() : string

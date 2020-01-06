@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Offers\Application\MotherObject\Facebook;
 
 use HireInSocial\Offers\Application\Facebook\Draft;
+use HireInSocial\Offers\Application\Offer\Slug;
 use HireInSocial\Tests\Offers\Application\Double\Dummy\DummyFormatter;
+use HireInSocial\Tests\Offers\Application\Double\Stub\CalendarStub;
 use HireInSocial\Tests\Offers\Application\MotherObject\Offer\OfferMother;
 use HireInSocial\Tests\Offers\Application\MotherObject\User\UserMother;
 use Ramsey\Uuid\Uuid;
@@ -23,7 +25,6 @@ final class DraftMother
 {
     public static function random() : Draft
     {
-        return Draft::createFor(UserMother::withId(Uuid::uuid4()), new DummyFormatter(), OfferMother::random());
-        ;
+        return Draft::createFor(UserMother::withId(Uuid::uuid4()), new DummyFormatter(), $offer = OfferMother::random(), (string) Slug::from($offer, new CalendarStub()));
     }
 }

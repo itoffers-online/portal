@@ -15,5 +15,5 @@ namespace HireInSocial\Offers\Application\Offer;
 
 interface OfferFormatter
 {
-    public function format(Offer $offer) : string;
+    public function format(Offer $offer, string $slug) : string;
 }

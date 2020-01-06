@@ -91,4 +91,42 @@ final class Location
 
         return $location;
     }
+
+    /**
+     * @return string|null
+     */
+    public function countryCode() : ?string
+    {
+        return $this->countryCode;
+    }
+
+    public function city() : ?string
+    {
+        return $this->city;
+    }
+
+    public function isRemote() : bool
+    {
+        return $this->remote === true && $this->countryCode === null;
+    }
+
+    public function isAtOffice() : bool
+    {
+        return $this->remote === false && $this->countryCode !== null;
+    }
+
+    public function isPartiallyRemote() : bool
+    {
+        return $this->remote === true && $this->countryCode !== null;
+    }
+
+    public function lat() : float
+    {
+        return $this->lat;
+    }
+
+    public function lng() : float
+    {
+        return $this->lng;
+    }
 }

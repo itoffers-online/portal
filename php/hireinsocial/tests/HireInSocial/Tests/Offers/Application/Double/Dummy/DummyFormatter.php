@@ -18,7 +18,7 @@ use HireInSocial\Offers\Application\Offer\OfferFormatter;
 
 final class DummyFormatter implements OfferFormatter
 {
-    public function format(Offer $offer) : string
+    public function format(Offer $offer, string $slug) : string
     {
         return 'This is dummy job offer';
     }
