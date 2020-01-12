@@ -16,6 +16,7 @@ namespace App\Offers\Twig\Extension;
 use App\Offers\Country\Countries;
 use App\Offers\Twig\Extension\OfferExtension\MetricSuffix;
 use HireInSocial\Offers\Application\Exception\Exception;
+use HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 use Stidges\CountryFlags\CountryFlag;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -40,6 +41,7 @@ final class OfferExtension extends AbstractExtension
             new TwigFilter('offer_salary_integer_short', [$this, 'salaryIntegerShort']),
             new TwigFilter('offer_location_country_flag', [$this, 'locationCountryFlag']),
             new TwigFilter('offer_location_country_name', [$this, 'locationCountryName']),
+            new TwigFilter('offer_older_than', [$this, 'olderThan']),
         ];
     }
 
@@ -101,5 +103,10 @@ final class OfferExtension extends AbstractExtension
     public function locationCountryName(string $countryCode) : string
     {
         return Countries::name($countryCode);
+    }
+
+    public function olderThan(Offer $offer, int $days) : bool
+    {
+        return $offer->createdAt()->diff(new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->days >= $days;
     }
 }

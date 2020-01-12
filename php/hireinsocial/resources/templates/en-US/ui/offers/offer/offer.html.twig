@@ -81,7 +81,7 @@
                     Created at
                 </section>
                 <section class="small">
-                    <i class="fas fa-clock mr-2 text-gray-500"></i> {{ offer.createdAt|time_diff }}
+                    {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
                 </section>
             </div>
             <div class="col-lg-5">
@@ -106,7 +106,7 @@
                     Created at
                 </section>
                 <section class="small">
-                    <i class="fas fa-clock mr-2 text-gray-500"></i> {{ offer.createdAt|time_diff }}
+                    {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
                 </section>
             </div>
         </div>
@@ -283,7 +283,7 @@
                     <div class="card-body small font-weight-light pl-5 pr-5">
                         <div class="row">
                             <div class="col-lg-6">
-                                <i class="text-gray-500 fas fa-clock mr-2"></i> {{ offer.createdAt|time_diff }}
+                                {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
                             </div>
                             <div class="col-lg-6 text-right">
                                 {% if facebookPost %}

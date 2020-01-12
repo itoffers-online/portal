@@ -82,7 +82,7 @@
             <div class="col-lg-12">
                 <p class="alert alert-info text-center">
                     Below you can find all job offers in this specialization. Job offers can't be added more frequently than {{ throttleLimit }} per {{ throttleSince.format('%d') }} days.<br/>
-                    By default, we are not displaying you offers older than 14 days, most interesting offers after that time are already outdated.
+                    By default, we are not displaying you offers older than 20 days, most interesting offers after that time are already outdated.
                 </p>
             </div>
         </div>
@@ -113,7 +113,7 @@
                         <div class="card-body small font-weight-light pl-lg-5 pr-lg-5">
                             <div class="row">
                                 <div class="col-6 col-lg-6">
-                                    <i class="text-gray-500 fas fa-clock mr-2"></i> {{ offer.createdAt|time_diff }}
+                                    {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
                                 </div>
                                 <div class="col-6 col-lg-6 text-right">
                                     <a class="btn btn-primary" href="{{ url('offer', {'offerSlug': offer.slug}) }}">read</a>
