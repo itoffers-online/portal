@@ -73,7 +73,7 @@ final class OfferFilter extends AbstractFilter
 
     private function __construct()
     {
-        $this->newerThan(new \DateTimeImmutable('-2 weeks', new \DateTimeZone('UTC')));
+        $this->newerThan(new \DateTimeImmutable('-20 days', new \DateTimeZone('UTC')));
     }
 
     public static function allFor(string $specialization) : self

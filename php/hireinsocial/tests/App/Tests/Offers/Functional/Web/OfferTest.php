@@ -15,6 +15,7 @@ namespace App\Tests\Offers\Functional\Web;
 
 use App\Tests\Functional\Web\WebTestCase;
 use Faker\Factory;
+use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
 use Ramsey\Uuid\Uuid;
@@ -74,6 +75,7 @@ final class OfferTest extends WebTestCase
             'offer[salary][max]' => 5000,
             'offer[salary][currency]' => 'USD',
             'offer[salary][net]' => 1,
+            'offer[salary][period_type]' => Salary::PERIOD_TYPE_MONTH,
             'offer[contract]' => 'Contract (B2B)',
             'offer[location][type]' => "1",
             'offer[location][address]' => 'Kraków, Plac Szczepański 15',

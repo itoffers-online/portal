@@ -70,7 +70,6 @@ final class SalaryType extends AbstractType
                     'EUR' => 'EUR',
                     'USD' => 'USD',
                 ],
-                'data' => 'PLN',
                 'constraints' => [
                     new NotBlank(['groups' => [self::SALARY_GROUP]]),
                 ],
@@ -79,7 +78,7 @@ final class SalaryType extends AbstractType
                 'required' => false,
             ])
             ->add('period_type', ChoiceType::class, [
-                'required' => true,
+                'required' => false,
                 'choices' => [
                     'per month' => Salary::PERIOD_TYPE_MONTH,
                     'per hour' => Salary::PERIOD_TYPE_HOUR,
