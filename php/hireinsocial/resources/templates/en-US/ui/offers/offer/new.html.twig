@@ -13,78 +13,131 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid pt-4">
+<div class="container-fluid bg-dark text-white">
     <div class="container">
-        {{ form_start(form) }}
-        <h3 class="mb-3">Post Offer</h3>
-        <div class="row">
-            <div class="col-md-4 order-md-2 mb-4">
-                <div class="sticky-top">
+        <div class="row align-items-center pt-2 pb-2 pt-lg-5 pb-lg-5">
+            <div class="col-lg-3 d-none d-lg-flex">
+                <img src="https://via.placeholder.com/40" alt="technology"/>
+            </div>
+            <div class="col-lg-6 text-center">
+                <h1 class="font-weight-light">
+                    Post
+                    <span class="text-hins-turquoise">{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}</span>
+                    Offer
+                </h1>
+            </div>
+            <div class="col-lg-3 d-none d-lg-flex">
                 {% if throttled and extraOffersCount <= 0 %}
-                    <div class="alert alert-warning text-center" role="alert">
-                        Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait.<br/>
-                        Still have some really cool offers? <br/>
-                        Email us some details at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
-                        grant you couple <strong>extra offers</strong>!
-                    </div>
+                    <small><i class="fas fa-pen-square text-danger mr-2"></i> 0 immediate offers left</small>
                 {% else %}
-                    <div class="alert alert-info text-center" role="alert">
-                        You can add only {{ throttleLimit }} offers for {{ throttleSince.format('%d') }} days.
-                        Number of offers you can add immediately: {{ offersLeft }} {% if (extraOffersCount) %}<strong>+ {{ extraOffersCount }} extra offers!</strong>{% endif %}
-                    </div>
+                <small><i class="fas fa-pen-square text-hins-turquoise mr-2"></i> {{ offersLeft + extraOffersCount }} Offers you can post immediately</small>
                 {% endif %}
-                    {% if not form.vars.valid %}
-                        <div class="alert alert-danger text-center" role="alert">
-                            Your offer has errors, please scroll down and fix them before posting offer.
-                        </div>
-                    {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    {% if throttled and extraOffersCount <= 0 %}
+    <div class="container mt-4 border-bottom">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-success text-center small mr-4 text-dark">
+                    Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait. Still have some really cool offers? <br/>
+                    Email us some at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
+                    grant you couple <strong>extra offers</strong>!
                 </div>
             </div>
-            <div class="col-md-8 order-md-1">
-                <h5>Company</h5>
+        </div>
+    </div>
+    {% endif %}
+    <div class="container mt-4">
+        {{ form_start(form) }}
+        <div class="row border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Company</h3>
+            </div>
+            <div class="col-md-10">
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        {{ form_row(form.company.name, {label: "Name"}) }}
+                        {{ form_row(form.company.name, {label: "Name", attr: {placeholder: "Company name"}} ) }}
                     </div>
                     <div class="col-md-6 mb-3">
                         {{ form_row(form.company.url, {label: "Homepage", attr:{placeholder:"Company hompate url"}}) }}
                     </div>
                 </div>
-                {{ form_row(form.company.description, {label: "Description", attr:{rows: 5, placeholder: "between 10 and 512 characters..."}}) }}
-                <hr />
-                <h5>Position</h5>
-                {{ form_row(form.position.seniorityLevel, {label: "Seniority Level"}) }}
-                {{ form_row(form.position.name, {label: "Name", attr:{placeholder: "PHP Developer"}}) }}
-                {{ form_row(form.position.description, {label: "Description", attr:{rows: 5, placeholder: "between 50 and 1024 characters..."}}) }}
-                <hr />
-                <h5>Salary</h5>
-                <div class="alert alert-warning" role="alert">
-                    This field is optional but please remember that potential candidates prefer offers with transparent salary.
+                {{ form_row(form.company.description, {label: "Description", attr:{rows: 5, placeholder: "Description between 10 and 512 characters..."}}) }}
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Position</h3>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col"><a id="seniority-intern" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 0 %} active{% endif %}" href="#">Intern</a></div>
+                    <div class="col"><a id="seniority-junior" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 1 %} active{% endif %}" href="#">Junior</a></div>
+                    <div class="col"><a id="seniority-mid" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 2 %} active{% endif %}" href="#">Mid</a></div>
+                    <div class="col"><a id="seniority-senior" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 3 %} active{% endif %}" href="#">Senior</a></div>
+                    <div class="col"><a id="seniority-expert" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 4 %} active{% endif %}" href="#">Expert</a></div>
+                </div>
+                {{ form_row(form.position.seniorityLevel, {label: false, attr: {class:"d-none"}}) }}
+                {{ form_row(form.position.name, {label: "Job Title", attr:{placeholder: "PHP Developer"}}) }}
+                {{ form_row(form.contract, {label: "Job Type"}) }}
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Salary</h3>
+            </div>
+            <div class="col-md-10">
+                <div class="alert alert-success text-center text-dark small" role="alert">
+                    This section is optional but please remember that 90% of candidates prefer offers with transparent salary.
                 </div>
                 <div class="row">
-                    <div class="col-md-3 mb-3">
-                        {{ form_row(form.salary.min, {label: false, attr:{placeholder:"From"}}) }}
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        {{ form_row(form.salary.max, {label: false, attr:{placeholder:"To"}}) }}
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        {{ form_row(form.salary.currency, {label: false}) }}
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        {{ form_row(form.salary.period_type, {label: false}) }}
+                    <div class="col-md-6">
+                        <label>Salary Range</label>
                     </div>
                 </div>
-                {{ form_row(form.salary.net, {label: "Net"}) }}
-                {{ form_row(form.contract, {label: "Job Type"}) }}
-                <hr />
-                <h5>Location</h5>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(form.salary.min, {label: false, attr:{placeholder:"From"}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.salary.max, {label: false, attr:{placeholder:"To"}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        {{ form_row(form.salary.net, {label: "Net income"}) }}
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(form.salary.currency, {label: 'Currency'}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.salary.period_type, {label: 'Periodicity'}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Location</h3>
+            </div>
+            <div class="col-md-10">
                 <div class="row">
                     <div class="col"><a id="location-fully-remote" class="btn btn-block btn-outline-primary{% if form.location.type.vars.value == 0 %} active{% endif %}" href="#">Fully Remote</a></div>
                     <div class="col"><a id="location-partially-remote" class="btn btn-block btn-outline-primary{% if form.location.type.vars.value == 1 %} active{% endif %}" href="#">Partially Remote</a></div>
                     <div class="col"><a id="location-at-office" class="btn btn-block btn-outline-primary{% if form.location.type.vars.value == 2 %} active{% endif %}" href="#">At Office</a></div>
                 </div>
+
                 {{ form_row(form.location.type, {label: false, attr: {class: 'd-none'}}) }}
+
                 <div class="row d-none" id="location-group">
                     <div class="col-md-12">
                         {{ form_row(form.location.address, {label: false, placeholder: "Find address...", attr: {autocomplete: "off"}}) }}
@@ -98,25 +151,61 @@
                         {{ form_row(form.location.lng) }}
                     </div>
                 </div>
-                <hr/>
-
-                <h5>Description</h5>
-                {{ form_row(form.description.requirements, {label: "Requirements", attr:{rows: 5, placeholder: "between 100 and 1024 characters..."}}) }}
-                {{ form_row(form.description.benefits, {label: "Benefits", attr:{rows: 5, placeholder: "between 100 and 1024 characters..."}}) }}
-                <hr />
-                <h5>Contact</h5>
-                {{ form_row(form.contact.name, {label: "Recruiter name"}) }}
-                {{ form_row(form.contact.email, {label: "Email address "}) }}
-                {{ form_row(form.contact.phone, {label: "Phone number (optional)"}) }}
-
-                <h5>Offer in PDF</h5>
-                {{ form_row(form.offer_pdf, {label: false, help: "Offer in PDF"}) }}
-                <p class="alert alert-warning">
-                    Offer in PDF must be 100% accurate with one described above.
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Job Description</h3>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_row(form.position.description, {label: "Description", attr:{rows: 5, placeholder: "between 50 and 1024 characters..."}}) }}
+                    </div>
+                    <div class="col-md-12">
+                    {{ form_row(form.description.requirements, {label: "Requirements", attr:{rows: 5, placeholder: "between 100 and 1024 characters..."}}) }}
+                    </div>
+                    <div class="col-md-12">
+                    {{ form_row(form.description.benefits, {label: "Benefits", attr:{rows: 5, placeholder: "between 100 and 1024 characters..."}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Contact</h3>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.contact.name, {label: "Recruiter name"}) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.contact.email, {label: "Email address "}) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_row(form.contact.phone, {label: "Phone number (optional)"}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">PDF</h3>
+            </div>
+            <div class="col-md-10">
+                <p class="alert alert-success text-center small text-dark">
+                    Remember, offer in PDF must be 100% accurate with the one described above.
                 </p>
-
-
-                <h5 class="mb-3">Where should we post your offer</h5>
+                {{ form_row(form.offer_pdf, {label: false, help: "Select File"}) }}
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Social Media</h3>
+            </div>
+            <div class="col-md-10">
+                <h5 class="text-gray-500">Where should we post your job offer?</h5>
                 <div class="form-group">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input disabled" checked disabled value="1">
@@ -132,15 +221,21 @@
                         help: "This specialization does not have Facebook group yet"
                     }) }}
                 {% endif %}
-
-                {% if throttled and extraOffersCount <= 0 %}
-                    {{ form_row(form.submit, {label: "wait", attr:{disabled:disabled}}) }}
-                {% else %}
-                    {{ form_row(form.submit, {label: "Submit"}) }}
-                {% endif %}
             </div>
-            {{ form_end(form) }}
         </div>
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    {% if throttled and extraOffersCount <= 0 %}
+                        {{ form_row(form.submit, {label: "Wait", attr:{disabled:disabled, class: 'btn btn-primary btn-lg btn-block'}}) }}
+                    {% else %}
+                        {{ form_row(form.submit, {label: "Submit", attr: {class: 'btn btn-primary btn-lg btn-block'}}) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
     </div>
 </div>
 {% endblock %}
@@ -196,6 +291,39 @@
         e.preventDefault();
 
         atOffice();
+    }));
+
+    function changeSeniority(inputId, element) {
+        $('[data-seniority-level]').removeClass('active');
+        $('{{ form.position.seniorityLevel.vars.name }}').prop('checked', false);
+        $(inputId).prop('checked', true);
+        $(element).addClass('active');
+    }
+
+    $('#seniority-intern').click((e => {
+        e.preventDefault();
+
+        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_0', e.currentTarget);
+    }));
+    $('#seniority-junior').click((e => {
+        e.preventDefault();
+
+        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_1', e.currentTarget);
+    }));
+    $('#seniority-mid').click((e => {
+        e.preventDefault();
+
+        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_2', e.currentTarget);
+    }));
+    $('#seniority-senior').click((e => {
+        e.preventDefault();
+
+        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_3', e.currentTarget);
+    }));
+    $('#seniority-expert').click((e => {
+        e.preventDefault();
+
+        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_4', e.currentTarget);
     }));
 
     {% if form.location.type.vars.value == 0 %}
