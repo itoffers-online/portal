@@ -10,12 +10,12 @@
                 <img src="https://via.placeholder.com/40" alt="technology"/>
             </div>
             <div class="col-lg-8 text-center">
-                <h3 class="font-weight-light">
+                <h2 class="font-weight-light">
                     {% if seniorityLevel is not null %}
                         {{ seniorityLevel|offer_seniority_level_name }} -
                     {% endif %}
                     {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
-                </h3>
+                </h2>
             </div>
             <div class="col-lg-2 d-none d-lg-flex">
                 <small><i class="fas fa-briefcase text-hins-turquoise mr-2"></i> {{ total }} Offers found</small>
