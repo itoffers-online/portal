@@ -57,6 +57,8 @@ final class UserController extends AbstractController
             ->belongsTo($userId)
             ->max(5);
 
+        $total = $this->offers->offerQuery()->count($offerFilter);
+
         if ($request->query->has('after')) {
             $offerFilter->showAfter($request->query->get('after'));
         }
@@ -72,7 +74,7 @@ final class UserController extends AbstractController
             'extraOffersCount' => $this->offers->extraOffersQuery()->countNotExpired($userId),
             'extraOffer' => $this->offers->extraOffersQuery()->findClosesToExpire($userId),
             'offers' => $offers,
-            'totalOffers' => $this->offers->offerQuery()->count($offerFilter),
+            'totalOffers' => $total,
         ]);
     }
 }

@@ -53,7 +53,10 @@
                     <div class="col-lg-12 pt-lg-3 mb-3">
                         {% for offerSeniorityLevel in offersSeniorityLevels %}
                             <a
-                            {% if seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}
+                            {% if offerSeniorityLevel.offersCount == 0 %}
+                                href="#"
+                                class="mr-sm-2 btn btn-sm btn-outline-dark disabled"
+                            {% elseif seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}
                                 href="{{ url('specialization_offers', {specSlug: specialization.slug}|merge(queryParameters) ) }}"
                                 class="mr-sm-2 btn btn-sm {% if seniorityLevel is not null and seniorityLevel == offerSeniorityLevel.level%}btn-primary{% else %}btn-outline-primary{% endif %}"
                             {% else %}
@@ -67,11 +70,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <button type="submit" id="offers_submit" class="btn btn-primary mr-2 btn">Search</button>
+            <div class="col-lg-3 text-right">
                 {% if queryParameters|length %}
-                    <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" class="btn btn-danger"><i class="fas fa-times"></i> Reset</a>
+                    <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" class="btn btn-danger w-40 mr-2"><i class="fas fa-times"></i> Reset</a>
                 {% endif %}
+                <button type="submit" id="offers_submit" class="btn btn-primary btn w-40">Search</button>
             </div>
         {{ form_end(form) }}
     </div>
@@ -82,7 +85,7 @@
             <div class="col-lg-12">
                 <p class="alert alert-info text-center">
                     Below you can find all job offers in this specialization. Job offers can't be added more frequently than {{ throttleLimit }} per {{ throttleSince.format('%d') }} days.<br/>
-                    By default, we are not displaying you offers older than 20 days, most interesting offers after that time are already outdated.
+                    By default, we are not displaying you offers older than {{ his.old_offer_days }} days, most interesting offers after that time are already outdated.
                 </p>
             </div>
         </div>
@@ -116,21 +119,17 @@
                                     {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
                                 </div>
                                 <div class="col-6 col-lg-6 text-right">
-                                    <a class="btn btn-primary" href="{{ url('offer', {'offerSlug': offer.slug}) }}">read</a>
+                                    <a class="btn btn-outline-primary btn-sm" href="{{ url('offer', {'offerSlug': offer.slug}) }}">more <i class="fas fa-long-arrow-alt-right"></i> </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             {% else %}
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="alert alert-warning text-center">
-                                Sorry, currently we don't have any interesting offers in this specialization, please try again later or
-                                <a href="{{ url('offer_new', {specSlug: specialization.slug}) }}">add new offer.</a>
-                            </div>
-                        </div>
+                <div class="col-md-12 mt-4 mb-4">
+                    <div class="alert alert-warning text-center">
+                        Sorry, currently we don't have any interesting offers in this specialization, please try again later or
+                        <a href="{{ url('offer_new', {specSlug: specialization.slug}) }}">post a new offer.</a>
                     </div>
                 </div>
             {% endfor %}

@@ -4,6 +4,12 @@
 <script src="https://www.google.com/recaptcha/api.js"></script>
 {% endblock %}
 
+{% block meta %}
+{% if offer|offer_older_than(his.old_offer_days) == true %}
+    <meta name="robots" content="noindex">
+{% endif %}
+{% endblock %}
+
 {% block javascripts %}
 <script>
     $(window.document).ready(function() {
@@ -58,6 +64,12 @@
 {% block body %}
 <div class="container-fluid bg-light pt-4 border-bottom">
     <div class="container">
+        {% if offer|offer_older_than(his.old_offer_days) == true %}
+        <div class="alert alert-danger text-center font-weight-bold">
+            This offer was posted more than {{ his.old_offer_days }} ago.
+            You might want to check latest job offers in <a href="{{ url('specialization_offers', {specSlug: offer.specializationSlug}) }}">{% include '@offers/specialization/_name.html.twig' with {specialization: offer.specializationSlug} only %}</a> specialization.
+        </div>
+        {% endif %}
         <div class="row pb-4 d-none d-lg-flex">
             <div class="col-lg-6 text-left">
                 {% if previousOffer %}
@@ -88,7 +100,7 @@
                 <h1 class="font-weight-light mb-4">{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</h1>
                 <h4 class="font-weight-light"><a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a></h4>
                 {% if userId and offer.postedBy(userId)%}
-                    <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger mt-3">Remove</a>
+                    <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger btn-sm mt-3"><i class="fas fa-times"></i> remove</a>
                 {% endif %}
             </div>
             <div class="col-lg-5"></div>
@@ -98,7 +110,7 @@
                 <h1 class="font-weight-light mb-4">{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</h1>
                 <h4 class="font-weight-light"><a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a></h4>
                 {% if userId and offer.postedBy(userId)%}
-                    <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger mt-3">Remove</a>
+                    <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger btn-sm mt-3"><i class="fas fa-times"></i> remove</a>
                 {% endif %}
             </div>
             <div class="col-12">

@@ -18,6 +18,7 @@ use App\Offers\Twig\Extension\OfferExtension;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Offers\Offers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,9 +29,17 @@ final class SpecializationController extends AbstractController
      */
     private $offers;
 
-    public function __construct(Offers $offers)
-    {
+    /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+
+    public function __construct(
+        Offers $offers,
+        ParameterBagInterface $parameterBag
+    ) {
         $this->offers = $offers;
+        $this->parameterBag = $parameterBag;
     }
 
     public function offersAction(Request $request, string $specSlug, string $seniorityLevel = null) : Response
@@ -46,7 +55,7 @@ final class SpecializationController extends AbstractController
             : null;
 
         /** @var OfferFilter $offerFilter */
-        $offerFilter = OfferFilter::allFor($specialization->slug())
+        $offerFilter = OfferFilter::allFor($specialization->slug(), $this->parameterBag->get('his.old_offer_days'))
             ->max(12);
 
         $form = $this->get('form.factory')->createNamed('offers', OfferFilterType::class)->handleRequest($request);
@@ -79,7 +88,6 @@ final class SpecializationController extends AbstractController
 
         $offers = $this->offers->offerQuery()->findAll($offerFilter);
         $offerMore = $this->offers->offerQuery()->count($offerFilter);
-
 
         return $this->render('@offers/specialization/offers.html.twig', [
             'total' => $total,

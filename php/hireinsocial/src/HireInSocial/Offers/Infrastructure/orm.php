@@ -40,7 +40,7 @@ function orm(Config $config, Connection $connection) : EntityManager
     if ($isDevMode) {
         $cache = new ArrayCache;
     } else {
-        $cache = new PredisCache(new Client($config->getString(Config::REDIS_DSN) . '/' . Config::REDIS_DB_DOCTRINE_CACHE));
+        $cache = new PredisCache(new Client($config->getString(Config::REDIS_DSN) . '/' . $config->getInt(Config::REDIS_DB_DOCTRINE_CACHE)));
     }
 
     $configuration->setMetadataCacheImpl($cache);

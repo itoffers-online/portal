@@ -37,7 +37,7 @@ final class OfferFilter extends AbstractFilter
     private $specialization;
 
     /**
-     * @var \DateTimeImmutable
+     * @var \DateTimeImmutable|null
      */
     private $sinceDate;
 
@@ -71,14 +71,14 @@ final class OfferFilter extends AbstractFilter
      */
     private $seniorityLevel;
 
-    private function __construct()
+    private function __construct(int $fromLastDays = 20)
     {
-        $this->newerThan(new \DateTimeImmutable('-20 days', new \DateTimeZone('UTC')));
+        $this->newerThan(new \DateTimeImmutable(\sprintf('-%d days', $fromLastDays), new \DateTimeZone('UTC')));
     }
 
-    public static function allFor(string $specialization) : self
+    public static function allFor(string $specialization, int $fromLastDays = 20) : self
     {
-        $filter = new self();
+        $filter = new self($fromLastDays);
         $filter->specialization = $specialization;
 
         return $filter;
@@ -86,7 +86,10 @@ final class OfferFilter extends AbstractFilter
 
     public static function all() : self
     {
-        return new self();
+        $filter = new self();
+        $filter->sinceDate = null;
+
+        return $filter;
     }
 
     public function newerThan(\DateTimeImmutable $dateTime) : self
@@ -114,7 +117,7 @@ final class OfferFilter extends AbstractFilter
         return $this;
     }
 
-    public function sinceDate() : \DateTimeImmutable
+    public function sinceDate() : ?\DateTimeImmutable
     {
         return $this->sinceDate;
     }
