@@ -68,9 +68,9 @@ final class Config
 
     public const THROTTLE_DURATION = 'throttle_duration';
 
-    public const REDIS_DB_SYSTEM = 1;
+    public const REDIS_DB_DOCTRINE_CACHE = 'REDIS_DB_DOCTRINE_CACHE';
 
-    public const REDIS_DB_DOCTRINE_CACHE = 2;
+    public const OLD_OFFER_DAYS = 'old_offer_days';
 
     /**
      * @var mixed[]|string[]
@@ -109,6 +109,8 @@ final class Config
             self::DB_USER => getenv('HIS_DB_USER'),
             self::DB_USER_PASS => getenv('HIS_DB_USER_PASS'),
             self::DB_NAME => getenv('HIS_DB_NAME'),
+            self::REDIS_DB_DOCTRINE_CACHE => 2,
+            self::OLD_OFFER_DAYS => 20,
         ]);
     }
 

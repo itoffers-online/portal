@@ -17,7 +17,19 @@ final class OffersSeniorityLevel extends \ArrayObject
 {
     public function __construct(OfferSeniorityLevel ...$offerSeniorityLevels)
     {
-        parent::__construct($offerSeniorityLevels);
+        $levels = [];
+
+        for ($level = 0; $level <= 4; $level++) {
+            $levels[$level] = new OfferSeniorityLevel($level, 0);
+
+            foreach ($offerSeniorityLevels as $seniorityLevel) {
+                if ($seniorityLevel->level() === $level) {
+                    $levels[$level] = $seniorityLevel;
+                }
+            }
+        }
+
+        parent::__construct($levels);
     }
 
     public function all() : array

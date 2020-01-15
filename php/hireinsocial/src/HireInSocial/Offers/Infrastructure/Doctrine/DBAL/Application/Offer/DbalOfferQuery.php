@@ -131,7 +131,9 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->andWhere('o.id <> :afterOfferId')
                 ->setParameter('afterOfferId', $filter->afterOfferId());
             $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM his_job_offer WHERE id = :afterOfferId)');
-        } else {
+        }
+
+        if ($filter->sinceDate()) {
             $queryBuilder->andWhere('o.created_at >= :sinceDate')
                 ->setParameter('sinceDate', $filter->sinceDate()->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()));
         }
@@ -382,7 +384,9 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->andWhere('o.id <> :afterOfferId')
                 ->setParameter('afterOfferId', $filter->afterOfferId());
             $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM his_job_offer WHERE id = :afterOfferId)');
-        } else {
+        }
+
+        if ($filter->sinceDate()) {
             $queryBuilder->andWhere('o.created_at >= :sinceDate')
                 ->setParameter('sinceDate', $filter->sinceDate()->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()));
         }

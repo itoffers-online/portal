@@ -1,14 +1,13 @@
 {% extends '@offers/base.html.twig' %}
 
 {% block body %}
-<div class="container-fluid pt-4">
+<div class="container-fluid pt-4 bg-white">
     <div class="container">
         <div class="row">
             <div class="col-md-3">
                 <h3>Profile</h3>
-                <div class="card">
-                    <div class="card-body">
-                    <ul class="ml-0 pl-1">
+                <div class="alert {% if throttled and extraOffersCount <= 0 %}alert-warning{% else %}alert-success{% endif %}">
+                    <ul class="list-unstyled">
                         <li><span data-user-email="{{ user.email }}">{{ user.email }}</span></li>
                         <li>Offers left: {{ offersLeft }}</li>
                         <li>Extra Offers: {{ extraOffersCount }}</li>
@@ -16,84 +15,85 @@
                         <li>Expiration: {{ extraOffer.expiresAt|time_diff }}</li>
                         {% endif %}
                     </ul>
-                    </div>
                 </div>
+                {% if throttled and extraOffersCount <= 0 %}
+                <div class="alert alert-info small text-dark">
+                    No offers left, and you really need to post this amazing job offer? <br/>
+                    No problem, email us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
+                    find for you few extra offers.
+                </div>
+                {% endif %}
             </div>
             <div class="col-md-9">
-                <h3>Your Offers</h3>
-                <div class="card">
-                    <div class="card-body">
-                        {% for offer in offers %}
-                            <h3><span class="badge badge-primary">{{ offer.position.seniorityLevel|offer_seniority_level_name }}</span> <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >{{ offer.position.name }} <span class="text-muted">in</span> {{ offer.company.name }}</a></h3>
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    {{ offer.createdAt|time_diff }}
-                                </div>
-                                <div class="col-lg-4">
-                                    {% if offer.salary %}
-                                        <strong><span data-salary-min="{{ offer.salary.min }}">{{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }}</span> - <span data-salary-max="{{ offer.salary.max }}">{{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }}</span></strong> {% if offer.salary.periodTypeTotal %}in total{% else %}per {{ offer.salary.periodType }}{% endif %}
-                                        {% if offer.salary.isNet %}<strong class="text-success">net</strong>{% else %}<strong class="text-warning">gross</strong>{% endif %}
-                                    {% else %}
-                                        Not defined
-                                    {% endif %}
-                                </div>
-                                <div class="col-lg-4">
-                                    <a href="{{ offer.company.url }}" target="_blank" rel="nofollow">{{ offer.company.name }}</a>
-                                </div>
-                            </div>
-                            <div class="row mt-4">
-                                <div class="col-lg-12">
-                                    <p>
-                                        {{ offer.position.description|truncate(300) }}
-                                    </p>
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <p>
-                                                {% if offer.location.name %}
-                                                    Location: {{ offer.location.name }}
-                                                {% endif %}
-                                            </p>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <p>
-                                                Remote: {% if offer.location.remote %}Yes{% else %}No{% endif %}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p class="text-right">
-                                        <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" class="btn btn-primary btn-sm">Read more</a>
-                                    </p>
-                                </div>
-                            </div>
-                            Received applications: {{ offer.applicationsCount }}
-                            <div class="mt-2">
-                                <a class="btn btn-primary btn-sm" href="{{ url('offer_new', {specSlug: offer.specializationSlug, 'offer-slug': offer.slug }) }}">Post Again</a>
-                            </div>
-                            {% if not loop.last %}
-                                <hr />
-                            {% endif %}
-                        {% else %}
-                            <div class="alert alert-info">
-                                <p>
-                                    It looks you have not posted any offers so far. It's fine, not everyone is a recruiter after all.
-                                    You can always change your mind and try to recruit people to your team, it's easy. Just be honest.
-                                </p>
-                            </div>
-                        {% endfor %}
+                <h3>Posted Offers - {{ totalOffers }}</h3>
+                <hr />
+                {% for offer in offers %}
+                    <div class="row mt-4 mb-2">
+                        <div class="col-md-6">
+                            Name: <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</a>
+                        </div>
+                        <div class="col-md-6">
+                            Company: <a href="{{ offer.company.url }}" target="_blank">{{ offer.company.name }}</a>
+                        </div>
                     </div>
-                </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            Specialization: <a href="{{ url('specialization_offers', {specSlug: offer.specializationSlug}) }}">{% include '@offers/specialization/_name.html.twig' with {specialization: offer.specializationSlug } only %}</a>
+                        </div>
+                        <div class="col-md-6">
+                            Received applications: {{ offer.applicationsCount }}
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            Salary:
+                            {% if offer.salary %}
+                                {{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }}
+                            {% else %}
+                                Not defined
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            {% if offer.salary %}
+                                {% if offer.salary.isNet %}net{% else %}gross{% endif %} per {{ offer.salary.periodType }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            Posted: {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
+                        </div>
+                        <div class="col-md-6">
+                            <a class="btn btn-primary btn-sm mr-3" href="{{ url('offer_new', {specSlug: offer.specializationSlug, 'offer-slug': offer.slug }) }}">post again</a>
+                            <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger btn-sm"><i class="fas fa-times"></i> remove</a>
+                        </div>
+                    </div>
+                    <hr />
+                {% else %}
+                    <div class="alert alert-info text-center">
+                        It looks you have not posted any offers so far.
+                    </div>
+                {% endfor %}
                 {% if offersMore > offers|length %}
-                    <p class="mt-2">
-                        {% if showingOlder %}
-                            <a class="btn btn-primary mr-2" href="{{ url('user_profile') }}">Show latest</a>
-                        {% endif %}
-                        <a class="btn btn-secondary" href="{{ url('user_profile', {after: offers.last.id.toString}) }}">Show older</a>
-                    </p>
+                    <div class="mt-2 row mb-4">
+                        <div class="col-md-6 text-left">
+                            {% if showingOlder %}
+                                <a class="btn btn-primary mr-2" href="{{ url('user_profile') }}">Show latest</a>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <a class="btn btn-secondary" href="{{ url('user_profile', {after: offers.last.id.toString}) }}">Show older</a>
+                        </div>
+                    </div>
                 {% else %}
                     {% if showingOlder %}
-                        <p class="mt-2">
-                            <a class="btn btn-primary" href="{{ url('user_profile') }}">Show latest</a>
-                        </p>
+                        <div class="mt-2 row mb-4">
+                            <div class="col-md-6 text-left">
+                                <a class="btn btn-primary" href="{{ url('user_profile') }}">Show latest</a>
+                            </div>
+                            <div class="col-md-6 text-right">
+                            </div>
+                        </div>
                     {% endif %}
                 {% endif %}
             </div>

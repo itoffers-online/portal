@@ -22,6 +22,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
         'parameters' => [
             'google_recaptcha_secret' => $config->getString(Config::RECAPTCHA_SECRET),
             'apply_email_template' => $config->getString(Config::APPLY_EMAIL_TEMPLATE),
+            'his.old_offer_days' => $config->getInt(Config::OLD_OFFER_DAYS),
         ],
         'framework' => [
             'secret' => $config->getString(Config::SYMFONY_SECRET),
@@ -79,6 +80,9 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
                     'storage_url' => $config->getJson(Config::FILESYSTEM_CONFIG)['storage_url'],
                 ],
                 'contact_email' => $config->getString(Config::CONTACT_EMAIL),
+                'his' => [
+                    'old_offer_days' => $config->getInt(Config::OLD_OFFER_DAYS),
+                ],
             ],
             'auto_reload' => $config->getString(Config::ENV) !== 'prod',
             'debug' => $config->getString(Config::ENV) !== 'prod',
