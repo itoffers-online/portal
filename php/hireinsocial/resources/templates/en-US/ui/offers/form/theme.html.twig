@@ -40,4 +40,3 @@
         <{{ element|default('label') }}{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>{{ translation_domain is same as(false) ? label : label|trans(label_translation_parameters, translation_domain) }}</{{ element|default('label') }}>
     {%- endif -%}
 {%- endblock form_label %}
-
