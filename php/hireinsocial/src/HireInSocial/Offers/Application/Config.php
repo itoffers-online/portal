@@ -72,6 +72,14 @@ final class Config
 
     public const OLD_OFFER_DAYS = 'old_offer_days';
 
+    public const TWITTER_API_KEY = 'twitter_api_key';
+
+    public const TWITTER_API_SECRET_KEY = 'twitter_api_secret_key';
+
+    public const TWITTER_ACCESS_TOKEN = 'twitter_access_token';
+
+    public const TWITTER_ACCESS_TOKEN_SECRET = 'twitter_access_token_secret';
+
     /**
      * @var mixed[]|string[]
      */
@@ -111,6 +119,10 @@ final class Config
             self::DB_NAME => getenv('HIS_DB_NAME'),
             self::REDIS_DB_DOCTRINE_CACHE => 2,
             self::OLD_OFFER_DAYS => 20,
+            self::TWITTER_API_KEY => getenv('HIS_TWITTER_API_KEY'),
+            self::TWITTER_API_SECRET_KEY => getenv('HIS_TWITTER_API_SECRET_KEY'),
+            self::TWITTER_ACCESS_TOKEN => getenv('HIS_TWITTER_ACCESS_TOKEN'),
+            self::TWITTER_ACCESS_TOKEN_SECRET => getenv('HIS_TWITTER_ACCESS_TOKEN_SECRET'),
         ]);
     }
 

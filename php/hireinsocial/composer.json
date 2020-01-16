@@ -34,6 +34,7 @@
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-pdo_pgsql": "*",
+        "abraham/twitteroauth": "^1.1",
         "beberlei/assert": "^3.2",
         "cocur/slugify": "^3.2",
         "ddeboer/imap": "^1.7",
