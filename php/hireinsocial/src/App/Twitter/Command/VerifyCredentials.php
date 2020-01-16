@@ -70,6 +70,7 @@ final class VerifyCredentials extends Command
             $input->getArgument('oauth_secret')
         );
 
+        /** @var \stdClass $result */
         $result = $connection->get('account/verify_credentials', ['include_email' => true]);
 
         $this->io->table(

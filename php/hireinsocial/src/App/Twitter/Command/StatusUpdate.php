@@ -71,6 +71,7 @@ final class StatusUpdate extends Command
             $input->getArgument('oauth_secret')
         );
 
+        /** @var \stdClass $result */
         $result = $connection->post('statuses/update', [
             'status' => $input->getArgument('message'),
         ]);
