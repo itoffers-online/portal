@@ -4,8 +4,62 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "26e11aa234d9cada4d112e12a0a6d5f6",
+    "content-hash": "fdad0efb3f686d76f0565501c1352fca",
     "packages": [
+        {
+            "name": "abraham/twitteroauth",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/abraham/twitteroauth.git",
+                "reference": "d54b71c2eee94252154e7b50656e17422fa0b9e1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/d54b71c2eee94252154e7b50656e17422fa0b9e1",
+                "reference": "d54b71c2eee94252154e7b50656e17422fa0b9e1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": "^7.2 || ^7.3"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "~2.6",
+                "phpunit/phpunit": "~5.7",
+                "squizlabs/php_codesniffer": "~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Abraham\\TwitterOAuth\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Abraham Williams",
+                    "email": "abraham@abrah.am",
+                    "homepage": "https://abrah.am",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The most popular PHP library for use with the Twitter OAuth REST API.",
+            "homepage": "https://twitteroauth.com",
+            "keywords": [
+                "Twitter API",
+                "Twitter oAuth",
+                "api",
+                "oauth",
+                "rest",
+                "social",
+                "twitter"
+            ],
+            "time": "2019-11-29T14:55:32+00:00"
+        },
         {
             "name": "beberlei/assert",
             "version": "v3.2.7",
