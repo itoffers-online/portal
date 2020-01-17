@@ -2,6 +2,7 @@
 <?php
 
 use App\Offers\Command\Offer\RemoveOffer;
+use App\Offers\Command\Specialization\SetTwitterChannel;
 use App\Offers\Command\User\AddExtraOffers;
 use App\Offers\Command\User\BlockUser;
 use HireInSocial\Offers\Application\Config;
@@ -27,6 +28,7 @@ $application = new Application('Hire in Social - Offers');
 $application->add(new Test\PostOffer($offers, $config->getString(Config::LOCALE)));
 $application->add(new CreateSpecialization($offers));
 $application->add(new SetFacebookChannel($offers));
+$application->add(new SetTwitterChannel($offers));
 $application->add(new RemoveFacebookChannel($offers));
 $application->add(new PerformanceCheckCommand($offers, $config));
 $application->add(new RemoveOffer($offers));

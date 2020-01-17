@@ -15,6 +15,7 @@ namespace HireInSocial\Offers\Application\Query\Specialization\Model;
 
 use HireInSocial\Offers\Application\Query\Specialization\Model\Specialization\FacebookChannel;
 use HireInSocial\Offers\Application\Query\Specialization\Model\Specialization\Offers;
+use HireInSocial\Offers\Application\Query\Specialization\Model\Specialization\TwitterChannel;
 use function mb_strtolower;
 
 final class Specialization
@@ -34,11 +35,17 @@ final class Specialization
      */
     private $facebookChannel;
 
-    public function __construct(string $slug, Offers $offers, ?FacebookChannel $facebookChannel)
+    /**
+     * @var TwitterChannel|null
+     */
+    private $twitterChannel;
+
+    public function __construct(string $slug, Offers $offers, ?FacebookChannel $facebookChannel = null, ?TwitterChannel $twitterChannel = null)
     {
         $this->slug = $slug;
         $this->offers = $offers;
         $this->facebookChannel = $facebookChannel;
+        $this->twitterChannel = $twitterChannel;
     }
 
     public function slug() : string
@@ -54,6 +61,11 @@ final class Specialization
     public function facebookChannel() : ?FacebookChannel
     {
         return $this->facebookChannel;
+    }
+
+    public function twitterChannel() : ?TwitterChannel
+    {
+        return $this->twitterChannel;
     }
 
     public function is(string $slug) : bool

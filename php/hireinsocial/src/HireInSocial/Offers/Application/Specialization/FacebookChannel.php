@@ -19,12 +19,12 @@ use HireInSocial\Offers\Application\Facebook\Page;
 final class FacebookChannel
 {
     /**
-     * @var \HireInSocial\Offers\Application\Facebook\Page
+     * @var Page
      */
     private $page;
 
     /**
-     * @var \HireInSocial\Offers\Application\Facebook\Group
+     * @var Group
      */
     private $group;
 

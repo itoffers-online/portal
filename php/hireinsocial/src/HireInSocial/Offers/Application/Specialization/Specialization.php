@@ -46,6 +46,26 @@ class Specialization
      */
     private $facebookChannelGroupId;
 
+    /**
+     * @var string|null
+     */
+    private $twitterAccountId;
+
+    /**
+     * @var string|null
+     */
+    private $twitterScreenName;
+
+    /**
+     * @var string|null
+     */
+    private $twitteroAuthToken;
+
+    /**
+     * @var string|null
+     */
+    private $twitteroAuthTokenSecret;
+
     public function __construct(string $slug)
     {
         Assertion::regex(\mb_strtolower($slug), '/^[a-z\-\_]+$/');
@@ -77,11 +97,44 @@ class Specialization
         $this->facebookChannelGroupId = $facebookChannel->group()->fbId();
     }
 
+    public function setTwitter(TwitterChannel $twitterChannel) : void
+    {
+        $this->twitterAccountId = $twitterChannel->accountId();
+        $this->twitterScreenName = $twitterChannel->screenName();
+        $this->twitteroAuthToken = $twitterChannel->oauthToken();
+        $this->twitteroAuthTokenSecret = $twitterChannel->oauthTokenSecret();
+    }
+
     public function removeFacebook() : void
     {
         $this->facebookChannelPageId = null;
         $this->facebookChannelPageAccessToken = null;
         $this->facebookChannelGroupId = null;
+    }
+
+    public function removeTwitter() : void
+    {
+        $this->twitterAccountId = null;
+        $this->twitterScreenName = null;
+        $this->twitteroAuthToken = null;
+        $this->twitteroAuthTokenSecret = null;
+    }
+
+    public function twitterChannel() : ?TwitterChannel
+    {
+        if (!\is_null($this->twitterAccountId) &&
+            !\is_null($this->twitterScreenName) &&
+            !\is_null($this->twitteroAuthToken) &&
+            !\is_null($this->twitteroAuthTokenSecret)) {
+            return new TwitterChannel(
+                $this->twitterAccountId,
+                $this->twitterScreenName,
+                $this->twitteroAuthToken,
+                $this->twitteroAuthTokenSecret
+            );
+        }
+
+        return null;
     }
 
     public function facebookChannel() : ?FacebookChannel
