@@ -19,7 +19,9 @@ use HireInSocial\Offers\Application\Command\Offer\PostOfferHandler;
 use HireInSocial\Offers\Application\Command\Offer\RemoveOfferHandler;
 use HireInSocial\Offers\Application\Command\Specialization\CreateSpecializationHandler;
 use HireInSocial\Offers\Application\Command\Specialization\RemoveFacebookChannelHandler;
+use HireInSocial\Offers\Application\Command\Specialization\RemoveTwitterChannelHandler;
 use HireInSocial\Offers\Application\Command\Specialization\SetFacebookChannelHandler;
+use HireInSocial\Offers\Application\Command\Specialization\SetTwitterChannelHandler;
 use HireInSocial\Offers\Application\Command\User\AddExtraOffersHandler;
 use HireInSocial\Offers\Application\Command\User\BlockUserHandler;
 use HireInSocial\Offers\Application\Command\User\FacebookConnectHandler;
@@ -159,7 +161,13 @@ function offersFacade(Config $config) : Offers
                 new SetFacebookChannelHandler(
                     $specializations
                 ),
+                new SetTwitterChannelHandler(
+                    $specializations
+                ),
                 new RemoveFacebookChannelHandler(
+                    $specializations
+                ),
+                new RemoveTwitterChannelHandler(
                     $specializations
                 ),
                 new PostOfferHandler(

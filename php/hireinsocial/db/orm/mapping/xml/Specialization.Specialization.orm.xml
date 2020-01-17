@@ -11,10 +11,15 @@
         <field name="facebookChannelPageId" nullable="true" />
         <field name="facebookChannelPageAccessToken" nullable="true" />
         <field name="facebookChannelGroupId" nullable="true" />
+        <field name="twitterAccountId" nullable="true" />
+        <field name="twitterScreenName" nullable="true" />
+        <field name="twitteroAuthToken" nullable="true" />
+        <field name="twitteroAuthTokenSecret" nullable="true" />
 
         <unique-constraints>
             <unique-constraint columns="slug" />
             <unique-constraint columns="facebook_channel_group_id" />
+            <unique-constraint columns="twitter_account_id" />
         </unique-constraints>
     </entity>
 </doctrine-mapping>
