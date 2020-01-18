@@ -17,7 +17,6 @@ use App\Offers\Validator\Constraints\NotContainsEmoji;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -73,7 +72,7 @@ final class LocationType extends AbstractType
                     new NotContainsEmoji(['groups' => [self::PARTIALLY_REMOTE_GROUP, self::AT_OFFICE_GROUP]]),
                 ],
             ])
-            ->add('lat', HiddenType::class, [
+            ->add('lat', TextType::class, [
                 'required' => false,
                 'constraints' => [
                     new NotBlank(['groups' => [self::PARTIALLY_REMOTE_GROUP, self::AT_OFFICE_GROUP]]),
@@ -81,7 +80,7 @@ final class LocationType extends AbstractType
                     new LessThanOrEqual(['value' => 90.0, 'groups' => [self::PARTIALLY_REMOTE_GROUP, self::AT_OFFICE_GROUP]]),
                 ],
             ])
-            ->add('lng', HiddenType::class, [
+            ->add('lng', TextType::class, [
                 'required' => false,
                 'constraints' => [
                     new NotBlank(['groups' => [self::PARTIALLY_REMOTE_GROUP, self::AT_OFFICE_GROUP]]),

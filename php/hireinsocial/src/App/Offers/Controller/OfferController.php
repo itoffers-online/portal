@@ -100,14 +100,14 @@ final class OfferController extends AbstractController
         }
 
         try {
-            $offerData = $request->query->get('offer-slug')
+            $previousOfferData = $request->query->get('offer-slug')
                 ? (new OfferToForm($request->query->get('offer-slug'), $userId))($this->offers)
                 : null;
         } catch (AccessDeniedException $accessDeniedException) {
             return new Response($accessDeniedException->getMessage(), 403);
         }
 
-        $form = $this->createForm(OfferType::class, $offerData);
+        $form = $this->createForm(OfferType::class, $previousOfferData);
 
         $form->handleRequest($request);
 
@@ -168,6 +168,7 @@ final class OfferController extends AbstractController
             'throttleLimit' => $this->offers->offerThrottleQuery()->limit(),
             'throttleSince' => $this->offers->offerThrottleQuery()->since(),
             'extraOffersCount' => $this->offers->extraOffersQuery()->countNotExpired($userId),
+            'previousOfferData' => $previousOfferData,
         ]);
     }
 
