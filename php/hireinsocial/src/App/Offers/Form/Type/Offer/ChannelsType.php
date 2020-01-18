@@ -25,6 +25,9 @@ final class ChannelsType extends AbstractType
             ->add('facebook_group', CheckboxType::class, [
                 'required' => false,
             ])
+            ->add('twitter', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
     }
 }

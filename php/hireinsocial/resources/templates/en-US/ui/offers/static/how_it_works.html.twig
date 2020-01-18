@@ -4,17 +4,48 @@
 <div class="container-fluid pt-4">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 text-center">
+            <div class="col-md-12">
                 <h2 id="candidate" class="mt-4 mb-4"><a href="#candidate">Candidate</a></h2>
-                <img src="assets/img/how-it-works/candidate.jpg" style="width:90%" alt="How it works for candidate"/>
+                <ul>
+                    <li>Pickup your specialization</li>
+                    <li>Select seniority level and filter offers only to those that looks interesting</li>
+                    <li>Apply through email (no login required)</li>
+                    <li>Wait for a recruiter to get back to you</li>
+                    <li>Change your life!</li>
+                </ul>
+
+                <p>
+                    Looking for a way to be notified about the latest offers? Each specialization has it owns
+                    Facebook Group or Twitter Account. Just go and join/follow it at social media, after all we
+                    spent more time looking at Facebook rather than our email, aren't we?
+                </p>
+                <p>
+                    We are working very hard to provide you only latest and best job offers. By default, we are not going
+                    to show you any offers older than {{ old_offer_days }} days. If by accident you open old offer page,
+                    we are going to warn you. According to our experience best job offers after {{ old_offer_days }} days
+                    are already taken, so don't wait to long and apply!
+                </p>
             </div>
         </div>
+        <hr />
         <div class="row">
-            <div class="col-md-12 text-center">
+            <div class="col-md-12">
                 <h2 id="recruiter" class="mt-4 mb-4"><a href="#recruiter">Recruiter</a></h2>
-                <img src="assets/img/how-it-works/recruiter.jpg" style="width:90%"  alt="How it works for recruiter"/>
+                <ul>
+                    <li>Post job offer in specialization</li>
+                    <li>Wait for candidates to apply through email</li>
+                    <li>Wait for us to forward you candidate application</li>
+                    <li>Hire most talented people!</li>
+                </ul>
+                <p>
+                    Posting offers is free, but there is a limit how many you can post without waiting. This limit
+                    is created to give equal chances to all recruiters and not spam candidates with duplicated and boring offers.
+                    However if your offer is so good that it should not wait, email us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+                    so we might give you some extra offers.
+                </p>
             </div>
         </div>
+        <hr />
     </div>
 </div>
 {% endblock %}

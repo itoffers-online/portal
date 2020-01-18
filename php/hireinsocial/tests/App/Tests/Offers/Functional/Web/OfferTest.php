@@ -89,11 +89,15 @@ final class OfferTest extends WebTestCase
             'offer[contact][name]' => $faker->name,
             'offer[contact][phone]' => '+12123123123',
             'offer[channels][facebook_group]' => 1,
+            'offer[channels][twitter]' => 1,
             'offer[_token]' => $client->getContainer()->get('security.csrf.token_manager')->getToken('new_offer'),
         ]);
 
         /** @var ChoiceFormField $choiceField */
         $choiceField = $form['offer[channels][facebook_group]'];
+        $choiceField->untick();
+        /** @var ChoiceFormField $choiceField */
+        $choiceField = $form['offer[channels][twitter]'];
         $choiceField->untick();
 
         $client->submit($form);
