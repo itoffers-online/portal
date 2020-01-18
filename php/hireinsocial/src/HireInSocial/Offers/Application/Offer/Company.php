@@ -38,7 +38,7 @@ final class Company
         Assertion::url($url);
         Assertion::betweenLength($url, 1, 2083);
 
-        Assertion::betweenLength($description, 10, 512);
+        Assertion::betweenLength($description, 10, 2048);
 
         $this->name = $name;
         $this->url = $url;

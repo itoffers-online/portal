@@ -37,7 +37,7 @@ final class Position
     {
         Assertion::inArray($seniorityLevel, SeniorityLevels::all());
         Assertion::betweenLength($name, 3, 255);
-        Assertion::betweenLength($description, 50, 1024);
+        Assertion::betweenLength($description, 50, 2048);
 
         $this->seniorityLevel = $seniorityLevel;
         $this->name = $name;
