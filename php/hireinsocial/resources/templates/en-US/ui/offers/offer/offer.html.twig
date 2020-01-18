@@ -10,6 +10,15 @@
 {% endif %}
 {% endblock %}
 
+{% block stylesheets %}
+{{ parent() }}
+<style type="text/css">
+    .specialization-logo svg {
+        width: 7.5rem;
+    }
+</style>
+{% endblock %}
+
 {% block javascripts %}
 <script>
     $(window.document).ready(function() {
@@ -87,7 +96,9 @@
         <div class="row offer-header d-none d-lg-flex">
             <div class="col-lg-2">
                 <section class="mb-4">
-                    <a href="{{ url('specialization_offers', {specSlug: offer.specializationSlug}) }}"><img src="https://via.placeholder.com/120" alt="technology"/></a>
+                    <a href="{{ url('specialization_offers', {specSlug: offer.specializationSlug}) }}" class="specialization-logo">
+                        {% include '@offers/specialization/_logo.html.twig' with {specialization: offer.specializationSlug} only %}
+                    </a>
                 </section>
                 <section class="text-gray-500 mb-2 small">
                     Created at

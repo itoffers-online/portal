@@ -32,7 +32,7 @@
                 <div class="card specialization">
                     <div class="card-title text-center mt-2">
                         <h2>
-                            <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
+                            <a class="text-decoration-none" href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
                             {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
                             </a>
                         </h2>
@@ -41,7 +41,6 @@
                                 {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
                             </a>
                         </div>
-                        offers: {{ specialization.offers.count }}
                     </div>
                 </div>
             </div>

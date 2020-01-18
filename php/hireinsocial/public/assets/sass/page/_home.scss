@@ -1,0 +1,14 @@
+.specialization {
+  .logo svg {
+    max-width: 100px;
+  }
+
+  a {
+    color: $dark;
+  }
+  &:hover {
+    a {
+      color: $turquoise;
+    }
+  }
+}

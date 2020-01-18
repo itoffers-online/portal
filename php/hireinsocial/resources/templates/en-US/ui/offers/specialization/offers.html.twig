@@ -2,12 +2,20 @@
 
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
+{% block stylesheets %}
+{{ parent() }}
+<style type="text/css">
+    .spec-logo svg {
+        width: 2.5rem;
+    }
+</style>
+{% endblock %}
 {% block body %}
 <div class="container-fluid bg-dark text-white">
     <div class="container">
         <div class="row align-items-center pt-2 pb-2 pt-lg-5 pb-lg-5">
-            <div class="col-lg-2 d-none d-lg-flex">
-                <img src="https://via.placeholder.com/40" alt="technology"/>
+            <div class="col-lg-2 d-none d-lg-flex spec-logo">
+                {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
             </div>
             <div class="col-lg-8 text-center">
                 <h2 class="font-weight-light">
