@@ -82,7 +82,7 @@ final class OfferToForm
                 'max' => $offer->salary() ? $offer->salary()->max() : null,
                 'currency' => $offer->salary() ? $offer->salary()->currencyCode() : null,
                 'net' => $offer->salary() ? $offer->salary()->isNet() : null,
-                'periodType' => $offer->salary() ? $offer->salary()->periodType() : null,
+                'period_type' => $offer->salary() ? \mb_strtoupper($offer->salary()->periodType()) : null,
             ],
             'contract' => $offer->contract()->type(),
             'description' => [

@@ -87,7 +87,6 @@ final class SalaryType extends AbstractType
                     'per year' => Salary::PERIOD_TYPE_YEAR,
                     'in total' => Salary::PERIOD_TYPE_IN_TOTAL,
                 ],
-                'data' => 'PLN',
                 'constraints' => [
                     new NotBlank(['groups' => [self::SALARY_GROUP]]),
                 ],

@@ -7,7 +7,11 @@
 
 <style type="text/css">
     #location-map {
-        height: 400px;
+        height: 25rem;
+    }
+
+    .spec-logo svg {
+        width: 2.5rem;
     }
 </style>
 {% endblock %}
@@ -16,8 +20,8 @@
 <div class="container-fluid bg-dark text-white">
     <div class="container">
         <div class="row align-items-center pt-2 pb-2 pt-lg-5 pb-lg-5">
-            <div class="col-lg-3 d-none d-lg-flex">
-                <img src="https://via.placeholder.com/40" alt="technology"/>
+            <div class="col-lg-3 d-none d-lg-flex spec-logo">
+                {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
             </div>
             <div class="col-lg-6 text-center">
                 <h1 class="font-weight-light">
@@ -41,7 +45,7 @@
     <div class="container mt-4 border-bottom">
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-success text-center small mr-4 text-dark">
+                <div class="alert alert-success text-center small text-dark">
                     Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait. Still have some really cool offers? <br/>
                     Email us some at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
                     grant you couple <strong>extra offers</strong>!
@@ -51,7 +55,7 @@
     </div>
     {% endif %}
     <div class="container mt-4">
-        {{ form_start(form) }}
+        {{ form_start(form, {attr: {id: form.vars.id ~ '-' ~ specialization.slug }}) }}
         <div class="row border-bottom">
             <div class="col-md-2">
                 <h3 class="text-gray-500">Company</h3>
@@ -197,7 +201,7 @@
                 <p class="alert alert-success text-center small text-dark">
                     Remember, offer in PDF must be 100% accurate with the one described above.
                 </p>
-                {{ form_row(form.offer_pdf, {label: false, help: "Select File"}) }}
+                {{ form_row(form.offer_pdf, {label: false, help: "Select File", attr: {class: "disable-save"}}) }}
             </div>
         </div>
         <div class="row mt-4 border-bottom">
@@ -208,7 +212,7 @@
                 <h5 class="text-gray-500">Where should we post your job offer?</h5>
                 <div class="form-group">
                     <div class="form-check custom-switch">
-                        <input type="checkbox" id="offer_post_at_homepage" class="custom-control-input disabled" checked disabled value="1">
+                        <input type="checkbox" id="offer_post_at_homepage" class="custom-control-input disabled disable_save" checked disabled value="1">
                         <label class="switch-custom custom-control-label" for="offer_post_at_homepage">{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %} offers list</label>
                     </div>
                 </div>
@@ -250,13 +254,29 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-10">
                     {% if throttled and extraOffersCount <= 0 %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-success text-center small text-dark">
+                                    Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait. Still have some really cool offers? <br/>
+                                    Email us some at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
+                                    grant you couple <strong>extra offers</strong>!
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if throttled and extraOffersCount <= 0 %}
                         {{ form_row(form.submit, {label: "Wait", attr:{disabled:disabled, class: 'btn btn-primary btn-lg btn-block'}}) }}
                     {% else %}
                         {{ form_row(form.submit, {label: "Submit", attr: {class: 'btn btn-primary btn-lg btn-block'}}) }}
                     {% endif %}
+                    <p class="small text-muted">
+                        We keep your work safe in your browser local storage, this means that if you accidentally refresh this page you won't lose your work, it's going to be loaded from the storage.
+                        <strong>Your work is important for us!</strong>
+                    </p>
                 </div>
             </div>
         </div>
+        {{ form_row(form._token, {attr: {class: 'disable_save'}}) }}
         {{ form_end(form) }}
     </div>
 </div>
@@ -264,61 +284,35 @@
 
 {% block javascripts %}
 <script type="text/javascript">
+    $(window).on('beforeunload', function(){
+        return 'Are you sure you want to leave?';
+    });
+
+    $(function () {
+        {% if previousOfferData %}
+            $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
+        {% endif %}
+        $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").saveMyForm();
+        $("{{ form.vars.id ~ '-' ~ specialization.slug }}").submit(function() {
+            $(window).unbind('beforeunload');
+        });
+    });
+
     $('input[type="file"]').change(function(e){
         var fileName = e.target.files[0].name;
         $('.custom-file-label').html(fileName);
     });
 
-    function fullyRemote() {
-        $('#location-fully-remote').addClass('active');
-        $('#location-partially-remote').removeClass('active');
-        $('#location-at-office').removeClass('active');
-        $('#{{ form.location.type.vars.id }}_0').prop('checked', true);
-        $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
-        $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
-        $('#location-group').addClass('d-none');
-    };
-
-    function partiallyRemote() {
-        $('#location-fully-remote').removeClass('active');
-        $('#location-partially-remote').addClass('active');
-        $('#location-at-office').removeClass('active');
-        $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
-        $('#{{ form.location.type.vars.id }}_1').prop('checked', true);
-        $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
-        $('#location-group').removeClass('d-none');
-    };
-
-    function atOffice() {
-        $('#location-fully-remote').removeClass('active');
-        $('#location-partially-remote').removeClass('active');
-        $('#location-at-office').addClass('active');
-        $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
-        $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
-        $('#{{ form.location.type.vars.id }}_2').prop('checked', true);
-        $('#location-group').removeClass('d-none');
-    };
-
-    $('#location-fully-remote').click((e => {
-        e.preventDefault();
-
-        fullyRemote();
-    }));
-    $('#location-partially-remote').click((e => {
-        e.preventDefault();
-
-        partiallyRemote();
-    }));
-    $('#location-at-office').click((e => {
-        e.preventDefault();
-
-        atOffice();
-    }));
-
     function changeSeniority(inputId, element) {
         $('[data-seniority-level]').removeClass('active');
         $('{{ form.position.seniorityLevel.vars.name }}').prop('checked', false);
         $(inputId).prop('checked', true);
+        $(inputId).change();
+        $(element).addClass('active');
+    }
+
+    function setActiveSeniority(element) {
+        $('[data-seniority-level]').removeClass('active');
         $(element).addClass('active');
     }
 
@@ -348,6 +342,71 @@
         changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_4', e.currentTarget);
     }));
 
+    $('#{{ form.position.seniorityLevel.vars.id }}_0').on('change', function() {
+        setActiveSeniority('#seniority-intern')
+    });
+    $('#{{ form.position.seniorityLevel.vars.id }}_1').on('change', function() {
+        setActiveSeniority('#seniority-junior')
+    });
+    $('#{{ form.position.seniorityLevel.vars.id }}_2').on('change', function() {
+        setActiveSeniority('#seniority-mid')
+    });
+    $('#{{ form.position.seniorityLevel.vars.id }}_3').on('change', function() {
+        setActiveSeniority('#seniority-senior')
+    });
+    $('#{{ form.position.seniorityLevel.vars.id }}_4').on('change', function() {
+        setActiveSeniority('#seniority-expert')
+    });
+
+    function fullyRemote() {
+        $('#location-fully-remote').addClass('active');
+        $('#location-partially-remote').removeClass('active');
+        $('#location-at-office').removeClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', true);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
+        $('#location-group').addClass('d-none');
+    }
+
+    function partiallyRemote() {
+        $('#location-fully-remote').removeClass('active');
+        $('#location-partially-remote').addClass('active');
+        $('#location-at-office').removeClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', true);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
+        $('#location-group').removeClass('d-none');
+    }
+
+    function atOffice() {
+        $('#location-fully-remote').removeClass('active');
+        $('#location-partially-remote').removeClass('active');
+        $('#location-at-office').addClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', true);
+        $('#location-group').removeClass('d-none');
+    }
+
+    $('#location-fully-remote').click((e => {
+        e.preventDefault();
+
+        $('#{{ form.location.type.vars.id }}_0').change();
+        fullyRemote();
+    }));
+    $('#location-partially-remote').click((e => {
+        e.preventDefault();
+
+        $('#{{ form.location.type.vars.id }}_1').change();
+        partiallyRemote();
+    }));
+    $('#location-at-office').click((e => {
+        e.preventDefault();
+
+        $('#{{ form.location.type.vars.id }}_2').change();
+        atOffice();
+    }));
+
     {% if form.location.type.vars.value == 0 %}
         fullyRemote();
     {% elseif form.location.type.vars.value == 1 %}
@@ -356,25 +415,25 @@
         atOffice();
     {% endif %}
 
+    $('#{{ form.location.type.vars.id }}_0').on('change', function() {
+        fullyRemote();
+    });
+    $('#{{ form.location.type.vars.id }}_1').on('change', function() {
+        partiallyRemote();
+    });
+    $('#{{ form.location.type.vars.id }}_2').on('change', function() {
+        atOffice();
+    });
+
     function initMap() {
         var map = new google.maps.Map(document.getElementById('location-map'), {
             zoom: 14,
-            center: {lat: {{ form.location.lat.vars.value|default(50.06212) }}, lng: {{ form.location.lng.vars.value|default(19.9353153) }}}
+            center: {
+                lat: $('#{{ form.location.lat.vars.id }}').val() ? parseFloat($('#{{ form.location.lat.vars.id }}').val()) : 50.06212,
+                lng: $('#{{ form.location.lng.vars.id }}').val() ? parseFloat($('#{{ form.location.lng.vars.id }}').val()) : 19.9353153
+            }
         });
         var geocoder = new google.maps.Geocoder;
-
-        {% if form.location.lat.vars.value %}
-            var marker = new google.maps.Marker({
-                map: map,
-                center: {lat: {{ form.location.lat.vars.value|default(50.06212) }}, lng: {{ form.location.lng.vars.value|default(19.9353153) }}},
-                position: {lat: {{ form.location.lat.vars.value|default(50.06212) }}, lng: {{ form.location.lng.vars.value|default(19.9353153) }}},
-            });
-        {% else %}
-            var marker = new google.maps.Marker({
-                map: map,
-                center: {lat: {{ form.location.lat.vars.value|default(50.06212) }}, lng: {{ form.location.lng.vars.value|default(19.9353153) }}},
-            });
-        {% endif %}
 
         let searchInput = document.getElementById('{{ form.location.address.vars.id }}');
         let countryInput = document.getElementById('{{ form.location.country.vars.id }}');
@@ -382,9 +441,31 @@
 
         var autocomplete = new google.maps.places.Autocomplete(searchInput);
 
+        if ($('#{{ form.location.lat.vars.id }}').val() && $('#{{ form.location.lng.vars.id }}').val()) {
+            var marker = new google.maps.Marker({
+                map: map,
+                center: {
+                    lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()),
+                    lng: parseFloat($('#{{ form.location.lng.vars.id }}').val()),
+                },
+                position: {
+                    lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()),
+                    lng: parseFloat($('#{{ form.location.lng.vars.id }}').val()),
+                }
+            });
+        } else {
+            var marker = new google.maps.Marker({
+                map: map,
+                center: {
+                    lat: 50.06212,
+                    lng: 19.9353153
+                },
+            });
+        }
+
         marker.addListener('position_changed', function(e) {
-            document.getElementById('{{ form.location.lat.vars.id }}').value = this.getPosition().lat();
-            document.getElementById('{{ form.location.lng.vars.id }}').value = this.getPosition().lng();
+            $('#{{ form.location.lat.vars.id }}').val(this.getPosition().lat()).change();
+            $('#{{ form.location.lng.vars.id }}').val(this.getPosition().lng()).change();
         });
 
         function geocode(location) {
@@ -394,8 +475,6 @@
                     if (status === 'OK') {
                         if (results[0]) {
                             searchInput.value = results[0].formatted_address;
-
-                            console.log(results[0].address_components);
 
                             countryInput.value = Array.from(results[0].address_components)
                                 .find(component => component.types[0] === 'country' && component.types[1] === "political")['short_name'];
@@ -423,11 +502,11 @@
                     }
                 }
             );
-        };
+        }
 
-        {% if form.location.lat.vars.value %}
-            geocode({lat: {{ form.location.lat.vars.value|default(50.06212) }}, lng: {{ form.location.lng.vars.value|default(19.9353153) }}});
-        {% endif %}
+        if ($('#{{ form.location.lat.vars.id }}').val() && $('#{{ form.location.lng.vars.id }}').val()) {
+            geocode({lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()), lng: parseFloat($('#{{ form.location.lng.vars.id }}').val())});
+        }
 
         map.addListener('click', function(e) {
             marker.setPosition(e.latLng);
