@@ -4,37 +4,38 @@
 {{ parent() }}
 <style type="text/css">
     .specialization .logo svg {
-        max-width: 250px;
-    }
-    .specialization .logo img {
-        max-width: 250px;
-        max-height: 250px;
+        max-width: 100px;
     }
 </style>
 {% endblock %}
 
 {% block header %}
-<div class="pt-5 text-center">
-    <h1><a href="{{ url('home') }}">Hire in Social!</a></h1>
-    <p class="lead">
-        We have only best job offers!
-    </p>
+<div class="container-fluid bg-dark">
+    <div class="container">
+        <div class="pt-5 pb-2 text-center">
+            <h1 class="font-weight-light"><a href="{{ url('home') }}" class="text-white text-decoration-none">Work <span class="text-hins-turquoise">Offers</span> Online</a></h1>
+            <p class="lead text-light">
+                We have only best job offers!
+            </p>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
+<div class="container-fluid mt-4">
     <div class="container">
+        <h4>Specializations</h4>
         <div class="row">
             {% for specialization in specializations %}
-            <div class="col-md-4 mb-4">
+            <div class="col-md-2 mb-4">
                 <div class="card specialization">
                     <div class="card-title text-center mt-2">
-                        <h1>
+                        <h2>
                             <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
                             {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
                             </a>
-                        </h1>
+                        </h2>
                         <div class="logo">
                             <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
                                 {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
@@ -46,6 +47,7 @@
             </div>
             {% endfor %}
         </div>
+        <hr />
     </div>
 </div>
 {% endblock %}
