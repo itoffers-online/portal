@@ -3,19 +3,14 @@
 {% block body %}
     <div id="accordion">
         {% include '@offers/home/faq/_question.html.twig' with {
-            number: 1,
-            question: "Jak mogę usunąc ogłoszenie?",
-            answer: "Aby usunąc ogłoszenie znajdź je na naszej grupie na Facebooku i w komentarzu poproś o jego usunięcie."
-        } only %}
-        {% include '@offers/home/faq/_question.html.twig' with {
             number: 2,
-            question: "Czy mogę edytować ogłoszenie?",
-            answer: "Nie, ogłoszenie po dodaniu nie może być przez Ciebie edytowane, możesz jednak poprosić o jego usunięcie i dodać je od nowa."
+            question: "Can I edit my job offer?",
+            answer: "No, job offer can't be updated after you post it however it can be removed and added once again."
         } only %}
         {% include '@offers/home/faq/_question.html.twig' with {
             number: 3,
-            question: "Z jaką częstotliwościa mogę dodawać ogłoszenia?",
-            answer: "Ogłoszenie może być dodane tylko raz na 12 godzin. To samo ogłoszenie nie może być dodane częściej niż raz na 30 dni."
+            question: "How often can I post new job offers?",
+            answer: "Job offer can't be post more frequently than once per day."
         } only %}
     </div>
 {% endblock %}

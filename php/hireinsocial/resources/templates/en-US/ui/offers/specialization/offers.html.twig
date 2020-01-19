@@ -100,7 +100,7 @@
         </div>
         <div class="row offers">
             {% for offer in offers %}
-                <div data-offer-id="{{ offer.id }}" class="col-lg-4 mb-4">
+                <div data-href="{{ url('offer', {'offerSlug': offer.slug}) }}" data-offer-id="{{ offer.id }}" class="col-lg-4 mb-4">
                     <div class="card h-100 offer">
                         <div class="card-body pl-lg-5 pr-lg-5 pt-lg-4 border-bottom h-70">
                             <div class="card-title mb-6">

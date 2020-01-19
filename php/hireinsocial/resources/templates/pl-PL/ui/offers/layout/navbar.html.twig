@@ -1,17 +1,25 @@
-<header class="pb-3">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <div class="collapse navbar-collapse" id="navbarsExample07">
-                <ul class="navbar-nav mr-auto">
+<header class="border-bottom bg-light">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light p-3 p-lg-0">
+            <a class="navbar-brand pr-4 d-lg-none" href="{{ url('home') }}"><small>it<span class="text-hins-turquoise">offers</span>.online</small></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navigation" aria-controls="header-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="header-navigation">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0 d-none d-lg-inline">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ url('home') }}">Hire in Social</a>
+                        <a class="nav-link btn btn-sqr border-left border-right p-3 pl-4 pr-4" href="{{ url('home') }}"><small>Offers</small></a>
                     </li>
                 </ul>
-                <a href="{{ url('offer_post') }}" class="btn btn-primary mr-2">Napisz Ogłoszenie</a>
                 {% if facebook_logged_in %}
-                    <a class="btn btn-secondary" href="{{ url('facebook_logout') }}">Wyloguj</a>
+                    <a class="nav-link btn btn-sqr p-3 pl-4 pr-4 d-lg-none" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
+                    <a class="nav-link btn btn-sqr border-right p-3 pl-4 pr-4 d-none d-lg-inline" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
+                {% else %}
+                    <a class="nav-link btn btn-sqr p-3 pl-4 pr-4" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
                 {% endif %}
+                <a class="nav-link btn btn-primary btn-sqr p-3 pl-4 pr-4" href="{{ url('offer_post') }}"><small class="font-weight-bolder">Post a Job</small></a>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </div>
 </header>

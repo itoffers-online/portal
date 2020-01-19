@@ -1,17 +1,22 @@
 {% extends '@offers/base.html.twig' %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
-        <div class="offset-2 col-lg-8">
-            <div class="alert alert-warning text-center" role="alert">
-                <h4 class="alert-heading">Jesteś pewny?</h4>
-                <p class="mb-0">Tej operacji nie można cofnąć, po usunięciu oferty przestaniemy wyświetlać ją w serwisie.</p>
-                <p class="mb-0">Usunięcie oferty nie skraca czasu oczekiwania na dodanie kolejnej.</p>
-            </div>
-            <div class="text-center">
-                <a href="{{ url('offer', {offerSlug: offerSlug}) }}" class="btn btn-primary">Nie usuwaj</a>
-                <a data-remove-offer href="{{ url('offer_remove', {offerSlug: offerSlug}) }}" class="btn btn-danger">Tak, usuń</a>
+<div class="container-fluid p-4">
+    <div class="container">
+        <div class="row">
+            <div class="offset-2 col-lg-8">
+                <div class="alert alert-warning text-center" role="alert">
+                    <h4 class="alert-heading">Are you sure?</h4>
+                    <p class="mb-0">This operation can't be undone.</p>
+                    <p class="mb-0">Removing offer will not regenerate quota for adding new offers.</p>
+                    {% if facebookPost %}
+                        <p class="mb-0">Removing offer will not remove it from <a target="_blank" href="{{ facebookPost.id|fb_group_post }}">Facebook</a>.</p>
+                    {% endif %}
+                </div>
+                <div class="text-center">
+                    <a href="{{ url('offer', {offerSlug: offerSlug}) }}" class="btn btn-primary">Don't remove</a>
+                    <a data-remove-offer href="{{ url('offer_remove', {offerSlug: offerSlug}) }}" class="btn btn-danger">Yes, remove</a>
+                </div>
             </div>
         </div>
     </div>

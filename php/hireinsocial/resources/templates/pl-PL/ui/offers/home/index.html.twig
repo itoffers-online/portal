@@ -1,63 +1,52 @@
 {% extends '@offers/base.html.twig' %}
 
+{% block stylesheets %}
+{{ parent() }}
+<style type="text/css">
+    .specialization .logo svg {
+        max-width: 100px;
+    }
+</style>
+{% endblock %}
+
+{% block header %}
+<div class="container-fluid bg-dark">
+    <div class="container">
+        <div class="pt-5 pb-2 text-center">
+            <h1 class="font-weight-light"><a href="{{ url('home') }}" class="text-white text-decoration-none">IT <span class="text-hins-turquoise">Offers</span> Online</a></h1>
+            <p class="lead text-light">
+                The best job offers for IT talents.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
 {% block body %}
-<div class="card">
-    <div class="card-body">
-    {% for offer in offers %}
-        <div class="job-offer">
-            <div class="row">
-                <div class="col-2">
-                    <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >
-                        {% include '@offers/specialization/_logo.html.twig' with {specialization: specializations.getFor(offer).slug } only %}
-                    </a>
-                </div>
-                <div class="col-10">
-                    <h3><a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >{{ offer.position.name }} <span class="text-muted">w</span> {{ offer.company.name }}</a></h3>
-                    <div class="row">
-                        <div class="col-4">
-                            {{ offer.createdAt|date('Y-m-d H:i:s') }}
-                        </div>
-                        <div class="col-4">
-                            {% if offer.salary %}
-                                {{ offer.salary.min|localizedcurrency(offer.salary.currencyCode) }} - {{ offer.salary.max|localizedcurrency(offer.salary.currencyCode) }}
-                                {% if offer.salary.isNet %}<strong class="text-success">netto</strong>{% else %}<strong class="text-warning">brutto</strong>{% endif %}
-                            {% else %}
-                                Niesprecyzowane <small><i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Czasami firmy nie mogą podawać wynagrodzeń, przed podejściem do rekrutacji zapytaj czy Twoja wymagania finansowe są akceptowalne."></i></small>
-                            {% endif %}
-                        </div>
-                        <div class="col-4">
-                            <a href="{{ offer.company.url }}" target="_blank" rel="nofollow">{{ offer.company.name }}</a>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <p>
-                                {{ offer.position.description|truncate(250) }}
-                            </p>
-                            <div class="row">
-                                <div class="col-4">
-                                    <p>
-                                        {% if offer.location.name %}
-                                            Lokalizacja: {{ offer.location.name }}
-                                        {% endif %}
-                                    </p>
-                                </div>
-                                <div class="col-4">
-                                    <p>
-                                        Zdalnie: {% if offer.location.remote %}Tak <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="right" title="Pamiętaj aby ustalić z pracodawcą zakres pracy zdalnej."></i>{% else %}Nie{% endif %}
-                                    </p>
-                                </div>
-                            </div>
-                            <p class="text-right">
-                                <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" class="btn btn-primary btn-sm">Więcej</a>
-                            </p>
+<div class="container-fluid mt-4">
+    <div class="container">
+        <h4>Specializations</h4>
+        <div class="row">
+            {% for specialization in specializations %}
+            <div class="col-md-2 mb-4">
+                <div class="card specialization" data-href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
+                    <div class="card-title text-center mt-2 pb-2">
+                        <h4 class="font-weight-light">
+                            <a class="text-decoration-none" href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
+                            {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
+                            </a>
+                        </h4>
+                        <div class="logo">
+                            <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
+                                {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
         <hr />
-    {% endfor %}
     </div>
 </div>
 {% endblock %}

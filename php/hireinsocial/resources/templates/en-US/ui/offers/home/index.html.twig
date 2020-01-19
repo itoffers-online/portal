@@ -13,9 +13,9 @@
 <div class="container-fluid bg-dark">
     <div class="container">
         <div class="pt-5 pb-2 text-center">
-            <h1 class="font-weight-light"><a href="{{ url('home') }}" class="text-white text-decoration-none">Work <span class="text-hins-turquoise">Offers</span> Online</a></h1>
+            <h1 class="font-weight-light"><a href="{{ url('home') }}" class="text-white text-decoration-none">IT <span class="text-hins-turquoise">Offers</span> Online</a></h1>
             <p class="lead text-light">
-                We have only best job offers!
+                The best job offers for IT talents.
             </p>
         </div>
     </div>
@@ -29,13 +29,13 @@
         <div class="row">
             {% for specialization in specializations %}
             <div class="col-md-2 mb-4">
-                <div class="card specialization">
+                <div class="card specialization" data-href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
                     <div class="card-title text-center mt-2 pb-2">
-                        <h2>
+                        <h4 class="font-weight-light">
                             <a class="text-decoration-none" href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
                             {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
                             </a>
-                        </h2>
+                        </h4>
                         <div class="logo">
                             <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
                                 {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}

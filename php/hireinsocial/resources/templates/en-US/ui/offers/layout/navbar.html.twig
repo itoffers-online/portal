@@ -1,7 +1,7 @@
 <header class="border-bottom bg-light">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light p-3 p-lg-0">
-            <a class="navbar-brand pr-4 d-lg-none" href="{{ url('home') }}"><small>Hire in Social</small></a>
+            <a class="navbar-brand pr-4 d-lg-none" href="{{ url('home') }}"><small>it<span class="text-hins-turquoise">offers</span>.online</small></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navigation" aria-controls="header-navigation" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -15,7 +15,6 @@
                 {% if facebook_logged_in %}
                     <a class="nav-link btn btn-sqr p-3 pl-4 pr-4 d-lg-none" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
                     <a class="nav-link btn btn-sqr border-right p-3 pl-4 pr-4 d-none d-lg-inline" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
-                    <a class="nav-link btn btn-sqr p-3 pl-4 pr-4" href="{{ url('facebook_logout') }}"><small>Logout</small></a>
                 {% else %}
                     <a class="nav-link btn btn-sqr p-3 pl-4 pr-4" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
                 {% endif %}

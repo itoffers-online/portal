@@ -1,25 +1,33 @@
 {% extends '@offers/base.html.twig' %}
 
 {% block body %}
-<div class="album py-5 bg-light">
-    <div class="row">
-        {% if specializations.has('php') %}
-            {% include '@offers/offer/post/specialization.html.twig' with {specialization: specializations.get('php')} only %}
-        {% else %}
-            {% include '@offers/offer/post/not_ready.html.twig' with {'name': 'PHP Developer'} only %}
-        {% endif %}
-
-        {% if specializations.has('javascript') %}
-            {% include '@offers/offer/post/specialization.html.twig' with {specialization: specializations.get('javascript')} only %}
-        {% else %}
-            {% include '@offers/offer/post/not_ready.html.twig' with {'name': 'JS Developer'} only %}
-        {% endif %}
-
-        {% if specializations.has('devops') %}
-            {% include '@offers/offer/post/specialization.html.twig' with {specialization: specializations.get('devops')} only %}
-        {% else %}
-            {% include '@offers/offer/post/not_ready.html.twig' with {'name': 'Devops Engineer'} only %}
-        {% endif %}
+<div class="container-fluid bg-light">
+    <div class="container">
+        <div class="album py-5">
+            <div class="row">
+                {% for specialization in specializations %}
+                    <div class="col-md-2 mb-4">
+                        <div class="card specialization">
+                            <div class="card-title text-center mt-2">
+                                <h2>
+                                    <a class="text-decoration-none" href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">
+                                        {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
+                                    </a>
+                                </h2>
+                                <div class="logo">
+                                    <a href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">
+                                        {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
+                                    </a>
+                                </div>
+                                <div class="mt-3">
+                                    <a data-post-offer class="btn btn-outline-dark btn-sm" href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">post <i class="fas fa-long-arrow-alt-right"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

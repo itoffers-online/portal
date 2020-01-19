@@ -1,189 +1,518 @@
 {% extends '@offers/base.html.twig' %}
 
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% form_theme form '@offers/form/theme.html.twig'  %}
 
 {% block stylesheets %}
 {{ parent() }}
 
 <style type="text/css">
     #location-map {
-        height: 400px;
+        height: 25rem;
+    }
+
+    .spec-logo svg {
+        width: 2.5rem;
     }
 </style>
 {% endblock %}
+
 {% block body %}
-    {% if throttled %}
-    <div class="alert alert-warning text-center" role="alert">
-        Nie możesz jeszcze dodać kolejnego ogłoszenia, dodałeś już {{ throttleLimit }} w przeciągu ostatnich {{ throttleSince.format('%d') }} dni. Musisz poczekać.<br/>
+<div class="container-fluid bg-dark text-white">
+    <div class="container">
+        <div class="row align-items-center pt-2 pb-2 pt-lg-5 pb-lg-5">
+            <div class="col-lg-3 d-none d-lg-flex spec-logo">
+                {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
+            </div>
+            <div class="col-lg-6 text-center">
+                <h1 class="font-weight-light">
+                    Post
+                    <span class="text-hins-turquoise">{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}</span>
+                    Offer
+                </h1>
+            </div>
+            <div class="col-lg-3 d-none d-lg-flex">
+                {% if throttled and extraOffersCount <= 0 %}
+                    <small><i class="fas fa-pen-square text-danger mr-2"></i> 0 immediate offers left</small>
+                {% else %}
+                <small><i class="fas fa-pen-square text-hins-turquoise mr-2"></i> {{ offersLeft + extraOffersCount }} Offers you can post immediately</small>
+                {% endif %}
+            </div>
+        </div>
     </div>
-    {% else %}
-    <div class="alert alert-info text-center" role="alert">
-        Możesz dodać maksymalnie {{ throttleLimit }} oferty na {{ throttleSince.format('%d') }} dni. Ilość ofert, które możesz dodać natychmiast: {{ offersLeft }}
+</div>
+<div class="container-fluid">
+    {% if throttled and extraOffersCount <= 0 %}
+    <div class="container mt-4 border-bottom">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-success text-center small text-dark">
+                    Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait. Still have some really cool offers? <br/>
+                    Email us some at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
+                    grant you couple <strong>extra offers</strong>!
+                </div>
+            </div>
+        </div>
     </div>
     {% endif %}
-    {{ form_start(form) }}
-    <h3 class="mb-3">Dodaj nową ofertę</h3>
-    <div class="row">
-        <div class="col-md-4 order-md-2 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Zasady</span>
-                    </h3>
-                    <ul>
-                        <li>W ogłoszeniu <strong>musi</strong> być informacja o docelowym pracodawcy.</li>
-                        <li>Widełki wynagrodzenia mogą być szerokie, jednak musza być realne.</li>
-                        <li>Duplikaty ogłoszenia będą usuwane, jeśli chcesz dodać to samo ogłoszenie musisz odczekać co najmniej 30 dni.</li>
-                        <li>Możesz dodać maksymalnie {{ throttleLimit }} oferty na {{ throttleSince.format('%d') }} dni.</li>
-                    </ul>
-                    <h5>Masz Pytania?</h5>
-                    <p>
-                        Odwiedź dział <a href="{{ url('faq') }}">FAQ</a>.
+    <div class="container mt-4">
+        {{ form_start(form, {attr: {id: form.vars.id ~ '-' ~ specialization.slug }}) }}
+        <div class="row border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Company</h3>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.company.name, {label: "Name", attr: {placeholder: "Company name"}} ) }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form_row(form.company.url, {label: "Homepage", attr:{placeholder:"Company hompate url"}}) }}
+                    </div>
+                </div>
+                {{ form_row(form.company.description, {label: "Description", attr:{rows: 5, placeholder: "Description between 10 and 2048 characters..."}}) }}
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Position</h3>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col"><a id="seniority-intern" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 0 %} active{% endif %}" href="#">Intern</a></div>
+                    <div class="col"><a id="seniority-junior" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 1 %} active{% endif %}" href="#">Junior</a></div>
+                    <div class="col"><a id="seniority-mid" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 2 %} active{% endif %}" href="#">Mid</a></div>
+                    <div class="col"><a id="seniority-senior" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 3 %} active{% endif %}" href="#">Senior</a></div>
+                    <div class="col"><a id="seniority-expert" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 4 %} active{% endif %}" href="#">Expert</a></div>
+                </div>
+                {{ form_row(form.position.seniorityLevel, {label: false, attr: {class:"d-none"}}) }}
+                {{ form_row(form.position.name, {label: "Job Title", attr:{placeholder: "PHP Developer"}}) }}
+                {{ form_row(form.contract, {label: "Job Type"}) }}
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Salary</h3>
+            </div>
+            <div class="col-md-10">
+                <div class="alert alert-success text-center text-dark small" role="alert">
+                    This section is optional but please remember that 90% of candidates prefer offers with transparent salary.
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Salary Range</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(form.salary.min, {label: false, attr:{placeholder:"From"}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.salary.max, {label: false, attr:{placeholder:"To"}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        {{ form_row(form.salary.net, {label: "Net income"}) }}
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{ form_row(form.salary.currency, {label: 'Currency'}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.salary.period_type, {label: 'Periodicity'}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Location</h3>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col"><a id="location-fully-remote" class="btn btn-block btn-outline-primary{% if form.location.type.vars.value == 0 %} active{% endif %}" href="#">Fully Remote</a></div>
+                    <div class="col"><a id="location-partially-remote" class="btn btn-block btn-outline-primary{% if form.location.type.vars.value == 1 %} active{% endif %}" href="#">Partially Remote</a></div>
+                    <div class="col"><a id="location-at-office" class="btn btn-block btn-outline-primary{% if form.location.type.vars.value == 2 %} active{% endif %}" href="#">At Office</a></div>
+                </div>
+
+                {{ form_row(form.location.type, {label: false, attr: {class: 'd-none'}}) }}
+
+                <div class="row d-none" id="location-group">
+                    <div class="col-md-12">
+                        {{ form_row(form.location.address, {label: false, placeholder: "Find address...", attr: {autocomplete: "off"}}) }}
+                        {{ form_row(form.location.country) }}
+                        {{ form_row(form.location.city) }}
+
+                        <div id="location-map" class="mb-4"></div>
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_row(form.location.lat) }}
+                        {{ form_row(form.location.lng) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Job Description</h3>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_row(form.position.description, {label: "Description", attr:{rows: 5, placeholder: "between 50 and 2048 characters..."}}) }}
+                    </div>
+                    <div class="col-md-12">
+                    {{ form_row(form.description.requirements, {label: "Requirements", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
+                    </div>
+                    <div class="col-md-12">
+                    {{ form_row(form.description.benefits, {label: "Benefits", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Contact</h3>
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.contact.name, {label: "Recruiter name"}) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.contact.email, {label: "Email address "}) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_row(form.contact.phone, {label: "Phone number (optional)"}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">PDF</h3>
+            </div>
+            <div class="col-md-10">
+                <p class="alert alert-success text-center small text-dark">
+                    Remember, offer in PDF must be 100% accurate with the one described above.
+                </p>
+                {{ form_row(form.offer_pdf, {label: false, help: "Select File", attr: {class: "disable-save"}}) }}
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Social Media</h3>
+            </div>
+            <div class="col-md-10">
+                <h5 class="text-gray-500">Where should we post your job offer?</h5>
+                <div class="form-group">
+                    <div class="form-check custom-switch">
+                        <input type="checkbox" id="offer_post_at_homepage" class="custom-control-input disabled disable_save" checked disabled value="1">
+                        <label class="switch-custom custom-control-label" for="offer_post_at_homepage">{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %} offers list</label>
+                    </div>
+                </div>
+                {% if specialization.facebookChannel %}
+                    {{ form_row(form.channels.facebook_group, {
+                        label: "Facebook Group",
+                        attr: {checked:"checked"},
+                        label_attr: {class: "switch-custom"}
+                    }) }}
+                {% else %}
+                    {{ form_row(form.channels.facebook_group, {
+                        label: "Facebook Group",
+                        label_attr: {class: "switch-custom"},
+                        attr: { disabled: "disabled" },
+                        help: "This specialization does not have Facebook group yet"
+                    }) }}
+                {% endif %}
+                {% if specialization.twitterChannel %}
+                    {{ form_row(form.channels.twitter, {
+                        label: "Twitter",
+                        attr: {checked:"checked"},
+                        label_attr: {class: "switch-custom"}
+                    }) }}
+                {% else %}
+                    {{ form_row(form.channels.twitter, {
+                        label: "Twitter",
+                        label_attr: {class: "switch-custom"},
+                        attr: { disabled: "disabled" },
+                        help: "This specialization does not have Twitter account yet"
+                    }) }}
+                {% endif %}
+                <p class="small text-muted">
+                    Job offers at Facebook are posted by our <a href="{{ facebook.page_url }}" target="_blank">page</a>, not your personal account used to login.
+                </p>
+            </div>
+        </div>
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    {% if throttled and extraOffersCount <= 0 %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-success text-center small text-dark">
+                                    Sorry, you already added {{ throttleLimit }} offers in last {{ throttleSince.format('%d') }} days, please wait. Still have some really cool offers? <br/>
+                                    Email us some at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
+                                    grant you couple <strong>extra offers</strong>!
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if throttled and extraOffersCount <= 0 %}
+                        {{ form_row(form.submit, {label: "Wait", attr:{disabled:disabled, class: 'btn btn-primary btn-lg btn-block'}}) }}
+                    {% else %}
+                        {{ form_row(form.submit, {label: "Submit", attr: {class: 'btn btn-primary btn-lg btn-block'}}) }}
+                    {% endif %}
+                    <p class="small text-muted">
+                        We keep your work safe in your browser local storage, this means that if you accidentally refresh this page you won't lose your work, it's going to be loaded from the storage.
+                        <strong>Your work is important for us!</strong>
                     </p>
                 </div>
             </div>
         </div>
-        <div class="col-md-8 order-md-1">
-            <h5>Firma</h5>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.company.name, {label: "Nazwa Firmy"}) }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    {{ form_row(form.company.url, {label: "Strona Firmowa", attr:{placeholder:"Strona główna firmy"}}) }}
-                </div>
-            </div>
-            {{ form_row(form.company.description, {label: "Opis Firmy", attr:{rows: 5, placeholder: "od 10 do 512 znaków..."}}) }}
-            <hr />
-            <h5>Stanowisko</h5>
-            {{ form_row(form.position.name, {label: "Nazwa Stanowiska", attr:{placeholder: "PHP Developer"}}) }}
-            {{ form_row(form.position.description, {label: "Opis Stanowiska", attr:{rows: 5, placeholder: "od 50 do 1024 znaków..."}}) }}
-            <hr />
-            <h5>Wynagrodzenie</h5>
-            <div class="alert alert-warning" role="alert">
-                Podawanie wyngarodzenia nie jest obowiązkowe, pamiętaj jednak że w ten sposób możesz znacząco zredukować
-                potencjalną liczbę kandydatów. Ludzie nie lubią marnować czasu na skomplikowane procesy rekrutacji, po których
-                dowiadują się, że oferowane zarobki nie są dla nich zadowalające. Jeżeli decydujesz się nie podać widełek
-                postara się wyjaśnić w opisie stanowiska jaka jest tego przyczyna.
-            </div>
-            <div class="row">
-                <div class="col-md-3 mb-3">
-                    {{ form_row(form.salary.min, {label: false, attr:{placeholder:"Od"}}) }}
-                </div>
-                <div class="col-md-3 mb-3">
-                    {{ form_row(form.salary.max, {label: false, attr:{placeholder:"Do"}}) }}
-                </div>
-                <div class="col-md-3 mb-3">
-                    {{ form_row(form.salary.currency, {label: false}) }}
-                </div>
-                <div class="col-md-3 mb-3">
-                    {{ form_row(form.salary.period_type, {label: false}) }}
-                </div>
-            </div>
-            {{ form_row(form.salary.net, {label: "Kwota netto"}) }}
-            {{ form_row(form.contract, {label: "Forma Zatrudnienia"}) }}
-            <hr />
-            <h5>Lokalizacja</h5>
-            {{ form_row(form.location.remote, {label: "Możliwość pracy zdalnej"}) }}
-            <div class="row">
-                <div class="col-md-6">
-                    {{ form_row(form.location.name, {label:"Lokalizacja (opcjonalne)", attr:{placeholder:"Polska, Kraków...", autocomplete: 'disabled'}}) }}
-                    {{ form_row(form.location.lat) }}
-                    {{ form_row(form.location.lng) }}
-                </div>
-                <div class="col-md-6">
-                    <div id="location-map"></div>
-                </div>
-            </div>
-            <hr/>
-
-            <h5>Opis Stanowiska</h5>
-            {{ form_row(form.description.requirements, {label: "Wymagania", attr:{rows: 5, placeholder: "od 100 do 1024 znaków..."}}) }}
-            {{ form_row(form.description.benefits, {label: "Benefity", attr:{rows: 5, placeholder: "od 100 do 1024 znaków..."}}) }}
-            <hr />
-            <h5>Kontakt</h5>
-            {{ form_row(form.contact.name, {label: "Imię i nazwisko osoby do kontaktu (rekturetera)"}) }}
-            {{ form_row(form.contact.email, {label: "Adres email na który należy wysyłać CV"}) }}
-            {{ form_row(form.contact.phone, {label: "Numer telefonu (opcjonalny)"}) }}
-
-            <h5>Oferta PDF</h5>
-            {{ form_row(form.offer_pdf, {label: false, help: "Oferta w formie PDF"}) }}
-            <p class="alert alert-warning">
-                Oferta w formie PDF musi być 100% zgodna z ofertą opisaną powyżej. Oferty z pikami PDF zawierającymi
-                inne parametry będą usuwane.
-            </p>
-
-
-            <h5 class="mb-3">Na których kanałach opublikować ogłoszenie</h5>
-            <div class="form-group">
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input disabled" checked disabled value="1">
-                    <label class="form-check-label" for="offer_post_at_facebook">Wrzuć na stronę główną portalu</label>
-                </div>
-            </div>
-            {% if specialization.facebookChannel %}
-                {{ form_row(form.channels.facebook_group, {label: "Wrzuć ogłoszenie na grupę na Facebooku", attr: {checked:"checked"}}) }}
-            {% else %}
-                {{ form_row(form.channels.facebook_group, {
-                    label: "Wrzuć ogłoszenie na grupę na Facebooku",
-                    attr: {disabled:"disabled"},
-                    help: "Ta specializacja nie ma jeszcze grupy na Facebooku"
-                }) }}
-            {% endif %}
-
-            {% if throttled %}
-                {{ form_row(form.submit, {label: "poczekaj", attr:{disabled:disabled}}) }}
-            {% else %}
-                {{ form_row(form.submit, {label: "Wyślij"}) }}
-            {% endif %}
-        </div>
+        {{ form_row(form._token, {attr: {class: 'disable_save'}}) }}
         {{ form_end(form) }}
     </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
 <script type="text/javascript">
+    $(window).on('beforeunload', function(){
+        return 'Are you sure you want to leave?';
+    });
+
+    $(function () {
+        {% if previousOfferData %}
+            $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
+        {% endif %}
+        $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").saveMyForm();
+        $("{{ form.vars.id ~ '-' ~ specialization.slug }}").submit(function() {
+            $(window).unbind('beforeunload');
+        });
+    });
+
     $('input[type="file"]').change(function(e){
         var fileName = e.target.files[0].name;
         $('.custom-file-label').html(fileName);
     });
 
-    function initMap() {
+    function changeSeniority(inputId, element) {
+        $('[data-seniority-level]').removeClass('active');
+        $('{{ form.position.seniorityLevel.vars.name }}').prop('checked', false);
+        $(inputId).prop('checked', true);
+        $(inputId).change();
+        $(element).addClass('active');
+    }
 
+    function setActiveSeniority(element) {
+        $('[data-seniority-level]').removeClass('active');
+        $(element).addClass('active');
+    }
+
+    $('#seniority-intern').click((e => {
+        e.preventDefault();
+
+        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_0', e.currentTarget);
+    }));
+    $('#seniority-junior').click((e => {
+        e.preventDefault();
+
+        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_1', e.currentTarget);
+    }));
+    $('#seniority-mid').click((e => {
+        e.preventDefault();
+
+        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_2', e.currentTarget);
+    }));
+    $('#seniority-senior').click((e => {
+        e.preventDefault();
+
+        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_3', e.currentTarget);
+    }));
+    $('#seniority-expert').click((e => {
+        e.preventDefault();
+
+        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_4', e.currentTarget);
+    }));
+
+    $('#{{ form.position.seniorityLevel.vars.id }}_0').on('change', function() {
+        setActiveSeniority('#seniority-intern')
+    });
+    $('#{{ form.position.seniorityLevel.vars.id }}_1').on('change', function() {
+        setActiveSeniority('#seniority-junior')
+    });
+    $('#{{ form.position.seniorityLevel.vars.id }}_2').on('change', function() {
+        setActiveSeniority('#seniority-mid')
+    });
+    $('#{{ form.position.seniorityLevel.vars.id }}_3').on('change', function() {
+        setActiveSeniority('#seniority-senior')
+    });
+    $('#{{ form.position.seniorityLevel.vars.id }}_4').on('change', function() {
+        setActiveSeniority('#seniority-expert')
+    });
+
+    function fullyRemote() {
+        $('#location-fully-remote').addClass('active');
+        $('#location-partially-remote').removeClass('active');
+        $('#location-at-office').removeClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', true);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
+        $('#location-group').addClass('d-none');
+    }
+
+    function partiallyRemote() {
+        $('#location-fully-remote').removeClass('active');
+        $('#location-partially-remote').addClass('active');
+        $('#location-at-office').removeClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', true);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
+        $('#location-group').removeClass('d-none');
+    }
+
+    function atOffice() {
+        $('#location-fully-remote').removeClass('active');
+        $('#location-partially-remote').removeClass('active');
+        $('#location-at-office').addClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', true);
+        $('#location-group').removeClass('d-none');
+    }
+
+    $('#location-fully-remote').click((e => {
+        e.preventDefault();
+
+        $('#{{ form.location.type.vars.id }}_0').change();
+        fullyRemote();
+    }));
+    $('#location-partially-remote').click((e => {
+        e.preventDefault();
+
+        $('#{{ form.location.type.vars.id }}_1').change();
+        partiallyRemote();
+    }));
+    $('#location-at-office').click((e => {
+        e.preventDefault();
+
+        $('#{{ form.location.type.vars.id }}_2').change();
+        atOffice();
+    }));
+
+    {% if form.location.type.vars.value == 0 %}
+        fullyRemote();
+    {% elseif form.location.type.vars.value == 1 %}
+        partiallyRemote();
+    {% else %}
+        atOffice();
+    {% endif %}
+
+    $('#{{ form.location.type.vars.id }}_0').on('change', function() {
+        fullyRemote();
+    });
+    $('#{{ form.location.type.vars.id }}_1').on('change', function() {
+        partiallyRemote();
+    });
+    $('#{{ form.location.type.vars.id }}_2').on('change', function() {
+        atOffice();
+    });
+
+    function initMap() {
         var map = new google.maps.Map(document.getElementById('location-map'), {
             zoom: 14,
-            center: {lat: 50.06212, lng: 19.9353153}
+            center: {
+                lat: $('#{{ form.location.lat.vars.id }}').val() ? parseFloat($('#{{ form.location.lat.vars.id }}').val()) : 50.06212,
+                lng: $('#{{ form.location.lng.vars.id }}').val() ? parseFloat($('#{{ form.location.lng.vars.id }}').val()) : 19.9353153
+            }
         });
         var geocoder = new google.maps.Geocoder;
 
-        var marker = new google.maps.Marker({
-            map: map,
-            center: {lat: 50.06212, lng: 19.9353153},
-            visible: false
-        });
+        let searchInput = document.getElementById('{{ form.location.address.vars.id }}');
+        let countryInput = document.getElementById('{{ form.location.country.vars.id }}');
+        let cityInput = document.getElementById('{{ form.location.city.vars.id }}');
 
-        let searchInput = document.getElementById('{{ form.location.name.vars.id }}');
         var autocomplete = new google.maps.places.Autocomplete(searchInput);
 
+        if ($('#{{ form.location.lat.vars.id }}').val() && $('#{{ form.location.lng.vars.id }}').val()) {
+            var marker = new google.maps.Marker({
+                map: map,
+                center: {
+                    lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()),
+                    lng: parseFloat($('#{{ form.location.lng.vars.id }}').val()),
+                },
+                position: {
+                    lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()),
+                    lng: parseFloat($('#{{ form.location.lng.vars.id }}').val()),
+                }
+            });
+        } else {
+            var marker = new google.maps.Marker({
+                map: map,
+                center: {
+                    lat: 50.06212,
+                    lng: 19.9353153
+                },
+            });
+        }
+
         marker.addListener('position_changed', function(e) {
-            document.getElementById('{{ form.location.lat.vars.id }}').value = this.getPosition().lat();
-            document.getElementById('{{ form.location.lng.vars.id }}').value = this.getPosition().lng();
+            $('#{{ form.location.lat.vars.id }}').val(this.getPosition().lat()).change();
+            $('#{{ form.location.lng.vars.id }}').val(this.getPosition().lng()).change();
         });
+
+        function geocode(location) {
+            geocoder.geocode(
+                {'location' : location},
+                function (results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            searchInput.value = results[0].formatted_address;
+
+                            countryInput.value = Array.from(results[0].address_components)
+                                .find(component => component.types[0] === 'country' && component.types[1] === "political")['short_name'];
+
+                            let city = false;
+
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('locality') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('sublocality') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_3') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_2') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_1') && component.types.includes("political"));
+                            }
+
+                            cityInput.value = city ? city['short_name'] : '';
+                        }
+                    }
+                }
+            );
+        }
+
+        if ($('#{{ form.location.lat.vars.id }}').val() && $('#{{ form.location.lng.vars.id }}').val()) {
+            geocode({lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()), lng: parseFloat($('#{{ form.location.lng.vars.id }}').val())});
+        }
 
         map.addListener('click', function(e) {
             marker.setPosition(e.latLng);
             marker.setVisible(true);
 
-            geocoder.geocode(
-                {'location' : e.latLng},
-                function (results, status) {
-                    if (status === 'OK') {
-                        if (results[0]) {
-                            searchInput.value = results[0].formatted_address;
-                        }
-                    }
-                }
-            );
+            geocode(e.latLng);
 
             map.panTo(e.latLng);
         });
@@ -200,6 +529,29 @@
                 return;
             }
 
+            countryInput.value = Array.from(place.address_components)
+                .find(component => component.types[0] === 'country' && component.types[1] === "political")['short_name'];
+
+            let city = false;
+
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('locality') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('sublocality') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_3') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_2') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_1') && component.types.includes("political"));
+            }
+
+            cityInput.value = city ? city['short_name'] : '';
+
             marker.setPosition(place.geometry.location);
             map.panTo(place.geometry.location);
             marker.setVisible(true);
@@ -212,7 +564,6 @@
             }
         });
     }
-
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google.maps.key }}&libraries=places&&callback=initMap">
 </script>
