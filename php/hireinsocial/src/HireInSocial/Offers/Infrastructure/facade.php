@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Infrastructure;
 
+use App\Offers\Twig\Extension\OfferExtension;
 use Facebook\Facebook;
 use HireInSocial\Offers\Application\Command\Offer\ApplyThroughEmailHandler;
 use HireInSocial\Offers\Application\Command\Offer\PostOfferHandler;
@@ -78,6 +79,8 @@ function offersFacade(Config $config) : Offers
     ]);
     $twig->addGlobal('apply_email_template', $config->getString(Config::APPLY_EMAIL_TEMPLATE));
     $twig->addGlobal('domain', $config->getString(Config::DOMAIN));
+
+    $twig->addExtension(new OfferExtension($config->getString(Config::LOCALE)));
 
     switch ($config->getString(Config::ENV)) {
         case 'prod':

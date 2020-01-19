@@ -36,6 +36,7 @@ final class PostOfferMother
         return new PostOffer(
             $offerId,
             $specialization,
+            'en_US',
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
@@ -66,6 +67,7 @@ final class PostOfferMother
         return new PostOffer(
             $offerId,
             $specialization,
+            'en_US',
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
@@ -97,6 +99,7 @@ final class PostOfferMother
         return new PostOffer(
             $offerId,
             $specialization,
+            'en_US',
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
@@ -127,6 +130,7 @@ final class PostOfferMother
         return new PostOffer(
             $offerId,
             $specialization,
+            'en_US',
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
@@ -157,6 +161,7 @@ final class PostOfferMother
         return new PostOffer(
             $offerId,
             $specialization,
+            'en_US',
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
@@ -187,6 +192,7 @@ final class PostOfferMother
         return new PostOffer(
             $offerId,
             $specialization,
+            'en_US',
             $userId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),
@@ -217,6 +223,7 @@ final class PostOfferMother
         return new PostOffer(
             $offerId,
             $specialization,
+            'en_US',
             $fbUserId,
             new Offer(
                 new Company($faker->company, $faker->url, $faker->text(512)),

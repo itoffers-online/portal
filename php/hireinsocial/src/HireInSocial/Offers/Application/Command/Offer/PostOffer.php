@@ -34,6 +34,11 @@ final class PostOffer implements Command
     /**
      * @var string
      */
+    private $locale;
+
+    /**
+     * @var string
+     */
     private $userId;
 
     /**
@@ -49,12 +54,14 @@ final class PostOffer implements Command
     public function __construct(
         string $offerId,
         string $specialization,
+        string $locale,
         string $userId,
         Offer $offer,
         ?string $offerPDFPath = null
     ) {
         $this->userId = $userId;
         $this->offer = $offer;
+        $this->locale = $locale;
         $this->specialization = $specialization;
         $this->offerPDFPath = $offerPDFPath;
         $this->offerId = $offerId;
@@ -68,6 +75,11 @@ final class PostOffer implements Command
     public function specialization() : string
     {
         return $this->specialization;
+    }
+
+    public function locale() : string
+    {
+        return $this->locale;
     }
 
     public function userId() : string

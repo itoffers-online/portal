@@ -45,6 +45,11 @@ class Offer
     private $specializationId;
 
     /**
+     * @var Locale
+     */
+    private $locale;
+
+    /**
      * @var DateTimeImmutable
      */
     private $createdAt;
@@ -93,6 +98,7 @@ class Offer
         UuidInterface $id,
         UuidInterface $userId,
         UuidInterface $specializationId,
+        Locale $locale,
         Company $company,
         Position $position,
         Location $location,
@@ -106,6 +112,7 @@ class Offer
         $this->userId = $userId->toString();
         $this->emailHash = (new Hashids())->encode(time() + \random_int(0, 5000));
         $this->specializationId = $specializationId;
+        $this->locale = $locale;
         $this->company = $company;
         $this->position = $position;
         $this->location = $location;
@@ -119,6 +126,7 @@ class Offer
     public static function post(
         UuidInterface $id,
         Specialization $specialization,
+        Locale $locale,
         User $user,
         Company $company,
         Position $position,
@@ -133,6 +141,7 @@ class Offer
             $id,
             $user->id(),
             $specialization->id(),
+            $locale,
             $company,
             $position,
             $location,
@@ -152,6 +161,11 @@ class Offer
     public function getUserId() : UuidInterface
     {
         return Uuid::fromString($this->userId);
+    }
+
+    public function locale() : Locale
+    {
+        return $this->locale;
     }
 
     public function emailHash() : string

@@ -22,6 +22,7 @@ use HireInSocial\Offers\Application\Offer\Company;
 use HireInSocial\Offers\Application\Offer\Contact;
 use HireInSocial\Offers\Application\Offer\Contract;
 use HireInSocial\Offers\Application\Offer\Description;
+use HireInSocial\Offers\Application\Offer\Locale;
 use HireInSocial\Offers\Application\Offer\Location;
 use HireInSocial\Offers\Application\Offer\Offer;
 use HireInSocial\Offers\Application\Offer\OfferFormatter;
@@ -212,6 +213,7 @@ final class PostOfferHandler implements Handler
         return Offer::post(
             Uuid::fromString($command->offerId()),
             $specialization,
+            new Locale($command->locale()),
             $user,
             new Company(
                 $command->offer()->company()->name(),

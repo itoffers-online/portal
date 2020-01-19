@@ -122,6 +122,7 @@ final class PostOffer extends Command
             $this->offers->handle(new SystemPostOffer(
                 $offerId = Uuid::uuid4()->toString(),
                 $specialization->slug(),
+                'en_US',
                 $user->id(),
                 new Offer(
                     new Company(
