@@ -11,6 +11,17 @@
 </style>
 {% endblock %}
 
+{% block title %}{% if seniorityLevel is not null %}{{ seniorityLevel|offer_seniority_level_name }} - {% endif %}{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %} - Job Offers{% endblock %}
+
+{% block meta %}
+    <meta property="og:url" content="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="{{ offer.locale }}" />
+    <meta property="og:description" content="The best job offers for IT Specialists" />
+    <meta property="fb:app_id" content="{{ facebook.app_id }}" />
+    <meta property="og:title" content="{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}{% if seniorityLevel is not null %} - {{ seniorityLevel|offer_seniority_level_name }}{% endif %} - Job Offers" />
+{% endblock %}
+
 {% block body %}
 <div class="container-fluid bg-dark text-white">
     <div class="container">

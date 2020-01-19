@@ -8,7 +8,15 @@
 {% if offer|offer_older_than(his.old_offer_days) == true %}
     <meta name="robots" content="noindex">
 {% endif %}
+    <meta property="og:url" content="{{ url('offer', {'offerSlug': offer.slug}) }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="{{ offer.locale }}" />
+    <meta property="og:description" content="The best job offers for IT Specialists" />
+    <meta property="fb:app_id" content="{{ facebook.app_id }}" />
+    <meta property="og:title" content="{{ offer.company.name }} - {{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}" />
 {% endblock %}
+
+{% block title %}{{ offer.company.name }} - {{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}{% endblock %}
 
 {% block stylesheets %}
 {{ parent() }}

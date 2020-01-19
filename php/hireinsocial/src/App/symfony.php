@@ -82,6 +82,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
                 'contact_email' => $config->getString(Config::CONTACT_EMAIL),
                 'his' => [
                     'old_offer_days' => $config->getInt(Config::OLD_OFFER_DAYS),
+                    'domain' => $config->getString(Config::DOMAIN),
                 ],
             ],
             'auto_reload' => $config->getString(Config::ENV) !== 'prod',

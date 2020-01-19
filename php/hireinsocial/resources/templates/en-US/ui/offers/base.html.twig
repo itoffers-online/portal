@@ -2,10 +2,17 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>{% block title %}IT Offers Online{% endblock %} - best job offers!</title>
+    <title>{% block title %}IT Offers Online - best job offers!{% endblock %}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% block meta %}{% endblock %}
+    {% block meta %}
+        <meta property="og:url" content="{{ url('home') }}" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:description" content="The best job offers for IT Specialists" />
+        <meta property="fb:app_id" content="{{ facebook.app_id }}" />
+        <meta property="og:title" content="IT Offers Online - best job offers!" />
+    {% endblock %}
     <script src="/assets/dist/js/offers.js"></script>
     {% block headerjs %}{% endblock %}
     <!-- Bootstrap CSS -->
