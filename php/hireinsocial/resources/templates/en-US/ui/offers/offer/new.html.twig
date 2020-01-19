@@ -41,6 +41,17 @@
     </div>
 </div>
 <div class="container-fluid">
+    {% if not form.vars.valid %}
+        <div class="container mt-4 border-bottom">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger text-center" role="alert">
+                        Your offer has errors, please scroll down and fix them before posting offer.
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     {% if throttled and extraOffersCount <= 0 %}
     <div class="container mt-4 border-bottom">
         <div class="row">
@@ -57,6 +68,15 @@
     <div class="container mt-4">
         {{ form_start(form, {attr: {id: form.vars.id ~ '-' ~ specialization.slug }}) }}
         <div class="row border-bottom">
+            <div class="col-md-2">
+                <h3 class="text-gray-500">Language</h3>
+            </div>
+            <div class="col-md-10">
+                {{ form_row(form.locale, {label: false}) }}
+                <p class="small">Language in which you are going to write the offer. It will let users to filter offers by language.</p>
+            </div>
+        </div>
+        <div class="row mt-4 border-bottom">
             <div class="col-md-2">
                 <h3 class="text-gray-500">Company</h3>
             </div>
@@ -85,7 +105,7 @@
                     <div class="col"><a id="seniority-expert" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 4 %} active{% endif %}" href="#">Expert</a></div>
                 </div>
                 {{ form_row(form.position.seniorityLevel, {label: false, attr: {class:"d-none"}}) }}
-                {{ form_row(form.position.name, {label: "Job Title", attr:{placeholder: "PHP Developer"}}) }}
+                {{ form_row(form.position.name, {label: "Job Title", attr:{placeholder: "Developer"}}) }}
                 {{ form_row(form.contract, {label: "Job Type"}) }}
             </div>
         </div>
@@ -185,7 +205,7 @@
                         {{ form_row(form.contact.name, {label: "Recruiter name"}) }}
                     </div>
                     <div class="col-md-6">
-                        {{ form_row(form.contact.email, {label: "Email address "}) }}
+                        {{ form_row(form.contact.email, {label: "Email address", help :"This is where candidates will send their resumes."}) }}
                     </div>
                     <div class="col-md-12">
                         {{ form_row(form.contact.phone, {label: "Phone number (optional)"}) }}
@@ -264,11 +284,18 @@
                             </div>
                         </div>
                     {% endif %}
+                    <div class="row">
+                        <div class="col-md-10">
                     {% if throttled and extraOffersCount <= 0 %}
                         {{ form_row(form.submit, {label: "Wait", attr:{disabled:disabled, class: 'btn btn-primary btn-lg btn-block'}}) }}
                     {% else %}
                         {{ form_row(form.submit, {label: "Submit", attr: {class: 'btn btn-primary btn-lg btn-block'}}) }}
                     {% endif %}
+                        </div>
+                        <div class="col-2">
+                            {{ form_row(form.reset, {label: "Reset", attr: {class: 'btn btn-danger btn-lg btn-block'}}) }}
+                        </div>
+                    </div>
                     <p class="small text-muted">
                         We keep your work safe in your browser local storage, this means that if you accidentally refresh this page you won't lose your work, it's going to be loaded from the storage.
                         <strong>Your work is important for us!</strong>
@@ -293,9 +320,13 @@
             $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
         {% endif %}
         $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").saveMyForm();
-        $("{{ form.vars.id ~ '-' ~ specialization.slug }}").submit(function() {
+        $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").submit(function() {
             $(window).unbind('beforeunload');
         });
+    });
+
+    $('#{{ form.reset.vars.id }}').on('click', function() {
+        $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
     });
 
     $('input[type="file"]').change(function(e){

@@ -39,6 +39,7 @@ final class OfferExtension extends AbstractExtension
             new TwigFilter('offer_seniority_level_name', [$this, 'seniorityLevelName']),
             new TwigFilter('offer_salary_integer', [$this, 'salaryInteger']),
             new TwigFilter('offer_salary_integer_short', [$this, 'salaryIntegerShort']),
+            new TwigFilter('offer_locale_country_flag', [$this, 'localeCountryFlag']),
             new TwigFilter('offer_location_country_flag', [$this, 'locationCountryFlag']),
             new TwigFilter('offer_location_country_name', [$this, 'locationCountryName']),
             new TwigFilter('offer_older_than', [$this, 'olderThan']),
@@ -97,6 +98,15 @@ final class OfferExtension extends AbstractExtension
             return (new CountryFlag)->get($countryCode);
         } catch (\Throwable $e) {
             return $countryCode;
+        }
+    }
+
+    public function localeCountryFlag(string $locale) : string
+    {
+        try {
+            return (new CountryFlag)->get(\mb_substr($locale, 3, 5));
+        } catch (\Throwable $e) {
+            return $locale;
         }
     }
 

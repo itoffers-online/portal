@@ -313,6 +313,7 @@ final class DbalOfferQuery implements OfferQuery
             Uuid::fromString($offerData['id']),
             $offerData['slug'],
             $offerData['email_hash'],
+            $offerData['locale_code'],
             Uuid::fromString($offerData['user_id']),
             $offerData['specialization_slug'],
             new \DateTimeImmutable($offerData['created_at']),

@@ -135,6 +135,7 @@ final class OfferController extends AbstractController
                 $this->offers->handle(new PostOffer(
                     $offerId = Uuid::uuid4()->toString(),
                     $specSlug,
+                    $offer['locale'],
                     $userId,
                     new Offer(
                         new Company($offer['company']['name'], $offer['company']['url'], $offer['company']['description']),

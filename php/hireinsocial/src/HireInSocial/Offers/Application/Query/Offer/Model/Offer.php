@@ -43,6 +43,11 @@ final class Offer
     private $emailHash;
 
     /**
+     * @var string
+     */
+    private $locale;
+
+    /**
      * @var UuidInterface|null
      */
     private $userId;
@@ -76,6 +81,7 @@ final class Offer
         UuidInterface $id,
         string $slug,
         string $emailHash,
+        string $locale,
         UuidInterface $userId,
         string $specializationSlug,
         \DateTimeImmutable $createdAt,
@@ -92,6 +98,7 @@ final class Offer
         $this->parameters = $parameters;
         $this->applicationsCount = $applicationsCount;
         $this->offerPDF = $offerPDF;
+        $this->locale = $locale;
     }
 
     public function id() : UuidInterface
@@ -102,6 +109,14 @@ final class Offer
     public function userId() : ?UuidInterface
     {
         return $this->userId;
+    }
+
+    /**
+     * @return string
+     */
+    public function locale() : string
+    {
+        return $this->locale;
     }
 
     public function emailHash() : string

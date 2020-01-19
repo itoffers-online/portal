@@ -65,6 +65,7 @@ final class OfferTest extends WebTestCase
 
         $faker = Factory::create();
         $form = $crawler->filter('form[name="offer"]')->form([
+            'offer[locale]' => 'en_US',
             'offer[company][name]' => 'Company name',
             'offer[company][url]' => 'http://company.com',
             'offer[company][description]' => $faker->text(512),

@@ -14,6 +14,7 @@
         <field name="salary" type="his_offer_salary" nullable="true"/>
         <field name="removedAt" type="datetime_immutable" nullable="true"/>
 
+        <embedded name="locale" class="HireInSocial\Offers\Application\Offer\Locale" />
         <embedded name="company" class="HireInSocial\Offers\Application\Offer\Company" />
         <embedded name="position" class="HireInSocial\Offers\Application\Offer\Position" />
         <embedded name="location" class="HireInSocial\Offers\Application\Offer\Location" />
