@@ -97,7 +97,7 @@ final class Config
             self::ENV => getenv('HIS_ENV'),
             self::LOCALE => getenv('HIS_LOCALE'),
             self::TIMEZONE => getenv('HIS_TIMEZONE'),
-            self::DOMAIN => 'itoffers.online',
+            self::DOMAIN => getenv('HIS_DOMAIN'),
             self::CONTACT_EMAIL => 'contact@itoffers.online',
             self::FB_PAGE_URL => 'https://www.facebook.com/itoffers.online/',
             self::SYMFONY_SECRET => getenv('HIS_SYMFONY_SECRET'),
