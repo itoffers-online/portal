@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Infrastructure\InMemory\Application\Specialization;
 
 use HireInSocial\Offers\Application\Exception\Exception;
+use HireInSocial\Offers\Application\Offer\Offer;
 use HireInSocial\Offers\Application\Specialization\Specialization;
 use HireInSocial\Offers\Application\Specialization\Specializations;
 
@@ -43,5 +44,16 @@ final class InMemorySpecializations implements Specializations
     public function add(Specialization $specialization) : void
     {
         $this->specializations[] = $specialization;
+    }
+
+    public function getFor(Offer $offer) : Specialization
+    {
+        foreach ($this->specializations as $specialization) {
+            if ($specialization->id()->equals($offer->specializationId())) {
+                return $specialization;
+            }
+        }
+
+        throw new Exception('Specialization does not exists');
     }
 }

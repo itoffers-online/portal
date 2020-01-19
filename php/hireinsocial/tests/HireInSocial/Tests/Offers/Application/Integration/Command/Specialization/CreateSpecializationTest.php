@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Offers\Application\Integration\Command\Specialization;
 
 use HireInSocial\Offers\Application\Command\Specialization\CreateSpecialization;
-use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
+use HireInSocial\Tests\Offers\Application\Integration\OffersTestCase;
 
-final class CreateSpecializationTest extends HireInSocialTestCase
+final class CreateSpecializationTest extends OffersTestCase
 {
     public function test_create_specialization() : void
     {

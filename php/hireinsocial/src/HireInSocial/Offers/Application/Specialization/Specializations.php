@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Specialization;
 
+use HireInSocial\Offers\Application\Offer\Offer;
+
 interface Specializations
 {
     public function add(Specialization $specialization) : void;
 
     public function get(string $slug) : Specialization;
+
+    public function getFor(Offer $offer) : Specialization;
 }

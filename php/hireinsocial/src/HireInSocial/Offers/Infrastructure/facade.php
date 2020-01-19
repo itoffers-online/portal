@@ -15,6 +15,7 @@ namespace HireInSocial\Offers\Infrastructure;
 
 use App\Offers\Twig\Extension\OfferExtension;
 use Facebook\Facebook;
+use HireInSocial\Offers\Application\Command\Facebook\PagePostOfferAtGroupHandler;
 use HireInSocial\Offers\Application\Command\Offer\ApplyThroughEmailHandler;
 use HireInSocial\Offers\Application\Command\Offer\PostOfferHandler;
 use HireInSocial\Offers\Application\Command\Offer\RemoveOfferHandler;
@@ -27,7 +28,6 @@ use HireInSocial\Offers\Application\Command\User\AddExtraOffersHandler;
 use HireInSocial\Offers\Application\Command\User\BlockUserHandler;
 use HireInSocial\Offers\Application\Command\User\FacebookConnectHandler;
 use HireInSocial\Offers\Application\Config;
-use HireInSocial\Offers\Application\Facebook\FacebookFormatter;
 use HireInSocial\Offers\Application\Facebook\FacebookGroupService;
 use HireInSocial\Offers\Application\Offer\EmailFormatter;
 use HireInSocial\Offers\Application\Offer\Throttling;
@@ -143,7 +143,7 @@ function offersFacade(Config $config) : Offers
 
     $dbalConnection = dbal($config);
     $entityManager = orm($config, $dbalConnection);
-    $specializations = new ORMSpecializations($entityManager);
+    $ormSpecializations = new ORMSpecializations($entityManager);
 
     $throttling = Throttling::createDefault($calendar);
     $ormOffers = new ORMOffers($entityManager);
@@ -159,30 +159,27 @@ function offersFacade(Config $config) : Offers
             new CommandBus(
                 new ORMTransactionManager($entityManager),
                 new CreateSpecializationHandler(
-                    $specializations
+                    $ormSpecializations
                 ),
                 new SetFacebookChannelHandler(
-                    $specializations
+                    $ormSpecializations
                 ),
                 new SetTwitterChannelHandler(
-                    $specializations
+                    $ormSpecializations
                 ),
                 new RemoveFacebookChannelHandler(
-                    $specializations
+                    $ormSpecializations
                 ),
                 new RemoveTwitterChannelHandler(
-                    $specializations
+                    $ormSpecializations
                 ),
                 new PostOfferHandler(
                     $calendar,
                     $ormOffers,
                     $ormExtraOffers,
                     $ormUsers,
-                    new ORMPosts($entityManager),
                     $throttling,
-                    new FacebookGroupService($facebook),
-                    new FacebookFormatter($twig),
-                    $specializations,
+                    $ormSpecializations,
                     new ORMSlugs($entityManager),
                     new ORMOfferPDFs($entityManager),
                     FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG))
@@ -191,6 +188,12 @@ function offersFacade(Config $config) : Offers
                     $ormUsers,
                     $ormOffers,
                     $calendar
+                ),
+                new PagePostOfferAtGroupHandler(
+                    $ormOffers,
+                    new ORMPosts($entityManager),
+                    $ormSpecializations,
+                    new FacebookGroupService($facebook)
                 ),
                 new FacebookConnectHandler(
                     $ormUsers,

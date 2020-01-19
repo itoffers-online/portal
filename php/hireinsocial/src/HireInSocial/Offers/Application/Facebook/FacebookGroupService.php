@@ -29,6 +29,7 @@ final class FacebookGroupService
     }
 
     /**
+     * Returns facebook post id
      * @throws Exception
      */
     public function pagePostAtGroup(Draft $draft, Specialization $specialization) : string

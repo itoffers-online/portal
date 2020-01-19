@@ -16,11 +16,11 @@ namespace HireInSocial\Tests\Offers\Application\Integration\Command\Offer;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Offer\Throttling;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
-use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
+use HireInSocial\Tests\Offers\Application\Integration\OffersTestCase;
 use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
 use Ramsey\Uuid\Uuid;
 
-final class PostOfferTest extends HireInSocialTestCase
+final class PostOfferTest extends OffersTestCase
 {
     public function test_posting_offer() : void
     {
@@ -42,18 +42,6 @@ final class PostOfferTest extends HireInSocialTestCase
             $offer->offerPDF()
         );
         $this->assertTrue($offer->postedBy($user->id()));
-    }
-
-    public function test_posting_offer_to_facebook_when_specialization_fb_channel_is_not_set() : void
-    {
-        $user = $this->systemContext->createUser();
-
-        $this->systemContext->createSpecialization($specialization = 'spec');
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Specialization "spec" does not have facebook channel assigned.');
-
-        $this->systemContext->offersFacade()->handle(PostOfferMother::onFB(Uuid::uuid4()->toString(), $user->id(), $specialization));
     }
 
     public function test_posting_offer_too_fast() : void

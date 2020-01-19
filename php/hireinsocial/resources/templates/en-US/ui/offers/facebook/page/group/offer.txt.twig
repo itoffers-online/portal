@@ -10,7 +10,7 @@
 **Contract type**: {{ offer.contract.type|raw }}
 
 {% if offer.salary %}
-**Salary**: {{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }} {% if offer.salary.isNet %}net{% else %}gross{% endif %} {% if offer.salary.period.isTotal %}in total{% else %}per {{ offer.salary.period.type|lower }}{% endif %}
+**Salary**: {{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }} {% if offer.salary.isNet %}net{% else %}gross{% endif %} {% if offer.salary.periodType.isTotal %}in total{% else %}per {{ offer.salary.periodType.type|lower }}{% endif %}
 
 {% else %}
 **Salary**: -
@@ -33,6 +33,6 @@ Address: [{{ offer.location.countryCode|offer_location_country_flag }}, {{ offer
 **Benefits**:
 {{ offer.description.benefits|raw }}
 
-**[Apply]({{ 'https://%s/offer/%s'|format(domain, offerSlug) }})**
+**[Apply]({{ url('offer', {'offerSlug': offer.slug}) }})**
 
 {{ offer.contact.name|raw }}

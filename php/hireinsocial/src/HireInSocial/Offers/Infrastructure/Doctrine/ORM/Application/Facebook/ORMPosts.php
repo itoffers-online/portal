@@ -21,7 +21,7 @@ use HireInSocial\Offers\Application\Offer\Offer;
 final class ORMPosts implements Posts
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $entityManager;
 
@@ -37,6 +37,6 @@ final class ORMPosts implements Posts
 
     public function findFor(Offer $offer) : ?Post
     {
-        return $this->entityManager->getRepository(Post::class)->findOneBy(['offerId' => $offer->id()]);
+        return $this->entityManager->getRepository(Post::class)->findOneBy(['jobOfferId' => $offer->id()]);
     }
 }

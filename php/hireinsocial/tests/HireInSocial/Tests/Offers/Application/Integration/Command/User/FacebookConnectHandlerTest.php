@@ -15,10 +15,10 @@ namespace HireInSocial\Tests\Offers\Application\Integration\Command\User;
 
 use HireInSocial\Offers\Application\Command\User\FacebookConnect;
 use HireInSocial\Offers\Application\Exception\Exception;
-use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
+use HireInSocial\Tests\Offers\Application\Integration\OffersTestCase;
 use Ramsey\Uuid\Uuid;
 
-final class FacebookConnectHandlerTest extends HireInSocialTestCase
+final class FacebookConnectHandlerTest extends OffersTestCase
 {
     public function test_adding_extra_offers() : void
     {

@@ -50,11 +50,6 @@ final class Offer
      */
     private $contact;
 
-    /**
-     * @var Channels
-     */
-    private $channels;
-
     public function __construct(
         Company $company,
         Position $position,
@@ -62,8 +57,7 @@ final class Offer
         ?Salary $salary,
         Contract $contract,
         Description $description,
-        Contact $contact,
-        Channels $channels
+        Contact $contact
     ) {
         $this->company = $company;
         $this->position = $position;
@@ -72,7 +66,6 @@ final class Offer
         $this->contract = $contract;
         $this->description = $description;
         $this->contact = $contact;
-        $this->channels = $channels;
     }
 
     public function company() : Company
@@ -108,10 +101,5 @@ final class Offer
     public function contact() : Contact
     {
         return $this->contact;
-    }
-
-    public function channels() : Channels
-    {
-        return $this->channels;
     }
 }

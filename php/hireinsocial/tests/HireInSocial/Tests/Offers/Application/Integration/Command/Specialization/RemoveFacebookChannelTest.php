@@ -16,9 +16,9 @@ namespace HireInSocial\Tests\Offers\Application\Integration\Command\Specializati
 use HireInSocial\Offers\Application\Command\Specialization\CreateSpecialization;
 use HireInSocial\Offers\Application\Command\Specialization\RemoveFacebookChannel;
 use HireInSocial\Offers\Application\Command\Specialization\SetFacebookChannel;
-use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
+use HireInSocial\Tests\Offers\Application\Integration\OffersTestCase;
 
-final class RemoveFacebookChannelTest extends HireInSocialTestCase
+final class RemoveFacebookChannelTest extends OffersTestCase
 {
     public function test_remove_facebook_channel() : void
     {

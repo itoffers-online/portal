@@ -15,11 +15,11 @@ namespace HireInSocial\Tests\Offers\Application\Integration\Command\Offer;
 
 use HireInSocial\Offers\Application\Command\Offer\RemoveOffer;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
-use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
+use HireInSocial\Tests\Offers\Application\Integration\OffersTestCase;
 use HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
 use Ramsey\Uuid\Uuid;
 
-final class RemoveOfferTest extends HireInSocialTestCase
+final class RemoveOfferTest extends OffersTestCase
 {
     public function test_removing_offer() : void
     {

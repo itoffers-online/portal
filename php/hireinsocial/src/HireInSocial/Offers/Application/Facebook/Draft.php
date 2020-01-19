@@ -13,18 +13,11 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Facebook;
 
+use HireInSocial\Offers\Application\Assertion;
 use HireInSocial\Offers\Application\Offer\Offer;
-use HireInSocial\Offers\Application\Offer\OfferFormatter;
-use HireInSocial\Offers\Application\User\User;
-use Ramsey\Uuid\UuidInterface;
 
 final class Draft
 {
-    /**
-     * @var UuidInterface
-     */
-    private $userId;
-
     /**
      * @var string
      */
@@ -35,16 +28,18 @@ final class Draft
      */
     private $link;
 
-    private function __construct(UuidInterface $userId, string $message, string $link)
+    private function __construct(string $message, string $link)
     {
-        $this->userId = $userId;
+        Assertion::notEmpty($message);
+        Assertion::url($link);
+
         $this->message = $message;
         $this->link = $link;
     }
 
-    public static function createFor(User $user, OfferFormatter $formatter, Offer $offer, string $slug) : self
+    public static function createFor(Offer $offer, string $message) : self
     {
-        return new self($user->id(), $formatter->format($offer, $slug), $offer->company()->url());
+        return new self($message, $offer->company()->url());
     }
 
     public function __toString() : string
@@ -55,10 +50,5 @@ final class Draft
     public function link() : string
     {
         return $this->link;
-    }
-
-    public function userId() : UuidInterface
-    {
-        return $this->userId;
     }
 }

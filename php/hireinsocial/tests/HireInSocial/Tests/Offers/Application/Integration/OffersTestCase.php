@@ -23,7 +23,7 @@ use HireInSocial\Tests\Offers\Application\Context\FilesystemContext;
 use HireInSocial\Tests\Offers\Application\Context\OffersContext;
 use PHPUnit\Framework\TestCase;
 
-abstract class HireInSocialTestCase extends TestCase
+abstract class OffersTestCase extends TestCase
 {
     /**
      * @var OffersContext

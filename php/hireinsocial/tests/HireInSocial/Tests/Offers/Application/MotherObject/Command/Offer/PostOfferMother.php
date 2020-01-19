@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Offers\Application\MotherObject\Command\Offer;
 
 use Faker\Factory;
-use HireInSocial\Offers\Application\Command\Offer\Offer\Channels;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Company;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Contact;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Contract;
@@ -53,9 +52,6 @@ final class PostOfferMother
                     $faker->name,
                     '+1 333333333'
                 ),
-                new Channels(
-                    false
-                )
             )
         );
     }
@@ -84,9 +80,6 @@ final class PostOfferMother
                     $faker->name,
                     '+1 333333333'
                 ),
-                new Channels(
-                    false
-                )
             ),
             $offerPDFPath
         );
@@ -116,9 +109,6 @@ final class PostOfferMother
                     $faker->name,
                     '+1 333333333'
                 ),
-                new Channels(
-                    false
-                )
             )
         );
     }
@@ -147,9 +137,6 @@ final class PostOfferMother
                     $faker->name,
                     '+1 333333333'
                 ),
-                new Channels(
-                    false
-                )
             )
         );
     }
@@ -178,9 +165,6 @@ final class PostOfferMother
                     $faker->name,
                     '+1 333333333'
                 ),
-                new Channels(
-                    false
-                )
             )
         );
     }
@@ -209,9 +193,6 @@ final class PostOfferMother
                     $faker->name,
                     '+1 333333333'
                 ),
-                new Channels(
-                    false
-                )
             )
         );
     }
@@ -240,9 +221,6 @@ final class PostOfferMother
                     $faker->name,
                     '+1 333333333'
                 ),
-                new Channels(
-                    true
-                )
             )
         );
     }
