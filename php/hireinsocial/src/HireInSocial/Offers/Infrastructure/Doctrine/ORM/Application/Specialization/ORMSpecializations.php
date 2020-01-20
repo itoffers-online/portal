@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Specialization;
 
 use Doctrine\ORM\EntityManager;
+use HireInSocial\Offers\Application\Offer\Offer;
 use HireInSocial\Offers\Application\Specialization\Specialization;
 use HireInSocial\Offers\Application\Specialization\Specializations;
 
@@ -37,5 +38,10 @@ final class ORMSpecializations implements Specializations
     public function get(string $slug) : Specialization
     {
         return $this->entityManager->getRepository(Specialization::class)->findOneBy(['slug' => $slug]);
+    }
+
+    public function getFor(Offer $offer) : Specialization
+    {
+        return $this->entityManager->getRepository(Specialization::class)->findOneBy(['id' => $offer->specializationId()]);
     }
 }

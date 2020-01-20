@@ -15,5 +15,8 @@ namespace HireInSocial\Offers\Application\Facebook;
 
 interface Facebook
 {
+    /**
+     * Returns post id
+     */
     public function postToGroupAsPage(Draft $post, Group $group, Page $page) : string;
 }

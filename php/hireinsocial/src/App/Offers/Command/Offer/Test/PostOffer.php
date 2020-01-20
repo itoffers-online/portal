@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Offers\Command\Offer\Test;
 
 use Faker\Factory;
-use HireInSocial\Offers\Application\Command\Offer\Offer\Channels;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Company;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Contact;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Contract;
@@ -106,7 +105,7 @@ final class PostOffer extends Command
         }
 
         $noSalary = $input->getOption('no-salary') !== false;
-        $postFacebookGroup = $input->getOption('post-facebook-group') !== false;
+//        $postFacebookGroup = $input->getOption('post-facebook-group') !== false;
         $offerPDFpath = $input->getOption('offer-pdf');
 
         try {
@@ -147,7 +146,6 @@ final class PostOffer extends Command
                         'Hire Manager',
                         '+1 333333333'
                     ),
-                    new Channels($postFacebookGroup)
                 ),
                 $offerPDFpath
             ));

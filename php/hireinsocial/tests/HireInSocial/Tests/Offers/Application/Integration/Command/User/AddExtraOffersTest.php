@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Offers\Application\Integration\Command\User;
 
 use HireInSocial\Offers\Application\Command\User\AddExtraOffers;
-use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
+use HireInSocial\Tests\Offers\Application\Integration\OffersTestCase;
 
-final class AddExtraOffersTest extends HireInSocialTestCase
+final class AddExtraOffersTest extends OffersTestCase
 {
     public function test_adding_extra_offers() : void
     {

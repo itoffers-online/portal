@@ -16,7 +16,7 @@ namespace App\Offers\Controller;
 use App\Offers\Controller\Offer\OfferToForm;
 use App\Offers\Form\Type\OfferType;
 use Facebook\Facebook;
-use HireInSocial\Offers\Application\Command\Offer\Offer\Channels;
+use HireInSocial\Offers\Application\Command\Facebook\PagePostOfferAtGroup;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Company;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Contact;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Contract;
@@ -112,17 +112,17 @@ final class OfferController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $offer = $form->getData();
+            $offerData = $form->getData();
 
             try {
-                switch ($offer['location']['type']) {
+                switch ($offerData['location']['type']) {
                     case 1:
                     case 2:
                         $location = new Location(
                             true,
-                            $offer['location']['country'],
-                            $offer['location']['city'],
-                            new LatLng((float) $offer['location']['lat'], (float) $offer['location']['lng'])
+                            $offerData['location']['country'],
+                            $offerData['location']['city'],
+                            new LatLng((float) $offerData['location']['lat'], (float) $offerData['location']['lng'])
                         );
 
                         break;
@@ -135,24 +135,30 @@ final class OfferController extends AbstractController
                 $this->offers->handle(new PostOffer(
                     $offerId = Uuid::uuid4()->toString(),
                     $specSlug,
-                    $offer['locale'],
+                    $offerData['locale'],
                     $userId,
                     new Offer(
-                        new Company($offer['company']['name'], $offer['company']['url'], $offer['company']['description']),
-                        new Position($offer['position']['seniorityLevel'], $offer['position']['name'], $offer['position']['description']),
+                        new Company($offerData['company']['name'], $offerData['company']['url'], $offerData['company']['description']),
+                        new Position($offerData['position']['seniorityLevel'], $offerData['position']['name'], $offerData['position']['description']),
                         $location,
-                        (null === $offer['salary']['min'] && null === $offer['salary']['max'])
+                        (null === $offerData['salary']['min'] && null === $offerData['salary']['max'])
                             ? null
-                            : new Salary($offer['salary']['min'], $offer['salary']['max'], $offer['salary']['currency'], (bool) $offer['salary']['net'], $offer['salary']['period_type']),
-                        new Contract($offer['contract']),
-                        new Description($offer['description']['requirements'], $offer['description']['benefits']),
-                        new Contact($offer['contact']['email'], $offer['contact']['name'], $offer['contact']['phone']),
-                        new Channels((bool) $offer['channels']['facebook_group'])
+                            : new Salary($offerData['salary']['min'], $offerData['salary']['max'], $offerData['salary']['currency'], (bool) $offerData['salary']['net'], $offerData['salary']['period_type']),
+                        new Contract($offerData['contract']),
+                        new Description($offerData['description']['requirements'], $offerData['description']['benefits']),
+                        new Contact($offerData['contact']['email'], $offerData['contact']['name'], $offerData['contact']['phone']),
                     ),
-                    $offer['offer_pdf'] ? $offer['offer_pdf']->getPathname() : null
+                    $offerData['offer_pdf'] ? $offerData['offer_pdf']->getPathname() : null
                 ));
 
                 $offer = $this->offers->offerQuery()->findById($offerId);
+
+                if ((bool) $offerData['channels']['facebook_group']) {
+                    $this->offers->handle(new PagePostOfferAtGroup(
+                        $offerId,
+                        $this->renderView('@offers/facebook/page/group/offer.txt.twig', ['offer' => $offer]),
+                    ));
+                }
 
                 return $this->redirectToRoute('offer_success', ['specSlug' => $specSlug, 'offer-slug' => $offer->slug()]);
             } catch (Exception $exception) {

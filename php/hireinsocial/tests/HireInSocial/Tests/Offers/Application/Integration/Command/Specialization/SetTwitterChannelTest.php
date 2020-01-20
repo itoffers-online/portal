@@ -16,9 +16,9 @@ namespace HireInSocial\Tests\Offers\Application\Integration\Command\Specializati
 use HireInSocial\Offers\Application\Command\Specialization\CreateSpecialization;
 use HireInSocial\Offers\Application\Command\Specialization\SetTwitterChannel;
 use HireInSocial\Offers\Application\Query\Specialization\Model\Specialization\TwitterChannel;
-use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
+use HireInSocial\Tests\Offers\Application\Integration\OffersTestCase;
 
-final class SetTwitterChannelTest extends HireInSocialTestCase
+final class SetTwitterChannelTest extends OffersTestCase
 {
     public function test_set_specialization_twitter_channel() : void
     {

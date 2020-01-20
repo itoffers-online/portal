@@ -16,9 +16,9 @@ namespace HireInSocial\Tests\Offers\Application\Integration\Command\Specializati
 use HireInSocial\Offers\Application\Command\Specialization\CreateSpecialization;
 use HireInSocial\Offers\Application\Command\Specialization\SetFacebookChannel;
 use HireInSocial\Offers\Application\Query\Specialization\Model\Specialization\FacebookChannel;
-use HireInSocial\Tests\Offers\Application\Integration\HireInSocialTestCase;
+use HireInSocial\Tests\Offers\Application\Integration\OffersTestCase;
 
-final class SetFacebookChannelTest extends HireInSocialTestCase
+final class SetFacebookChannelTest extends OffersTestCase
 {
     public function test_set_specilaization_facebook_channel() : void
     {

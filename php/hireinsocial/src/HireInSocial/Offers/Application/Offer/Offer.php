@@ -40,7 +40,7 @@ class Offer
     private $userId;
 
     /**
-     * @var UuidInterface
+     * @var string
      */
     private $specializationId;
 
@@ -111,7 +111,7 @@ class Offer
         $this->id = $id->toString();
         $this->userId = $userId->toString();
         $this->emailHash = (new Hashids())->encode(time() + \random_int(0, 5000));
-        $this->specializationId = $specializationId;
+        $this->specializationId = $specializationId->toString();
         $this->locale = $locale;
         $this->company = $company;
         $this->position = $position;
@@ -161,6 +161,11 @@ class Offer
     public function getUserId() : UuidInterface
     {
         return Uuid::fromString($this->userId);
+    }
+
+    public function specializationId() : UuidInterface
+    {
+        return Uuid::fromString($this->specializationId);
     }
 
     public function locale() : Locale

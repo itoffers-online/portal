@@ -14,10 +14,6 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Application\Command\Offer;
 
 use HireInSocial\Offers\Application\Exception\Exception;
-use HireInSocial\Offers\Application\Facebook\Draft;
-use HireInSocial\Offers\Application\Facebook\FacebookGroupService;
-use HireInSocial\Offers\Application\Facebook\Post;
-use HireInSocial\Offers\Application\Facebook\Posts;
 use HireInSocial\Offers\Application\Offer\Company;
 use HireInSocial\Offers\Application\Offer\Contact;
 use HireInSocial\Offers\Application\Offer\Contract;
@@ -25,7 +21,6 @@ use HireInSocial\Offers\Application\Offer\Description;
 use HireInSocial\Offers\Application\Offer\Locale;
 use HireInSocial\Offers\Application\Offer\Location;
 use HireInSocial\Offers\Application\Offer\Offer;
-use HireInSocial\Offers\Application\Offer\OfferFormatter;
 use HireInSocial\Offers\Application\Offer\OfferPDF;
 use HireInSocial\Offers\Application\Offer\OfferPDFs;
 use HireInSocial\Offers\Application\Offer\Offers;
@@ -63,24 +58,9 @@ final class PostOfferHandler implements Handler
     private $users;
 
     /**
-     * @var Posts
-     */
-    private $posts;
-
-    /**
      * @var Throttling
      */
     private $throttling;
-
-    /**
-     * @var FacebookGroupService
-     */
-    private $facebookGroupService;
-
-    /**
-     * @var OfferFormatter
-     */
-    private $formatter;
 
     /**
      * @var Specializations
@@ -112,10 +92,7 @@ final class PostOfferHandler implements Handler
         Offers $offers,
         ExtraOffers $extraOffers,
         Users $users,
-        Posts $posts,
         Throttling $throttling,
-        FacebookGroupService $facebookGroupService,
-        OfferFormatter $formatter,
         Specializations $specializations,
         Slugs $slugs,
         OfferPDFs $offerPDFs,
@@ -124,10 +101,7 @@ final class PostOfferHandler implements Handler
         $this->calendar = $calendar;
         $this->offers = $offers;
         $this->users = $users;
-        $this->posts = $posts;
         $this->throttling = $throttling;
-        $this->facebookGroupService = $facebookGroupService;
-        $this->formatter = $formatter;
         $this->specializations = $specializations;
         $this->slugs = $slugs;
         $this->offerPDFs = $offerPDFs;
@@ -157,25 +131,6 @@ final class PostOfferHandler implements Handler
             } else {
                 throw new Exception(sprintf('User "%s" is throttled', $user->id()->toString()));
             }
-        }
-
-        if ($command->offer()->channels()->facebookGroup()) {
-            $draft = Draft::createFor(
-                $user,
-                $this->formatter,
-                $offer,
-                (string) $slug
-            );
-
-            $this->posts->add(
-                new Post(
-                    $this->facebookGroupService->pagePostAtGroup(
-                        $draft,
-                        $specialization
-                    ),
-                    $offer
-                )
-            );
         }
 
         if ($command->offerPDFPath()) {
