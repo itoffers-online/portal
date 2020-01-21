@@ -24,6 +24,7 @@ use HireInSocial\Offers\Application\Command\Specialization\RemoveFacebookChannel
 use HireInSocial\Offers\Application\Command\Specialization\RemoveTwitterChannelHandler;
 use HireInSocial\Offers\Application\Command\Specialization\SetFacebookChannelHandler;
 use HireInSocial\Offers\Application\Command\Specialization\SetTwitterChannelHandler;
+use HireInSocial\Offers\Application\Command\Twitter\TweetAboutOfferHandler;
 use HireInSocial\Offers\Application\Command\User\AddExtraOffersHandler;
 use HireInSocial\Offers\Application\Command\User\BlockUserHandler;
 use HireInSocial\Offers\Application\Command\User\FacebookConnectHandler;
@@ -34,11 +35,12 @@ use HireInSocial\Offers\Application\Offer\Throttling;
 use HireInSocial\Offers\Application\System;
 use HireInSocial\Offers\Application\System\CommandBus;
 use HireInSocial\Offers\Application\System\Queries;
+use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Facebook\DbalFacebookFacebookQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalApplicationQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferThrottleQuery;
-use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\SocialChannel\Facebook\DbalFacebookFacebookQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Specialization\DbalSpecializationQuery;
+use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Twitter\DbalTweetsQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalExtraOffersQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalUserQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
@@ -48,6 +50,7 @@ use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMSlugs;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSpecializations;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
+use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\Twitter\ORMTweets;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\User\ORMExtraOffers;
 use HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\User\ORMUsers;
 use HireInSocial\Offers\Infrastructure\Facebook\FacebookGraphSDK;
@@ -55,8 +58,10 @@ use HireInSocial\Offers\Infrastructure\Flysystem\Application\System\FlysystemSto
 use HireInSocial\Offers\Infrastructure\PHP\Hash\SHA256Encoder;
 use HireInSocial\Offers\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Offers\Infrastructure\SwiftMailer\System\SwiftMailer;
+use HireInSocial\Offers\Infrastructure\Twitter\OAuthTwitter;
 use HireInSocial\Offers\Offers;
 use HireInSocial\Tests\Offers\Application\Double\Dummy\DummyFacebook;
+use HireInSocial\Tests\Offers\Application\Double\Dummy\DummyTwitter;
 use HireInSocial\Tests\Offers\Application\Double\Stub\CalendarStub;
 use Monolog\ErrorHandler;
 use Monolog\Handler\StreamHandler;
@@ -92,6 +97,10 @@ function offersFacade(Config $config) : Offers
                 ]),
                 $systemLogger
             );
+            $twitter = new OAuthTwitter(
+                $config->getString(Config::TWITTER_API_KEY),
+                $config->getString(Config::TWITTER_API_SECRET_KEY),
+            );
             $transport = (new \Swift_SmtpTransport(
                 $config->getJson(Config::MAILER_CONFIG)['host'],
                 $config->getJson(Config::MAILER_CONFIG)['port']
@@ -106,6 +115,10 @@ function offersFacade(Config $config) : Offers
             break;
         case 'dev':
             $calendar = new CalendarStub(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
+            $twitter = new OAuthTwitter(
+                $config->getString(Config::TWITTER_API_KEY),
+                $config->getString(Config::TWITTER_API_SECRET_KEY),
+            );
             $facebook = new FacebookGraphSDK(
                 new Facebook([
                     'app_id' => $config->getString(Config::FB_APP_ID),
@@ -127,6 +140,7 @@ function offersFacade(Config $config) : Offers
             break;
         case 'test':
             $calendar = new CalendarStub(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
+            $twitter = new DummyTwitter();
             $facebook = new DummyFacebook();
 
             $transport = new \Swift_Transport_NullTransport(new \Swift_Events_SimpleEventDispatcher());
@@ -195,6 +209,12 @@ function offersFacade(Config $config) : Offers
                     $ormSpecializations,
                     new FacebookGroupService($facebook)
                 ),
+                new TweetAboutOfferHandler(
+                    $ormOffers,
+                    new ORMTweets($entityManager),
+                    $ormSpecializations,
+                    $twitter
+                ),
                 new FacebookConnectHandler(
                     $ormUsers,
                     $calendar
@@ -225,6 +245,7 @@ function offersFacade(Config $config) : Offers
                 new DbalExtraOffersQuery($dbalConnection),
                 new DbalApplicationQuery($dbalConnection, $encoder),
                 new DbalFacebookFacebookQuery($dbalConnection),
+                new DbalTweetsQuery($dbalConnection)
             ),
             $systemLogger,
             $calendar

@@ -28,6 +28,7 @@ use HireInSocial\Offers\Application\Command\Offer\Offer\Position;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Salary;
 use HireInSocial\Offers\Application\Command\Offer\PostOffer;
 use HireInSocial\Offers\Application\Command\Offer\RemoveOffer;
+use HireInSocial\Offers\Application\Command\Twitter\TweetAboutOffer;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Offers;
 use Psr\Log\LoggerInterface;
@@ -160,6 +161,13 @@ final class OfferController extends AbstractController
                     ));
                 }
 
+                if ((bool) $offerData['channels']['twitter']) {
+                    $this->offers->handle(new TweetAboutOffer(
+                        $offerId,
+                        $this->renderView('@offers/twitter/offer.txt.twig', ['offer' => $offer]),
+                    ));
+                }
+
                 return $this->redirectToRoute('offer_success', ['specSlug' => $specSlug, 'offer-slug' => $offer->slug()]);
             } catch (Exception $exception) {
                 // TODO: Show some user friendly error message in UI.
@@ -208,7 +216,9 @@ final class OfferController extends AbstractController
         }
 
         $facebookPost = $this->offers->facebookPostQuery()->findFacebookPost($offer->id()->toString());
+        $tweet = $this->offers->tweetsQuery()->findTweet($offer->id()->toString());
 
+        $spcialization = $this->offers->specializationQuery()->findBySlug($offer->specializationSlug());
         $nextOffer = $this->offers->offerQuery()->findOneAfter($offer);
         $previousOffer = $this->offers->offerQuery()->findOneBefore($offer);
 
@@ -218,6 +228,8 @@ final class OfferController extends AbstractController
             'nextOffer' => $nextOffer,
             'previousOffer' => $previousOffer,
             'facebookPost' => $facebookPost,
+            'tweet' => $tweet,
+            'specialization' => $spcialization,
         ]);
     }
 

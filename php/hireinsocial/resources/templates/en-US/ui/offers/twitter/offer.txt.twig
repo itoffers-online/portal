@@ -1,0 +1,12 @@
+{{ offer.locale|offer_locale_country_flag }} {{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name|raw }}
+{% if offer.salary %}
+💰 {{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }} {% if offer.salary.isNet %}net{% else %}gross{% endif %} {% if offer.salary.periodType.isTotal %}in total{% else %}per {{ offer.salary.periodType.type|lower }}{% endif %}
+
+{% endif %}
+{% if offer.location.isRemote %}
+🗺 Remote
+
+{% endif %}
+💼 {{ offer.company.name|raw }} {{ offer.company.url|raw }}
+
+➡️ {{ url('offer', {'offerSlug': offer.slug})|raw }}

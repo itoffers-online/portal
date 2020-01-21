@@ -31,6 +31,7 @@ services:
                     - HireInSocial\Offers\Application\Offer\Application
                     - HireInSocial\Offers\Application\User\ExtraOffer
                     - HireInSocial\Offers\Application\Facebook\Post
+                    - HireInSocial\Offers\Application\Twitter\Tweet
                     - HireInSocial\Offers\Application\Specialization\Specialization
                     # Exceptions
                     - HireInSocial\Offers\Application\Exception\Exception

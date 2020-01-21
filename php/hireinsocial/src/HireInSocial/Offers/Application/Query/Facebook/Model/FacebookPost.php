@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Offers\Application\Query\SocialChannel\Facebook\Model;
+namespace HireInSocial\Offers\Application\Query\Facebook\Model;
 
 use Ramsey\Uuid\UuidInterface;
 

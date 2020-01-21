@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace HireInSocial\Offers;
 
 use HireInSocial\Offers\Application\Exception\Exception;
+use HireInSocial\Offers\Application\Query\Facebook\FacebookQuery;
 use HireInSocial\Offers\Application\Query\Offer\ApplicationQuery;
 use HireInSocial\Offers\Application\Query\Offer\OfferQuery;
 use HireInSocial\Offers\Application\Query\Offer\OfferThrottleQuery;
-use HireInSocial\Offers\Application\Query\SocialChannel\Facebook\FacebookQuery;
 use HireInSocial\Offers\Application\Query\Specialization\SpecializationQuery;
+use HireInSocial\Offers\Application\Query\Twitter\TweetsQuery;
 use HireInSocial\Offers\Application\Query\User\ExtraOffersQuery;
 use HireInSocial\Offers\Application\Query\User\UserQuery;
 use HireInSocial\Offers\Application\System;
@@ -114,6 +115,17 @@ final class Offers
 
         if (!$query instanceof FacebookQuery) {
             throw new Exception("Expected FacebookQuery but got " . \get_class($query));
+        }
+
+        return $query;
+    }
+
+    public function tweetsQuery() : TweetsQuery
+    {
+        $query = $this->system->query(TweetsQuery::class);
+
+        if (!$query instanceof TweetsQuery) {
+            throw new Exception("Expected TweetsQuery but got " . \get_class($query));
         }
 
         return $query;
