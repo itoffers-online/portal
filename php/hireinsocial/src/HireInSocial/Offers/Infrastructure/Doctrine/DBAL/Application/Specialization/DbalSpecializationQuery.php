@@ -55,6 +55,24 @@ SQL
         );
     }
 
+    public function allSlugs() : array
+    {
+        return \array_map(
+            function ($data) {
+                return $data['slug'];
+            },
+            $this->connection->fetchAll(
+                <<<SQL
+          SELECT 
+             s.slug, 
+             (SELECT COUNT(*) FROM his_job_offer WHERE specialization_id = s.id) as offers_count
+          FROM his_specialization s 
+          ORDER BY offers_count desc
+SQL
+            )
+        );
+    }
+
     public function findBySlug(string $slug) : ?Specialization
     {
         $specialization = $this->connection->fetchAssoc(

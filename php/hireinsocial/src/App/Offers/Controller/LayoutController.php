@@ -40,7 +40,7 @@ final class LayoutController extends AbstractController
     public function headerAction(Request $request) : Response
     {
         return $this->render('@offers/layout/header.html.twig', [
-            'headerSpecializations' => $this->offers->specializationQuery()->all(),
+            'specializationSlugs' => $this->offers->specializationQuery()->allSlugs(),
         ]);
     }
 }

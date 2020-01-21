@@ -21,5 +21,10 @@ interface SpecializationQuery extends Query
 {
     public function all() : Specializations;
 
+    /**
+     * @return array<string>
+     */
+    public function allSlugs() : array;
+
     public function findBySlug(string $slug) : ?Specialization;
 }

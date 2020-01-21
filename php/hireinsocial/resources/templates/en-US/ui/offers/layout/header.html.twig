@@ -1,10 +1,10 @@
 <div class="container-fluid bg-light border-bottom d-none d-md-block">
     <div class="container">
         <header class="text-center text-lg-left">
-            {% for headerSpec in headerSpecializations %}
-                <a class="btn btn-sqr p-lg-3 pl-lg-4 pr-lg-4" href="{{ url('specialization_offers', {specSlug: headerSpec.slug}) }}">
+            {% for slug in specializationSlugs %}
+                <a class="btn btn-sqr p-lg-3 pl-lg-4 pr-lg-4" href="{{ url('specialization_offers', {specSlug: slug}) }}">
                     <small>
-                        {% include '@offers/specialization/_name.html.twig' with {specialization: headerSpec.slug} only %}
+                        {% include '@offers/specialization/_name.html.twig' with {specialization: slug} only %}
                     </small>
                 </a>
             {% endfor %}

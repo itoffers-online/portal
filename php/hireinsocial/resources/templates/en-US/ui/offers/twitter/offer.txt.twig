@@ -1,4 +1,4 @@
-{{ offer.locale|offer_locale_country_flag }} {{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name|raw }}
+{{ offer.locale|offer_locale_country_flag }} {{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name|raw }} - {{ offer.contract.type }}
 {% if offer.salary %}
 💰 {{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }} {% if offer.salary.isNet %}net{% else %}gross{% endif %} {% if offer.salary.periodTypeTotal %}in total{% else %}per {{ offer.salary.periodType|lower }}{% endif %}
 
