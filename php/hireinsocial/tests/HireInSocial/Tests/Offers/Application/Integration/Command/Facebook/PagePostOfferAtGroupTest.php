@@ -16,7 +16,7 @@ namespace HireInSocial\Tests\Offers\Application\Integration\Command\Facebook;
 use HireInSocial\Offers\Application\Command\Facebook\PagePostOfferAtGroup;
 use HireInSocial\Offers\Application\Command\Specialization\SetFacebookChannel;
 use HireInSocial\Offers\Application\Exception\Exception;
-use HireInSocial\Offers\Application\Query\SocialChannel\Facebook\Model\FacebookPost;
+use HireInSocial\Offers\Application\Query\Facebook\Model\FacebookPost;
 use HireInSocial\Tests\Offers\Application\Integration\OffersTestCase;
 
 final class PagePostOfferAtGroupTest extends OffersTestCase

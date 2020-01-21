@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Offers\Application\Query\SocialChannel\Facebook;
+namespace HireInSocial\Offers\Application\Query\Twitter;
 
-use HireInSocial\Offers\Application\Query\SocialChannel\Facebook\Model\FacebookPost;
+use HireInSocial\Offers\Application\Query\Twitter\Model\Tweet;
 use HireInSocial\Offers\Application\System\Query;
 
-interface FacebookQuery extends Query
+interface TweetsQuery extends Query
 {
-    public function findFacebookPost(string $offerId) : ?FacebookPost;
+    public function findTweet(string $offerId) : ?Tweet;
 }

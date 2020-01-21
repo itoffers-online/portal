@@ -11,40 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Offers\Application\Facebook;
+namespace HireInSocial\Offers\Application\Twitter;
 
 use HireInSocial\Offers\Application\Assertion;
 use HireInSocial\Offers\Application\Offer\Offer;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
-class Post
+class Tweet
 {
     /**
      * @var string
      */
-    private $fbId;
+    private $id;
 
     /**
      * @var string
      */
     private $jobOfferId;
 
-    public function __construct(string $fbId, Offer $offer)
+    public function __construct(string $id, Offer $offer)
     {
-        Assertion::betweenLength($fbId, 3, 255, 'Invalid FB Post ID');
+        Assertion::notEmpty($id);
 
-        $this->fbId = $fbId;
+        $this->id = $id;
         $this->jobOfferId = $offer->id()->toString();
-    }
-
-    public function fbId() : string
-    {
-        return $this->fbId;
-    }
-
-    public function jobOfferId() : UuidInterface
-    {
-        return Uuid::fromString($this->jobOfferId);
     }
 }

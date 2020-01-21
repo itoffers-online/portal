@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\SocialChannel\Facebook;
+namespace HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Facebook;
 
 use Doctrine\DBAL\Connection;
-use HireInSocial\Offers\Application\Query\SocialChannel\Facebook\FacebookQuery;
-use HireInSocial\Offers\Application\Query\SocialChannel\Facebook\Model\FacebookPost;
+use HireInSocial\Offers\Application\Query\Facebook\FacebookQuery;
+use HireInSocial\Offers\Application\Query\Facebook\Model\FacebookPost;
 use Ramsey\Uuid\Uuid;
 
 final class DbalFacebookFacebookQuery implements FacebookQuery

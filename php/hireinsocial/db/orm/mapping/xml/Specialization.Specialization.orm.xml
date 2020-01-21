@@ -21,5 +21,9 @@
             <unique-constraint columns="facebook_channel_group_id" />
             <unique-constraint columns="twitter_account_id" />
         </unique-constraints>
+
+        <indexes>
+            <index name="idx_specialization_slug" columns="slug"/>
+        </indexes>
     </entity>
 </doctrine-mapping>

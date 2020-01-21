@@ -318,7 +318,11 @@
                             </div>
                             <div class="col-lg-6 text-right">
                                 {% if facebookPost %}
-                                    <a href="{{ facebookPost.id|fb_group_post }}"><i class="fab fa-facebook"></i> workoffers/{{ offer.specializationSlug }}</a>
+                                    <a href="{{ facebookPost.id|fb_group_post }}" class="d-block"><i class="fab fa-facebook"></i> workoffers/{{ offer.specializationSlug }}</a>
+                                {% endif %}
+
+                                {% if tweet %}
+                                    <a href="{{ tweet.url(specialization) }}" class="d-block"><i class="fab fa-twitter"></i> @{{ specialization.twitterChannel.screenName }}</a>
                                 {% endif %}
                             </div>
                         </div>

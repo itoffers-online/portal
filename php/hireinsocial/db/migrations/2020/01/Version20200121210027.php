@@ -19,7 +19,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200119180453 extends AbstractMigration
+final class Version20200121210027 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
@@ -42,6 +42,7 @@ final class Version20200119180453 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN his_user.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN his_user.blocked_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE his_facebook_post (fb_id VARCHAR(255) NOT NULL, job_offer_id UUID NOT NULL, PRIMARY KEY(fb_id))');
+        $this->addSql('CREATE INDEX idx_fb_post_job_offer_id ON his_facebook_post (job_offer_id)');
         $this->addSql('CREATE TABLE his_extra_offer (id UUID NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, expires_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, user_id UUID NOT NULL, used_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT NULL, offer_id UUID DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN his_extra_offer.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN his_extra_offer.expires_at IS \'(DC2Type:datetime_immutable)\'');
@@ -50,6 +51,8 @@ final class Version20200119180453 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN his_job_offer.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN his_job_offer.salary IS \'(DC2Type:his_offer_salary)\'');
         $this->addSql('COMMENT ON COLUMN his_job_offer.removed_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE TABLE his_twitter_tweet (id VARCHAR(255) NOT NULL, job_offer_id UUID NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX idx_twitter_tweet_job_offer_id ON his_twitter_tweet (job_offer_id)');
     }
 
     public function down(Schema $schema) : void
@@ -65,5 +68,6 @@ final class Version20200119180453 extends AbstractMigration
         $this->addSql('DROP TABLE his_facebook_post');
         $this->addSql('DROP TABLE his_extra_offer');
         $this->addSql('DROP TABLE his_job_offer');
+        $this->addSql('DROP TABLE his_twitter_tweet');
     }
 }

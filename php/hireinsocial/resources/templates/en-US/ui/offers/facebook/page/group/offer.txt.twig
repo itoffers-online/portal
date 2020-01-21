@@ -10,7 +10,7 @@
 **Contract type**: {{ offer.contract.type|raw }}
 
 {% if offer.salary %}
-**Salary**: {{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }} {% if offer.salary.isNet %}net{% else %}gross{% endif %} {% if offer.salary.periodType.isTotal %}in total{% else %}per {{ offer.salary.periodType.type|lower }}{% endif %}
+**Salary**: {{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }} {% if offer.salary.isNet %}net{% else %}gross{% endif %} {% if offer.salary.periodTypeTotal %}in total{% else %}per {{ offer.salary.periodType|lower }}{% endif %}
 
 {% else %}
 **Salary**: -
