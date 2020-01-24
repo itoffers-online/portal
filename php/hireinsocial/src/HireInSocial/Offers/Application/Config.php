@@ -125,7 +125,7 @@ final class Config
             self::TWITTER_API_SECRET_KEY => getenv('HIS_TWITTER_API_SECRET_KEY'),
             self::TWITTER_ACCESS_TOKEN => getenv('HIS_TWITTER_ACCESS_TOKEN'),
             self::TWITTER_ACCESS_TOKEN_SECRET => getenv('HIS_TWITTER_ACCESS_TOKEN_SECRET'),
-            self::FEATURE_POST_NEW_OFFERS => \filter_var(getenv('FEATURE_POST_NEW_OFFERS'), FILTER_VALIDATE_BOOLEAN),
+            self::FEATURE_POST_NEW_OFFERS => \filter_var(getenv('HIS_FEATURE_POST_NEW_OFFERS'), FILTER_VALIDATE_BOOLEAN),
         ]);
     }
 
