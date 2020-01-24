@@ -1,6 +1,7 @@
 <div class="container-fluid bg-light border-bottom d-none d-md-block">
     <div class="container">
         <header class="text-center text-lg-left">
+            {% for slug in specializationSlugs %}
                 <a class="btn btn-sqr p-lg-3 pl-lg-3 pr-lg-3" href="{{ url('specialization_offers', {specSlug: slug}) }}">
                     <small>
                         {% include '@offers/specialization/_name.html.twig' with {specialization: slug} only %}
