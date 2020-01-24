@@ -139,7 +139,7 @@ final class SymfonyKernel extends Kernel
 
     protected function configureRoutes(RouteCollectionBuilder $routes) : void
     {
-        Factory::addRoutes($routes);
+        Factory::addRoutes($routes, $this->environment);
         Factory::addLocalizedRoutes($routes, $this->frameworkConfig['framework']['default_locale']);
     }
 }

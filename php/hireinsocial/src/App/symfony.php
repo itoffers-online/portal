@@ -58,6 +58,7 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
             'paths' => [
                 $config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE) . '/ui/offers' => 'offers',
             ],
+            'default_path' => $config->getString(Config::ROOT_PATH) . '/resources/templates',
             'date' => [
                 'timezone' => $config->getString(Config::TIMEZONE),
             ],

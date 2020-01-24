@@ -26,7 +26,7 @@ use Symfony\Component\Routing\RouteCollectionBuilder;
 
 final class Factory
 {
-    public static function addRoutes(RouteCollectionBuilder $routes) : void
+    public static function addRoutes(RouteCollectionBuilder $routes, string $env) : void
     {
         $routes->addRoute(
             new Route('/', ['_controller' => [IndexController::class, 'homeAction']]),
@@ -56,6 +56,10 @@ final class Factory
             new Route('/facebook/login/success', ['_controller' => [FacebookController::class, 'loginSuccessAction']]),
             'facebook_login_success'
         );
+
+        if (\in_array($env, ['dev', 'test'], true)) {
+            $routes->import('@FrameworkBundle/Resources/config/routing/errors.xml', '/_error');
+        }
     }
 
     public static function addLocalizedRoutes(RouteCollectionBuilder $routes, string $locale) : void
