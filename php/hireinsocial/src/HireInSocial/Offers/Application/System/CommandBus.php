@@ -13,18 +13,20 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\System;
 
+use function array_key_exists;
 use HireInSocial\Offers\Application\Assertion;
 use HireInSocial\Offers\Application\Exception\Exception;
+use Throwable;
 
 final class CommandBus
 {
     /**
-     * @var \HireInSocial\Offers\Application\System\Handler[]
+     * @var Handler[]
      */
     private $handlers;
 
     /**
-     * @var \HireInSocial\Offers\Application\System\TransactionManager
+     * @var TransactionManager
      */
     private $transactionManager;
 
@@ -40,13 +42,13 @@ final class CommandBus
 
     public function handle(Command $command) : void
     {
-        if (\array_key_exists($command->commandName(), $this->handlers)) {
+        if (array_key_exists($command->commandName(), $this->handlers)) {
             $this->transactionManager->begin();
 
             try {
                 $this->handlers[$command->commandName()]($command);
                 $this->transactionManager->commit();
-            } catch (\Throwable $exception) {
+            } catch (Throwable $exception) {
                 $this->transactionManager->rollback();
 
                 throw $exception;

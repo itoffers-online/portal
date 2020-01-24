@@ -30,6 +30,7 @@ use HireInSocial\Offers\Application\Command\Offer\PostOffer;
 use HireInSocial\Offers\Application\Command\Offer\RemoveOffer;
 use HireInSocial\Offers\Application\Command\Twitter\TweetAboutOffer;
 use HireInSocial\Offers\Application\Exception\Exception;
+use HireInSocial\Offers\Application\FeatureToggle\PostNewOffersFeature;
 use HireInSocial\Offers\Offers;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
@@ -79,6 +80,10 @@ final class OfferController extends AbstractController
 
     public function postAction(Request $request) : Response
     {
+        if ($this->offers->featureQuery()->isDisabled(PostNewOffersFeature::NAME)) {
+            return $this->render('@offers/offer/posting_disabled.html.twig');
+        }
+
         return $this->render('@offers/offer/post.html.twig', [
             'specializations' => $this->offers->specializationQuery()->all(),
         ]);
@@ -86,6 +91,10 @@ final class OfferController extends AbstractController
 
     public function newAction(string $specSlug, Request $request) : Response
     {
+        if ($this->offers->featureQuery()->isDisabled(PostNewOffersFeature::NAME)) {
+            return $this->render('@offers/offer/posting_disabled.html.twig');
+        }
+
         if (!$request->getSession()->has(FacebookController::USER_SESSION_KEY)) {
             $this->logger->debug('Not authenticated, redirecting to facebook login.');
 

@@ -36,6 +36,11 @@ final class System
     private $queries;
 
     /**
+     * @var FeatureToggle
+     */
+    private $featureToggle;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -45,16 +50,21 @@ final class System
      */
     private $calendar;
 
-    public function __construct(CommandBus $commandBus, Queries $queries, LoggerInterface $logger, Calendar $calendar)
+    public function __construct(CommandBus $commandBus, Queries $queries, FeatureToggle $featureToggle, LoggerInterface $logger, Calendar $calendar)
     {
         $this->commandBus = $commandBus;
         $this->queries = $queries;
+        $this->featureToggle = $featureToggle;
         $this->logger = $logger;
         $this->calendar = $calendar;
     }
 
     public function handle(Command $command) : void
     {
+        if ($this->featureToggle->isDisabled($command)) {
+            throw new Exception(\sprintf("Sorry, %s is currently disabled", $command->commandName()));
+        }
+
         try {
             $this->commandBus->handle($command);
         } catch (Throwable $exception) {
