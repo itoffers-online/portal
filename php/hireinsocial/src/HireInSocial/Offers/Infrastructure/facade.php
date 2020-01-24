@@ -30,8 +30,10 @@ use HireInSocial\Offers\Application\Command\User\BlockUserHandler;
 use HireInSocial\Offers\Application\Command\User\FacebookConnectHandler;
 use HireInSocial\Offers\Application\Config;
 use HireInSocial\Offers\Application\Facebook\FacebookGroupService;
+use HireInSocial\Offers\Application\FeatureToggle;
 use HireInSocial\Offers\Application\Offer\EmailFormatter;
 use HireInSocial\Offers\Application\Offer\Throttling;
+use HireInSocial\Offers\Application\Query\Features\FeatureToggleQuery;
 use HireInSocial\Offers\Application\System;
 use HireInSocial\Offers\Application\System\CommandBus;
 use HireInSocial\Offers\Application\System\Queries;
@@ -168,6 +170,12 @@ function offersFacade(Config $config) : Offers
     $encoder = new SHA256Encoder();
     $emailFormatter = new EmailFormatter($twig);
 
+    $featureToggle = new FeatureToggle(
+        new FeatureToggle\PostNewOffersFeature(
+            $config->getBool(Config::FEATURE_POST_NEW_OFFERS)
+        )
+    );
+
     return new Offers(
         new System(
             new CommandBus(
@@ -245,8 +253,10 @@ function offersFacade(Config $config) : Offers
                 new DbalExtraOffersQuery($dbalConnection),
                 new DbalApplicationQuery($dbalConnection, $encoder),
                 new DbalFacebookFacebookQuery($dbalConnection),
-                new DbalTweetsQuery($dbalConnection)
+                new DbalTweetsQuery($dbalConnection),
+                new FeatureToggleQuery($featureToggle)
             ),
+            $featureToggle,
             $systemLogger,
             $calendar
         ),

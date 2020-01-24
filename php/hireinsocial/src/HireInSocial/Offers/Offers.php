@@ -15,6 +15,7 @@ namespace HireInSocial\Offers;
 
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Query\Facebook\FacebookQuery;
+use HireInSocial\Offers\Application\Query\Features\FeatureToggleQuery;
 use HireInSocial\Offers\Application\Query\Offer\ApplicationQuery;
 use HireInSocial\Offers\Application\Query\Offer\OfferQuery;
 use HireInSocial\Offers\Application\Query\Offer\OfferThrottleQuery;
@@ -137,6 +138,17 @@ final class Offers
 
         if (!$query instanceof ExtraOffersQuery) {
             throw new Exception("Expected ExtraOffersQuery but got " . \get_class($query));
+        }
+
+        return $query;
+    }
+
+    public function featureQuery() : FeatureToggleQuery
+    {
+        $query = $this->system->query(FeatureToggleQuery::class);
+
+        if (!$query instanceof FeatureToggleQuery) {
+            throw new Exception("Expected FeatureToggleQuery but got " . \get_class($query));
         }
 
         return $query;

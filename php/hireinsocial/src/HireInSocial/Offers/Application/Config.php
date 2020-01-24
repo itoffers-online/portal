@@ -80,6 +80,8 @@ final class Config
 
     public const TWITTER_ACCESS_TOKEN_SECRET = 'twitter_access_token_secret';
 
+    public const FEATURE_POST_NEW_OFFERS = 'feature_post_new_offers';
+
     /**
      * @var mixed[]|string[]
      */
@@ -123,6 +125,7 @@ final class Config
             self::TWITTER_API_SECRET_KEY => getenv('HIS_TWITTER_API_SECRET_KEY'),
             self::TWITTER_ACCESS_TOKEN => getenv('HIS_TWITTER_ACCESS_TOKEN'),
             self::TWITTER_ACCESS_TOKEN_SECRET => getenv('HIS_TWITTER_ACCESS_TOKEN_SECRET'),
+            self::FEATURE_POST_NEW_OFFERS => \filter_var(getenv('HIS_FEATURE_POST_NEW_OFFERS'), FILTER_VALIDATE_BOOLEAN),
         ]);
     }
 
@@ -133,6 +136,15 @@ final class Config
         }
 
         return (string) $this->config[$key];
+    }
+
+    public function getBool(string $key) : bool
+    {
+        if (!$this->has($key)) {
+            throw new RuntimeException(sprintf('Missing config key: %s', $key));
+        }
+
+        return (bool) $this->config[$key];
     }
 
     /**
