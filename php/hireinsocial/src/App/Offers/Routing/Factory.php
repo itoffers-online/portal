@@ -41,6 +41,14 @@ final class Factory
             'offer_apply'
         );
         $routes->addRoute(
+            new Route('/offers/{offerSlug}/thumbnail', ['_controller' => [OfferController::class, 'thumbnailAction']]),
+            'offer_thumbnail'
+        );
+        $routes->addRoute(
+            new Route('/specialization/{specializationSlug}/thumbnail', ['_controller' => [SpecializationController::class, 'thumbnailAction']]),
+            'specialization_thumbnail'
+        );
+        $routes->addRoute(
             new Route('/recaptcha/verify', ['_controller' => [ReCaptchaController::class, 'verifyAction']]),
             'recaptcha_verify'
         );

@@ -11,17 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Offers\Twig\Extension;
+namespace HireInSocial\Offers\UserInterface;
 
-use App\Offers\Country\Countries;
-use App\Offers\Twig\Extension\OfferExtension\MetricSuffix;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer;
+use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Location;
+use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Salary;
+use HireInSocial\Offers\UserInterface\Country\Countries;
 use Stidges\CountryFlags\CountryFlag;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 
-final class OfferExtension extends AbstractExtension
+final class OfferExtension
 {
     /**
      * @var string
@@ -33,27 +32,45 @@ final class OfferExtension extends AbstractExtension
         $this->locale = $locale;
     }
 
-    public function getFilters() : array
-    {
-        return [
-            new TwigFilter('offer_seniority_level_name', [$this, 'seniorityLevelName']),
-            new TwigFilter('offer_salary_integer', [$this, 'salaryInteger']),
-            new TwigFilter('offer_salary_integer_short', [$this, 'salaryIntegerShort']),
-            new TwigFilter('offer_locale_country_flag', [$this, 'localeCountryFlag']),
-            new TwigFilter('offer_location_country_flag', [$this, 'locationCountryFlag']),
-            new TwigFilter('offer_location_country_name', [$this, 'locationCountryName']),
-            new TwigFilter('offer_older_than', [$this, 'olderThan']),
-        ];
-    }
-
     public function salaryInteger(int $amount) : string
     {
         return (\NumberFormatter::create($this->locale, \NumberFormatter::DEFAULT_STYLE))->format($amount);
     }
 
+    public function salaryType(Salary $salary) : string
+    {
+        if ($salary->isNet()) {
+            return 'net ' . ($salary->periodTypeTotal() ? ' in total' : 'per ' . \mb_strtolower($salary->periodType()));
+        }
+
+        return 'gross ' . ($salary->periodTypeTotal() ? ' in total' : 'per ' . \mb_strtolower($salary->periodType()));
+    }
+
+    public function locationText(Location $location) : string
+    {
+        if ($location->isRemote()) {
+            return 'Remote';
+        }
+
+        return \sprintf("%s, %s", $this->locationCountryName($location->countryCode()), $location->city());
+    }
+
     public function salaryIntegerShort(int $amount) : string
     {
         return (new MetricSuffix($amount, $this->locale))->convert();
+    }
+
+    public function workType(Location $location) : string
+    {
+        if ($location->isAtOffice()) {
+            return 'At Office';
+        }
+
+        if ($location->isPartiallyRemote()) {
+            return 'Partially Remote';
+        }
+
+        return 'Remote';
     }
 
     public function seniorityLevelName(int $level) : string

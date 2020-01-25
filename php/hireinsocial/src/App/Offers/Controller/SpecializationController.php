@@ -14,13 +14,15 @@ declare(strict_types=1);
 namespace App\Offers\Controller;
 
 use App\Offers\Form\Type\OfferFilterType;
-use App\Offers\Twig\Extension\OfferExtension;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
 use HireInSocial\Offers\Offers;
+use HireInSocial\Offers\UserInterface\OfferExtension;
+use HireInSocial\Offers\UserInterface\SpecializationThumbnail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 final class SpecializationController extends AbstractController
 {
@@ -34,12 +36,19 @@ final class SpecializationController extends AbstractController
      */
     private $parameterBag;
 
+    /**
+     * @var SpecializationThumbnail
+     */
+    private $specializationThumbnail;
+
     public function __construct(
         Offers $offers,
-        ParameterBagInterface $parameterBag
+        ParameterBagInterface $parameterBag,
+        SpecializationThumbnail $specializationThumbnail
     ) {
         $this->offers = $offers;
         $this->parameterBag = $parameterBag;
+        $this->specializationThumbnail = $specializationThumbnail;
     }
 
     public function offersAction(Request $request, string $specSlug, string $seniorityLevel = null) : Response
@@ -102,5 +111,24 @@ final class SpecializationController extends AbstractController
             'offersSeniorityLevels' => $offersSeniorityLevels,
             'seniorityLevel' => $seniorityLevel,
         ]);
+    }
+
+    public function thumbnailAction(Request $request, string $specializationSlug) : Response
+    {
+        $specialization = $this->offers->specializationQuery()->findBySlug($specializationSlug);
+
+        if (!$specialization) {
+            throw $this->createNotFoundException();
+        }
+
+        $thumbnailPath = $this->specializationThumbnail->large($specialization, false);
+
+        $response = new Response();
+        $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, \basename($thumbnailPath));
+        $response->headers->set('Content-Disposition', $disposition);
+        $response->headers->set('Content-Type', 'image/png');
+        $response->setContent(\file_get_contents($thumbnailPath));
+
+        return $response;
     }
 }

@@ -2,8 +2,10 @@
 <?php
 
 use App\Offers\Command\Offer\RemoveOffer;
+use App\Offers\Command\Offer\ThumbnailRegenerate as OfferThumbnailRegenerate;
 use App\Offers\Command\Specialization\RemoveTwitterChannel;
 use App\Offers\Command\Specialization\SetTwitterChannel;
+use App\Offers\Command\Specialization\ThumbnailRegenerate;
 use App\Offers\Command\User\AddExtraOffers;
 use App\Offers\Command\User\BlockUser;
 use HireInSocial\Offers\Application\Config;
@@ -11,6 +13,10 @@ use App\Offers\Command\Specialization\CreateSpecialization;
 use App\Offers\Command\Specialization\RemoveFacebookChannel;
 use App\Offers\Command\Specialization\SetFacebookChannel;
 use App\Offers\Command\System\PerformanceCheckCommand;
+use HireInSocial\Offers\Infrastructure\Imagine\UserInterface\ImagineOfferThumbnail;
+use HireInSocial\Offers\Infrastructure\Imagine\UserInterface\ImagineSpecializationThumbnail;
+use HireInSocial\Offers\UserInterface\OfferExtension;
+use HireInSocial\Offers\UserInterface\SpecializationExtension;
 use Symfony\Component\Console\Application;
 use App\Offers\Command\Offer\Test;
 use function HireInSocial\Offers\Infrastructure\bootstrap;
@@ -34,7 +40,15 @@ $application->add(new RemoveFacebookChannel($offers));
 $application->add(new RemoveTwitterChannel($offers));
 $application->add(new PerformanceCheckCommand($offers, $config));
 $application->add(new RemoveOffer($offers));
+$application->add(new OfferThumbnailRegenerate(
+    $offers,
+    new ImagineOfferThumbnail($config->getString(Config::ROOT_PATH), new OfferExtension($config->getString(Config::LOCALE)))
+));
 $application->add(new BlockUser($offers));
 $application->add(new AddExtraOffers($offers));
+$application->add(new ThumbnailRegenerate(
+    $offers,
+    new ImagineSpecializationThumbnail($config->getString(Config::ROOT_PATH), new SpecializationExtension($config->getString(Config::LOCALE)))
+));
 
 $application->run();

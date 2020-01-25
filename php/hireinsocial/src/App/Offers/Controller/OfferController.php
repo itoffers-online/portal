@@ -32,6 +32,7 @@ use HireInSocial\Offers\Application\Command\Twitter\TweetAboutOffer;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\FeatureToggle\PostNewOffersFeature;
 use HireInSocial\Offers\Offers;
+use HireInSocial\Offers\UserInterface\OfferThumbnail;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,6 +40,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class OfferController extends AbstractController
@@ -62,6 +64,11 @@ final class OfferController extends AbstractController
     private $parameterBag;
 
     /**
+     * @var OfferThumbnail
+     */
+    private $offerThumbnail;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -70,12 +77,14 @@ final class OfferController extends AbstractController
         Offers $offers,
         Facebook $facebook,
         ParameterBagInterface $parameterBag,
+        OfferThumbnail $offerThumbnail,
         LoggerInterface $logger
     ) {
         $this->offers = $offers;
         $this->facebook = $facebook;
         $this->logger = $logger;
         $this->parameterBag = $parameterBag;
+        $this->offerThumbnail = $offerThumbnail;
     }
 
     public function postAction(Request $request) : Response
@@ -281,5 +290,24 @@ final class OfferController extends AbstractController
         $email = sprintf($this->parameterBag->get('apply_email_template'), $offer->emailHash());
 
         return new JsonResponse(['email' => $email]);
+    }
+
+    public function thumbnailAction(Request $request, string $offerSlug) : Response
+    {
+        $offer = $this->offers->offerQuery()->findBySlug($offerSlug);
+
+        if (!$offer) {
+            throw $this->createNotFoundException();
+        }
+
+        $thumbnailPath = $this->offerThumbnail->large($offer, false);
+
+        $response = new Response();
+        $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, \basename($thumbnailPath));
+        $response->headers->set('Content-Disposition', $disposition);
+        $response->headers->set('Content-Type', 'image/png');
+        $response->setContent(\file_get_contents($thumbnailPath));
+
+        return $response;
     }
 }

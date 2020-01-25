@@ -22,16 +22,24 @@ use App\Offers\Controller\SpecializationController;
 use App\Offers\Controller\StaticController;
 use App\Offers\Controller\UserController;
 use App\Offers\Routing\Factory;
-use App\Offers\Twig\Extension\FacebookExtension;
-use App\Offers\Twig\Extension\OfferExtension;
+use App\Offers\Twig\Extension\TwigFacebookExtension;
+use App\Offers\Twig\Extension\TwigOfferExtension;
+use App\Offers\Twig\Extension\TwigSpecializationExtension;
 use Facebook\Facebook;
+use HireInSocial\Offers\Infrastructure\Imagine\UserInterface\ImagineOfferThumbnail;
+use HireInSocial\Offers\Infrastructure\Imagine\UserInterface\ImagineSpecializationThumbnail;
 use HireInSocial\Offers\Offers;
+use HireInSocial\Offers\UserInterface\OfferExtension;
+use HireInSocial\Offers\UserInterface\OfferThumbnail;
+use HireInSocial\Offers\UserInterface\SpecializationExtension;
+use HireInSocial\Offers\UserInterface\SpecializationThumbnail;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use Twig\Extensions\DateExtension;
@@ -94,6 +102,19 @@ final class SymfonyKernel extends Kernel
 
         $c->register(Offers::class)->setSynthetic(true);
 
+        $c->register(OfferExtension::class)
+            ->addArgument($this->frameworkConfig['framework']['default_locale']);
+        $c->register(SpecializationExtension::class)
+            ->addArgument($this->frameworkConfig['framework']['default_locale']);
+
+        $c->register(OfferThumbnail::class, ImagineOfferThumbnail::class)
+            ->addArgument($this->getProjectDir())
+            ->addArgument(new Reference(OfferExtension::class));
+
+        $c->register(SpecializationThumbnail::class, ImagineSpecializationThumbnail::class)
+            ->addArgument($this->getProjectDir())
+            ->addArgument(new Reference(SpecializationExtension::class));
+
         $c->autowire(Facebook::class)
             ->addArgument([
                 'app_id' => $this->frameworkConfig['facebook']['app_id'],
@@ -104,12 +125,15 @@ final class SymfonyKernel extends Kernel
             $c->setParameter($key, $value);
         }
 
-        $c->register(FacebookExtension::class)->addTag('twig.extension');
         $c->register(IntlExtension::class)->addTag('twig.extension');
         $c->register(TextExtension::class)->addTag('twig.extension');
         $c->register(DateExtension::class)->addTag('twig.extension');
-        $c->register(OfferExtension::class)
-            ->addArgument($this->frameworkConfig['framework']['default_locale'])
+        $c->register(TwigFacebookExtension::class)->addTag('twig.extension');
+        $c->register(TwigOfferExtension::class)
+            ->addArgument(new Reference(OfferExtension::class))
+            ->addTag('twig.extension');
+        $c->register(TwigSpecializationExtension::class)
+            ->addArgument(new Reference(SpecializationExtension::class))
             ->addTag('twig.extension');
 
         $c->autowire(IndexController::class)->addTag('controller.service_arguments');
