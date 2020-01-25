@@ -57,6 +57,8 @@ final class SpecializationExtension
                 return 'Android';
             case 'data-science':
                 return 'Data Science';
+            case 'scala':
+                return 'Scala';
             default:
                 return 'No Name';
         }
