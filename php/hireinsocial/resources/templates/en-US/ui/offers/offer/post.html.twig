@@ -11,7 +11,7 @@
                             <div class="card-title text-center mt-2">
                                 <h2>
                                     <a class="text-decoration-none" href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">
-                                        {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
+                                        {{ specialization.slug|specialization_name }}
                                     </a>
                                 </h2>
                                 <div class="logo">

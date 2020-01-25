@@ -8,6 +8,7 @@
 {% if offer|offer_older_than(his.old_offer_days) == true %}
     <meta name="robots" content="noindex">
 {% endif %}
+    <meta property="og:img" content="{{ url('offer_thumbnail', {'offerSlug': offer.slug}) }}" />
     <meta property="og:url" content="{{ url('offer', {'offerSlug': offer.slug}) }}" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="{{ offer.locale }}" />
@@ -21,7 +22,7 @@
 {% block stylesheets %}
 {{ parent() }}
 <style type="text/css">
-    .specialization-logo svg {
+    .specialization-logo img {
         width: 7.5rem;
     }
 </style>
@@ -84,7 +85,7 @@
         {% if offer|offer_older_than(his.old_offer_days) == true %}
         <div class="alert alert-danger text-center font-weight-bold">
             This offer was posted more than {{ his.old_offer_days }} ago.
-            You might want to check latest job offers in <a href="{{ url('specialization_offers', {specSlug: offer.specializationSlug}) }}">{% include '@offers/specialization/_name.html.twig' with {specialization: offer.specializationSlug} only %}</a> specialization.
+            You might want to check latest job offers in <a href="{{ url('specialization_offers', {specSlug: offer.specializationSlug}) }}">{{ specialization.slug|specialization_name }}</a> specialization.
         </div>
         {% endif %}
         <div class="row pb-4 d-none d-lg-flex">
@@ -292,7 +293,7 @@
                 </div>
                 <div id="tags" class="pt-4 text-right d-none d-lg-block">
                     <section class="mb-2">
-                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted mr-2">{% include '@offers/specialization/_name.html.twig' with {specialization: offer.specializationSlug} only %}</span>
+                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted mr-2">{{ offer.specializationSlug|specialization_name }}</span>
                         <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">{{ offer.position.seniorityLevel|offer_seniority_level_name }}</span>
                     </section>
                     <section class="mb-2">

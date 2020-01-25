@@ -3,7 +3,7 @@
 {% block stylesheets %}
 {{ parent() }}
 <style type="text/css">
-    .specialization .logo svg {
+    .specialization .logo img {
         max-width: 100px;
     }
 </style>
@@ -30,7 +30,7 @@
                     <div class="card-title text-center mt-2 pb-2">
                         <h4 class="font-weight-light">
                             <a class="text-decoration-none" href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
-                            {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
+                            {{ specialization.slug|specialization_name }}
                             </a>
                         </h4>
                         <div class="logo">

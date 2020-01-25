@@ -5,21 +5,22 @@
 {% block stylesheets %}
 {{ parent() }}
 <style type="text/css">
-    .spec-logo svg {
+    .spec-logo img {
         width: 2.5rem;
     }
 </style>
 {% endblock %}
 
-{% block title %}{% if seniorityLevel is not null %}{{ seniorityLevel|offer_seniority_level_name }} - {% endif %}{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %} - Job Offers{% endblock %}
+{% block title %}{% if seniorityLevel is not null %}{{ seniorityLevel|offer_seniority_level_name }} - {% endif %}{{ specialization.slug|specialization_title }}{% endblock %}
 
 {% block meta %}
+    <meta property="og:img" content="{{ url('specialization_thumbnail', {specializationSlug: specialization.slug}) }}" />
     <meta property="og:url" content="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="{{ offer.locale }}" />
     <meta property="og:description" content="The best job offers for IT Specialists" />
     <meta property="fb:app_id" content="{{ facebook.app_id }}" />
-    <meta property="og:title" content="{% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}{% if seniorityLevel is not null %} - {{ seniorityLevel|offer_seniority_level_name }}{% endif %} - Job Offers" />
+    <meta property="og:title" content="{{ specialization.slug|specialization_name }}{% if seniorityLevel is not null %} - {{ seniorityLevel|offer_seniority_level_name }}{% endif %} - Job Offers" />
 {% endblock %}
 
 {% block body %}
@@ -34,7 +35,7 @@
                     {% if seniorityLevel is not null %}
                         {{ seniorityLevel|offer_seniority_level_name }} -
                     {% endif %}
-                    {% include '@offers/specialization/_name.html.twig' with {specialization: specialization.slug} only %}
+                    {{ specialization.slug|specialization_name }}
                 </h2>
             </div>
             <div class="col-lg-2 d-none d-lg-flex">

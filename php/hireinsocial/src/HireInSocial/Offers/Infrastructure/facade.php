@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Infrastructure;
 
-use App\Offers\Twig\Extension\OfferExtension;
+use App\Offers\Twig\Extension\TwigOfferExtension;
 use Facebook\Facebook;
 use HireInSocial\Offers\Application\Command\Facebook\PagePostOfferAtGroupHandler;
 use HireInSocial\Offers\Application\Command\Offer\ApplyThroughEmailHandler;
@@ -62,6 +62,7 @@ use HireInSocial\Offers\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Offers\Infrastructure\SwiftMailer\System\SwiftMailer;
 use HireInSocial\Offers\Infrastructure\Twitter\OAuthTwitter;
 use HireInSocial\Offers\Offers;
+use HireInSocial\Offers\UserInterface\OfferExtension;
 use HireInSocial\Tests\Offers\Application\Double\Dummy\DummyFacebook;
 use HireInSocial\Tests\Offers\Application\Double\Dummy\DummyTwitter;
 use HireInSocial\Tests\Offers\Application\Double\Stub\CalendarStub;
@@ -87,7 +88,7 @@ function offersFacade(Config $config) : Offers
     $twig->addGlobal('apply_email_template', $config->getString(Config::APPLY_EMAIL_TEMPLATE));
     $twig->addGlobal('domain', $config->getString(Config::DOMAIN));
 
-    $twig->addExtension(new OfferExtension($config->getString(Config::LOCALE)));
+    $twig->addExtension(new TwigOfferExtension(new OfferExtension($config->getString(Config::LOCALE))));
 
     switch ($config->getString(Config::ENV)) {
         case 'prod':

@@ -16,7 +16,7 @@ namespace App\Offers\Twig\Extension;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-final class FacebookExtension extends AbstractExtension
+final class TwigFacebookExtension extends AbstractExtension
 {
     public function getFilters()
     {

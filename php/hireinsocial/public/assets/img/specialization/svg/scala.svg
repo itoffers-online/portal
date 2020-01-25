@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+    <rect width="100%" height="100%" fill="#ffffff"/>
+    <defs>
+        <linearGradient id="A" x1="0.17%" x2="99.82%" y1="49.65%" y2="49.65%">
+            <stop offset="0%" stop-color="#656565"/>
+            <stop offset="100%" stop-color="#010101"/>
+        </linearGradient>
+        <linearGradient id="B" x1="0.17%" x2="99.82%" y1="50.05%" y2="50.05%">
+            <stop offset="0%" stop-color="#9f1c20"/>
+            <stop offset="100%" stop-color="#ed2224"/>
+        </linearGradient>
+        <filter id="blackandwhite">
+            <feColorMatrix type="matrix" values="0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 1 0 "/>
+        </filter>
+    </defs>
+    <g fill="url(#A)" filter="url(#blackandwhite)">
+        <path d="M20.5 52.8077s90 6.3462 90 16.923V44.3462s0-10.577-90-16.923z"/>
+        <path d="M20.5 86.6538s90 6.3462 90 16.923V78.1923s0-10.577-90-16.923z"/>
+    </g>
+    <g fill="url(#B)" filter="url(#blackandwhite)">
+        <path d="M110.5 10.5v25.3846s0 10.577-90 16.923V27.423s90-6.3462 90-16.923"/>
+        <path d="M20.5 61.2693s90-6.3462 90-16.923v25.3846s0 10.577-90 16.923z"/>
+        <path d="M20.5 120.5V95.1154s90-6.3462 90-16.923v25.3846s0 10.577-90 16.923"/>
+    </g>
+</svg>
