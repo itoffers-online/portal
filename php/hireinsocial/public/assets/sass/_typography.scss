@@ -1,0 +1,34 @@
+// LIGHT
+@font-face {
+  font-family: 'WorkSans';
+  src: url('#{$assets-path}/font/work-sans/WorkSans-Light.ttf');
+  font-weight: 300;
+}
+
+// REGULAR
+@font-face {
+  font-family: 'WorkSans';
+  src: url('#{$assets-path}/font/work-sans/WorkSans-Regular.ttf');
+  font-weight: 400;
+}
+
+// MEDIUM
+@font-face {
+  font-family: 'WorkSans';
+  src: url('#{$assets-path}/font/work-sans/WorkSans-Medium.ttf');
+  font-weight: 500;
+}
+
+// SEMIBOLD
+@font-face {
+  font-family: 'WorkSans';
+  src: url('#{$assets-path}/font/work-sans/WorkSans-SemiBold.ttf');
+  font-weight: 600;
+}
+
+// BOLD
+@font-face {
+  font-family: 'WorkSans';
+  src: url('#{$assets-path}/font/work-sans/WorkSans-Bold.ttf');
+  font-weight: 700;
+}

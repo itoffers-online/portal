@@ -147,44 +147,6 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <div class="row border-bottom pt-lg-5 pb-lg-4 pt-2 pb-2 ">
-                    <div class="col-lg-3 col-12 mb-lg-0 mb-2">
-                        <h4 class="offer-description-headline">Salary</h4>
-                    </div>
-                    <div class="col-lg-9 col-12">
-                        {% if offer.salary %}
-                        <div class="row">
-                            <div class="col-lg-3 mb-4">
-                                <h6 class="small text-gray-500 font-weight-bold">Remuneration</h6>
-                                <small><i class="text-hins-turquoise fas fa-coins mr-2"></i> {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }}</small>
-                            </div>
-                            <div class="col-lg-3 border-right">
-                                <h6 class="small text-gray-500 font-weight-bold">Periodicity</h6>
-                                <small>per {{ offer.salary.periodType }}</small>
-                            </div>
-                            <div class="col-lg-3">
-                                <h6 class="small text-gray-500 font-weight-bold">Currency</h6>
-                                <small>{{ offer.salary.currencyCode }}</small>
-                            </div>
-                            <div class="col-lg-3 ">
-                                <h6 class="small text-gray-500 font-weight-bold">Income</h6>
-                                <small>{% if offer.salary.net %}net{% else %}gross{% endif %}</small>
-                            </div>
-                        </div>
-                        {% else %}
-                            <div class="row">
-                                <div class="col">
-                                    <div class="alert alert-warning">
-                                        <small>
-                                        This offer does not provide salary details. Remember that you can make your expectations
-                                        clear at the beginning.
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
                 <div class="row border-bottom pt-lg-5 pb-lg-4 pt-2 pb-2">
                     <div class="col-lg-3 col-12">
                         <h4 class="offer-description-headline mb-4">Job Description</h4>
