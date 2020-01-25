@@ -8,7 +8,7 @@
 {% if offer|offer_older_than(his.old_offer_days) == true %}
     <meta name="robots" content="noindex">
 {% endif %}
-    <meta property="og:img" content="{{ url('offer_thumbnail', {'offerSlug': offer.slug}) }}" />
+    <meta property="og:image" content="{{ url('offer_thumbnail', {'offerSlug': offer.slug}) }}" />
     <meta property="og:url" content="{{ url('offer', {'offerSlug': offer.slug}) }}" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="{{ offer.locale }}" />

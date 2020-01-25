@@ -14,7 +14,7 @@
 {% block title %}{% if seniorityLevel is not null %}{{ seniorityLevel|offer_seniority_level_name }} - {% endif %}{{ specialization.slug|specialization_title }}{% endblock %}
 
 {% block meta %}
-    <meta property="og:img" content="{{ url('specialization_thumbnail', {specializationSlug: specialization.slug}) }}" />
+    <meta property="og:image" content="{{ url('specialization_thumbnail', {specializationSlug: specialization.slug}) }}" />
     <meta property="og:url" content="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="{{ offer.locale }}" />
