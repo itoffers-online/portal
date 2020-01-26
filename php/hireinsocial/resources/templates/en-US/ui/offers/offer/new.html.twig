@@ -236,7 +236,7 @@
                         <label class="switch-custom custom-control-label" for="offer_post_at_homepage">{{ specialization.slug|specialization_name }} offers list</label>
                     </div>
                 </div>
-                {% if specialization.facebookChannel %}
+                {% if specialization.facebookChannel and postOfferAtFacebookGroupEnabled %}
                     {{ form_row(form.channels.facebook_group, {
                         label: "Facebook Group",
                         attr: {checked:"checked"},
@@ -246,11 +246,11 @@
                     {{ form_row(form.channels.facebook_group, {
                         label: "Facebook Group",
                         label_attr: {class: "switch-custom"},
-                        attr: { disabled: "disabled" },
-                        help: "This specialization does not have Facebook group yet"
+                        attr: { disabled: "disabled"},
+                        help: "Features not available yet in this specialization."
                     }) }}
                 {% endif %}
-                {% if specialization.twitterChannel %}
+                {% if specialization.twitterChannel and tweetAboutOfferEnabled %}
                     {{ form_row(form.channels.twitter, {
                         label: "Twitter",
                         attr: {checked:"checked"},
@@ -260,13 +260,15 @@
                     {{ form_row(form.channels.twitter, {
                         label: "Twitter",
                         label_attr: {class: "switch-custom"},
-                        attr: { disabled: "disabled" },
-                        help: "This specialization does not have Twitter account yet"
+                        attr: { disabled: "disabled"},
+                        help: "Features not available yet in this specialization."
                     }) }}
                 {% endif %}
+                {% if postOfferAtFacebookGroupEnabled %}
                 <p class="small text-muted">
                     Job offers at Facebook are posted by our <a href="{{ facebook.page_url }}" target="_blank">page</a>, not your personal account used to login.
                 </p>
+                {% endif %}
             </div>
         </div>
         <div class="mt-4">

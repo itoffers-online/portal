@@ -38,4 +38,14 @@ final class FeatureToggleQuery implements Query
             return false;
         }
     }
+
+    public function isEnabled(string $featureName) : bool
+    {
+        try {
+            return $this->featureToggle->get($featureName)->isEnabled();
+        } catch (Exception $e) {
+            // what does not exist, can't be disabled
+            return false;
+        }
+    }
 }

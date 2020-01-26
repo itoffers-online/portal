@@ -20,10 +20,10 @@
         </div>
     </div>
 </div>
-<div class="container-fluid mt-4">
+<div class="container-fluid pt-4 bg-light">
     <div class="container">
-        <h4>Specializations</h4>
-        <div class="row">
+        <h3>Specializations</h3>
+        <div class="row mt-4">
             {% for specialization in specializations %}
             <div class="col-md-2 mb-4">
                 <div class="card specialization" data-href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
@@ -43,7 +43,46 @@
             </div>
             {% endfor %}
         </div>
-        <hr />
+        {% if specializations.filterWithFacebook|length or specializations.filterWithTwitter|length %}
+        <h3 class="mt-4">Social Media</h3>
+        <p class="small">
+            Job offers for IT people are automatically published at below social media networks.
+        </p>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h4><i class="fab fa-facebook-square text-hins-blue"></i> Facebook Groups</h4>
+                <div class="row mt-4">
+                    {% for specialization in specializations.filterWithFacebook %}
+                        <div class="col-md-6 mb-4">
+                            <div id="fb-grop-{{ specialization.slug }}" class="fb-group" data-href="{{ specialization.facebookChannel.groupId|fb_group_url }}" data-show-social-context="true" data-show-metadata="false"></div>
+                        </div>
+                    {% else %}
+                        <div class="col-md-12 mb-4">
+                            <h4>Coming Soon!</h4>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h4><i class="fab fa-twitter-square text-hins-blue"></i> Twitter Accounts</h4>
+                <div class="row mt-4">
+                    {% for specialization in specializations.filterWithTwitter %}
+                        <div class="col-md-6 mb-4">
+                            <a class="twitter-follow-button"
+                               href="https://twitter.com/{{ specialization.twitterChannel.screenName }}"
+                               data-size="large">
+                            Follow @{{ specialization.twitterChannel.screenName }}
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="col-md-12 mb-4">
+                            <h4>Coming Soon!</h4>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

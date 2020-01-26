@@ -8,6 +8,9 @@
     .spec-logo img {
         width: 2.5rem;
     }
+    .spec-logo-no-offers img {
+        width: 12rem;
+    }
 </style>
 {% endblock %}
 
@@ -102,6 +105,7 @@
 </div>
 <div class="container-fluid pt-3 bg-light">
     <div class="container">
+        {% if offers|length %}
         <div class="row d-none d-lg-block">
             <div class="col-lg-12">
                 <p class="alert alert-info text-center">
@@ -110,6 +114,7 @@
                 </p>
             </div>
         </div>
+        {% endif %}
         <div class="row offers">
             {% for offer in offers %}
                 <div data-href="{{ url('offer', {'offerSlug': offer.slug}) }}" data-offer-id="{{ offer.id }}" class="col-lg-4 mb-4">
@@ -150,11 +155,21 @@
                     </div>
                 </div>
             {% else %}
-                <div class="col-md-12 mt-4 mb-4">
-                    <div class="alert alert-warning text-center">
-                        Sorry, currently we don't have any interesting offers in this specialization, please try again later or
-                        <a href="{{ url('offer_new', {specSlug: specialization.slug}) }}">post a new offer.</a>
+                <div class="container">
+                <section class="text-center">
+                    <div class="container pt-5 pb-5">
+                        <div class="spec-logo-no-offers mt-4 mb-4">
+                        {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
+                        </div>
+                        <h1 class="jumbotron-heading">Sorry</h1>
+                        <p class="lead text-muted">
+                            Currently we don't have any interesting offers in this specialization, please try again later or
+                        </p>
+                        <p>
+                            <a href="{{ url('offer_new', {specSlug: specialization.slug}) }}" class="btn btn-primary my-2">Post a Job</a>
+                        </p>
                     </div>
+                </section>
                 </div>
             {% endfor %}
         </div>

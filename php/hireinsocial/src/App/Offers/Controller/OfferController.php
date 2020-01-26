@@ -31,6 +31,8 @@ use HireInSocial\Offers\Application\Command\Offer\RemoveOffer;
 use HireInSocial\Offers\Application\Command\Twitter\TweetAboutOffer;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\FeatureToggle\PostNewOffersFeature;
+use HireInSocial\Offers\Application\FeatureToggle\PostOfferAtFacebookGroupFeature;
+use HireInSocial\Offers\Application\FeatureToggle\TweetAboutOfferFeature;
 use HireInSocial\Offers\Offers;
 use HireInSocial\Offers\UserInterface\OfferThumbnail;
 use Psr\Log\LoggerInterface;
@@ -172,14 +174,14 @@ final class OfferController extends AbstractController
 
                 $offer = $this->offers->offerQuery()->findById($offerId);
 
-                if ((bool) $offerData['channels']['facebook_group']) {
+                if ($this->offers->featureQuery()->isEnabled(PostOfferAtFacebookGroupFeature::NAME) && (bool) $offerData['channels']['facebook_group']) {
                     $this->offers->handle(new PagePostOfferAtGroup(
                         $offerId,
                         $this->renderView('@offers/facebook/page/group/offer.txt.twig', ['offer' => $offer]),
                     ));
                 }
 
-                if ((bool) $offerData['channels']['twitter']) {
+                if ($this->offers->featureQuery()->isEnabled(TweetAboutOfferFeature::NAME) && (bool) $offerData['channels']['twitter']) {
                     $this->offers->handle(new TweetAboutOffer(
                         $offerId,
                         $this->renderView('@offers/twitter/offer.txt.twig', ['offer' => $offer]),
@@ -202,6 +204,8 @@ final class OfferController extends AbstractController
             'throttleSince' => $this->offers->offerThrottleQuery()->since(),
             'extraOffersCount' => $this->offers->extraOffersQuery()->countNotExpired($userId),
             'previousOfferData' => $previousOfferData,
+            'postOfferAtFacebookGroupEnabled' => $this->offers->featureQuery()->isEnabled(PostOfferAtFacebookGroupFeature::NAME),
+            'tweetAboutOfferEnabled' => $this->offers->featureQuery()->isEnabled(TweetAboutOfferFeature::NAME),
         ]);
     }
 

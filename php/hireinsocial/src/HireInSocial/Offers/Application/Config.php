@@ -82,6 +82,10 @@ final class Config
 
     public const FEATURE_POST_NEW_OFFERS = 'feature_post_new_offers';
 
+    public const FEATURE_POST_OFFER_AT_FACEBOOK = 'feature_post_offer_at_facebook';
+
+    public const FEATURE_TWEET_ABOUT_OFFER = 'feature_tweet_about_offer';
+
     /**
      * @var mixed[]|string[]
      */
@@ -126,6 +130,8 @@ final class Config
             self::TWITTER_ACCESS_TOKEN => getenv('HIS_TWITTER_ACCESS_TOKEN'),
             self::TWITTER_ACCESS_TOKEN_SECRET => getenv('HIS_TWITTER_ACCESS_TOKEN_SECRET'),
             self::FEATURE_POST_NEW_OFFERS => \filter_var(getenv('HIS_FEATURE_POST_NEW_OFFERS'), FILTER_VALIDATE_BOOLEAN),
+            self::FEATURE_POST_OFFER_AT_FACEBOOK => \filter_var(getenv('HIS_FEATURE_POST_OFFER_AT_FACEBOOK'), FILTER_VALIDATE_BOOLEAN),
+            self::FEATURE_TWEET_ABOUT_OFFER => \filter_var(getenv('HIS_FEATURE_TWEET_ABOUT_OFFER'), FILTER_VALIDATE_BOOLEAN),
         ]);
     }
 
