@@ -57,6 +57,7 @@ final class SetFacebookChannel extends Command
             ->addArgument('facebook_page_id', InputArgument::REQUIRED, 'Facebook page id that will post offers into group')
             ->addArgument('facebook_page_token', InputArgument::REQUIRED, 'Facebook page id access token with publish_to_groups permission')
             ->addArgument('facebook_group_id', InputArgument::REQUIRED, 'Facebook group id where page will post offers')
+            ->addArgument('facebook_group_name', InputArgument::REQUIRED, 'Facebook group name where page will post offers')
         ;
     }
 
@@ -90,7 +91,8 @@ final class SetFacebookChannel extends Command
                 $input->getArgument('slug'),
                 $input->getArgument('facebook_page_id'),
                 $input->getArgument('facebook_page_token'),
-                $input->getArgument('facebook_group_id')
+                $input->getArgument('facebook_group_id'),
+                $input->getArgument('facebook_group_name')
             ));
         } catch (Throwable $e) {
             $this->io->error('Can\'t set specialization facebook channel, check logs for more details.');

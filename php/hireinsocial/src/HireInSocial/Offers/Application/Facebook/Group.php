@@ -22,15 +22,27 @@ final class Group
      */
     private $fbId;
 
-    public function __construct(string $fbId)
+    /**
+     * @var string
+     */
+    private $name;
+
+    public function __construct(string $fbId, string $name)
     {
         Assertion::betweenLength($fbId, 3, 255, 'Invalid FB Group ID');
+        Assertion::betweenLength($name, 3, 512, 'Invalid FB Group Name');
 
         $this->fbId = $fbId;
+        $this->name = $name;
     }
 
     public function fbId() : string
     {
         return $this->fbId;
+    }
+
+    public function name() : string
+    {
+        return $this->name;
     }
 }

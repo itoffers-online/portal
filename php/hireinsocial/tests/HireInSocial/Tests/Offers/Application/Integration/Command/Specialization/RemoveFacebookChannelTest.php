@@ -25,7 +25,7 @@ final class RemoveFacebookChannelTest extends OffersTestCase
         $slug = 'php';
 
         $this->systemContext->offersFacade()->handle(new CreateSpecialization($slug));
-        $this->systemContext->offersFacade()->handle(new SetFacebookChannel($slug, 'fb_page_id', 'fb_page_token', 'fb_group_id'));
+        $this->systemContext->offersFacade()->handle(new SetFacebookChannel($slug, 'fb_page_id', 'fb_page_token', 'fb_group_id', 'fb_group_name'));
         $this->systemContext->offersFacade()->handle(new RemoveFacebookChannel($slug));
 
         $this->assertNull(

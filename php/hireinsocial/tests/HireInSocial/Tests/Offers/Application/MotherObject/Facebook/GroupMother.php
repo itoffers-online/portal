@@ -19,6 +19,6 @@ final class GroupMother
 {
     public static function random() : Group
     {
-        return new Group('123456789');
+        return new Group('123456789', 'Job Offers');
     }
 }

@@ -49,6 +49,11 @@ class Specialization
     /**
      * @var string|null
      */
+    private $facebookChannelGroupName;
+
+    /**
+     * @var string|null
+     */
     private $twitterAccountId;
 
     /**
@@ -95,6 +100,7 @@ class Specialization
         $this->facebookChannelPageId = $facebookChannel->page()->fbId();
         $this->facebookChannelPageAccessToken = $facebookChannel->page()->accessToken();
         $this->facebookChannelGroupId = $facebookChannel->group()->fbId();
+        $this->facebookChannelGroupName = $facebookChannel->group()->name();
     }
 
     public function setTwitter(TwitterChannel $twitterChannel) : void
@@ -149,7 +155,8 @@ class Specialization
                     $this->facebookChannelPageAccessToken
                 ),
                 new Group(
-                    $this->facebookChannelGroupId
+                    $this->facebookChannelGroupId,
+                    $this->facebookChannelGroupName
                 )
             );
         }

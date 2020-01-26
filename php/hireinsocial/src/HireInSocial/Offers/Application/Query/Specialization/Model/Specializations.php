@@ -22,6 +22,9 @@ final class Specializations extends \ArrayObject
         parent::__construct($specializations);
     }
 
+    /**
+     * @return Specialization[]
+     */
     public function all() : array
     {
         return (array) $this;
@@ -58,6 +61,32 @@ final class Specializations extends \ArrayObject
                     return $specialization->is($slug);
                 }
             )
+        );
+    }
+
+    /**
+     * @return Specialization[]
+     */
+    public function filterWithFacebook() : array
+    {
+        return \array_filter(
+            (array) $this,
+            function (Specialization $specialization) {
+                return $specialization->facebookChannel();
+            }
+        );
+    }
+
+    /**
+     * @return Specialization[]
+     */
+    public function filterWithTwitter() : array
+    {
+        return \array_filter(
+            (array) $this,
+            function (Specialization $specialization) {
+                return $specialization->twitterChannel();
+            }
         );
     }
 }

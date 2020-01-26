@@ -172,9 +172,9 @@ function offersFacade(Config $config) : Offers
     $emailFormatter = new EmailFormatter($twig);
 
     $featureToggle = new FeatureToggle(
-        new FeatureToggle\PostNewOffersFeature(
-            $config->getBool(Config::FEATURE_POST_NEW_OFFERS)
-        )
+        new FeatureToggle\PostNewOffersFeature($config->getBool(Config::FEATURE_POST_NEW_OFFERS)),
+        new FeatureToggle\PostOfferAtFacebookGroupFeature($config->getBool(Config::FEATURE_POST_OFFER_AT_FACEBOOK)),
+        new FeatureToggle\TweetAboutOfferFeature($config->getBool(Config::FEATURE_TWEET_ABOUT_OFFER))
     );
 
     return new Offers(
