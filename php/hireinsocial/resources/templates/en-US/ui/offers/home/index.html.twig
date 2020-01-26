@@ -49,11 +49,11 @@
             Job offers for IT people are automatically published at below social media networks.
         </p>
         <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <h4><i class="fab fa-facebook-square text-hins-blue"></i> Facebook Groups</h4>
                 <div class="row mt-4">
                     {% for specialization in specializations.filterWithFacebook %}
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-4 mb-4">
                             <div id="fb-grop-{{ specialization.slug }}" class="fb-group" data-href="{{ specialization.facebookChannel.groupId|fb_group_url }}" data-show-social-context="true" data-show-metadata="false"></div>
                         </div>
                     {% else %}
@@ -63,11 +63,11 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <h4><i class="fab fa-twitter-square text-hins-blue"></i> Twitter Accounts</h4>
                 <div class="row mt-4">
                     {% for specialization in specializations.filterWithTwitter %}
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-12 mb-4">
                             <a class="twitter-follow-button"
                                href="https://twitter.com/{{ specialization.twitterChannel.screenName }}"
                                data-size="large">

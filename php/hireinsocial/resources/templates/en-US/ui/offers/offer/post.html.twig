@@ -9,11 +9,11 @@
                     <div class="col-md-2 mb-4">
                         <div class="card specialization">
                             <div class="card-title text-center mt-2">
-                                <h2>
-                                    <a class="text-decoration-none" href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">
+                                <h4>
+                                    <a class="text-decoration-none font-weight-light" href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">
                                         {{ specialization.slug|specialization_name }}
                                     </a>
-                                </h2>
+                                </h4>
                                 <div class="logo">
                                     <a href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">
                                         {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
