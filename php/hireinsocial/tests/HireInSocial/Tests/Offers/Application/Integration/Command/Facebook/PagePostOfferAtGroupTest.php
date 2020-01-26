@@ -31,6 +31,7 @@ final class PagePostOfferAtGroupTest extends OffersTestCase
             'page_id',
             'page_token',
             'group_id',
+            'fb_group_name'
         ));
 
         $this->systemContext->offersFacade()->handle(new PagePostOfferAtGroup($offer->id()->toString(), 'This is offer message for facebook'));

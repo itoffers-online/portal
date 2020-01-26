@@ -40,16 +40,23 @@ final class SetFacebookChannel implements Command
      */
     private $facebookGroupId;
 
+    /**
+     * @var string
+     */
+    private $facebookGroupName;
+
     public function __construct(
         string $specSlug,
         string $facebookPageId,
         string $facebookPageToken,
-        string $facebookGroupId
+        string $facebookGroupId,
+        string $facebookGroupName
     ) {
         $this->specSlug = $specSlug;
         $this->facebookPageId = $facebookPageId;
         $this->facebookPageToken = $facebookPageToken;
         $this->facebookGroupId = $facebookGroupId;
+        $this->facebookGroupName = $facebookGroupName;
     }
 
     public function specSlug() : string
@@ -70,5 +77,10 @@ final class SetFacebookChannel implements Command
     public function facebookGroupId() : string
     {
         return $this->facebookGroupId;
+    }
+
+    public function facebookGroupName() : string
+    {
+        return $this->facebookGroupName;
     }
 }

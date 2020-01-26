@@ -58,6 +58,7 @@ final class CreateSpecialization extends Command
             ->addArgument('facebook_page_id', InputArgument::OPTIONAL, 'Facebook page id that will post offers into group')
             ->addArgument('facebook_page_token', InputArgument::OPTIONAL, 'Facebook page id access token with publish_to_groups permission')
             ->addArgument('facebook_group_id', InputArgument::OPTIONAL, 'Facebook group id where page will post offers')
+            ->addArgument('facebook_group_name', InputArgument::OPTIONAL, 'Facebook group name where page will post offers')
         ;
     }
 
@@ -99,7 +100,8 @@ final class CreateSpecialization extends Command
                     $input->getArgument('slug'),
                     $input->getArgument('facebook_page_id'),
                     $input->getArgument('facebook_page_token'),
-                    $input->getArgument('facebook_group_id')
+                    $input->getArgument('facebook_group_id'),
+                    $input->getArgument('facebook_group_name')
                 ));
             }
         } catch (Throwable $e) {

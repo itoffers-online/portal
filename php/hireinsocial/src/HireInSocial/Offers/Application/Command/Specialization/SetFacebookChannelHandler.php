@@ -41,8 +41,14 @@ final class SetFacebookChannelHandler implements Handler
         $specialization = $this->specializations->get($command->specSlug());
 
         $specialization->setFacebook(new FacebookChannel(
-            new Page($command->facebookPageId(), $command->facebookPageToken()),
-            new Group($command->facebookGroupId())
+            new Page(
+                $command->facebookPageId(),
+                $command->facebookPageToken()
+            ),
+            new Group(
+                $command->facebookGroupId(),
+                $command->facebookGroupName()
+            )
         ));
     }
 }

@@ -24,7 +24,7 @@ final class GroupTest extends TestCase
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Invalid FB Group ID');
 
-        new Group(\str_repeat('1', 256));
+        new Group(\str_repeat('1', 256), 'Job Offers');
     }
 
     public function test_create_group_with_too_short_fb_id() : void
@@ -32,6 +32,6 @@ final class GroupTest extends TestCase
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Invalid FB Group ID');
 
-        new Group('1');
+        new Group('1', 'Job Offers');
     }
 }
