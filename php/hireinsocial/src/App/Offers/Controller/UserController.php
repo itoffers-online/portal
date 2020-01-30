@@ -42,15 +42,15 @@ final class UserController extends AbstractController
 
     public function profileAction(Request $request) : Response
     {
-        if (!$request->getSession()->has(FacebookController::USER_SESSION_KEY)) {
+        if (!$request->getSession()->has(SecurityController::USER_SESSION_KEY)) {
             $this->logger->debug('Not authenticated, redirecting to facebook login.');
 
             $this->redirectAfterLogin($request->getSession(), 'user_profile');
 
-            return $this->redirectToRoute('facebook_login');
+            return $this->redirectToRoute('login');
         }
 
-        $userId = $request->getSession()->get(FacebookController::USER_SESSION_KEY);
+        $userId = $request->getSession()->get(SecurityController::USER_SESSION_KEY);
 
         /** @var OfferFilter $offerFilter */
         $offerFilter = OfferFilter::all()

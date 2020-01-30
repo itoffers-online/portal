@@ -105,6 +105,10 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
             'app_id' => $config->getString(Config::FB_APP_ID),
             'app_secret' => $config->getString(Config::FB_APP_SECRET),
         ],
+        'linkedin' => [
+            'app_id' => $config->getString(Config::LINKEDIN_APP_ID),
+            'app_secret' => $config->getString(Config::LINKEDIN_APP_SECRET),
+        ],
     ];
 
     if ($config->getString(Config::ENV) === 'test') {

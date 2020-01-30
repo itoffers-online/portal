@@ -103,7 +103,7 @@
         {{ form_end(form) }}
     </div>
 </div>
-<div class="container-fluid pt-3 bg-light">
+<div class="container-fluid pt-3 {% if offers|length %}bg-light{% else %}bg-white{% endif %}">
     <div class="container">
         {% if offers|length %}
         <div class="row d-none d-lg-block">

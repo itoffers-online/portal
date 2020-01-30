@@ -15,6 +15,7 @@ namespace App\Offers\Routing;
 
 use App\Offers\Controller\FacebookController;
 use App\Offers\Controller\IndexController;
+use App\Offers\Controller\LinkedInController;
 use App\Offers\Controller\OfferController;
 use App\Offers\Controller\ReCaptchaController;
 use App\Offers\Controller\SecurityController;
@@ -53,6 +54,10 @@ final class Factory
             'recaptcha_verify'
         );
         $routes->addRoute(
+            new Route('/login', ['_controller' => [SecurityController::class, 'loginAction']]),
+            'login'
+        );
+        $routes->addRoute(
             new Route('/facebook/login', ['_controller' => [FacebookController::class, 'loginAction']]),
             'facebook_login'
         );
@@ -64,6 +69,19 @@ final class Factory
             new Route('/facebook/login/success', ['_controller' => [FacebookController::class, 'loginSuccessAction']]),
             'facebook_login_success'
         );
+        $routes->addRoute(
+            new Route('/linkedin/login', ['_controller' => [LinkedInController::class, 'loginAction']]),
+            'linkedin_login'
+        );
+        $routes->addRoute(
+            new Route('/linkedin/logout', ['_controller' => [LinkedInController::class, 'logoutAction']]),
+            'linkedin_logout'
+        );
+        $routes->addRoute(
+            new Route('/linkedin/login/success', ['_controller' => [LinkedInController::class, 'loginSuccessAction']]),
+            'linkedin_login_success'
+        );
+
 
         if (\in_array($env, ['dev', 'test'], true)) {
             $routes->import('@FrameworkBundle/Resources/config/routing/errors.xml', '/_error');

@@ -9,7 +9,7 @@
                 <div class="row">
                 {% for specialization in specializations %}
                     <div class="col-md-3 mb-4">
-                        <div class="card specialization">
+                        <div class="card specialization" data-href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}" >
                             <div class="card-title text-center mt-2">
                                 <h4>
                                     <a class="text-decoration-none font-weight-light" href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">

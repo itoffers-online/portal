@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Web;
 
-use App\Offers\Controller\FacebookController;
+use App\Offers\Controller\SecurityController;
 use HireInSocial\Offers\Application\Query\User\Model\User;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -41,6 +41,6 @@ abstract class WebTestCase extends SymfonyKernelTestCase
     {
         $client->getContainer()
             ->get('session')
-            ->set(FacebookController::USER_SESSION_KEY, $user->id());
+            ->set(SecurityController::USER_SESSION_KEY, $user->id());
     }
 }

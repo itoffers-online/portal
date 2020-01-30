@@ -19,7 +19,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200126145224 extends AbstractMigration
+final class Version20200130220714 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
@@ -36,7 +36,7 @@ final class Version20200126145224 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN his_job_offer_application.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE his_job_offer_slug (slug TEXT NOT NULL, offer_id UUID NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(slug))');
         $this->addSql('COMMENT ON COLUMN his_job_offer_slug.created_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE his_user (id UUID NOT NULL, email_address TEXT NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, blocked_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT NULL, fb_user_app_id VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE his_user (id UUID NOT NULL, email_address TEXT NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, blocked_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT NULL, fb_user_app_id VARCHAR(255) DEFAULT NULL, linked_in_user_app_id VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX idx_unique_fb_user_app_id ON his_user (fb_user_app_id)');
         $this->addSql('CREATE UNIQUE INDEX idx_unique_email ON his_user (email_address)');
         $this->addSql('COMMENT ON COLUMN his_user.created_at IS \'(DC2Type:datetime_immutable)\'');

@@ -66,6 +66,10 @@ final class Config
 
     public const FB_APP_SECRET = 'facebook_app_secret';
 
+    public const LINKEDIN_APP_ID = 'linkedin_app_id';
+
+    public const LINKEDIN_APP_SECRET = 'linkedin_app_secret';
+
     public const THROTTLE_DURATION = 'throttle_duration';
 
     public const REDIS_DB_DOCTRINE_CACHE = 'REDIS_DB_DOCTRINE_CACHE';
@@ -116,6 +120,8 @@ final class Config
             self::MAILER_CONFIG => getenv('HIS_MAILER_CONFIG'),
             self::FB_APP_ID => getenv('HIS_FB_APP_ID'),
             self::FB_APP_SECRET => getenv('HIS_FB_APP_SECRET'),
+            self::LINKEDIN_APP_ID => getenv('HIS_LINKEDIN_APP_ID'),
+            self::LINKEDIN_APP_SECRET => getenv('HIS_LINKEDIN_APP_SECRET'),
             self::THROTTLE_DURATION => getenv('HIS_THROTTLE_DURATION'),
             self::FILESYSTEM_CONFIG => getenv('HIS_FILESYSTEM_CONFIG'),
             self::DB_HOST => getenv('HIS_DB_HOST'),

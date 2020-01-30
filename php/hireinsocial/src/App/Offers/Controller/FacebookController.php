@@ -28,8 +28,6 @@ final class FacebookController extends AbstractController
     use FacebookAccess;
     use RedirectAfterLogin;
 
-    public const USER_SESSION_KEY = '_his_user_id';
-
     /**
      * @var Offers
      */
@@ -64,7 +62,7 @@ final class FacebookController extends AbstractController
 
     public function loginAction(Request $request) : Response
     {
-        if ($request->getSession()->has(self::USER_SESSION_KEY)) {
+        if ($request->getSession()->has(SecurityController::USER_SESSION_KEY)) {
             return $this->redirectToRoute('home');
         }
 
@@ -116,7 +114,7 @@ final class FacebookController extends AbstractController
             return $this->redirectToRoute('user_blocked');
         }
 
-        $request->getSession()->set(self::USER_SESSION_KEY, $user->id());
+        $request->getSession()->set(SecurityController::USER_SESSION_KEY, $user->id());
 
         if ($this->hasRedirection($request->getSession())) {
             return $this->generateRedirection($request->getSession(), $this->router);
@@ -127,8 +125,8 @@ final class FacebookController extends AbstractController
 
     public function logoutAction(Request $request) : Response
     {
-        if ($request->getSession()->has(self::USER_SESSION_KEY)) {
-            $request->getSession()->remove(self::USER_SESSION_KEY);
+        if ($request->getSession()->has(SecurityController::USER_SESSION_KEY)) {
+            $request->getSession()->remove(SecurityController::USER_SESSION_KEY);
         }
 
         return $this->redirectToRoute('home');

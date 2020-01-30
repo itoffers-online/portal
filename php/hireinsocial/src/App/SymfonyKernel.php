@@ -16,8 +16,10 @@ namespace App;
 use App\Offers\Controller\FacebookController;
 use App\Offers\Controller\IndexController;
 use App\Offers\Controller\LayoutController;
+use App\Offers\Controller\LinkedInController;
 use App\Offers\Controller\OfferController;
 use App\Offers\Controller\ReCaptchaController;
+use App\Offers\Controller\SecurityController;
 use App\Offers\Controller\SpecializationController;
 use App\Offers\Controller\StaticController;
 use App\Offers\Controller\UserController;
@@ -33,6 +35,7 @@ use HireInSocial\Offers\UserInterface\OfferExtension;
 use HireInSocial\Offers\UserInterface\OfferThumbnail;
 use HireInSocial\Offers\UserInterface\SpecializationExtension;
 use HireInSocial\Offers\UserInterface\SpecializationThumbnail;
+use League\OAuth2\Client\Provider\LinkedIn;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\MonologBundle\MonologBundle;
@@ -121,6 +124,12 @@ final class SymfonyKernel extends Kernel
                 'app_secret' => $this->frameworkConfig['facebook']['app_secret'],
             ]);
 
+        $c->autowire(LinkedIn::class)
+            ->addArgument([
+                'clientId'          => $this->frameworkConfig['linkedin']['app_id'],
+                'clientSecret'      => $this->frameworkConfig['linkedin']['app_secret'],
+            ]);
+
         foreach ($this->frameworkConfig['parameters'] as $key => $value) {
             $c->setParameter($key, $value);
         }
@@ -138,12 +147,14 @@ final class SymfonyKernel extends Kernel
 
         $c->autowire(IndexController::class)->addTag('controller.service_arguments');
         $c->autowire(FacebookController::class)->addTag('controller.service_arguments');
+        $c->autowire(LinkedInController::class)->addTag('controller.service_arguments');
         $c->autowire(OfferController::class)->addTag('controller.service_arguments');
         $c->autowire(LayoutController::class)->addTag('controller.service_arguments');
         $c->autowire(SpecializationController::class)->addTag('controller.service_arguments');
         $c->autowire(ReCaptchaController::class)->addTag('controller.service_arguments');
         $c->autowire(UserController::class)->addTag('controller.service_arguments');
         $c->autowire(StaticController::class)->addTag('controller.service_arguments');
+        $c->autowire(SecurityController::class)->addTag('controller.service_arguments');
     }
 
     public function getProjectDir() : string

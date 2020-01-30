@@ -106,15 +106,15 @@ final class OfferController extends AbstractController
             return $this->render('@offers/offer/posting_disabled.html.twig');
         }
 
-        if (!$request->getSession()->has(FacebookController::USER_SESSION_KEY)) {
+        if (!$request->getSession()->has(SecurityController::USER_SESSION_KEY)) {
             $this->logger->debug('Not authenticated, redirecting to facebook login.');
 
             $this->redirectAfterLogin($request->getSession(), 'offer_new', ['specSlug' => $specSlug]);
 
-            return $this->redirectToRoute('facebook_login');
+            return $this->redirectToRoute('login');
         }
 
-        $userId = $request->getSession()->get(FacebookController::USER_SESSION_KEY);
+        $userId = $request->getSession()->get(SecurityController::USER_SESSION_KEY);
 
         if (!$specialization = $this->offers->specializationQuery()->findBySlug($specSlug)) {
             throw $this->createNotFoundException();
@@ -245,7 +245,7 @@ final class OfferController extends AbstractController
         $previousOffer = $this->offers->offerQuery()->findOneBefore($offer);
 
         return $this->render('@offers/offer/offer.html.twig', [
-            'userId' => $request->getSession()->get(FacebookController::USER_SESSION_KEY),
+            'userId' => $request->getSession()->get(SecurityController::USER_SESSION_KEY),
             'offer' => $offer,
             'nextOffer' => $nextOffer,
             'previousOffer' => $previousOffer,
@@ -258,7 +258,7 @@ final class OfferController extends AbstractController
     public function removeAction(Request $request, string $offerSlug) : Response
     {
         $offer = $this->offers->offerQuery()->findBySlug($offerSlug);
-        $userId = $request->getSession()->get(FacebookController::USER_SESSION_KEY);
+        $userId = $request->getSession()->get(SecurityController::USER_SESSION_KEY);
 
         if (!$userId || !$offer->postedBy($userId)) {
             return new Response('', Response::HTTP_FORBIDDEN);

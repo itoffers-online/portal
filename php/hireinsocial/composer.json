@@ -48,6 +48,7 @@
         "imagine/imagine": "^1.2",
         "league/flysystem": "^1.0",
         "league/flysystem-azure": "^1.0",
+        "league/oauth2-linkedin": "^5.1",
         "monolog/monolog": "^1.24",
         "p3k/emoji-detector": "^0.2.1",
         "predis/predis": "^1.1",
