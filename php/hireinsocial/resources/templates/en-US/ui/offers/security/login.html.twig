@@ -1,0 +1,36 @@
+{% extends '@offers/base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <section class="jumbotron text-center bg-white">
+            <div class="container mt-5 mb-2">
+                <h1 class="jumbotron-heading mb-5">Recruiter Login</h1>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <p>
+                            <a href="{{ linkedin_login_url }}" class="btn btn-secondary my-2 btn-block">Login with Linked <i class="fab fa-linkedin"></i></a>
+                        </p>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <p>
+                            <a href="{{ facebook_login_url }}" class="btn btn-primary my-2 btn-block"><i class="fab fa-facebook-f"></i> Connect</a>
+                        </p>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+                <p class="small text-muted mt-5">
+                    Don't worry, we are not going to use any of your social media accounts to post job offers. <br/>
+                    We just want to make sure you are a real person.
+                </p>
+            </div>
+        </section>
+        <div class="container">
+            <hr />
+        </div>
+    </div>
+{% endblock %}

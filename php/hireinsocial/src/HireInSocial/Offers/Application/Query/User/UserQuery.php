@@ -20,6 +20,8 @@ interface UserQuery extends Query
 {
     public function findByFacebook(string $facebookUserAppId) : ?User;
 
+    public function findByLinkedIn(string $linkedInUserAppId) : ?User;
+
     public function findById(string $id) : ?User;
 
     public function findByEmail(string $email) : ?User;

@@ -1,0 +1,20 @@
+{% extends '@offers/base.html.twig' %}
+
+{% block body %}
+<div class="container-fluid">
+    <section class="jumbotron text-center bg-white">
+        <div class="container mt-5 mb-2">
+            <h1 class="jumbotron-heading">Recruiter Linked In Connect</h1>
+            <p class="lead text-muted">
+                Login using your Linked In account.
+            </p>
+            <p>
+                <a href="{{ linkedin_login_url }}" class="btn btn-primary my-2">Login with Linked <i class="fab fa-linkedin"></i></a>
+            </p>
+        </div>
+    </section>
+    <div class="container">
+        <hr />
+    </div>
+</div>
+{% endblock %}

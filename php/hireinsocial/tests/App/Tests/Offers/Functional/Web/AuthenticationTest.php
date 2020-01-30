@@ -23,6 +23,6 @@ final class AuthenticationTest extends WebTestCase
         $client->request('GET', $client->getContainer()->get('router')->generate('offer_new', ['specSlug' => 'php']));
 
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals($client->getContainer()->get('router')->generate('facebook_login'), $client->getResponse()->headers->get('location'));
+        $this->assertEquals($client->getContainer()->get('router')->generate('login'), $client->getResponse()->headers->get('location'));
     }
 }

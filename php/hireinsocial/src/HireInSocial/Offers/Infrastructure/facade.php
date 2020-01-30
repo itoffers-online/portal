@@ -28,6 +28,7 @@ use HireInSocial\Offers\Application\Command\Twitter\TweetAboutOfferHandler;
 use HireInSocial\Offers\Application\Command\User\AddExtraOffersHandler;
 use HireInSocial\Offers\Application\Command\User\BlockUserHandler;
 use HireInSocial\Offers\Application\Command\User\FacebookConnectHandler;
+use HireInSocial\Offers\Application\Command\User\LinkedInConnectHandler;
 use HireInSocial\Offers\Application\Config;
 use HireInSocial\Offers\Application\Facebook\FacebookGroupService;
 use HireInSocial\Offers\Application\FeatureToggle;
@@ -225,6 +226,10 @@ function offersFacade(Config $config) : Offers
                     $twitter
                 ),
                 new FacebookConnectHandler(
+                    $ormUsers,
+                    $calendar
+                ),
+                new LinkedInConnectHandler(
                     $ormUsers,
                     $calendar
                 ),

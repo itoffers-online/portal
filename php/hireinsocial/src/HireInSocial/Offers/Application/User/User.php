@@ -33,6 +33,11 @@ class User
     /**
      * @var string
      */
+    private $linkedInUserAppId;
+
+    /**
+     * @var string
+     */
     private $email;
 
     /**
@@ -60,6 +65,16 @@ class User
 
         $user = new self($calendar->currentTime(), $email);
         $user->fbUserAppId = $userAppId;
+
+        return $user;
+    }
+
+    public static function fromLinkedIn(string $userAppId, string $email, Calendar $calendar) : self
+    {
+        Assertion::betweenLength($userAppId, 0, 255);
+
+        $user = new self($calendar->currentTime(), $email);
+        $user->linkedInUserAppId = $userAppId;
 
         return $user;
     }

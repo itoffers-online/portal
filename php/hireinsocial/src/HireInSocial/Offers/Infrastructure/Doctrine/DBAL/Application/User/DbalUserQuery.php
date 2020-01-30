@@ -49,6 +49,26 @@ final class DbalUserQuery implements UserQuery
         return $this->hydrateUser($userData);
     }
 
+    public function findByLinkedIn(string $linkedInUserAppId) : ?User
+    {
+        $userData = $this->connection->createQueryBuilder()
+            ->select('u.*')
+            ->from('his_user', 'u')
+            ->where('u.linked_in_user_app_id = :linkedInUserAppId')
+            ->setParameters(
+                [
+                    'linkedInUserAppId' => $linkedInUserAppId,
+                ]
+            )->execute()
+            ->fetch();
+
+        if (!$userData) {
+            return null;
+        }
+
+        return $this->hydrateUser($userData);
+    }
+
     public function findById(string $id) : ?User
     {
         $userData = $this->connection->createQueryBuilder()
@@ -95,6 +115,7 @@ final class DbalUserQuery implements UserQuery
             $userData['id'],
             $userData['email_address'],
             $userData['fb_user_app_id'],
+            $userData['linked_in_user_app_id'],
             (bool) $userData['blocked_at']
         );
     }

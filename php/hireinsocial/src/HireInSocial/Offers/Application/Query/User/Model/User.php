@@ -31,15 +31,21 @@ final class User
     private $fbAppId;
 
     /**
+     * @var string|null
+     */
+    private $linkedInAppId;
+
+    /**
      * @var bool
      */
     private $isBlocked;
 
-    public function __construct(string $id, string $email, ?string $fbAppId, bool $isBlocked)
+    public function __construct(string $id, string $email, ?string $fbAppId, ?string $linkedInAppId, bool $isBlocked)
     {
         $this->id = $id;
         $this->email = $email;
         $this->fbAppId = $fbAppId;
+        $this->linkedInAppId = $linkedInAppId;
         $this->isBlocked = $isBlocked;
     }
 
@@ -48,9 +54,6 @@ final class User
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function email() : string
     {
         return $this->email;
@@ -61,9 +64,11 @@ final class User
         return $this->fbAppId;
     }
 
-    /**
-     * @return bool
-     */
+    public function linkedInAppId() : ?string
+    {
+        return $this->linkedInAppId;
+    }
+
     public function isBlocked() : bool
     {
         return $this->isBlocked;

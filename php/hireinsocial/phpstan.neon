@@ -16,6 +16,10 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
     autoload_files:
         - tests/bootstrap.php
+    ignoreErrors:
+        -
+            message: '#(.*)#'
+            path: src/App/Offers/Controller/LinkedInAccess.php
 services:
         -
             class: Ergebnis\PHPStan\Rules\Classes\FinalRule
