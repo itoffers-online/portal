@@ -66,6 +66,8 @@ final class Config
 
     public const FB_APP_SECRET = 'facebook_app_secret';
 
+    public const GOOGLE_ANALYTICS_CODE = 'google_analytics_code';
+
     public const LINKEDIN_APP_ID = 'linkedin_app_id';
 
     public const LINKEDIN_APP_SECRET = 'linkedin_app_secret';
@@ -117,6 +119,7 @@ final class Config
             self::RECAPTCHA_KEY => getenv('HIS_RECAPTCHA_KEY'),
             self::RECAPTCHA_SECRET => getenv('HIS_RECAPTCHA_SECRET'),
             self::GOOGLE_MAPS_KEY => getenv('HIS_GOOGLE_MAPS_API_KEY'),
+            self::GOOGLE_ANALYTICS_CODE => getenv('HIS_GOOGLE_ANALYTICS_CODE'),
             self::MAILER_CONFIG => getenv('HIS_MAILER_CONFIG'),
             self::FB_APP_ID => getenv('HIS_FB_APP_ID'),
             self::FB_APP_SECRET => getenv('HIS_FB_APP_SECRET'),
