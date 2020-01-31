@@ -14,13 +14,11 @@ declare(strict_types=1);
 namespace App\Offers\Controller;
 
 use League\OAuth2\Client\Provider\LinkedIn;
-use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 
 trait LinkedInAccess
 {
     /**
-     * @param AccessToken $accessToken
      * @return array{id: string, email: string}
      */
     public function getLinkedInUser(LinkedIn $linkedIn, AccessTokenInterface $accessToken) : array

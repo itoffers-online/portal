@@ -2,7 +2,7 @@
     <div class="container">
         <header class="text-center text-lg-left">
             {% for slug in specializationSlugs %}
-                <a class="btn btn-sqr p-lg-3 pl-lg-3 pr-lg-3" href="{{ url('specialization_offers', {specSlug: slug}) }}">
+                <a class="btn btn-sqr p-lg-3 pl-lg-3 pr-lg-3{% if current == slug %} border-left border-right bg-white{% endif %}" href="{{ url('specialization_offers', {specSlug: slug}) }}">
                     <small>
                         {{ slug|specialization_name }}
                     </small>

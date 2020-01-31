@@ -58,12 +58,12 @@ final class Factory
             'login'
         );
         $routes->addRoute(
-            new Route('/facebook/login', ['_controller' => [FacebookController::class, 'loginAction']]),
-            'facebook_login'
+            new Route('/logout', ['_controller' => [SecurityController::class, 'logoutAction']]),
+            'logout'
         );
         $routes->addRoute(
-            new Route('/facebook/logout', ['_controller' => [FacebookController::class, 'logoutAction']]),
-            'facebook_logout'
+            new Route('/facebook/login', ['_controller' => [FacebookController::class, 'loginAction']]),
+            'facebook_login'
         );
         $routes->addRoute(
             new Route('/facebook/login/success', ['_controller' => [FacebookController::class, 'loginSuccessAction']]),
@@ -74,14 +74,9 @@ final class Factory
             'linkedin_login'
         );
         $routes->addRoute(
-            new Route('/linkedin/logout', ['_controller' => [LinkedInController::class, 'logoutAction']]),
-            'linkedin_logout'
-        );
-        $routes->addRoute(
             new Route('/linkedin/login/success', ['_controller' => [LinkedInController::class, 'loginSuccessAction']]),
             'linkedin_login_success'
         );
-
 
         if (\in_array($env, ['dev', 'test'], true)) {
             $routes->import('@FrameworkBundle/Resources/config/routing/errors.xml', '/_error');

@@ -122,13 +122,4 @@ final class FacebookController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
-
-    public function logoutAction(Request $request) : Response
-    {
-        if ($request->getSession()->has(SecurityController::USER_SESSION_KEY)) {
-            $request->getSession()->remove(SecurityController::USER_SESSION_KEY);
-        }
-
-        return $this->redirectToRoute('home');
-    }
 }
