@@ -23,5 +23,7 @@ interface Users
 
     public function getByFB(string $userAppId) : User;
 
+    public function getByLinkedIn(string $userAppId) : User;
+
     public function emailExists(string $email) : bool;
 }

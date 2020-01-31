@@ -113,9 +113,4 @@ final class LinkedInController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
-
-    public function logoutAction(Request $request) : Response
-    {
-        return $this->redirectToRoute('home');
-    }
 }

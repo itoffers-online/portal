@@ -9,10 +9,10 @@
             <div class="collapse navbar-collapse" id="header-navigation">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0 d-none d-lg-inline">
                     <li class="nav-item active">
-                        <a class="nav-link btn btn-sqr p-3 pl-4 pr-4 text-light" href="{{ url('home') }}"><small>it<span class="text-hins-turquoise">offers</span>.online</small></a>
+                        <a class="nav-link btn btn-sqr text-light" href="{{ url('home') }}"><small>it<span class="text-hins-turquoise">offers</span>.online</small></a>
                     </li>
                 </ul>
-                {% if facebook_logged_in %}
+                {% if logged_in %}
                     <a class="nav-link btn btn-sqr p-3 pl-4 pr-4 d-lg-none text-light" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
                     <a class="nav-link btn btn-sqr p-3 pl-4 pr-4 d-none d-lg-inline text-light" href="{{ url('user_profile') }}"><small>Recruiter</small></a>
                 {% else %}

@@ -16,6 +16,10 @@
 </style>
 {% endblock %}
 
+{% block header %}
+    {{ render_esi(controller('App\\Offers\\Controller\\LayoutController::headerAction', {specialization: specialization.slug})) }}
+{% endblock %}
+
 {% block body %}
 <div class="container-fluid bg-dark text-white">
     <div class="container">
@@ -294,7 +298,7 @@
                         {{ form_row(form.submit, {label: "Submit", attr: {class: 'btn btn-primary btn-lg btn-block'}}) }}
                     {% endif %}
                         </div>
-                        <div class="col-2">
+                        <div class="col-md-2">
                             {{ form_row(form.reset, {label: "Reset", attr: {class: 'btn btn-danger btn-lg btn-block'}}) }}
                         </div>
                     </div>

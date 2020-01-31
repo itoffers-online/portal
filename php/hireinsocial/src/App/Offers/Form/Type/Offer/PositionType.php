@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class PositionType extends AbstractType
 {
@@ -27,7 +28,7 @@ final class PositionType extends AbstractType
     {
         $builder
             ->add('seniorityLevel', ChoiceType::class, [
-                'required' => true,
+                'required' => false,
                 'expanded' => true,
                 'multiple' => false,
                 'choices' => [
@@ -36,6 +37,9 @@ final class PositionType extends AbstractType
                     'Mid'  => 2,
                     'Senior'  => 3,
                     'Expert'  => 4,
+                ],
+                'constraints' => [
+                    new NotBlank(),
                 ],
             ])
             ->add('name', TextType::class, [

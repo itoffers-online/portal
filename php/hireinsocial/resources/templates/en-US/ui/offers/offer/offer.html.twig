@@ -79,6 +79,11 @@
 </script>
 {% endblock %}
 
+{% block header %}
+    {{ render_esi(controller('App\\Offers\\Controller\\LayoutController::headerAction', {specialization: offer.specializationSlug})) }}
+{% endblock %}
+
+
 {% block body %}
 <div class="container-fluid bg-light pt-4 border-bottom">
     <div class="container">

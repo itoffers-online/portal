@@ -9,6 +9,12 @@
                 <div class="alert {% if throttled and extraOffersCount <= 0 %}alert-warning{% else %}alert-success{% endif %}">
                     <ul class="list-unstyled">
                         <li><span data-user-email="{{ user.email }}">{{ user.email }}</span></li>
+                        {% if user.fbAppId %}
+                            <li><i class="fab fa-facebook-square"></i> Connected</li>
+                        {% endif %}
+                        {% if user.linkedInAppId %}
+                        <li>Linked <i class="fab fa-linkedin"></i> Connected </li>
+                        {% endif %}
                         <li>Offers left: {{ offersLeft }}</li>
                         <li>Extra Offers: {{ extraOffersCount }}</li>
                         {% if extraOffer %}
@@ -16,7 +22,7 @@
                         {% endif %}
                     </ul>
                 </div>
-                <a class="btn btn-outline-primary btn-block mt-2 mb-2" href="{{ url('facebook_logout') }}"><small>Logout</small></a>
+                <a class="btn btn-outline-primary btn-block mt-2 mb-2" href="{{ url('logout') }}"><small>Logout</small></a>
                 {% if throttled and extraOffersCount <= 0 %}
                 <div class="alert alert-info small text-dark">
                     No offers left, and you really need to post this amazing job offer? <br/>

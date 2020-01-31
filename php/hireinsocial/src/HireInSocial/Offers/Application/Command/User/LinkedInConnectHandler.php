@@ -45,7 +45,7 @@ final class LinkedInConnectHandler implements Handler
     public function __invoke(LinkedInConnect $command) : void
     {
         try {
-            $this->users->getByFB($command->userAppId());
+            $this->users->getByLinkedIn($command->userAppId());
         } catch (Exception $e) {
             if ($this->users->emailExists($command->email())) {
                 throw new Exception(\sprintf("Email %s already used by different account", $command->email()), 0, $e);

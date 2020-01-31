@@ -1,5 +1,7 @@
 {% extends '@offers/base.html.twig' %}
 
+{% set selected_specialization = specialization.slug %}
+
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block stylesheets %}
@@ -24,6 +26,10 @@
     <meta property="og:description" content="The best job offers for IT Specialists" />
     <meta property="fb:app_id" content="{{ facebook.app_id }}" />
     <meta property="og:title" content="{{ specialization.slug|specialization_name }}{% if seniorityLevel is not null %} - {{ seniorityLevel|offer_seniority_level_name }}{% endif %} - Job Offers" />
+{% endblock %}
+
+{% block header %}
+    {{ render_esi(controller('App\\Offers\\Controller\\LayoutController::headerAction', {specialization: specialization.slug})) }}
 {% endblock %}
 
 {% block body %}
@@ -98,7 +104,7 @@
                 {% if queryParameters|length %}
                     <a href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}" class="btn btn-danger w-40 mr-2"><i class="fas fa-times"></i> Reset</a>
                 {% endif %}
-                <button type="submit" id="offers_submit" class="btn btn-primary btn w-40">Search</button>
+                <button type="submit" id="offers_submit" class="btn btn-primary btn w-40">Filter</button>
             </div>
         {{ form_end(form) }}
     </div>

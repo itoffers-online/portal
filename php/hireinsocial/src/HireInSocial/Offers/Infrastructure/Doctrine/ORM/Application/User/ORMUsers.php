@@ -58,6 +58,17 @@ final class ORMUsers implements Users
         return $user;
     }
 
+    public function getByLinkedIn(string $userAppId) : User
+    {
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['linkedInUserAppId' => $userAppId]);
+
+        if (!$user) {
+            throw new Exception(sprintf('User with user facebook app id %s does not exists.', $userAppId));
+        }
+
+        return $user;
+    }
+
     public function emailExists(string $email) : bool
     {
         return (bool) $this->entityManager->getRepository(User::class)->findOneBy(['email' => \mb_strtolower($email)]);
