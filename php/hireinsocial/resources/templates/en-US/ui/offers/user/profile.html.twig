@@ -1,39 +1,115 @@
 {% extends '@offers/base.html.twig' %}
 
 {% block body %}
-<div class="container-fluid pt-4 bg-white">
+<div class="container-fluid pt-4 bg-light">
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <h3>Profile</h3>
-                <div class="alert {% if throttled and extraOffersCount <= 0 %}alert-warning{% else %}alert-success{% endif %}">
-                    <ul class="list-unstyled">
-                        <li><span data-user-email="{{ user.email }}">{{ user.email }}</span></li>
-                        {% if user.fbAppId %}
-                            <li><i class="fab fa-facebook-square"></i> Connected</li>
-                        {% endif %}
-                        {% if user.linkedInAppId %}
-                        <li>Linked <i class="fab fa-linkedin"></i> Connected </li>
-                        {% endif %}
-                        <li>Offers left: {{ offersLeft }}</li>
-                        <li>Extra Offers: {{ extraOffersCount }}</li>
-                        {% if extraOffer %}
-                        <li>Expiration: {{ extraOffer.expiresAt|time_diff }}</li>
-                        {% endif %}
-                    </ul>
+                <h3 class="mb-4">Profile</h3>
+                <div class="card bg-white mb-4">
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><span data-user-email="{{ user.email }}">{{ user.email }}</span></li>
+                            {% if user.fbAppId %}
+                                <li><i class="fab fa-facebook-square"></i> Connected</li>
+                            {% endif %}
+                            {% if user.linkedInAppId %}
+                            <li>Linked <i class="fab fa-linkedin"></i> Connected </li>
+                            {% endif %}
+
+                            <a class="btn btn-outline-danger btn-block mt-4" href="{{ url('logout') }}"><small>Logout</small></a>
+                        </ul>
+                    </div>
                 </div>
-                <a class="btn btn-outline-primary btn-block mt-2 mb-2" href="{{ url('logout') }}"><small>Logout</small></a>
                 {% if throttled and extraOffersCount <= 0 %}
-                <div class="alert alert-info small text-dark">
+                <div class="alert alert-warning small text-dark">
                     No offers left, and you really need to post this amazing job offer? <br/>
                     No problem, email us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> and we might
-                    find for you few extra offers.
+                    find for you few instant offers.
                 </div>
                 {% endif %}
             </div>
             <div class="col-md-9">
-                <h3>Posted Offers - {{ totalOffers }}</h3>
+                <h2 class="mb-4">Features</h2>
+                <div class="row mb-4">
+                    <div class="col-3">
+                        <div class="bg-white border mb-4">
+                            <div class="small text-right pt-2 pr-2">
+                                {%
+                                    set regularOffers = "Job Offers you can post here and now. If you don't have any regular offers left, email us at <a target=\"_blank\" href=\"mailto:" ~ contact_email ~ "\">" ~ contact_email ~ "</a> so we can grant you some
+                                       <span class=\"font-weight-bold text-hins-blue\">Instant Offers</span>."
+                                %}
+                                <a href="#"
+                                   data-toggle="popover"
+                                   data-trigger="focus"
+                                   title="Regular Offers"
+                                   data-content="{{ regularOffers }}"
+                                   data-placement="right"
+                                >
+                                    <i class="far fa-question-circle">
+                                    </i>
+                                </a>
+                            </div>
+                            <div class="text-center pt-2 pb-4">
+                                <h2><i class="far fa-file"></i></h2>
+                                <h3 class="font-weight-light">Regular Offers</h3>
+                                <h5 class="font-weight-light">{{ offersLeft }} left</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="bg-white border mb-4">
+                            <div class="small text-right pt-2 pr-2">
+                                <a href="#"
+                                   data-toggle="popover"
+                                   data-trigger="focus"
+                                   title="Instant Offers"
+                                   data-content="All offers are free however regular offers are throttled and auto regenerated.
+                                       Instant Offers let you post new job offers even if you don't have any regular offers left.
+                                       Instant Offers can expire, don't keep them for too long!"
+                                   data-placement="right"
+                                >
+                                    <i class="far fa-question-circle"></i>
+                                </a>
+                            </div>
+                            <div class="text-center pt-2 pb-4">
+                                <h2><i class="fas fa-redo text-hins-blue"></i></h2>
+                                <h3 class="font-weight-light">Instant Offers</h3>
+                                <h5 class="font-weight-light">{{ extraOffersCount }} left</h5>
+                            </div>
+                        </div>
+                        {% if extraOffer %}
+                            <div class="text-center">
+                                <small>Expires: {{ extraOffer.expiresAt|time_diff }}</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-3">
+                        <div class="bg-light border disabled mb-4">
+                            <div class="small text-right pt-2 pr-2">
+                                <a href="#"
+                                   data-toggle="popover"
+                                   data-trigger="focus"
+                                   title="Offer Renewal"
+                                   data-content="Let use renew your offer automatically once it expires or tell us how many days before expiration offer should be renewed"
+                                   data-placement="right"
+                                >
+                                    <i class="far fa-question-circle"></i>
+                                </a>
+                            </div>
+                            <div class="text-center pt-2 pb-4">
+                                <h2><i class="fas fa-tachometer-alt text-gray-500"></i></h2>
+                                <h3 class="font-weight-light text-gray-500">Offer Renewal</h3>
+                                <h5 class="font-weight-light text-gray-500">Coming Soon!</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <hr />
+
+                <h3 class="mb-4">Posted Offers - {{ totalOffers }}</h3>
+
                 {% for offer in offers %}
                     <div class="row mt-4 mb-2">
                         <div class="col-md-6">
@@ -77,8 +153,11 @@
                     </div>
                     <hr />
                 {% else %}
-                    <div class="alert alert-info text-center">
+                    <div class="alert alert-info text-center mb-4">
                         It looks you have not posted any offers so far.
+                    </div>
+                    <div class="text-center mb-4">
+                        <a class="btn btn-primary pt-2 pb-2" href="{{ url('offer_post') }}"><small class="font-weight-bolder">Post a Job</small></a>
                     </div>
                 {% endfor %}
                 {% if offersMore > offers|length %}
