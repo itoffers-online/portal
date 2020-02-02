@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use _HumbugBox3ab8cff0fda0\RdKafka\Conf;
 use HireInSocial\Offers\Application\Config;
 use HireInSocial\Offers\Offers;
 
@@ -78,8 +77,8 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
                         'key' => $config->getString(Config::GOOGLE_MAPS_KEY),
                     ],
                     'analytics' => [
-                        'code' => $config->getString(Config::GOOGLE_ANALYTICS_CODE)
-                    ]
+                        'code' => $config->getString(Config::GOOGLE_ANALYTICS_CODE),
+                    ],
                 ],
                 'assets' => [
                     'storage_url' => $config->getJson(Config::FILESYSTEM_CONFIG)['storage_url'],

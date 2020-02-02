@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Form\Type\Offer;
 
+use App\Offers\Form\Type\Offer\Description\RequirementsType;
 use App\Offers\Validator\Constraints\NotContainsEmoji;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -24,15 +25,10 @@ final class DescriptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
-            ->add('requirements', TextareaType::class, [
-                'constraints' => [
-                    new Length(['min' => 100, 'max' => 1024]),
-                    new NotContainsEmoji(),
-                ],
-            ])
+            ->add('requirements', RequirementsType::class)
             ->add('benefits', TextareaType::class, [
                 'constraints' => [
-                    new Length(['min' => 100, 'max' => 1024]),
+                    new Length(['min' => 100, 'max' => 2048]),
                     new NotContainsEmoji(),
                 ],
             ])

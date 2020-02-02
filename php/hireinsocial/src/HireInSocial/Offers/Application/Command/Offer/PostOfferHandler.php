@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\Offer;
 
+use HireInSocial\Offers\Application\Command\Offer\Offer\Description\Requirements;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Offer\Company;
 use HireInSocial\Offers\Application\Offer\Contact;
@@ -194,8 +195,20 @@ final class PostOfferHandler implements Handler
                 $command->offer()->contract()->type()
             ),
             new Description(
-                $command->offer()->description()->requirements(),
-                $command->offer()->description()->benefits()
+                $command->offer()->description()->benefits(),
+                new Description\Requirements(
+                    $command->offer()->description()->requirements()->description(),
+                    ...\array_map(
+                        function (Requirements\Skill $skill) {
+                            return new Description\Requirements\Skill(
+                                $skill->skill(),
+                                $skill->required(),
+                                $skill->experienceYears()
+                            );
+                        },
+                        $command->offer()->description()->requirements()->skills()
+                    )
+                )
             ),
             new Contact(
                 $command->offer()->contact()->email(),

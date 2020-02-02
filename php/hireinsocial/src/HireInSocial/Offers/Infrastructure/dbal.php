@@ -19,12 +19,16 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
 use HireInSocial\Offers\Application\Config;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Platform\PostgreSQL11Platform;
+use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\Description\Requirements\SkillsType;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\SalaryType;
 
 function dbal(Config $config) : Connection
 {
     if (!Type::hasType(SalaryType::NAME)) {
         Type::addType(SalaryType::NAME, SalaryType::class);
+    }
+    if (!Type::hasType(SkillsType::NAME)) {
+        Type::addType(SkillsType::NAME, SkillsType::class);
     }
 
     return DriverManager::getConnection(

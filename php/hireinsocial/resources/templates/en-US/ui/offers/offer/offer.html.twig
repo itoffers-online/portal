@@ -204,7 +204,29 @@
                         <h4 class="offer-description-headline">Requirements</h4>
                     </div>
                     <div class="col-lg-8">
-                        {{ offer.description.requirements }}
+                        <div class="row">
+                            {% if offer.description.requirements.requiredSkills|length %}
+                                <div class="col-lg-6">
+                                    <h6 class="text-gray-500 small">Must have</h6>
+                                    <ul>
+                                        {% for skill in offer.description.requirements.requiredSkills %}
+                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-hins-blue">(+{{ skill.experienceYears }} years)</span>{% endif %}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                            {% if offer.description.requirements.niceToHaveSkills|length %}
+                                <div class="col-lg-6">
+                                    <h6 class="text-gray-500 small">Nice to have</h6>
+                                    <ul class="list-unstyled">
+                                        {% for skill in offer.description.requirements.niceToHaveSkills %}
+                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-hins-blue">(+{{ skill.experienceYears }} years)</span>{% endif %}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {{ offer.description.requirements.description }}
                     </div>
                 </div>
                 <div class="row border-bottom pt-5 pb-4">

@@ -13,25 +13,27 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 
+use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Description\Requirements;
+
 final class Description
 {
     /**
      * @var string
      */
-    private $requirements;
-
-    /**
-     * @var string
-     */
     private $benefits;
 
-    public function __construct(string $requirements, string $benefits)
+    /**
+     * @var Requirements
+     */
+    private $requirements;
+
+    public function __construct(string $benefits, Requirements $requirements)
     {
-        $this->requirements = $requirements;
         $this->benefits = $benefits;
+        $this->requirements = $requirements;
     }
 
-    public function requirements() : string
+    public function requirements() : Requirements
     {
         return $this->requirements;
     }

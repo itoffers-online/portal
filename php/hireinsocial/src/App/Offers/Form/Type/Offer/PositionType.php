@@ -15,7 +15,7 @@ namespace App\Offers\Form\Type\Offer;
 
 use App\Offers\Validator\Constraints\NotContainsEmoji;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,17 +27,7 @@ final class PositionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
-            ->add('seniorityLevel', ChoiceType::class, [
-                'required' => false,
-                'expanded' => true,
-                'multiple' => false,
-                'choices' => [
-                    'Intern'  => 0,
-                    'Junior'  => 1,
-                    'Mid'  => 2,
-                    'Senior'  => 3,
-                    'Expert'  => 4,
-                ],
+            ->add('seniorityLevel', HiddenType::class, [
                 'constraints' => [
                     new NotBlank(),
                 ],
