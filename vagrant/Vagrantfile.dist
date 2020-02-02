@@ -1,11 +1,17 @@
-ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
-
 Vagrant.configure(2) do |config|
 
-  config.vm.define :hireinsocial, primary: true do |hireinsocial|
+  config.vm.define :hireinsocial do |hireinsocial|
     hireinsocial.vm.box = "bento/ubuntu-18.04"
     hireinsocial.vm.network :private_network, ip: "10.0.0.200"
+    hireinsocial.vm.network "forwarded_port", guest: 80, host: 80
+    hireinsocial.vm.network "forwarded_port", guest: 443, host: 443
     hireinsocial.ssh.forward_agent = true
+
+    hireinsocial.vm.provider :vmware_fusion do |v|
+      v.gui = false
+      v.vmx["memsize"] = "4096"
+      v.vmx["numvcpus"] = "2"
+    end
 
     hireinsocial.vm.provider :virtualbox do |v|
       v.gui = false

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Offers\Controller\Offer;
 
 use App\Offers\Form\Type\Offer\LocationType;
+use HireInSocial\Offers\Application\Query\Offer\Model\Offer\Description\Requirements\Skill;
 use HireInSocial\Offers\Offers;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -86,7 +87,20 @@ final class OfferToForm
             ],
             'contract' => $offer->contract()->type(),
             'description' => [
-                'requirements' => $offer->description()->requirements(),
+                'requirements' => [
+                    'description' => $offer->description()->requirements()->description(),
+                    'skills' => \count($offer->description()->requirements()->skills())
+                        ? \array_map(
+                            function (Skill $skill) {
+                                return [
+                                    'skill' => $skill->name(),
+                                    'required' => $skill->required(),
+                                    'experience' => $skill->experienceYears(),
+                                ];
+                            },
+                            $offer->description()->requirements()->skills()
+                        ) : [],
+                ],
                 'benefits' => $offer->description()->benefits(),
             ],
             'contact'=> [

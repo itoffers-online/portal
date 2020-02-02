@@ -45,7 +45,10 @@ final class PostOfferMother
                 new Contract('B2B'),
                 new Description(
                     $faker->text(1024),
-                    $faker->text(1024)
+                    new Description\Requirements(
+                        $faker->text(1024),
+                        new Description\Requirements\Skill('php', true, 5)
+                    )
                 ),
                 new Contact(
                     $faker->email,
@@ -73,7 +76,10 @@ final class PostOfferMother
                 new Contract('B2B'),
                 new Description(
                     $faker->text(1024),
-                    $faker->text(1024)
+                    new Description\Requirements(
+                        $faker->text(1024),
+                        new Description\Requirements\Skill('php', true, 5)
+                    )
                 ),
                 new Contact(
                     $faker->email,
@@ -102,7 +108,10 @@ final class PostOfferMother
                 new Contract('B2B'),
                 new Description(
                     $faker->text(1024),
-                    $faker->text(1024)
+                    new Description\Requirements(
+                        $faker->text(1024),
+                        new Description\Requirements\Skill('php', true, 5)
+                    )
                 ),
                 new Contact(
                     $faker->email,
@@ -130,7 +139,10 @@ final class PostOfferMother
                 new Contract('B2B'),
                 new Description(
                     $faker->text(1024),
-                    $faker->text(1024)
+                    new Description\Requirements(
+                        $faker->text(1024),
+                        new Description\Requirements\Skill('php', true, 5)
+                    )
                 ),
                 new Contact(
                     $faker->email,
@@ -158,7 +170,10 @@ final class PostOfferMother
                 new Contract('B2B'),
                 new Description(
                     $faker->text(1024),
-                    $faker->text(1024)
+                    new Description\Requirements(
+                        $faker->text(1024),
+                        new Description\Requirements\Skill('php', true, 5)
+                    )
                 ),
                 new Contact(
                     $faker->email,
@@ -186,7 +201,10 @@ final class PostOfferMother
                 new Contract('B2B'),
                 new Description(
                     $faker->text(1024),
-                    $faker->text(1024)
+                    new Description\Requirements(
+                        $faker->text(1024),
+                        new Description\Requirements\Skill('php', true, 5)
+                    )
                 ),
                 new Contact(
                     $faker->email,
@@ -214,7 +232,10 @@ final class PostOfferMother
                 new Contract('B2B'),
                 new Description(
                     $faker->text(1024),
-                    $faker->text(1024)
+                    new Description\Requirements(
+                        $faker->text(1024),
+                        new Description\Requirements\Skill('php', true, 5)
+                    )
                 ),
                 new Contact(
                     $faker->email,

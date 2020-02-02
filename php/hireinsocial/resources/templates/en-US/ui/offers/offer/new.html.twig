@@ -1,6 +1,6 @@
 {% extends '@offers/base.html.twig' %}
 
-{% form_theme form '@offers/form/theme.html.twig'  %}
+{% form_theme form _self '@offers/form/theme.html.twig'  %}
 
 {% block stylesheets %}
 {{ parent() }}
@@ -18,6 +18,23 @@
 
 {% block header %}
     {{ render_esi(controller('App\\Offers\\Controller\\LayoutController::headerAction', {specialization: specialization.slug})) }}
+{% endblock %}
+
+
+{%  block _offer_description_requirements_skills_entry_row %}
+<fieldset id="{{ form.vars.id }}">
+    {{ form_widget(form) }}
+    {{ form_errors(form) }}
+</fieldset>
+{% endblock %}
+
+{%  block _offer_description_requirements_skills_entry_widget %}
+    <div class="row">
+        <div class="col-md-4">{{ form_row(form.skill, {label: "Skill/Technology"}) }}</div>
+        <div class="col-md-4">{{ form_row(form.required, {label: "Requirement"}) }}</div>
+        <div class="col-md-2">{{ form_row(form.experience, {label: "Years of experience"}) }}</div>
+        <div class="col-md-2 pt-4" data-remove></div>
+    </div>
 {% endblock %}
 
 {% block body %}
@@ -102,13 +119,14 @@
             </div>
             <div class="col-md-10">
                 <div class="row">
-                    <div class="col"><a id="seniority-intern" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 0 %} active{% endif %}" href="#">Intern</a></div>
-                    <div class="col"><a id="seniority-junior" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 1 %} active{% endif %}" href="#">Junior</a></div>
-                    <div class="col"><a id="seniority-mid" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 2 %} active{% endif %}" href="#">Mid</a></div>
-                    <div class="col"><a id="seniority-senior" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 3 %} active{% endif %}" href="#">Senior</a></div>
-                    <div class="col"><a id="seniority-expert" data-seniority-level class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 4 %} active{% endif %}" href="#">Expert</a></div>
+                    <div class="col"><a id="seniority-intern" data-seniority-level="0" class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 0 %} active{% endif %}" href="#">Intern</a></div>
+                    <div class="col"><a id="seniority-junior" data-seniority-level="1" class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 1 %} active{% endif %}" href="#">Junior</a></div>
+                    <div class="col"><a id="seniority-mid" data-seniority-level="2" class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 2 %} active{% endif %}" href="#">Mid</a></div>
+                    <div class="col"><a id="seniority-senior" data-seniority-level="3" class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 3 %} active{% endif %}" href="#">Senior</a></div>
+                    <div class="col"><a id="seniority-expert" data-seniority-level="4" class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 4 %} active{% endif %}" href="#">Expert</a></div>
                 </div>
-                {{ form_row(form.position.seniorityLevel, {label: false, attr: {class:"d-none"}}) }}
+                {{ form_row(form.position.seniorityLevel, {attr: {'value' : 0}}) }}
+
                 {{ form_row(form.position.name, {label: "Job Title", attr:{placeholder: "Developer"}}) }}
                 {{ form_row(form.contract, {label: "Job Type"}) }}
             </div>
@@ -188,10 +206,23 @@
             <div class="col-md-10">
                 <div class="row">
                     <div class="col-md-12">
-                        {{ form_row(form.position.description, {label: "Description", attr:{rows: 5, placeholder: "between 50 and 2048 characters..."}}) }}
+                        <h6 class="text-gray-500">Requirements</h6>
+                        <div
+                            data-skills
+                            data-description-requirements-skills data-prototype="{{ form_widget(form.description.requirements.skills.vars.prototype)|e('html_attr') }}"
+                            data-widget-tags="{{ '<fieldset></fieldset>'|e }}"
+                            data-widget-counter="{{ form.description.requirements.skills|length }}"
+                        >
+                            {% for skill in form.description.requirements.skills %}
+                                {{ form_row(skill, {attr: {label: false}}) }}
+                            {% endfor %}
+                        </div>
+                        {{ form_errors(form.description.requirements.skills) }}
+                        <button data-skill-add type="button" class="btn btn-primary btn-sm mb-2 mt-2"><i class="fas fa-plus"></i> skill</button>
+                        {{ form_row(form.description.requirements.description, {label: "Other requirements", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
                     </div>
                     <div class="col-md-12">
-                    {{ form_row(form.description.requirements, {label: "Requirements", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
+                        {{ form_row(form.position.description, {label: "Description", attr:{rows: 5, placeholder: "between 50 and 2048 characters..."}}) }}
                     </div>
                     <div class="col-md-12">
                     {{ form_row(form.description.benefits, {label: "Benefits", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
@@ -317,9 +348,9 @@
 
 {% block javascripts %}
 <script type="text/javascript">
-    $(window).on('beforeunload', function(){
-        return 'Are you sure you want to leave?';
-    });
+//    $(window).on('beforeunload', function(){
+//        return 'Are you sure you want to leave?';
+//    });
 
     $(function () {
         {% if previousOfferData %}
@@ -340,11 +371,38 @@
         $('.custom-file-label').html(fileName);
     });
 
-    function changeSeniority(inputId, element) {
+    $('[data-skill-add]').on('click', function(e) {
+        var list = $('[data-skills]');
+        var counter = list.data('widget-counter') || list.children().length;
+        var newWidget = list.attr('data-prototype');
+
+        newWidget = newWidget.replace(/__name__/g, counter);
+        counter++;
+        list.data('widget-counter', counter);
+
+        var newElem = $(list.attr('data-widget-tags')).html(newWidget);
+        newElem.appendTo(list);
+        addSkillFormDeleteLink($(newElem));
+    });
+
+    $('[data-skills]').find('fieldset').each(function() {
+        addSkillFormDeleteLink($(this));
+    });
+
+    function addSkillFormDeleteLink($skillElement) {
+        var $removeFormButton = $('<button type="button" class="btn btn-secondary btn-sm mt-2"><i class="fas fa-minus-circle"></i> delete</button>');
+        $skillElement.find('[data-remove]').append($removeFormButton);
+
+        $removeFormButton.on('click', function(e) {
+            // remove the li for the tag form
+            $skillElement.remove();
+        });
+    }
+
+    function changeSeniority(value, element) {
         $('[data-seniority-level]').removeClass('active');
-        $('{{ form.position.seniorityLevel.vars.name }}').prop('checked', false);
-        $(inputId).prop('checked', true);
-        $(inputId).change();
+        $('#{{ form.position.seniorityLevel.vars.id }}').val(value);
+        $('#{{ form.position.seniorityLevel.vars.id }}').change();
         $(element).addClass('active');
     }
 
@@ -353,46 +411,31 @@
         $(element).addClass('active');
     }
 
-    $('#seniority-intern').click((e => {
+    $('[data-seniority-level]').click(function (e) {
         e.preventDefault();
 
-        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_0', e.currentTarget);
-    }));
-    $('#seniority-junior').click((e => {
-        e.preventDefault();
-
-        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_1', e.currentTarget);
-    }));
-    $('#seniority-mid').click((e => {
-        e.preventDefault();
-
-        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_2', e.currentTarget);
-    }));
-    $('#seniority-senior').click((e => {
-        e.preventDefault();
-
-        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_3', e.currentTarget);
-    }));
-    $('#seniority-expert').click((e => {
-        e.preventDefault();
-
-        changeSeniority('#{{ form.position.seniorityLevel.vars.id }}_4', e.currentTarget);
-    }));
-
-    $('#{{ form.position.seniorityLevel.vars.id }}_0').on('change', function() {
-        setActiveSeniority('#seniority-intern')
+        changeSeniority(parseInt($(this).data('seniority-level'), 10), e.currentTarget);
     });
-    $('#{{ form.position.seniorityLevel.vars.id }}_1').on('change', function() {
-        setActiveSeniority('#seniority-junior')
-    });
-    $('#{{ form.position.seniorityLevel.vars.id }}_2').on('change', function() {
-        setActiveSeniority('#seniority-mid')
-    });
-    $('#{{ form.position.seniorityLevel.vars.id }}_3').on('change', function() {
-        setActiveSeniority('#seniority-senior')
-    });
-    $('#{{ form.position.seniorityLevel.vars.id }}_4').on('change', function() {
-        setActiveSeniority('#seniority-expert')
+
+    $('#{{ form.position.seniorityLevel.vars.id }}').on('change', function(e) {
+        console.log();
+        switch ($(this).val()) {
+            case 0:
+                setActiveSeniority('#seniority-intern');
+                break;
+            case 1:
+                setActiveSeniority('#seniority-junior');
+                break;
+            case 2:
+                setActiveSeniority('#seniority-mid');
+                break;
+            case 3:
+                setActiveSeniority('#seniority-senior');
+                break;
+            case 4:
+                setActiveSeniority('#seniority-expert');
+                break;
+        }
     });
 
     function fullyRemote() {

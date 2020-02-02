@@ -14,35 +14,35 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Application\Offer;
 
 use HireInSocial\Offers\Application\Assertion;
+use HireInSocial\Offers\Application\Offer\Description\Requirements;
 
 final class Description
 {
     /**
      * @var string
      */
-    private $requirements;
-
-    /**
-     * @var string
-     */
     private $benefits;
 
-    public function __construct(string $requirements, string $benefits)
+    /**
+     * @var Requirements
+     */
+    private $requirements;
+
+    public function __construct(string $benefits, Requirements $requirements)
     {
-        Assertion::betweenLength($requirements, 100, 2048);
         Assertion::betweenLength($benefits, 100, 2048);
 
-        $this->requirements = $requirements;
         $this->benefits = $benefits;
-    }
-
-    public function requirements() : string
-    {
-        return $this->requirements;
+        $this->requirements = $requirements;
     }
 
     public function benefits() : string
     {
         return $this->benefits;
+    }
+
+    public function requirements() : Requirements
+    {
+        return $this->requirements;
     }
 }

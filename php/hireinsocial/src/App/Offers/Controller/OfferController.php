@@ -160,13 +160,28 @@ final class OfferController extends AbstractController
                     $userId,
                     new Offer(
                         new Company($offerData['company']['name'], $offerData['company']['url'], $offerData['company']['description']),
-                        new Position($offerData['position']['seniorityLevel'], $offerData['position']['name'], $offerData['position']['description']),
+                        new Position((int) $offerData['position']['seniorityLevel'], $offerData['position']['name'], $offerData['position']['description']),
                         $location,
                         (null === $offerData['salary']['min'] && null === $offerData['salary']['max'])
                             ? null
                             : new Salary($offerData['salary']['min'], $offerData['salary']['max'], $offerData['salary']['currency'], (bool) $offerData['salary']['net'], $offerData['salary']['period_type']),
                         new Contract($offerData['contract']),
-                        new Description($offerData['description']['requirements'], $offerData['description']['benefits']),
+                        new Description(
+                            $offerData['description']['benefits'],
+                            new Description\Requirements(
+                                $offerData['description']['requirements']['description'],
+                                ...\array_map(
+                                    function (array $skillData) {
+                                        return new Description\Requirements\Skill(
+                                            $skillData['skill'],
+                                            (bool) $skillData['required'],
+                                            $skillData['experience'],
+                                        );
+                                    },
+                                    $offerData['description']['requirements']['skills']
+                                )
+                            )
+                        ),
                         new Contact($offerData['contact']['email'], $offerData['contact']['name'], $offerData['contact']['phone']),
                     ),
                     $offerData['offer_pdf'] ? $offerData['offer_pdf']->getPathname() : null

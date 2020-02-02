@@ -76,7 +76,6 @@ final class PostOffer extends Command
             ->addArgument('specialization', InputArgument::REQUIRED, 'Specialization slug where for which test offer should be posted.')
             ->addOption('title', null, InputOption::VALUE_OPTIONAL, 'Offer title', 'Software Developer')
             ->addOption('no-salary', null, InputOption::VALUE_OPTIONAL, 'Pass this option when you want to test offer without salary', false)
-            ->addOption('post-facebook-group', null, InputOption::VALUE_OPTIONAL, 'Post offer to facebook group assigned to the specialization', false)
             ->addOption('offer-pdf', null, InputOption::VALUE_OPTIONAL, 'Path to offer PDF file.')
         ;
     }
@@ -105,7 +104,6 @@ final class PostOffer extends Command
         }
 
         $noSalary = $input->getOption('no-salary') !== false;
-//        $postFacebookGroup = $input->getOption('post-facebook-group') !== false;
         $offerPDFpath = $input->getOption('offer-pdf');
 
         try {
@@ -138,8 +136,11 @@ final class PostOffer extends Command
                     $noSalary ? null : new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                     new Contract('Contract'),
                     new Description(
-                        'Candidate for this position needs to be solid, reliable and meet all our expectations. You need to have at least 5 years of commercial experience.',
-                        'We don\'t have strict number of days off, you take as much as you need, you can work remotely or in the office'
+                        'We don\'t have strict number of days off, you take as much as you need, you can work remotely or in the office',
+                        new Description\Requirements(
+                            'Candidate for this position needs to be solid, reliable and meet all our expectations. You need to have at least 5 years of commercial experience.',
+                            ...$this->generateSkills()
+                        )
                     ),
                     new Contact(
                         'contact@hirein.social',
@@ -157,5 +158,33 @@ final class PostOffer extends Command
         }
 
         return 0;
+    }
+
+    /**
+     * @return Description\Requirements\Skill[]
+     * @throws \Exception
+     */
+    protected function generateSkills() : array
+    {
+        $skills = ['php', 'git', 'js', 'jenkins', 'terraform', 'ansible', 'elixir', 'mongo', 'postgresql', 'mysql'];
+        $randomSkills = \array_unique(
+            \array_map(
+                function (int $i) use ($skills) {
+                    return $skills[\random_int(0, \count($skills) - 1)];
+                },
+                \range(0, \random_int(0, 5))
+            )
+        );
+
+        return \array_map(
+            function (string $skill) {
+                return new Description\Requirements\Skill(
+                    $skill,
+                    (bool) \random_int(0, 1),
+                    (bool) \random_int(0, 1) ? \random_int(1, 10) : null
+                );
+            },
+            $randomSkills
+        );
     }
 }

@@ -307,6 +307,7 @@ final class DbalOfferQuery implements OfferQuery
     private function hydrateOffer(array $offerData) : Offer
     {
         $salary = isset($offerData['salary']) ? \json_decode($offerData['salary'], true) : null;
+        $skills = isset($offerData['description_requirements_skills']) ? \json_decode($offerData['description_requirements_skills'], true) : null;
         $offerPDF = isset($offerData['offer_pdf']) ? new OfferPDF($offerData['offer_pdf']) : null;
 
         return new Offer(
@@ -321,7 +322,23 @@ final class DbalOfferQuery implements OfferQuery
                 new Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),
                 new Contact($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),
                 new Contract($offerData['contract_type']),
-                new Description($offerData['description_requirements'], $offerData['description_benefits']),
+                new Description(
+                    $offerData['description_benefits'],
+                    new Description\Requirements(
+                        $offerData['description_requirements_description'],
+                        ...$skills
+                            ? \array_map(
+                                function (array $skillData) {
+                                    return new Description\Requirements\Skill(
+                                        $skillData['name'],
+                                        $skillData['required'],
+                                        $skillData['experience_years'],
+                                    );
+                                },
+                                $skills
+                            ) : []
+                    )
+                ),
                 new Location(
                     $offerData['location_remote'],
                     $offerData['location_country_code'],

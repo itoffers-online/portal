@@ -43,7 +43,14 @@ final class OfferMother
             new Offer\Contract('B2B'),
             new Offer\Description(
                 $faker->text(1024),
-                $faker->text(1024)
+                new Offer\Description\Requirements(
+                    $faker->text(2048),
+                    new Offer\Description\Requirements\Skill(
+                        'php',
+                        true,
+                        10
+                    )
+                ),
             ),
             new Offer\Contact(
                 $faker->email,
