@@ -33,17 +33,17 @@ final class SkillsTypeTest extends TypeTestCase
     {
         return [
             [
-                []
+                [],
             ],
             [
                 [
                     new Skill('php', true, 5),
                     new Skill('java', false),
                     new Skill('go', true),
-                ]
+                ],
             ],
             [
-                null
+                null,
             ],
         ];
     }
