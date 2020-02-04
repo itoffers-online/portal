@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace App;
 
-use HireInSocial\Offers\Application\Config;
-use HireInSocial\Offers\Offers;
+use HireInSocial\Config;
+use HireInSocial\HireInSocial;
 
-function symfony(Config $config, Offers $offers) : SymfonyKernel
+function symfony(HireInSocial $hireInSocial) : SymfonyKernel
 {
     $frameworkConfig = [
         'parameters' => [
-            'google_recaptcha_secret' => $config->getString(Config::RECAPTCHA_SECRET),
-            'apply_email_template' => $config->getString(Config::APPLY_EMAIL_TEMPLATE),
-            'his.old_offer_days' => $config->getInt(Config::OLD_OFFER_DAYS),
+            'google_recaptcha_secret' => $hireInSocial->config()->getString(Config::RECAPTCHA_SECRET),
+            'apply_email_template' => $hireInSocial->config()->getString(Config::APPLY_EMAIL_TEMPLATE),
+            'his.old_offer_days' => $hireInSocial->config()->getInt(Config::OLD_OFFER_DAYS),
         ],
         'framework' => [
-            'secret' => $config->getString(Config::SYMFONY_SECRET),
+            'secret' => $hireInSocial->config()->getString(Config::SYMFONY_SECRET),
             'csrf_protection' => null,
             'esi' => [
                 'enabled' => true,
@@ -41,11 +41,11 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
                 'cookie_samesite' => 'strict',
                 'save_path' => sys_get_temp_dir() . '/his/sessions',
             ],
-            'default_locale' => $config->getString(Config::LOCALE),
+            'default_locale' => $hireInSocial->config()->getString(Config::LOCALE),
             'translator' => [
-                'fallbacks' => [$config->getString(Config::LOCALE)],
+                'fallbacks' => [$hireInSocial->config()->getString(Config::LOCALE)],
                 'paths' => [
-                    $config->getString(Config::ROOT_PATH) . '/resources/translations',
+                    $hireInSocial->config()->getString(Config::ROOT_PATH) . '/resources/translations',
                 ],
             ],
             'templating' => [
@@ -56,41 +56,41 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
         ],
         'twig' => [
             'paths' => [
-                $config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE) . '/ui/offers' => 'offers',
+                $hireInSocial->config()->getString(Config::ROOT_PATH) . '/resources/templates/' . $hireInSocial->config()->getString(Config::LOCALE) . '/ui/offers' => 'offers',
             ],
-            'default_path' => $config->getString(Config::ROOT_PATH) . '/resources/templates',
+            'default_path' => $hireInSocial->config()->getString(Config::ROOT_PATH) . '/resources/templates',
             'date' => [
-                'timezone' => $config->getString(Config::TIMEZONE),
+                'timezone' => $hireInSocial->config()->getString(Config::TIMEZONE),
             ],
-            'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/twig',
+            'cache' => $hireInSocial->config()->getString(Config::ROOT_PATH) . '/var/cache/' . $hireInSocial->config()->getString(Config::ENV) . '/twig',
             'globals' => [
-                'apply_email_template' => $config->getString(Config::APPLY_EMAIL_TEMPLATE),
+                'apply_email_template' => $hireInSocial->config()->getString(Config::APPLY_EMAIL_TEMPLATE),
                 'facebook' => [
-                    'app_id' => $config->getString(Config::FB_APP_ID),
-                    'page_url' => $config->getString(Config::FB_PAGE_URL),
+                    'app_id' => $hireInSocial->config()->getString(Config::FB_APP_ID),
+                    'page_url' => $hireInSocial->config()->getString(Config::FB_PAGE_URL),
                 ],
                 'google' => [
                     'recaptcha' => [
-                        'key' => $config->getString(Config::RECAPTCHA_KEY),
+                        'key' => $hireInSocial->config()->getString(Config::RECAPTCHA_KEY),
                     ],
                     'maps' => [
-                        'key' => $config->getString(Config::GOOGLE_MAPS_KEY),
+                        'key' => $hireInSocial->config()->getString(Config::GOOGLE_MAPS_KEY),
                     ],
                     'analytics' => [
-                        'code' => $config->getString(Config::GOOGLE_ANALYTICS_CODE),
+                        'code' => $hireInSocial->config()->getString(Config::GOOGLE_ANALYTICS_CODE),
                     ],
                 ],
                 'assets' => [
-                    'storage_url' => $config->getJson(Config::FILESYSTEM_CONFIG)['storage_url'],
+                    'storage_url' => $hireInSocial->config()->getJson(Config::FILESYSTEM_CONFIG)['storage_url'],
                 ],
-                'contact_email' => $config->getString(Config::CONTACT_EMAIL),
+                'contact_email' => $hireInSocial->config()->getString(Config::CONTACT_EMAIL),
                 'his' => [
-                    'old_offer_days' => $config->getInt(Config::OLD_OFFER_DAYS),
-                    'domain' => $config->getString(Config::DOMAIN),
+                    'old_offer_days' => $hireInSocial->config()->getInt(Config::OLD_OFFER_DAYS),
+                    'domain' => $hireInSocial->config()->getString(Config::DOMAIN),
                 ],
             ],
-            'auto_reload' => $config->getString(Config::ENV) !== 'prod',
-            'debug' => $config->getString(Config::ENV) !== 'prod',
+            'auto_reload' => $hireInSocial->config()->getString(Config::ENV) !== 'prod',
+            'debug' => $hireInSocial->config()->getString(Config::ENV) !== 'prod',
         ],
         'monolog' => [
             'handlers' => [
@@ -105,25 +105,25 @@ function symfony(Config $config, Offers $offers) : SymfonyKernel
             ],
         ],
         'facebook' => [
-            'app_id' => $config->getString(Config::FB_APP_ID),
-            'app_secret' => $config->getString(Config::FB_APP_SECRET),
+            'app_id' => $hireInSocial->config()->getString(Config::FB_APP_ID),
+            'app_secret' => $hireInSocial->config()->getString(Config::FB_APP_SECRET),
         ],
         'linkedin' => [
-            'app_id' => $config->getString(Config::LINKEDIN_APP_ID),
-            'app_secret' => $config->getString(Config::LINKEDIN_APP_SECRET),
+            'app_id' => $hireInSocial->config()->getString(Config::LINKEDIN_APP_ID),
+            'app_secret' => $hireInSocial->config()->getString(Config::LINKEDIN_APP_SECRET),
         ],
     ];
 
-    if ($config->getString(Config::ENV) === 'test') {
+    if ($hireInSocial->config()->getString(Config::ENV) === 'test') {
         $frameworkConfig['framework']['test'] = true;
         $frameworkConfig['framework']['session']['storage_id'] = 'session.storage.mock_file';
     }
 
     return new SymfonyKernel(
-        $config->getString(Config::ROOT_PATH),
-        $config->getString(Config::ENV),
-        $config->getString(Config::ENV) !== 'prod',
+        $hireInSocial->config()->getString(Config::ROOT_PATH),
+        $hireInSocial->config()->getString(Config::ENV),
+        $hireInSocial->config()->getString(Config::ENV) !== 'prod',
         $frameworkConfig,
-        $offers
+        $hireInSocial->offers()
     );
 }

@@ -6,19 +6,19 @@ use App\Twitter\Command\GetToken;
 use App\Twitter\Command\StatusUpdate;
 use App\Twitter\Command\VerifyCredentials;
 use Symfony\Component\Console\Application;
-use function HireInSocial\Offers\Infrastructure\bootstrap;
+use function HireInSocial\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$config = bootstrap($projectRootPath);
+$hireInSocial = new \HireInSocial\HireInSocial($projectRootPath);
 
 $application = new Application('Hire in Social - Twitter');
 
-$application->add(new AuthenticationUrl($config));
-$application->add(new GetToken($config));
-$application->add(new StatusUpdate($config));
-$application->add(new VerifyCredentials($config));
+$application->add(new AuthenticationUrl($hireInSocial->config()));
+$application->add(new GetToken($hireInSocial->config()));
+$application->add(new StatusUpdate($hireInSocial->config()));
+$application->add(new VerifyCredentials($hireInSocial->config()));
 
 $application->run();

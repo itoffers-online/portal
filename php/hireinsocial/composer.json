@@ -15,10 +15,8 @@
             "DoctrineProxy\\": "var/cache/orm"
         },
         "files": [
-            "src/HireInSocial/Offers/Infrastructure/bootstrap.php",
-            "src/HireInSocial/Offers/Infrastructure/dbal.php",
-            "src/HireInSocial/Offers/Infrastructure/orm.php",
             "src/HireInSocial/Offers/Infrastructure/facade.php",
+            "src/HireInSocial/Notifications/Infrastructure/facade.php",
             "src/App/symfony.php"
         ]
     },

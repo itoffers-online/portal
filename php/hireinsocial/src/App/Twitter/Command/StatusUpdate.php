@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Twitter\Command;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
-use HireInSocial\Offers\Application\Config;
+use HireInSocial\Config;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

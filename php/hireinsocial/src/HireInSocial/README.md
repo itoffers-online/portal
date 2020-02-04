@@ -11,3 +11,9 @@ Candidate can apply only through email. Hire in Social is scanning dedicated ema
 for applications that are later forwarded to recruiters. 
 
 [Read Mode](Offers/README.md) 
+
+### Notifications Context
+
+// @TODO
+
+[Read Mode](Notifications/README.md) 

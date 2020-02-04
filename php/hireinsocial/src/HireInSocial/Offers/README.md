@@ -10,8 +10,10 @@ Offers context of Hire in Social.
 * Post job offers
   * Website
   * Facebook
+  * Twitter
 * Remove posted offers
 * Offers throttling
+* User profile
 * List of offers
   * All offers
   * In specialization

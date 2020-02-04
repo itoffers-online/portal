@@ -27,6 +27,12 @@ use HireInSocial\Offers\Application\System;
 use HireInSocial\Offers\Application\System\Calendar;
 use HireInSocial\Offers\Application\System\Command;
 
+/**
+ * Module - Offers
+ *
+ * This module is responsible for posting and managing job offers, specializations and sales channels.
+ * It also provides very basic users base (that might go to separated module in the future).
+ */
 final class Offers
 {
     /**

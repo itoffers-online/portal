@@ -45,7 +45,7 @@ final class ScanMessagesTest extends ConsoleTestCase
 
         $offer = $this->createOffer();
 
-        $command = new ScanMessages(self::$offersFacade, $connection, $fs);
+        $command = new ScanMessages(self::offersFacade(), $connection, $fs);
         $application = new Application('test');
         $application->add($command);
 
@@ -93,7 +93,7 @@ final class ScanMessagesTest extends ConsoleTestCase
             ->with('INBOX')
             ->willReturn($mailbox);
 
-        $command = new ScanMessages(self::$offersFacade, $connection, $fs);
+        $command = new ScanMessages(self::offersFacade(), $connection, $fs);
         $application = new Application('test');
         $application->add($command);
 

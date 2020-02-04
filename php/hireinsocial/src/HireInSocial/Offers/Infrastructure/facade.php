@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Infrastructure;
 
-use App\Offers\Twig\Extension\TwigOfferExtension;
+use Doctrine\ORM\EntityManager;
 use Facebook\Facebook;
+use HireInSocial\Config;
 use HireInSocial\Offers\Application\Command\Facebook\PagePostOfferAtGroupHandler;
 use HireInSocial\Offers\Application\Command\Offer\ApplyThroughEmailHandler;
 use HireInSocial\Offers\Application\Command\Offer\PostOfferHandler;
@@ -29,7 +30,6 @@ use HireInSocial\Offers\Application\Command\User\AddExtraOffersHandler;
 use HireInSocial\Offers\Application\Command\User\BlockUserHandler;
 use HireInSocial\Offers\Application\Command\User\FacebookConnectHandler;
 use HireInSocial\Offers\Application\Command\User\LinkedInConnectHandler;
-use HireInSocial\Offers\Application\Config;
 use HireInSocial\Offers\Application\Facebook\FacebookGroupService;
 use HireInSocial\Offers\Application\FeatureToggle;
 use HireInSocial\Offers\Application\Offer\EmailFormatter;
@@ -63,58 +63,34 @@ use HireInSocial\Offers\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use HireInSocial\Offers\Infrastructure\SwiftMailer\System\SwiftMailer;
 use HireInSocial\Offers\Infrastructure\Twitter\OAuthTwitter;
 use HireInSocial\Offers\Offers;
-use HireInSocial\Offers\UserInterface\OfferExtension;
 use HireInSocial\Tests\Offers\Application\Double\Dummy\DummyFacebook;
 use HireInSocial\Tests\Offers\Application\Double\Dummy\DummyTwitter;
 use HireInSocial\Tests\Offers\Application\Double\Stub\CalendarStub;
-use Monolog\ErrorHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
-function offersFacade(Config $config) : Offers
+function offersFacade(Config $config, EntityManager $entityManager, \Swift_Mailer $swiftMailer, Environment $twig, LoggerInterface $logger) : Offers
 {
-    $logDir = $config->getString(Config::ROOT_PATH) . '/var/logs';
-
-    $systemLogger = new Logger('system');
-    $systemLogger->pushHandler(new StreamHandler($logDir . sprintf('/%s_system.log', $config->getString(Config::ENV)), Logger::DEBUG));
-
-    $loader = new FilesystemLoader($config->getString(Config::ROOT_PATH) . '/resources/templates/' . $config->getString(Config::LOCALE));
-    $twig = new Environment($loader, [
-        'cache' => $config->getString(Config::ROOT_PATH) . '/var/cache/' . $config->getString(Config::ENV) . '/twig',
-        'debug' => $config->getString(Config::ENV) !== 'prod',
-        'auto_reload' => $config->getString(Config::ENV) !== 'prod',
-    ]);
-    $twig->addGlobal('apply_email_template', $config->getString(Config::APPLY_EMAIL_TEMPLATE));
-    $twig->addGlobal('domain', $config->getString(Config::DOMAIN));
-
-    $twig->addExtension(new TwigOfferExtension(new OfferExtension($config->getString(Config::LOCALE))));
+    $dbalConnection = $entityManager->getConnection();
+    $mailer = new SwiftMailer(
+        $config->getJson(Config::MAILER_CONFIG)['domain'],
+        $swiftMailer
+    );
 
     switch ($config->getString(Config::ENV)) {
         case 'prod':
             $calendar = new SystemCalendar(new \DateTimeZone('UTC'));
+            $twitter = new OAuthTwitter(
+                $config->getString(Config::TWITTER_API_KEY),
+                $config->getString(Config::TWITTER_API_SECRET_KEY),
+            );
             $facebook = new FacebookGraphSDK(
                 new Facebook([
                     'app_id' => $config->getString(Config::FB_APP_ID),
                     'app_secret' => $config->getString(Config::FB_APP_SECRET),
                 ]),
-                $systemLogger
+                $logger
             );
-            $twitter = new OAuthTwitter(
-                $config->getString(Config::TWITTER_API_KEY),
-                $config->getString(Config::TWITTER_API_SECRET_KEY),
-            );
-            $transport = (new \Swift_SmtpTransport(
-                $config->getJson(Config::MAILER_CONFIG)['host'],
-                $config->getJson(Config::MAILER_CONFIG)['port']
-            ))
-                ->setUsername($config->getJson(Config::MAILER_CONFIG)['username'])
-                ->setPassword($config->getJson(Config::MAILER_CONFIG)['password'])
-                ->setTimeout(10)
-            ;
-            $mailer = new SwiftMailer($config->getJson(Config::MAILER_CONFIG)['domain'], new \Swift_Mailer($transport));
-            ErrorHandler::register($systemLogger);
 
             break;
         case 'dev':
@@ -128,18 +104,8 @@ function offersFacade(Config $config) : Offers
                     'app_id' => $config->getString(Config::FB_APP_ID),
                     'app_secret' => $config->getString(Config::FB_APP_SECRET),
                 ]),
-                $systemLogger
+                $logger
             );
-
-            $transport = (new \Swift_SmtpTransport(
-                $config->getJson(Config::MAILER_CONFIG)['host'],
-                $config->getJson(Config::MAILER_CONFIG)['port']
-            ))
-                ->setUsername($config->getJson(Config::MAILER_CONFIG)['username'])
-                ->setPassword($config->getJson(Config::MAILER_CONFIG)['password'])
-                ->setTimeout(10)
-            ;
-            $mailer = new SwiftMailer($config->getJson(Config::MAILER_CONFIG)['domain'], new \Swift_Mailer($transport));
 
             break;
         case 'test':
@@ -147,20 +113,11 @@ function offersFacade(Config $config) : Offers
             $twitter = new DummyTwitter();
             $facebook = new DummyFacebook();
 
-            $transport = new \Swift_Transport_NullTransport(new \Swift_Events_SimpleEventDispatcher());
-
-            $mailer = new SwiftMailer(
-                $config->getJson(Config::MAILER_CONFIG)['domain'],
-                new \Swift_Mailer($transport)
-            );
-
             break;
         default:
             throw new \RuntimeException(sprintf('Unknown environment %s', $config->getString(Config::ENV)));
     }
 
-    $dbalConnection = dbal($config);
-    $entityManager = orm($config, $dbalConnection);
     $ormSpecializations = new ORMSpecializations($entityManager);
 
     $throttling = Throttling::createDefault($calendar);
@@ -263,7 +220,7 @@ function offersFacade(Config $config) : Offers
                 new FeatureToggleQuery($featureToggle)
             ),
             $featureToggle,
-            $systemLogger,
+            $logger,
             $calendar
         ),
         $calendar

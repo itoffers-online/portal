@@ -1,23 +1,21 @@
 #!/usr/bin/env php
 <?php
 
-use HireInSocial\Offers\Application\Config;
+use HireInSocial\Config;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use function HireInSocial\Offers\Infrastructure\bootstrap;
-use function HireInSocial\Offers\Infrastructure\dbal;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$config = bootstrap($projectRootPath);
+$hireInSocial = new \HireInSocial\HireInSocial($projectRootPath);
 
 (new Application('db-drop', '1.0.0'))
     ->register('db-drop')
-    ->setCode(function(InputInterface $input, OutputInterface $output) use ($config) {
+    ->setCode(function(InputInterface $input, OutputInterface $output) use ($hireInSocial) {
         $io = new SymfonyStyle($input, $output);
 
         if ($input->isInteractive()) {
@@ -28,9 +26,9 @@ $config = bootstrap($projectRootPath);
             }
         }
 
-        $connection = dbal($config);
+        $connection = $hireInSocial->dbal();
 
-        $io->title('Database: ' . $config->getString(Config::DB_NAME));
+        $io->title('Database: ' . $hireInSocial->config()->getString(Config::DB_NAME));
 
         $io->section('Dropping tables...');
         foreach ($connection->getSchemaManager()->listTables() as $table) {

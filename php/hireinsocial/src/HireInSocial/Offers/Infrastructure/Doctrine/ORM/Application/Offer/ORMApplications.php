@@ -22,7 +22,7 @@ use HireInSocial\Offers\Application\Offer\Offer;
 final class ORMApplications implements Applications
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $entityManager;
 

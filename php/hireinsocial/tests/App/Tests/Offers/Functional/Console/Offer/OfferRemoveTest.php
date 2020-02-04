@@ -28,7 +28,7 @@ final class OfferRemoveTest extends ConsoleTestCase
     {
         $offer = $this->createOffer();
 
-        $command = new RemoveOffer(self::$offersFacade);
+        $command = new RemoveOffer(self::offersFacade());
         $application = new Application('test');
         $application->add($command);
 

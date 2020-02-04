@@ -19,7 +19,7 @@ use HireInSocial\Offers\Application\System\TransactionManager;
 final class ORMTransactionManager implements TransactionManager
 {
     /**
-     * @var \Doctrine\ORM\EntityManagerInterface
+     * @var EntityManagerInterface
      */
     private $entityManager;
 

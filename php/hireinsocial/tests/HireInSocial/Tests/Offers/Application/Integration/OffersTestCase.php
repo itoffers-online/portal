@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Tests\Offers\Application\Integration;
 
-use HireInSocial\Offers\Application\Config;
-use function HireInSocial\Offers\Infrastructure\bootstrap;
-use function HireInSocial\Offers\Infrastructure\dbal;
+use HireInSocial\Config;
+use HireInSocial\HireInSocial;
 use HireInSocial\Offers\Infrastructure\Flysystem\Application\System\FlysystemStorage;
-use function HireInSocial\Offers\Infrastructure\offersFacade;
 use HireInSocial\Tests\Offers\Application\Context\DatabaseContext;
 use HireInSocial\Tests\Offers\Application\Context\FilesystemContext;
 use HireInSocial\Tests\Offers\Application\Context\OffersContext;
@@ -42,15 +40,15 @@ abstract class OffersTestCase extends TestCase
 
     public function setUp() : void
     {
-        $config = bootstrap(ROOT_DIR);
+        $hireInSocial = new HireInSocial(ROOT_DIR);
 
-        if ($config->getString(Config::ENV) !== 'test') {
-            $this->fail(sprintf('Expected environment "test" but got "%s"', $config->getString(Config::ENV)));
+        if ($hireInSocial->config()->getString(Config::ENV) !== 'test') {
+            $this->fail(sprintf('Expected environment "test" but got "%s"', $hireInSocial->config()->getString(Config::ENV)));
         }
 
-        $this->systemContext = new OffersContext(offersFacade($config));
-        $this->databaseContext = new DatabaseContext(dbal($config));
-        $this->filesystemContext = new FilesystemContext(FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG)));
+        $this->systemContext = new OffersContext($hireInSocial->offers());
+        $this->databaseContext = new DatabaseContext($hireInSocial->dbal());
+        $this->filesystemContext = new FilesystemContext(FlysystemStorage::create($hireInSocial->config()->getJson(Config::FILESYSTEM_CONFIG)));
 
         $this->databaseContext->purgeDatabase();
         $this->filesystemContext->purgeFilesystem();

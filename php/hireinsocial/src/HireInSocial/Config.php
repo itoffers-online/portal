@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Offers\Application;
+namespace HireInSocial;
 
 use function \Safe\json_decode;
 use function array_key_exists;

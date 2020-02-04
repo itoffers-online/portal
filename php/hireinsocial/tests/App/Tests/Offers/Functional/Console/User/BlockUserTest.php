@@ -28,7 +28,7 @@ final class BlockUserTest extends ConsoleTestCase
     {
         $offer = $this->createOffer();
 
-        $command = new BlockUser(self::$offersFacade);
+        $command = new BlockUser(self::offersFacade());
         $application = new Application('test');
         $application->add($command);
 

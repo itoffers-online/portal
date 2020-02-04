@@ -40,5 +40,6 @@ services:
                     # Exceptions
                     - HireInSocial\Offers\Application\Exception\Exception
                     - HireInSocial\Offers\Application\Exception\InvalidAssertionException
+                    - HireInSocial\Notifications\Application\Exception\Exception
             tags:
                 - phpstan.rules.rule

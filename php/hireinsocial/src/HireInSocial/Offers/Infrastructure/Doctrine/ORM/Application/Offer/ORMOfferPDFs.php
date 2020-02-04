@@ -20,7 +20,7 @@ use HireInSocial\Offers\Application\Offer\OfferPDFs;
 final class ORMOfferPDFs implements OfferPDFs
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $entityManager;
 

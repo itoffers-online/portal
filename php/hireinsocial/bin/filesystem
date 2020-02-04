@@ -1,35 +1,37 @@
 #!/usr/bin/env php
 <?php
 
-use HireInSocial\Offers\Application\Config;
+use HireInSocial\Config;
+use HireInSocial\HireInSocial;
 use HireInSocial\Offers\Infrastructure\Flysystem\Application\System\FlysystemStorage;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use function HireInSocial\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$config = bootstrap($projectRootPath);
-
 $application = new Application('filesystem', '1.0.0');
-$application->add(new class($config) extends Command {
+$application->add(new class(new HireInSocial($projectRootPath)) extends Command {
 
-    private $config;
     /**
      * @var SymfonyStyle
      */
     private $io;
 
-    public function __construct(Config $config)
+    /**
+     * @var HireInSocial
+     */
+    private $hireInSocial;
+
+    public function __construct(HireInSocial $hireInSocial)
     {
         parent::__construct();
 
-        $this->config = $config;
+        $this->hireInSocial = $hireInSocial;
     }
 
     protected function configure() : void
@@ -58,7 +60,7 @@ $application->add(new class($config) extends Command {
             }
         }
 
-        $fs = FlysystemStorage::create($this->config->getJson(Config::FILESYSTEM_CONFIG));
+        $fs = FlysystemStorage::create($this->hireInSocial->config()->getJson(Config::FILESYSTEM_CONFIG));
 
         $fs->purge();
 

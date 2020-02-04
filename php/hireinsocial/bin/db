@@ -10,29 +10,27 @@ use Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand;
 use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use HireInSocial\HireInSocial;
 use HireInSocial\Offers\Application\System;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Schema\HireInSocialSchemaProvider;
-use HireInSocial\Offers\Application\Config;
+use HireInSocial\Config;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use function HireInSocial\Offers\Infrastructure\bootstrap;
-use function HireInSocial\Offers\Infrastructure\dbal;
-use function HireInSocial\Offers\Infrastructure\orm;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$config = bootstrap($projectRootPath);
+$hireInSocial = new HireInSocial($projectRootPath);
 
-$connection = dbal($config);
-$entityManager = orm($config, $connection);
+$connection = $hireInSocial->dbal();
+$entityManager = $hireInSocial->orm();
 
 $migrationsConfig = new MigrationConfiguration($connection);
 $migrationsConfig->setMigrationsNamespace(System::class . '\\Doctrine\\DBAL\\Migrations');
 $migrationsConfig->setMigrationsTableName('his_db_migration');
-$migrationsConfig->setMigrationsDirectory($config->getString(Config::ROOT_PATH) . '/db/migrations');
-$migrationsConfig->registerMigrationsFromDirectory($config->getString(Config::ROOT_PATH) . '/db/migrations');
+$migrationsConfig->setMigrationsDirectory($hireInSocial->config()->getString(Config::ROOT_PATH) . '/db/migrations');
+$migrationsConfig->registerMigrationsFromDirectory($hireInSocial->config()->getString(Config::ROOT_PATH) . '/db/migrations');
 $migrationsConfig->setMigrationsAreOrganizedByYearAndMonth(true);
 
 $migrateCommand = new MigrateCommand();
