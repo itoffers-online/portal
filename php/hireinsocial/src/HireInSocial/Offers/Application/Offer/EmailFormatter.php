@@ -13,28 +13,30 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Offer;
 
+use Twig\Environment;
+
 final class EmailFormatter
 {
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
-    public function __construct(\Twig_Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }
 
     public function applicationSubject(string $originSubject) : string
     {
-        return $this->twig->render('/email/apply/offer.txt.twig', [
+        return $this->twig->render('@offers/email/apply/offer.txt.twig', [
             'originSubject' => $originSubject,
         ]);
     }
 
     public function applicationBody(string $originMessage) : string
     {
-        return $this->twig->render('/email/apply/message.html.twig', [
+        return $this->twig->render('@offers/email/apply/message.html.twig', [
             'originMessage' => $originMessage,
         ]);
     }

@@ -17,6 +17,7 @@
         "files": [
             "src/HireInSocial/Offers/Infrastructure/facade.php",
             "src/HireInSocial/Notifications/Infrastructure/facade.php",
+            "src/HireInSocial/bootstrap.php",
             "src/App/symfony.php"
         ]
     },
@@ -67,6 +68,7 @@
         "symfony/monolog-bundle": "^3.3",
         "symfony/security-csrf": "^4.4",
         "symfony/stopwatch": "^4.4",
+        "symfony/swiftmailer-bundle": "^3.4",
         "symfony/templating": "^4.4",
         "symfony/translation": "^4.4",
         "symfony/twig-bundle": "^4.4",

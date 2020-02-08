@@ -11,12 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Offers\Application\System;
-
-use HireInSocial\Offers\Application\System\Mailer\Attachments;
-use HireInSocial\Offers\Application\System\Mailer\Email;
-use HireInSocial\Offers\Application\System\Mailer\Recipients;
-use HireInSocial\Offers\Application\System\Mailer\Sender;
+namespace HireInSocial\Component\Mailer;
 
 interface Mailer
 {

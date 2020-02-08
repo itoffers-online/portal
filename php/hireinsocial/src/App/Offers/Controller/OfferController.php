@@ -16,6 +16,7 @@ namespace App\Offers\Controller;
 use App\Offers\Controller\Offer\OfferToForm;
 use App\Offers\Form\Type\OfferType;
 use Facebook\Facebook;
+use HireInSocial\HireInSocial;
 use HireInSocial\Offers\Application\Command\Facebook\PagePostOfferAtGroup;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Company;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Contact;
@@ -33,7 +34,6 @@ use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\FeatureToggle\PostNewOffersFeature;
 use HireInSocial\Offers\Application\FeatureToggle\PostOfferAtFacebookGroupFeature;
 use HireInSocial\Offers\Application\FeatureToggle\TweetAboutOfferFeature;
-use HireInSocial\Offers\Offers;
 use HireInSocial\Offers\UserInterface\OfferThumbnail;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
@@ -51,9 +51,9 @@ final class OfferController extends AbstractController
     use RedirectAfterLogin;
 
     /**
-     * @var Offers
+     * @var HireInSocial
      */
-    private $offers;
+    private $hireInSocial;
 
     /**
      * @var Facebook
@@ -76,13 +76,13 @@ final class OfferController extends AbstractController
     private $logger;
 
     public function __construct(
-        Offers $offers,
+        HireInSocial $hireInSocial,
         Facebook $facebook,
         ParameterBagInterface $parameterBag,
         OfferThumbnail $offerThumbnail,
         LoggerInterface $logger
     ) {
-        $this->offers = $offers;
+        $this->hireInSocial = $hireInSocial;
         $this->facebook = $facebook;
         $this->logger = $logger;
         $this->parameterBag = $parameterBag;
@@ -91,18 +91,18 @@ final class OfferController extends AbstractController
 
     public function postAction(Request $request) : Response
     {
-        if ($this->offers->featureQuery()->isDisabled(PostNewOffersFeature::NAME)) {
+        if ($this->hireInSocial->offers()->featureQuery()->isDisabled(PostNewOffersFeature::NAME)) {
             return $this->render('@offers/offer/posting_disabled.html.twig');
         }
 
         return $this->render('@offers/offer/post.html.twig', [
-            'specializations' => $this->offers->specializationQuery()->all(),
+            'specializations' => $this->hireInSocial->offers()->specializationQuery()->all(),
         ]);
     }
 
     public function newAction(string $specSlug, Request $request) : Response
     {
-        if ($this->offers->featureQuery()->isDisabled(PostNewOffersFeature::NAME)) {
+        if ($this->hireInSocial->offers()->featureQuery()->isDisabled(PostNewOffersFeature::NAME)) {
             return $this->render('@offers/offer/posting_disabled.html.twig');
         }
 
@@ -116,13 +116,13 @@ final class OfferController extends AbstractController
 
         $userId = $request->getSession()->get(SecurityController::USER_SESSION_KEY);
 
-        if (!$specialization = $this->offers->specializationQuery()->findBySlug($specSlug)) {
+        if (!$specialization = $this->hireInSocial->offers()->specializationQuery()->findBySlug($specSlug)) {
             throw $this->createNotFoundException();
         }
 
         try {
             $previousOfferData = $request->query->get('offer-slug')
-                ? (new OfferToForm($request->query->get('offer-slug'), $userId))($this->offers)
+                ? (new OfferToForm($request->query->get('offer-slug'), $userId))($this->hireInSocial->offers())
                 : null;
         } catch (AccessDeniedException $accessDeniedException) {
             return new Response($accessDeniedException->getMessage(), 403);
@@ -153,7 +153,7 @@ final class OfferController extends AbstractController
                         break;
                 }
 
-                $this->offers->handle(new PostOffer(
+                $this->hireInSocial->offers()->handle(new PostOffer(
                     $offerId = Uuid::uuid4()->toString(),
                     $specSlug,
                     $offerData['locale'],
@@ -187,17 +187,17 @@ final class OfferController extends AbstractController
                     $offerData['offer_pdf'] ? $offerData['offer_pdf']->getPathname() : null
                 ));
 
-                $offer = $this->offers->offerQuery()->findById($offerId);
+                $offer = $this->hireInSocial->offers()->offerQuery()->findById($offerId);
 
-                if ($this->offers->featureQuery()->isEnabled(PostOfferAtFacebookGroupFeature::NAME) && (bool) $offerData['channels']['facebook_group']) {
-                    $this->offers->handle(new PagePostOfferAtGroup(
+                if ($this->hireInSocial->offers()->featureQuery()->isEnabled(PostOfferAtFacebookGroupFeature::NAME) && (bool) $offerData['channels']['facebook_group']) {
+                    $this->hireInSocial->offers()->handle(new PagePostOfferAtGroup(
                         $offerId,
                         $this->renderView('@offers/facebook/page/group/offer.txt.twig', ['offer' => $offer]),
                     ));
                 }
 
-                if ($this->offers->featureQuery()->isEnabled(TweetAboutOfferFeature::NAME) && (bool) $offerData['channels']['twitter']) {
-                    $this->offers->handle(new TweetAboutOffer(
+                if ($this->hireInSocial->offers()->featureQuery()->isEnabled(TweetAboutOfferFeature::NAME) && (bool) $offerData['channels']['twitter']) {
+                    $this->hireInSocial->offers()->handle(new TweetAboutOffer(
                         $offerId,
                         $this->renderView('@offers/twitter/offer.txt.twig', ['offer' => $offer]),
                     ));
@@ -213,26 +213,26 @@ final class OfferController extends AbstractController
         return $this->render('@offers/offer/new.html.twig', [
             'specialization' => $specialization,
             'form' => $form->createView(),
-            'throttled' => $this->offers->offerThrottleQuery()->isThrottled($userId),
-            'offersLeft' => $this->offers->offerThrottleQuery()->offersLeft($userId),
-            'throttleLimit' => $this->offers->offerThrottleQuery()->limit(),
-            'throttleSince' => $this->offers->offerThrottleQuery()->since(),
-            'extraOffersCount' => $this->offers->extraOffersQuery()->countNotExpired($userId),
+            'throttled' => $this->hireInSocial->offers()->offerThrottleQuery()->isThrottled($userId),
+            'offersLeft' => $this->hireInSocial->offers()->offerThrottleQuery()->offersLeft($userId),
+            'throttleLimit' => $this->hireInSocial->offers()->offerThrottleQuery()->limit(),
+            'throttleSince' => $this->hireInSocial->offers()->offerThrottleQuery()->since(),
+            'extraOffersCount' => $this->hireInSocial->offers()->extraOffersQuery()->countNotExpired($userId),
             'previousOfferData' => $previousOfferData,
-            'postOfferAtFacebookGroupEnabled' => $this->offers->featureQuery()->isEnabled(PostOfferAtFacebookGroupFeature::NAME),
-            'tweetAboutOfferEnabled' => $this->offers->featureQuery()->isEnabled(TweetAboutOfferFeature::NAME),
+            'postOfferAtFacebookGroupEnabled' => $this->hireInSocial->offers()->featureQuery()->isEnabled(PostOfferAtFacebookGroupFeature::NAME),
+            'tweetAboutOfferEnabled' => $this->hireInSocial->offers()->featureQuery()->isEnabled(TweetAboutOfferFeature::NAME),
         ]);
     }
 
     public function successAction(Request $request, string $specSlug) : Response
     {
-        $offer = $this->offers->offerQuery()->findBySlug($request->query->get('offer-slug'));
+        $offer = $this->hireInSocial->offers()->offerQuery()->findBySlug($request->query->get('offer-slug'));
 
         if (!$offer) {
             throw $this->createNotFoundException();
         }
 
-        $specSlug = $this->offers->specializationQuery()->findBySlug($specSlug);
+        $specSlug = $this->hireInSocial->offers()->specializationQuery()->findBySlug($specSlug);
 
         if (!$specSlug) {
             throw $this->createNotFoundException();
@@ -246,18 +246,18 @@ final class OfferController extends AbstractController
 
     public function offerAction(Request $request, string $offerSlug) : Response
     {
-        $offer = $this->offers->offerQuery()->findBySlug($offerSlug);
+        $offer = $this->hireInSocial->offers()->offerQuery()->findBySlug($offerSlug);
 
         if (!$offer) {
             throw $this->createNotFoundException();
         }
 
-        $facebookPost = $this->offers->facebookPostQuery()->findFacebookPost($offer->id()->toString());
-        $tweet = $this->offers->tweetsQuery()->findTweet($offer->id()->toString());
+        $facebookPost = $this->hireInSocial->offers()->facebookPostQuery()->findFacebookPost($offer->id()->toString());
+        $tweet = $this->hireInSocial->offers()->tweetsQuery()->findTweet($offer->id()->toString());
 
-        $spcialization = $this->offers->specializationQuery()->findBySlug($offer->specializationSlug());
-        $nextOffer = $this->offers->offerQuery()->findOneAfter($offer);
-        $previousOffer = $this->offers->offerQuery()->findOneBefore($offer);
+        $spcialization = $this->hireInSocial->offers()->specializationQuery()->findBySlug($offer->specializationSlug());
+        $nextOffer = $this->hireInSocial->offers()->offerQuery()->findOneAfter($offer);
+        $previousOffer = $this->hireInSocial->offers()->offerQuery()->findOneBefore($offer);
 
         return $this->render('@offers/offer/offer.html.twig', [
             'userId' => $request->getSession()->get(SecurityController::USER_SESSION_KEY),
@@ -272,14 +272,14 @@ final class OfferController extends AbstractController
 
     public function removeAction(Request $request, string $offerSlug) : Response
     {
-        $offer = $this->offers->offerQuery()->findBySlug($offerSlug);
+        $offer = $this->hireInSocial->offers()->offerQuery()->findBySlug($offerSlug);
         $userId = $request->getSession()->get(SecurityController::USER_SESSION_KEY);
 
         if (!$userId || !$offer->postedBy($userId)) {
             return new Response('', Response::HTTP_FORBIDDEN);
         }
 
-        $this->offers->handle(new RemoveOffer($offer->id()->toString(), $userId));
+        $this->hireInSocial->offers()->handle(new RemoveOffer($offer->id()->toString(), $userId));
 
         $this->addFlash('success', $this->renderView('@offers/alert/offer_removed.txt'));
 
@@ -288,13 +288,13 @@ final class OfferController extends AbstractController
 
     public function removeConfirmationAction(Request $request, string $offerSlug) : Response
     {
-        $offer = $this->offers->offerQuery()->findBySlug($offerSlug);
+        $offer = $this->hireInSocial->offers()->offerQuery()->findBySlug($offerSlug);
 
         if (!$offer) {
             throw $this->createNotFoundException();
         }
 
-        $facebookPost = $this->offers->facebookPostQuery()->findFacebookPost($offer->id()->toString());
+        $facebookPost = $this->hireInSocial->offers()->facebookPostQuery()->findFacebookPost($offer->id()->toString());
 
 
         return $this->render('@offers/offer/remove_confirmation.html.twig', [
@@ -305,7 +305,7 @@ final class OfferController extends AbstractController
 
     public function applyAction(Request $request) : Response
     {
-        $offer = $this->offers->offerQuery()->findById($request->request->get('offer-id'));
+        $offer = $this->hireInSocial->offers()->offerQuery()->findById($request->request->get('offer-id'));
         $email = sprintf($this->parameterBag->get('apply_email_template'), $offer->emailHash());
 
         return new JsonResponse(['email' => $email]);
@@ -313,7 +313,7 @@ final class OfferController extends AbstractController
 
     public function thumbnailAction(Request $request, string $offerSlug) : Response
     {
-        $offer = $this->offers->offerQuery()->findBySlug($offerSlug);
+        $offer = $this->hireInSocial->offers()->offerQuery()->findBySlug($offerSlug);
 
         if (!$offer) {
             throw $this->createNotFoundException();

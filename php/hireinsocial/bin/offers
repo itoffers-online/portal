@@ -20,12 +20,15 @@ use HireInSocial\Offers\UserInterface\OfferExtension;
 use HireInSocial\Offers\UserInterface\SpecializationExtension;
 use Symfony\Component\Console\Application;
 use App\Offers\Command\Offer\Test;
+use function App\symfony;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$hireInSocial = new HireInSocial($projectRootPath);
+$hireInSocial = symfony(bootstrap($projectRootPath))->getContainer()->get(HireInSocial::class);
+
 
 $application = new Application('Hire in Social - Offers');
 

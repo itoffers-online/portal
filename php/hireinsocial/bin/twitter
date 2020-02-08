@@ -5,14 +5,16 @@ use App\Twitter\Command\AuthenticationUrl;
 use App\Twitter\Command\GetToken;
 use App\Twitter\Command\StatusUpdate;
 use App\Twitter\Command\VerifyCredentials;
+use HireInSocial\HireInSocial;
 use Symfony\Component\Console\Application;
-use function HireInSocial\bootstrap;
+use function App\symfony;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$hireInSocial = new \HireInSocial\HireInSocial($projectRootPath);
+$hireInSocial = symfony(bootstrap($projectRootPath))->getContainer()->get(HireInSocial::class);
 
 $application = new Application('Hire in Social - Twitter');
 

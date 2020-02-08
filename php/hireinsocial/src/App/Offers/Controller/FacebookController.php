@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace App\Offers\Controller;
 
 use Facebook\Facebook;
+use HireInSocial\HireInSocial;
 use HireInSocial\Offers\Application\Command\User\FacebookConnect;
-use HireInSocial\Offers\Offers;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,9 +29,9 @@ final class FacebookController extends AbstractController
     use RedirectAfterLogin;
 
     /**
-     * @var Offers
+     * @var HireInSocial
      */
-    private $offers;
+    private $hireInSocial;
 
     /**
      * @var RouterInterface
@@ -49,12 +49,12 @@ final class FacebookController extends AbstractController
     private $logger;
 
     public function __construct(
-        Offers $offers,
+        HireInSocial $hireInSocial,
         RouterInterface $router,
         Facebook $facebook,
         LoggerInterface $logger
     ) {
-        $this->offers = $offers;
+        $this->hireInSocial = $hireInSocial;
         $this->facebook = $facebook;
         $this->logger = $logger;
         $this->router = $router;
@@ -98,7 +98,7 @@ final class FacebookController extends AbstractController
             return $this->redirectToRoute('facebook_login');
         }
 
-        if ($user = $this->offers->userQuery()->findByEmail($fbUser['email'])) {
+        if ($user = $this->hireInSocial->offers()->userQuery()->findByEmail($fbUser['email'])) {
             if ($user->fbAppId() !== $fbUser['id']) {
                 $this->addFlash('warning', $this->renderView('@offers/alert/fb_email_already_used.txt'));
 
@@ -106,9 +106,9 @@ final class FacebookController extends AbstractController
             }
         }
 
-        $this->offers->handle(new FacebookConnect($fbUser['id'], $fbUser['email']));
+        $this->hireInSocial->offers()->handle(new FacebookConnect($fbUser['id'], $fbUser['email']));
 
-        $user = $this->offers->userQuery()->findByFacebook($fbUser['id']);
+        $user = $this->hireInSocial->offers()->userQuery()->findByFacebook($fbUser['id']);
 
         if ($user->isBlocked()) {
             return $this->redirectToRoute('user_blocked');

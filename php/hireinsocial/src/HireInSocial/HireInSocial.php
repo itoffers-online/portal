@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace HireInSocial;
 
-use App\Offers\Twig\Extension\TwigOfferExtension;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\PredisCache;
 use Doctrine\DBAL\Configuration;
@@ -24,6 +23,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Proxy\ProxyFactory;
+use HireInSocial\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
+use HireInSocial\Component\Mailer\Infrastructure\SwiftMailer\SwiftMailer;
+use HireInSocial\Component\Mailer\Mailer;
 use function HireInSocial\Notifications\Infrastructure\notificationsFacade;
 use HireInSocial\Notifications\Notifications;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Platform\PostgreSQL11Platform;
@@ -31,23 +33,12 @@ use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\Description\Req
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\SalaryType;
 use function HireInSocial\Offers\Infrastructure\offersFacade;
 use HireInSocial\Offers\Offers;
-use HireInSocial\Offers\UserInterface\OfferExtension;
-use Monolog\ErrorHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Dotenv\Dotenv;
 use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
 final class HireInSocial
 {
-    /**
-     * @var string
-     */
-    private $projectRootPath;
-
     /**
      * @var Config
      */
@@ -88,13 +79,17 @@ final class HireInSocial
      */
     private $logger;
 
-    public function __construct(string $projectRootPath)
-    {
-        if (!\file_exists($projectRootPath)) {
-            die(sprintf('Invalid project root path: %s', $projectRootPath));
-        }
+    /**
+     * @var InMemoryEventBus
+     */
+    private $eventBus;
 
-        $this->projectRootPath = $projectRootPath;
+    public function __construct(Config $config, LoggerInterface $logger, Environment $twig, \Swift_Mailer $mailer)
+    {
+        $this->config = $config;
+        $this->logger = $logger;
+        $this->templatingEngine = $twig;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -103,7 +98,7 @@ final class HireInSocial
     public function offers() : Offers
     {
         if (null === $this->offers) {
-            $this->offers = offersFacade($this->config(), $this->orm(), $this->mailer(), $this->templatingEngine(), $this->logger());
+            $this->offers = offersFacade($this->config(), $this->orm(), $this->mailer(), $this->templatingEngine(), $this->eventBus(), $this->logger());
         }
 
         return $this->offers;
@@ -115,7 +110,7 @@ final class HireInSocial
     public function notifications() : Notifications
     {
         if (null === $this->notifications) {
-            $this->notifications = notificationsFacade($this->config());
+            $this->notifications = notificationsFacade($this->config(), $this->eventBus(), $this->mailer(), $this->logger());
         }
 
         return $this->notifications;
@@ -123,20 +118,6 @@ final class HireInSocial
 
     public function config() : Config
     {
-        if (null === $this->config) {
-            if (\getenv('HIS_ENV') === 'test') {
-                $dotEnv = new Dotenv();
-                $dotEnv->load($this->projectRootPath . '/.env.test');
-            } else {
-                if (\file_exists($this->projectRootPath . '/.env')) {
-                    $dotEnv = new Dotenv();
-                    $dotEnv->load($this->projectRootPath . '/.env');
-                }
-            }
-
-            $this->config = Config::fromEnv($this->projectRootPath);
-        }
-
         return $this->config;
     }
 
@@ -157,19 +138,6 @@ final class HireInSocial
 
     public function logger() : LoggerInterface
     {
-        if (null !== $this->logger) {
-            return $this->logger;
-        }
-
-        $logDir = $this->config()->getString(Config::ROOT_PATH) . '/var/logs';
-
-        $this->logger = new Logger('system');
-        $this->logger->pushHandler(new StreamHandler($logDir . sprintf('/%s_system.log', $this->config()->getString(Config::ENV)), Logger::DEBUG));
-
-        if ($this->isProdEnvironment()) {
-            ErrorHandler::register($this->logger);
-        }
-
         return $this->logger;
     }
 
@@ -239,50 +207,24 @@ final class HireInSocial
         return $this->orm;
     }
 
-    private function mailer() : \Swift_Mailer
+    private function mailer() : Mailer
     {
-        if (null !== $this->mailer) {
-            return $this->mailer;
-        }
-
-        if ($this->isTestEnvironment()) {
-            $transport = new \Swift_Transport_NullTransport(new \Swift_Events_SimpleEventDispatcher());
-
-            $this->mailer = new \Swift_Mailer($transport);
-
-            return $this->mailer;
-        }
-
-        $transport = (new \Swift_SmtpTransport(
-            $this->config()->getJson(Config::MAILER_CONFIG)['host'],
-            $this->config()->getJson(Config::MAILER_CONFIG)['port']
-        ))
-            ->setUsername($this->config()->getJson(Config::MAILER_CONFIG)['username'])
-            ->setPassword($this->config()->getJson(Config::MAILER_CONFIG)['password'])
-            ->setTimeout(10)
-        ;
-        $this->mailer = new \Swift_Mailer($transport);
-
-        return $this->mailer;
+        return new SwiftMailer($this->config()->getString(Config::DOMAIN), $this->mailer);
     }
 
     private function templatingEngine() : Environment
     {
-        if (null !== $this->templatingEngine) {
-            return $this->templatingEngine;
+        return $this->templatingEngine;
+    }
+
+    private function eventBus() : InMemoryEventBus
+    {
+        if (null !== $this->eventBus) {
+            return $this->eventBus;
         }
 
-        $loader = new FilesystemLoader($this->config()->getString(Config::ROOT_PATH) . '/resources/templates/' . $this->config()->getString(Config::LOCALE));
-        $this->templatingEngine = new Environment($loader, [
-            'cache' => $this->config()->getString(Config::ROOT_PATH) . '/var/cache/' . $this->config()->getString(Config::ENV) . '/twig',
-            'debug' => $this->config()->getString(Config::ENV) !== 'prod',
-            'auto_reload' => $this->isDevMode(),
-        ]);
-        $this->templatingEngine->addGlobal('apply_email_template', $this->config()->getString(Config::APPLY_EMAIL_TEMPLATE));
-        $this->templatingEngine->addGlobal('domain', $this->config()->getString(Config::DOMAIN));
+        $this->eventBus = new InMemoryEventBus();
 
-        $this->templatingEngine->addExtension(new TwigOfferExtension(new OfferExtension($this->config()->getString(Config::LOCALE))));
-
-        return $this->templatingEngine;
+        return $this->eventBus;
     }
 }

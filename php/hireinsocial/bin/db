@@ -16,12 +16,14 @@ use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Schema\HireInSocialSchemaPr
 use HireInSocial\Config;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use function App\symfony;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$hireInSocial = new HireInSocial($projectRootPath);
+$hireInSocial = symfony(bootstrap($projectRootPath))->getContainer()->get(HireInSocial::class);
 
 $connection = $hireInSocial->dbal();
 $entityManager = $hireInSocial->orm();

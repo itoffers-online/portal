@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Application\Command\Offer;
 
 use HireInSocial\Offers\Application\Command\Offer\Offer\Description\Requirements;
+use HireInSocial\Offers\Application\EventStream;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Offer\Company;
 use HireInSocial\Offers\Application\Offer\Contact;
 use HireInSocial\Offers\Application\Offer\Contract;
 use HireInSocial\Offers\Application\Offer\Description;
+use HireInSocial\Offers\Application\Offer\Event\OfferPostedEvent;
 use HireInSocial\Offers\Application\Offer\Locale;
 use HireInSocial\Offers\Application\Offer\Location;
 use HireInSocial\Offers\Application\Offer\Offer;
@@ -88,6 +90,11 @@ final class PostOfferHandler implements Handler
      */
     private $extraOffers;
 
+    /**
+     * @var EventStream
+     */
+    private $eventStream;
+
     public function __construct(
         Calendar $calendar,
         Offers $offers,
@@ -97,7 +104,8 @@ final class PostOfferHandler implements Handler
         Specializations $specializations,
         Slugs $slugs,
         OfferPDFs $offerPDFs,
-        FileStorage $fileStorage
+        FileStorage $fileStorage,
+        EventStream $eventStream
     ) {
         $this->calendar = $calendar;
         $this->offers = $offers;
@@ -108,6 +116,7 @@ final class PostOfferHandler implements Handler
         $this->offerPDFs = $offerPDFs;
         $this->fileStorage = $fileStorage;
         $this->extraOffers = $extraOffers;
+        $this->eventStream = $eventStream;
     }
 
     public function handles() : string
@@ -142,6 +151,8 @@ final class PostOfferHandler implements Handler
 
         $this->offers->add($offer);
         $this->slugs->add($slug);
+
+        $this->eventStream->record(new OfferPostedEvent($offer));
     }
 
     private function createOffer(PostOffer $command, User $user, Specialization $specialization) : Offer

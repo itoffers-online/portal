@@ -41,22 +41,34 @@ final class System
     private $featureToggle;
 
     /**
-     * @var LoggerInterface
+     * @var EventStream
      */
-    private $logger;
+    private $eventStream;
 
     /**
      * @var Calendar
      */
     private $calendar;
 
-    public function __construct(CommandBus $commandBus, Queries $queries, FeatureToggle $featureToggle, LoggerInterface $logger, Calendar $calendar)
-    {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(
+        CommandBus $commandBus,
+        Queries $queries,
+        FeatureToggle $featureToggle,
+        Calendar $calendar,
+        EventStream $eventStream,
+        LoggerInterface $logger
+    ) {
         $this->commandBus = $commandBus;
         $this->queries = $queries;
         $this->featureToggle = $featureToggle;
         $this->logger = $logger;
         $this->calendar = $calendar;
+        $this->eventStream = $eventStream;
     }
 
     public function handle(Command $command) : void
@@ -69,6 +81,20 @@ final class System
             $this->commandBus->handle($command);
         } catch (Throwable $exception) {
             $this->logger->error(sprintf('Failed to handle command %s', get_class($command)), [
+                'system_time' => $this->calendar->currentTime()->format('c'),
+                'exception' => get_class($exception),
+                'message' => $exception->getMessage(),
+                'code' => $exception->getCode(),
+                'trace' => $exception->getTraceAsString(),
+            ]);
+
+            throw new Exception($exception->getMessage(), $exception->getCode(), $exception);
+        }
+
+        try {
+            $this->eventStream->flush();
+        } catch (Throwable $exception) {
+            $this->logger->error(sprintf('Failed to flush event stream after command %s', \get_class($command)), [
                 'system_time' => $this->calendar->currentTime()->format('c'),
                 'exception' => get_class($exception),
                 'message' => $exception->getMessage(),

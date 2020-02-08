@@ -13,6 +13,13 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\Offer;
 
+use function array_map;
+use HireInSocial\Component\Mailer\Attachments;
+use HireInSocial\Component\Mailer\Email;
+use HireInSocial\Component\Mailer\Mailer;
+use HireInSocial\Component\Mailer\Recipient;
+use HireInSocial\Component\Mailer\Recipients;
+use HireInSocial\Component\Mailer\Sender;
 use HireInSocial\Offers\Application\Command\Offer\Apply\Attachment;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Hash\Encoder;
@@ -23,38 +30,33 @@ use HireInSocial\Offers\Application\Offer\EmailFormatter;
 use HireInSocial\Offers\Application\Offer\Offers;
 use HireInSocial\Offers\Application\System\Calendar;
 use HireInSocial\Offers\Application\System\Handler;
-use HireInSocial\Offers\Application\System\Mailer;
-use HireInSocial\Offers\Application\System\Mailer\Attachments;
-use HireInSocial\Offers\Application\System\Mailer\Email;
-use HireInSocial\Offers\Application\System\Mailer\Recipient;
-use HireInSocial\Offers\Application\System\Mailer\Recipients;
-use HireInSocial\Offers\Application\System\Mailer\Sender;
 use Ramsey\Uuid\Uuid;
+use function sprintf;
 
 final class ApplyThroughEmailHandler implements Handler
 {
     /**
-     * @var \HireInSocial\Offers\Application\System\Mailer
+     * @var Mailer
      */
     private $mailer;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Offers
+     * @var Offers
      */
     private $offers;
 
     /**
-     * @var \HireInSocial\Offers\Application\Offer\Applications
+     * @var Applications
      */
     private $applications;
 
     /**
-     * @var \HireInSocial\Offers\Application\Hash\Encoder
+     * @var Encoder
      */
     private $encoder;
 
     /**
-     * @var \HireInSocial\Offers\Application\System\Calendar
+     * @var Calendar
      */
     private $calendar;
 
@@ -99,15 +101,15 @@ final class ApplyThroughEmailHandler implements Handler
                 $this->emailFormatter->applicationBody($command->htmlBody())
             ),
             new Sender(
-                \sprintf('no-reply@%s', $this->mailer->domain()),
+                sprintf('no-reply@%s', $this->mailer->domain()),
                 $this->mailer->domain(),
                 $command->from()
             ),
             new Recipients(new Recipient($offer->contact()->email(), $offer->contact()->name())),
             new Attachments(
-                ...\array_map(
+                ...array_map(
                     function (Attachment $attachment) {
-                        return new Mailer\Attachment($attachment->filePath());
+                        return new Attachment($attachment->filePath());
                     },
                     $command->attachments()
                 )

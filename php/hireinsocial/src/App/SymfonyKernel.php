@@ -28,9 +28,10 @@ use App\Offers\Twig\Extension\TwigFacebookExtension;
 use App\Offers\Twig\Extension\TwigOfferExtension;
 use App\Offers\Twig\Extension\TwigSpecializationExtension;
 use Facebook\Facebook;
+use HireInSocial\Config;
+use HireInSocial\HireInSocial;
 use HireInSocial\Offers\Infrastructure\Imagine\UserInterface\ImagineOfferThumbnail;
 use HireInSocial\Offers\Infrastructure\Imagine\UserInterface\ImagineSpecializationThumbnail;
-use HireInSocial\Offers\Offers;
 use HireInSocial\Offers\UserInterface\OfferExtension;
 use HireInSocial\Offers\UserInterface\OfferThumbnail;
 use HireInSocial\Offers\UserInterface\SpecializationExtension;
@@ -39,6 +40,7 @@ use League\OAuth2\Client\Provider\LinkedIn;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\MonologBundle\MonologBundle;
+use Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -52,34 +54,20 @@ use Twig\Extensions\TextExtension;
 final class SymfonyKernel extends Kernel
 {
     /**
-     * @var string
+     * @var Config
      */
-    private $projectRootPath;
-
-    /**
-     * @var Offers
-     */
-    private $offers;
-
-    /**
-     * @var mixed[]
-     */
-    private $frameworkConfig;
-
-    public function __construct(
-        string $projectRootPath,
-        string $environment,
-        bool $debug,
-        array $frameworkConfig,
-        Offers $offers
-    ) {
-        parent::__construct($environment, $debug);
-        $this->projectRootPath = $projectRootPath;
-        $this->frameworkConfig = $frameworkConfig;
-        $this->offers = $offers;
-    }
+    private $config;
 
     use MicroKernelTrait;
+
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
+        parent::__construct(
+            $this->config->getString(Config::ENV),
+            $this->config->getString(Config::ENV) !== 'prod'
+        );
+    }
 
     public function registerBundles()
     {
@@ -87,6 +75,7 @@ final class SymfonyKernel extends Kernel
             new FrameworkBundle(),
             new TwigBundle(),
             new MonologBundle(),
+            new SwiftmailerBundle(),
         ];
     }
 
@@ -94,56 +83,18 @@ final class SymfonyKernel extends Kernel
     {
         parent::initializeContainer();
 
-        $this->container->set(Offers::class, $this->offers);
+        $this->container->set(Config::class, $this->config);
     }
 
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader) : void
     {
-        $c->loadFromExtension('framework', $this->frameworkConfig['framework']);
-        $c->loadFromExtension('twig', $this->frameworkConfig['twig']);
-        $c->loadFromExtension('monolog', $this->frameworkConfig['monolog']);
+        $this->setupServices($c);
+        $this->setupParameters($c);
 
-        $c->register(Offers::class)->setSynthetic(true);
-
-        $c->register(OfferExtension::class)
-            ->addArgument($this->frameworkConfig['framework']['default_locale']);
-        $c->register(SpecializationExtension::class)
-            ->addArgument($this->frameworkConfig['framework']['default_locale']);
-
-        $c->register(OfferThumbnail::class, ImagineOfferThumbnail::class)
-            ->addArgument($this->getProjectDir())
-            ->addArgument(new Reference(OfferExtension::class));
-
-        $c->register(SpecializationThumbnail::class, ImagineSpecializationThumbnail::class)
-            ->addArgument($this->getProjectDir())
-            ->addArgument(new Reference(SpecializationExtension::class));
-
-        $c->autowire(Facebook::class)
-            ->addArgument([
-                'app_id' => $this->frameworkConfig['facebook']['app_id'],
-                'app_secret' => $this->frameworkConfig['facebook']['app_secret'],
-            ]);
-
-        $c->autowire(LinkedIn::class)
-            ->addArgument([
-                'clientId'          => $this->frameworkConfig['linkedin']['app_id'],
-                'clientSecret'      => $this->frameworkConfig['linkedin']['app_secret'],
-            ]);
-
-        foreach ($this->frameworkConfig['parameters'] as $key => $value) {
-            $c->setParameter($key, $value);
-        }
-
-        $c->register(IntlExtension::class)->addTag('twig.extension');
-        $c->register(TextExtension::class)->addTag('twig.extension');
-        $c->register(DateExtension::class)->addTag('twig.extension');
-        $c->register(TwigFacebookExtension::class)->addTag('twig.extension');
-        $c->register(TwigOfferExtension::class)
-            ->addArgument(new Reference(OfferExtension::class))
-            ->addTag('twig.extension');
-        $c->register(TwigSpecializationExtension::class)
-            ->addArgument(new Reference(SpecializationExtension::class))
-            ->addTag('twig.extension');
+        $this->setupFrameworkBundle($c);
+        $this->setupTwigBundle($c);
+        $this->setupMonologBundle($c);
+        $this->setupSwiftMailerBundle($c);
 
         $c->autowire(IndexController::class)->addTag('controller.service_arguments');
         $c->autowire(FacebookController::class)->addTag('controller.service_arguments');
@@ -159,7 +110,7 @@ final class SymfonyKernel extends Kernel
 
     public function getProjectDir() : string
     {
-        return $this->projectRootPath;
+        return $this->config->getString(Config::ROOT_PATH);
     }
 
     public function getCacheDir() : string
@@ -172,9 +123,195 @@ final class SymfonyKernel extends Kernel
         return $this->getProjectDir().'/var/logs';
     }
 
+    protected function setupParameters(ContainerBuilder $c) : void
+    {
+        $c->setParameter('google_recaptcha_secret', $this->config->getString(Config::RECAPTCHA_SECRET));
+        $c->setParameter('apply_email_template', $this->config->getString(Config::APPLY_EMAIL_TEMPLATE));
+        $c->setParameter('his.old_offer_days', $this->config->getInt(Config::OLD_OFFER_DAYS));
+    }
+
+    protected function setupServices(ContainerBuilder $c) : void
+    {
+        $c->register(Config::class)
+            ->setSynthetic(true)
+            ->setPublic(true);
+
+        $c->register(HireInSocial::class)
+            ->setPublic(true)
+            ->setAutowired(true);
+
+        $c->register(OfferExtension::class)
+            ->addArgument($this->config->getString(Config::LOCALE));
+        $c->register(SpecializationExtension::class)
+            ->addArgument($this->config->getString(Config::LOCALE));
+
+        $c->register(OfferThumbnail::class, ImagineOfferThumbnail::class)
+            ->addArgument($this->getProjectDir())
+            ->addArgument(new Reference(OfferExtension::class));
+
+        $c->register(SpecializationThumbnail::class, ImagineSpecializationThumbnail::class)
+            ->addArgument($this->getProjectDir())
+            ->addArgument(new Reference(SpecializationExtension::class));
+
+        $c->autowire(Facebook::class)
+            ->addArgument([
+                'app_id' => $this->config->getString(Config::FB_APP_ID),
+                'app_secret' => $this->config->getString(Config::FB_APP_SECRET),
+            ]);
+
+        $c->autowire(LinkedIn::class)
+            ->addArgument([
+                'clientId' => $this->config->getString(Config::LINKEDIN_APP_ID),
+                'clientSecret' => $this->config->getString(Config::LINKEDIN_APP_SECRET),
+            ]);
+    }
+
     protected function configureRoutes(RouteCollectionBuilder $routes) : void
     {
         Factory::addRoutes($routes, $this->environment);
-        Factory::addLocalizedRoutes($routes, $this->frameworkConfig['framework']['default_locale']);
+        Factory::addLocalizedRoutes($routes, $this->config->getString(Config::LOCALE));
+    }
+
+    protected function setupFrameworkBundle(ContainerBuilder $c) : void
+    {
+        $parameters = [
+            'secret' => $this->config->getString(Config::SYMFONY_SECRET),
+            'csrf_protection' => null,
+            'esi' => [
+                'enabled' => true,
+            ],
+            'validation' => [
+                'enabled' => true,
+                'enable_annotations' => false,
+            ],
+            'annotations' => [
+                'enabled' => false,
+            ],
+            'session' => [
+                'cookie_samesite' => 'strict',
+                'save_path' => sys_get_temp_dir() . '/his/sessions',
+            ],
+            'default_locale' => $this->config->getString(Config::LOCALE),
+            'translator' => [
+                'fallbacks' => [$this->config->getString(Config::LOCALE)],
+                'paths' => [
+                    $this->config->getString(Config::ROOT_PATH) . '/resources/translations',
+                ],
+            ],
+            'templating' => [
+                'engines' => [
+                    'twig',
+                ],
+            ],
+        ];
+
+        if ($this->config->getString(Config::ENV) === 'test') {
+            $parameters['test'] = true;
+            $parameters['session']['storage_id'] = 'session.storage.mock_file';
+        }
+
+        $c->loadFromExtension('framework', $parameters);
+    }
+
+    protected function setupTwigBundle(ContainerBuilder $c) : void
+    {
+        $c->loadFromExtension(
+            'twig',
+            [
+                'paths' => [
+                    $this->config->getString(Config::ROOT_PATH) . '/resources/templates/' . $this->config->getString(Config::LOCALE) . '/ui/offers' => 'offers',
+                ],
+                'default_path' => $this->config->getString(Config::ROOT_PATH) . '/resources/templates',
+                'date' => [
+                    'timezone' => $this->config->getString(Config::TIMEZONE),
+                ],
+                'cache' => $this->config->getString(Config::ROOT_PATH) . '/var/cache/' . $this->config->getString(Config::ENV) . '/twig',
+                'globals' => [
+                    'apply_email_template' => $this->config->getString(Config::APPLY_EMAIL_TEMPLATE),
+                    'facebook' => [
+                        'app_id' => $this->config->getString(Config::FB_APP_ID),
+                        'page_url' => $this->config->getString(Config::FB_PAGE_URL),
+                    ],
+                    'google' => [
+                        'recaptcha' => [
+                            'key' => $this->config->getString(Config::RECAPTCHA_KEY),
+                        ],
+                        'maps' => [
+                            'key' => $this->config->getString(Config::GOOGLE_MAPS_KEY),
+                        ],
+                        'analytics' => [
+                            'code' => $this->config->getString(Config::GOOGLE_ANALYTICS_CODE),
+                        ],
+                    ],
+                    'assets' => [
+                        'storage_url' => $this->config->getJson(Config::FILESYSTEM_CONFIG)['storage_url'],
+                    ],
+                    'contact_email' => $this->config->getString(Config::CONTACT_EMAIL),
+                    'his' => [
+                        'old_offer_days' => $this->config->getInt(Config::OLD_OFFER_DAYS),
+                        'domain' => $this->config->getString(Config::DOMAIN),
+                    ],
+                ],
+                'auto_reload' => $this->config->getString(Config::ENV) !== 'prod',
+                'debug' => $this->config->getString(Config::ENV) !== 'prod',
+            ]
+        );
+
+        $c->register(IntlExtension::class)->addTag('twig.extension');
+        $c->register(TextExtension::class)->addTag('twig.extension');
+        $c->register(DateExtension::class)->addTag('twig.extension');
+        $c->register(TwigFacebookExtension::class)->addTag('twig.extension');
+
+        $c->register(TwigOfferExtension::class)
+            ->addArgument(new Reference(OfferExtension::class))
+            ->addTag('twig.extension');
+
+        $c->register(TwigSpecializationExtension::class)
+            ->addArgument(new Reference(SpecializationExtension::class))
+            ->addTag('twig.extension');
+    }
+
+    protected function setupMonologBundle(ContainerBuilder $c) : ContainerBuilder
+    {
+        return $c->loadFromExtension(
+            'monolog',
+            [
+                'handlers' => [
+                    'file_log' => [
+                        'type' => 'stream',
+                        'path' => '%kernel.logs_dir%/%kernel.environment%_symfony.log',
+                        'level' => 'debug',
+                        'channels' => [
+                            '!event', '!console', '!request', '!security',
+                        ],
+                    ],
+                ],
+            ],
+        );
+    }
+
+    protected function setupSwiftMailerBundle(ContainerBuilder $c) : ContainerBuilder
+    {
+        $parameters = [
+            'host' => $this->config->getJson(Config::MAILER_CONFIG)['host'],
+            'port' => $this->config->getJson(Config::MAILER_CONFIG)['port'],
+            'username' => $this->config->getJson(Config::MAILER_CONFIG)['username'],
+            'password' => $this->config->getJson(Config::MAILER_CONFIG)['password'],
+            'timeout' => 10,
+            'transport' => 'smtp',
+            'spool' => [
+                'type' => 'memory',
+            ],
+            'disable_delivery' => false,
+        ];
+
+        if ($this->environment === 'test') {
+            $parameters['disable_delivery'] = true;
+        }
+
+        return $c->loadFromExtension(
+            'swiftmailer',
+            $parameters
+        );
     }
 }

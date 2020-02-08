@@ -38,6 +38,7 @@ services:
                     - HireInSocial\Offers\Application\Twitter\Tweet
                     - HireInSocial\Offers\Application\Specialization\Specialization
                     # Exceptions
+                    - HireInSocial\Component\Mailer\Exception\Exception
                     - HireInSocial\Offers\Application\Exception\Exception
                     - HireInSocial\Offers\Application\Exception\InvalidAssertionException
                     - HireInSocial\Notifications\Application\Exception\Exception

@@ -15,6 +15,8 @@ namespace HireInSocial\Offers\Infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Facebook\Facebook;
+use HireInSocial\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
+use HireInSocial\Component\Mailer\Mailer;
 use HireInSocial\Config;
 use HireInSocial\Offers\Application\Command\Facebook\PagePostOfferAtGroupHandler;
 use HireInSocial\Offers\Application\Command\Offer\ApplyThroughEmailHandler;
@@ -30,9 +32,13 @@ use HireInSocial\Offers\Application\Command\User\AddExtraOffersHandler;
 use HireInSocial\Offers\Application\Command\User\BlockUserHandler;
 use HireInSocial\Offers\Application\Command\User\FacebookConnectHandler;
 use HireInSocial\Offers\Application\Command\User\LinkedInConnectHandler;
+use HireInSocial\Offers\Application\EventStream;
+use HireInSocial\Offers\Application\EventStream\Event;
+use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Facebook\FacebookGroupService;
 use HireInSocial\Offers\Application\FeatureToggle;
 use HireInSocial\Offers\Application\Offer\EmailFormatter;
+use HireInSocial\Offers\Application\Offer\Event\OfferPostedEvent;
 use HireInSocial\Offers\Application\Offer\Throttling;
 use HireInSocial\Offers\Application\Query\Features\FeatureToggleQuery;
 use HireInSocial\Offers\Application\System;
@@ -60,7 +66,6 @@ use HireInSocial\Offers\Infrastructure\Facebook\FacebookGraphSDK;
 use HireInSocial\Offers\Infrastructure\Flysystem\Application\System\FlysystemStorage;
 use HireInSocial\Offers\Infrastructure\PHP\Hash\SHA256Encoder;
 use HireInSocial\Offers\Infrastructure\PHP\SystemCalendar\SystemCalendar;
-use HireInSocial\Offers\Infrastructure\SwiftMailer\System\SwiftMailer;
 use HireInSocial\Offers\Infrastructure\Twitter\OAuthTwitter;
 use HireInSocial\Offers\Offers;
 use HireInSocial\Tests\Offers\Application\Double\Dummy\DummyFacebook;
@@ -69,13 +74,61 @@ use HireInSocial\Tests\Offers\Application\Double\Stub\CalendarStub;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
 
-function offersFacade(Config $config, EntityManager $entityManager, \Swift_Mailer $swiftMailer, Environment $twig, LoggerInterface $logger) : Offers
-{
+function offersFacade(
+    Config $config,
+    EntityManager $entityManager,
+    Mailer $mailer,
+    Environment $twig,
+    InMemoryEventBus $eventBus,
+    LoggerInterface $logger
+) : Offers {
     $dbalConnection = $entityManager->getConnection();
-    $mailer = new SwiftMailer(
-        $config->getJson(Config::MAILER_CONFIG)['domain'],
-        $swiftMailer
-    );
+    $eventStream = new class($eventBus) implements EventStream {
+        /**
+         * @var Event[]
+         */
+        private $events;
+
+        /**
+         * @var InMemoryEventBus
+         */
+        private $eventBus;
+
+        public function __construct(InMemoryEventBus $eventBus)
+        {
+            $this->events = [];
+            $this->eventBus = $eventBus;
+        }
+
+        public function record(Event $event) : void
+        {
+            $this->events[] = $event;
+        }
+
+        public function flush() : void
+        {
+            foreach ($this->events as $event) {
+                switch (\get_class($event)) {
+                    case OfferPostedEvent::class:
+                        $name = InMemoryEventBus::OFFERS_EVENT_OFFER_POST;
+
+                        $this->eventBus->publishTo(InMemoryEventBus::TOPIC_OFFERS, $event);
+                        break;
+                    default:
+                        throw new Exception(\sprintf("Unknown event class %s", \get_class($event)));
+                }
+
+                $this->eventBus->publishTo('offers', new \HireInSocial\Component\EventBus\Event(
+                    $event->id(),
+                    $event->occurredAt(),
+                    $name,
+                    $event->payload()
+                ));
+            }
+
+            $this->events = [];
+        }
+    };
 
     switch ($config->getString(Config::ENV)) {
         case 'prod':
@@ -163,7 +216,8 @@ function offersFacade(Config $config, EntityManager $entityManager, \Swift_Maile
                     $ormSpecializations,
                     new ORMSlugs($entityManager),
                     new ORMOfferPDFs($entityManager),
-                    FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG))
+                    FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG)),
+                    $eventStream
                 ),
                 new RemoveOfferHandler(
                     $ormUsers,
@@ -220,8 +274,9 @@ function offersFacade(Config $config, EntityManager $entityManager, \Swift_Maile
                 new FeatureToggleQuery($featureToggle)
             ),
             $featureToggle,
+            $calendar,
+            $eventStream,
             $logger,
-            $calendar
         ),
         $calendar
     );

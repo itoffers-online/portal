@@ -2,16 +2,19 @@
 <?php
 
 use HireInSocial\Config;
+use HireInSocial\HireInSocial;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use function App\symfony;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$hireInSocial = new \HireInSocial\HireInSocial($projectRootPath);
+$hireInSocial = symfony(bootstrap($projectRootPath))->getContainer()->get(HireInSocial::class);
 
 (new Application('db-drop', '1.0.0'))
     ->register('db-drop')

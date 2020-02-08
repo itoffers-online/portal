@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Offers\Application\System\Mailer;
+namespace HireInSocial\Component\Mailer;
 
-final class Attachments extends \ArrayObject
+final class Recipients extends \ArrayObject
 {
-    public function __construct(Attachment ...$attachments)
+    public function __construct(Recipient ...$attachments)
     {
         parent::__construct($attachments);
     }

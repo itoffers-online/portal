@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Controller;
 
-use HireInSocial\Offers\Offers;
+use HireInSocial\HireInSocial;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,13 +21,13 @@ use Symfony\Component\HttpFoundation\Response;
 final class LayoutController extends AbstractController
 {
     /**
-     * @var Offers
+     * @var HireInSocial
      */
-    private $offers;
+    private $hireInSocial;
 
-    public function __construct(Offers $offers)
+    public function __construct(HireInSocial $hireInSocial)
     {
-        $this->offers = $offers;
+        $this->hireInSocial = $hireInSocial;
     }
 
     public function navbarAction(Request $request) : Response
@@ -40,7 +40,7 @@ final class LayoutController extends AbstractController
     public function headerAction(Request $request, ?string $specialization) : Response
     {
         return $this->render('@offers/layout/header.html.twig', [
-            'specializationSlugs' => $this->offers->specializationQuery()->allSlugs(),
+            'specializationSlugs' => $this->hireInSocial->offers()->specializationQuery()->allSlugs(),
             'current' => $specialization,
         ]);
     }

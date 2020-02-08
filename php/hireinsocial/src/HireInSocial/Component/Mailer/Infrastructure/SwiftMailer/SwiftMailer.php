@@ -11,14 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Offers\Infrastructure\SwiftMailer\System;
+namespace HireInSocial\Component\Mailer\Infrastructure\SwiftMailer;
 
-use HireInSocial\Offers\Application\Exception\Exception;
-use HireInSocial\Offers\Application\System\Mailer;
-use HireInSocial\Offers\Application\System\Mailer\Attachments;
-use HireInSocial\Offers\Application\System\Mailer\Email;
-use HireInSocial\Offers\Application\System\Mailer\Recipients;
-use HireInSocial\Offers\Application\System\Mailer\Sender;
+use HireInSocial\Component\Mailer\Attachments;
+use HireInSocial\Component\Mailer\Email;
+use HireInSocial\Component\Mailer\Exception\Exception;
+use HireInSocial\Component\Mailer\Mailer;
+use HireInSocial\Component\Mailer\Recipient;
+use HireInSocial\Component\Mailer\Recipients;
+use HireInSocial\Component\Mailer\Sender;
 
 final class SwiftMailer implements Mailer
 {
@@ -55,6 +56,7 @@ final class SwiftMailer implements Mailer
         ;
 
         foreach ($recipients as $recipient) {
+            /** @var Recipient $recipient */
             $recipient->isBCC()
                 ? $message->addBcc($recipient->email(), $recipient->name())
                 : $message->addTo($recipient->email(), $recipient->name());

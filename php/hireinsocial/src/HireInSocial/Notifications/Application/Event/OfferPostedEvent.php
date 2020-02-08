@@ -16,7 +16,7 @@ namespace HireInSocial\Notifications\Application\Event;
 use HireInSocial\Notifications\Application\Event;
 use Ramsey\Uuid\UuidInterface;
 
-final class NewOfferPosted implements Event
+final class OfferPostedEvent implements Event
 {
     /**
      * @var UuidInterface
@@ -48,5 +48,10 @@ final class NewOfferPosted implements Event
     public function occurredAt() : \DateTimeImmutable
     {
         return $this->occurredAt;
+    }
+
+    public function offerId() : UuidInterface
+    {
+        return $this->offerId;
     }
 }

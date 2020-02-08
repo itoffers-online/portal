@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace HireInSocial\Component\EventBus;
 
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 final class Event
@@ -38,10 +37,10 @@ final class Event
      */
     private $payload;
 
-    public function __construct(string $name, array $payload)
+    public function __construct(UuidInterface $id, \DateTimeImmutable $occurredAt, string $name, array $payload)
     {
-        $this->eventId = Uuid::uuid4();
-        $this->occurredAt = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $this->eventId = $id;
+        $this->occurredAt = $occurredAt;
         $this->name = $name;
         $this->payload = $payload;
     }

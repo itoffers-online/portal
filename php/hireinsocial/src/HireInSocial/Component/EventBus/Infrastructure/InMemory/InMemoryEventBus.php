@@ -18,6 +18,10 @@ use HireInSocial\Component\EventBus\Subscriber;
 
 final class InMemoryEventBus
 {
+    public const TOPIC_OFFERS = 'offers';
+
+    public const OFFERS_EVENT_OFFER_POST = 'offer_posted';
+
     /**
      * @var array<array<Subscriber>>
      */
@@ -32,7 +36,7 @@ final class InMemoryEventBus
     {
         if (\array_key_exists($topic, $this->topics)) {
             /** @var Subscriber $subscriber */
-            foreach ($this->topics as $subscriber) {
+            foreach ($this->topics[$topic] as $subscriber) {
                 $subscriber->receive($event);
             }
         }

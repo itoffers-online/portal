@@ -11,11 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace HireInSocial\Offers\Application\System\Mailer;
+namespace HireInSocial\Component\Mailer;
 
-use HireInSocial\Offers\Application\Assertion;
-
-final class Sender
+final class Recipient
 {
     /**
      * @var string
@@ -23,24 +21,28 @@ final class Sender
     private $email;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $name;
 
     /**
-     * @var string
+     * @var bool
      */
-    private $replyEmail;
+    private $bcc;
 
-    public function __construct(string $email, string $name, string $replyEmail)
+    public function __construct(string $email, string $name = null)
     {
-        Assertion::notEmpty($name);
-        Assertion::email($email);
-        Assertion::email($replyEmail);
-
         $this->email = $email;
         $this->name = $name;
-        $this->replyEmail = $replyEmail;
+        $this->bcc = false;
+    }
+
+    public static function bcc(string $email, string $name = null) : self
+    {
+        $recipient = new self($email, $name);
+        $recipient->bcc = true;
+
+        return $recipient;
     }
 
     public function email() : string
@@ -48,13 +50,13 @@ final class Sender
         return $this->email;
     }
 
-    public function name() : string
+    public function name() : ?string
     {
         return $this->name;
     }
 
-    public function replyEmail() : string
+    public function isBCC() : bool
     {
-        return $this->replyEmail;
+        return $this->bcc;
     }
 }

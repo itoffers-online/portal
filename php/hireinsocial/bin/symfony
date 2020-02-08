@@ -1,16 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-use HireInSocial\HireInSocial;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use function App\symfony;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$hireInSocial = new HireInSocial($projectRootPath);
-$kernel = symfony($hireInSocial);
+$kernel = symfony(bootstrap($projectRootPath));
 
 $application = new Application($kernel);
 $application->run();

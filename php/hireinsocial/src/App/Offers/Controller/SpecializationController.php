@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace App\Offers\Controller;
 
 use App\Offers\Form\Type\OfferFilterType;
+use HireInSocial\HireInSocial;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
-use HireInSocial\Offers\Offers;
 use HireInSocial\Offers\UserInterface\OfferExtension;
 use HireInSocial\Offers\UserInterface\SpecializationThumbnail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,9 +27,9 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 final class SpecializationController extends AbstractController
 {
     /**
-     * @var Offers
+     * @var HireInSocial
      */
-    private $offers;
+    private $hireInSocial;
 
     /**
      * @var ParameterBagInterface
@@ -42,18 +42,18 @@ final class SpecializationController extends AbstractController
     private $specializationThumbnail;
 
     public function __construct(
-        Offers $offers,
+        HireInSocial $hireInSocial,
         ParameterBagInterface $parameterBag,
         SpecializationThumbnail $specializationThumbnail
     ) {
-        $this->offers = $offers;
+        $this->hireInSocial = $hireInSocial;
         $this->parameterBag = $parameterBag;
         $this->specializationThumbnail = $specializationThumbnail;
     }
 
     public function offersAction(Request $request, string $specSlug, string $seniorityLevel = null) : Response
     {
-        $specialization = $this->offers->specializationQuery()->findBySlug($specSlug);
+        $specialization = $this->hireInSocial->offers()->specializationQuery()->findBySlug($specSlug);
 
         if (!$specialization) {
             throw $this->createNotFoundException();
@@ -83,20 +83,20 @@ final class SpecializationController extends AbstractController
             }
         }
 
-        $offersSeniorityLevels = $this->offers->offerQuery()->offersSeniorityLevels($offerFilter);
+        $offersSeniorityLevels = $this->hireInSocial->offers()->offerQuery()->offersSeniorityLevels($offerFilter);
 
         if ($seniorityLevel) {
             $offerFilter->onlyFor($seniorityLevel);
         }
 
-        $total = $this->offers->offerQuery()->count($offerFilter);
+        $total = $this->hireInSocial->offers()->offerQuery()->count($offerFilter);
 
         if ($request->query->has('after')) {
             $offerFilter->showAfter($request->query->get('after'));
         }
 
-        $offers = $this->offers->offerQuery()->findAll($offerFilter);
-        $offerMore = $this->offers->offerQuery()->count($offerFilter);
+        $offers = $this->hireInSocial->offers()->offerQuery()->findAll($offerFilter);
+        $offerMore = $this->hireInSocial->offers()->offerQuery()->count($offerFilter);
 
         return $this->render('@offers/specialization/offers.html.twig', [
             'total' => $total,
@@ -106,8 +106,8 @@ final class SpecializationController extends AbstractController
             'specialization' => $specialization,
             'form' => $form->createView(),
             'queryParameters' => $request->query->all(),
-            'throttleLimit' => $this->offers->offerThrottleQuery()->limit(),
-            'throttleSince' => $this->offers->offerThrottleQuery()->since(),
+            'throttleLimit' => $this->hireInSocial->offers()->offerThrottleQuery()->limit(),
+            'throttleSince' => $this->hireInSocial->offers()->offerThrottleQuery()->since(),
             'offersSeniorityLevels' => $offersSeniorityLevels,
             'seniorityLevel' => $seniorityLevel,
         ]);
@@ -115,7 +115,7 @@ final class SpecializationController extends AbstractController
 
     public function thumbnailAction(Request $request, string $specializationSlug) : Response
     {
-        $specialization = $this->offers->specializationQuery()->findBySlug($specializationSlug);
+        $specialization = $this->hireInSocial->offers()->specializationQuery()->findBySlug($specializationSlug);
 
         if (!$specialization) {
             throw $this->createNotFoundException();

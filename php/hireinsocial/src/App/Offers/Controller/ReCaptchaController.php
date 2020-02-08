@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Controller;
 
-use HireInSocial\Offers\Offers;
+use HireInSocial\HireInSocial;
 use ReCaptcha\ReCaptcha;
 use function sprintf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,18 +25,18 @@ use Symfony\Component\HttpFoundation\Response;
 final class ReCaptchaController extends AbstractController
 {
     /**
-     * @var Offers
+     * @var HireInSocial
      */
-    private $offers;
+    private $hireInSocial;
 
     /**
      * @var ParameterBagInterface
      */
     private $parameterBag;
 
-    public function __construct(Offers $offers, ParameterBagInterface $parameterBag)
+    public function __construct(HireInSocial $hireInSocial, ParameterBagInterface $parameterBag)
     {
-        $this->offers = $offers;
+        $this->hireInSocial = $hireInSocial;
         $this->parameterBag = $parameterBag;
     }
 
@@ -47,7 +47,7 @@ final class ReCaptchaController extends AbstractController
         $resp = $recaptcha->setExpectedHostname($request->getHttpHost())
             ->verify($request->request->get('google-recaptcha-token'), $request->getClientIp());
 
-        $offer = $this->offers->offerQuery()->findById($request->request->get('offer-id'));
+        $offer = $this->hireInSocial->offers()->offerQuery()->findById($request->request->get('offer-id'));
         $email = sprintf($this->parameterBag->get('apply_email_template'), $offer->emailHash());
 
         if ($resp->isSuccess()) {

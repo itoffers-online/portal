@@ -7,12 +7,14 @@ use HireInSocial\Config;
 use HireInSocial\HireInSocial;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
+use function App\symfony;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$hireInSocial = new HireInSocial($projectRootPath);
+$hireInSocial = symfony(bootstrap($projectRootPath))->getContainer()->get(HireInSocial::class);
 
 $serverConfig = $hireInSocial->config()->getJson(Config::APPLY_EMAIL_CONFIG);
 

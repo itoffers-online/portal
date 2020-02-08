@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Offers\Controller;
 
+use HireInSocial\HireInSocial;
 use HireInSocial\Offers\Application\Command\User\LinkedInConnect;
-use HireInSocial\Offers\Offers;
 use League\OAuth2\Client\Provider\LinkedIn;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,9 +29,9 @@ final class LinkedInController extends AbstractController
     use RedirectAfterLogin;
 
     /**
-     * @var Offers
+     * @var HireInSocial
      */
-    private $offers;
+    private $hireInSocial;
 
     /**
      * @var RouterInterface
@@ -49,12 +49,12 @@ final class LinkedInController extends AbstractController
     private $logger;
 
     public function __construct(
-        Offers $offers,
+        HireInSocial $hireInSocial,
         RouterInterface $router,
         LinkedIn $linkedIn,
         LoggerInterface $logger
     ) {
-        $this->offers = $offers;
+        $this->hireInSocial = $hireInSocial;
         $this->logger = $logger;
         $this->router = $router;
         $this->linkedIn = $linkedIn;
@@ -89,7 +89,7 @@ final class LinkedInController extends AbstractController
 
         $linkedInUser = $this->getLinkedInUser($this->linkedIn, $token);
 
-        if ($user = $this->offers->userQuery()->findByEmail($linkedInUser['email'])) {
+        if ($user = $this->hireInSocial->offers()->userQuery()->findByEmail($linkedInUser['email'])) {
             if ($user->linkedInAppId() !== $linkedInUser['id']) {
                 $this->addFlash('warning', $this->renderView('@offers/alert/linkedin_email_already_used.txt'));
 
@@ -97,9 +97,9 @@ final class LinkedInController extends AbstractController
             }
         }
 
-        $this->offers->handle(new LinkedInConnect($linkedInUser['id'], $linkedInUser['email']));
+        $this->hireInSocial->offers()->handle(new LinkedInConnect($linkedInUser['id'], $linkedInUser['email']));
 
-        $user = $this->offers->userQuery()->findByLinkedIn($linkedInUser['id']);
+        $user = $this->hireInSocial->offers()->userQuery()->findByLinkedIn($linkedInUser['id']);
 
         if ($user->isBlocked()) {
             return $this->redirectToRoute('user_blocked');

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Notifications;
 
+use HireInSocial\Component\Mailer\Mailer;
 use HireInSocial\Notifications\Application\Event;
 use HireInSocial\Notifications\Application\Exception\Exception;
 
@@ -30,11 +31,21 @@ use HireInSocial\Notifications\Application\Exception\Exception;
  */
 final class Notifications
 {
+    /**
+     * @var Mailer
+     */
+    private $mailer;
+
+    public function __construct(Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     public function handle(Event $event) : void
     {
         switch (\get_class($event)) {
-            case Event\NewOfferPosted::class:
-
+            case Event\OfferPostedEvent::class:
+                // Send Email
                 break;
             default:
                 throw new Exception(\sprintf("Unknown event %s", \get_class($event)));

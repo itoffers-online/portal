@@ -17,6 +17,7 @@ use function App\symfony;
 use App\SymfonyKernel;
 use HireInSocial\Config;
 use HireInSocial\HireInSocial;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
 use HireInSocial\Offers\Offers;
 use HireInSocial\Tests\Offers\Application\Context\DatabaseContext;
 use HireInSocial\Tests\Offers\Application\Context\OffersContext;
@@ -46,13 +47,13 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
 
     protected static function createKernel(array $options = [])
     {
-        return symfony(static::hireInSocial());
+        return symfony(bootstrap(ROOT_DIR));
     }
 
     protected static function hireInSocial() : HireInSocial
     {
         if (null === static::$hireInSocial) {
-            static::$hireInSocial = new HireInSocial(ROOT_DIR);
+            static::$hireInSocial = static::$kernel->getContainer()->get(HireInSocial::class);
         }
 
         if (static::$hireInSocial->config()->getString(Config::ENV) !== 'test') {
@@ -69,6 +70,8 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
 
     public function setUp() : void
     {
+        static::bootKernel();
+
         $this->offersContext = new OffersContext(static::offersFacade());
         $this->databaseContext = new DatabaseContext(static::hireInSocial()->dbal());
 

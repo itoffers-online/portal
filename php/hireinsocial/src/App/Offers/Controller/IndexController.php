@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Controller;
 
-use HireInSocial\Offers\Offers;
+use HireInSocial\HireInSocial;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,19 +21,19 @@ use Symfony\Component\HttpFoundation\Response;
 final class IndexController extends AbstractController
 {
     /**
-     * @var Offers
+     * @var HireInSocial
      */
-    private $offers;
+    private $hireInSocial;
 
-    public function __construct(Offers $offers)
+    public function __construct(HireInSocial $hireInSocial)
     {
-        $this->offers = $offers;
+        $this->hireInSocial = $hireInSocial;
     }
 
     public function homeAction(Request $request) : Response
     {
         return $this->render('@offers/home/index.html.twig', [
-            'specializations' => $this->offers->specializationQuery()->all(),
+            'specializations' => $this->hireInSocial->offers()->specializationQuery()->all(),
         ]);
     }
 

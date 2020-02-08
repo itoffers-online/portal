@@ -9,13 +9,15 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use function App\symfony;
+use function HireInSocial\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
 $application = new Application('filesystem', '1.0.0');
-$application->add(new class(new HireInSocial($projectRootPath)) extends Command {
+$application->add(new class(symfony(bootstrap($projectRootPath))->getContainer()->get(HireInSocial::class)) extends Command {
 
     /**
      * @var SymfonyStyle

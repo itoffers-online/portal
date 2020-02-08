@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Offers\Controller;
 
+use HireInSocial\HireInSocial;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
-use HireInSocial\Offers\Offers;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,18 +25,18 @@ final class UserController extends AbstractController
     use RedirectAfterLogin;
 
     /**
-     * @var Offers
+     * @var HireInSocial
      */
-    private $offers;
+    private $hireInSocial;
 
     /**
      * @var LoggerInterface
      */
     private $logger;
 
-    public function __construct(Offers $offers, LoggerInterface $logger)
+    public function __construct(HireInSocial $hireInSocial, LoggerInterface $logger)
     {
-        $this->offers = $offers;
+        $this->hireInSocial = $hireInSocial;
         $this->logger = $logger;
     }
 
@@ -57,22 +57,22 @@ final class UserController extends AbstractController
             ->belongsTo($userId)
             ->max(5);
 
-        $total = $this->offers->offerQuery()->count($offerFilter);
+        $total = $this->hireInSocial->offers()->offerQuery()->count($offerFilter);
 
         if ($request->query->has('after')) {
             $offerFilter->showAfter($request->query->get('after'));
         }
 
-        $offers = $this->offers->offerQuery()->findAll($offerFilter);
-        $offerMore = $this->offers->offerQuery()->count($offerFilter);
+        $offers = $this->hireInSocial->offers()->offerQuery()->findAll($offerFilter);
+        $offerMore = $this->hireInSocial->offers()->offerQuery()->count($offerFilter);
 
         return $this->render('@offers/user/profile.html.twig', [
             'showingOlder' => $request->query->has('after'),
-            'user' => $this->offers->userQuery()->findById($userId),
+            'user' => $this->hireInSocial->offers()->userQuery()->findById($userId),
             'offersMore' => $offerMore,
-            'offersLeft' => $this->offers->offerThrottleQuery()->offersLeft($userId),
-            'extraOffersCount' => $this->offers->extraOffersQuery()->countNotExpired($userId),
-            'extraOffer' => $this->offers->extraOffersQuery()->findClosesToExpire($userId),
+            'offersLeft' => $this->hireInSocial->offers()->offerThrottleQuery()->offersLeft($userId),
+            'extraOffersCount' => $this->hireInSocial->offers()->extraOffersQuery()->countNotExpired($userId),
+            'extraOffer' => $this->hireInSocial->offers()->extraOffersQuery()->findClosesToExpire($userId),
             'offers' => $offers,
             'totalOffers' => $total,
         ]);
