@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\Offer;
 
+use HireInSocial\Component\CQRS\System\Query;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offer;
 use HireInSocial\Offers\Application\Query\Offer\Model\Offers;
 use HireInSocial\Offers\Application\Query\Offer\Model\OffersSeniorityLevel;
-use HireInSocial\Offers\Application\System\Query;
 
 interface OfferQuery extends Query
 {

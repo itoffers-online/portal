@@ -1,0 +1,195 @@
+
+{% set variables = {
+    color: {
+        green:          "#80f24b",
+        white:          "#FFFFFF",
+        blue:           "#3583ff",
+        gray_300:       "#dee2e6",
+        gray_400:       "#ced4da",
+        gray_500:       "#adb5bd",
+        gray_800:       "#343a40",
+    },
+    base_font_size: "16px"
+} %}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,600" rel="stylesheet">
+    <style type="text/css">
+        * {
+            font-family: 'Work Sans', Arial, sans-serif;
+        }
+        body {
+            color: {{ variables.color.gray_800 }};
+            font-size: {{ variables.base_font_size }};
+            margin: 0;
+        }
+        h1 {
+            font-size: 2.5rem !important;
+            margin-top: 0;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            color: {{ variables.color.gray_800 }};
+        }
+        h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            color: {{ variables.color.gray_800 }};
+        }
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: {{ variables.color.gray_800 }};
+            margin-bottom: 1rem;
+        }
+        h5 {
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: {{ variables.color.gray_800 }};
+            margin-bottom: 0.5rem;
+        }
+        h6 {
+            font-size: 1rem;
+            font-weight: 300;
+            color: {{ variables.color.gray_800 }};
+            margin-bottom: 0.5rem;
+        }
+        a {
+            color: {{ variables.color.blue }};
+            text-decoration: none;
+            outline: none;
+            display: block;
+            margin: 0;
+        }
+        a:hover {
+            text-decoration: none;
+            color: {{ variables.color.blue }};
+        }
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        ul li {
+            margin: 0;
+            word-break: break-all;
+            font-size: {{ variables.base_font_size }};
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        hr {
+            display: block;
+            height: 1px;
+            border: 0;
+            border-top: 1px solid {{ variables.color.gray_500 }};
+        }
+        strong {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: {{ variables.base_font_size }};
+            word-break: break-all;
+            font-family: 'Work Sans', Arial;
+        }
+        span {
+            word-break: break-all;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .font-weight-bold {
+            font-weight: 600;
+        }
+        .color-green {
+            color: {{ variables.color.green }} !important;
+        }
+        .color-white {
+            color: {{ variables.color.white }} !important;
+        }
+        .color-light {
+            color: {{ variables.color.gray_500 }} !important;
+        }
+        .clear {
+            clear: both;
+        }
+        .header {
+            background: {{ variables.color.gray_800 }};
+            text: {{ variables.color.white }};
+            text-align: center;
+            padding: 2rem 0;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .header img {
+            width: 100px;
+            height: 21px;
+        }
+        .content {
+            background-color: {{ variables.color.white }};
+            padding-top: 4rem;
+            padding-bottom: 1rem;
+        }
+        .footer {
+            background: {{ variables.color.gray_300 }};
+            text-align: center;
+            padding: 48px 0;
+            width: 100%;
+        }
+        .small {
+            font-size: 0.8rem;
+        }
+        .btn {
+            display: inline-block;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 200ms;
+        }
+        .btn-primary {
+            background-color: {{ variables.color.blue }};
+            border: 1px solid {{ variables.color.blue }};
+            box-shadow: 0 8px 16px 0 {{ variables.color.blue_0_5 }};
+            color: {{ variables.color.white }} !important;
+        }
+        .btn-primary:hover {
+            background-color: {{ variables.color.blue_dark }};
+            border-color: {{ variables.color.blue_dark }};
+            box-shadow: none;
+            color: {{ variables.color.white }};
+        }
+        .btn-large {
+            font-size: 16px;
+            padding: 13px 28px;
+        }
+        .mb-1 { margin-bottom: 1rem;}
+        .mb-2 { margin-bottom: 2rem;}
+        .mb-3 { margin-bottom: 3rem;}
+        .mb-4 { margin-bottom: 4rem;}
+        .mb-5 { margin-bottom: 5rem;}
+        .mt-1 { margin-top: 1rem;}
+        .mt-2 { margin-top: 2rem;}
+        .mt-3 { margin-top: 3rem;}
+        .mt-4 { margin-top: 4rem;}
+        .mt-5 { margin-top: 5rem;}
+    </style>
+    {% block style %}{% endblock %}
+</head>
+<body>
+<div class="header">
+    <h1>
+        <a href="{{ url('home') }}" target="_blank" class="color-white">it<span class="color-green">offers</span>.online</a>
+    </h1>
+</div>
+<div class="content">
+    {% block body %}{% endblock %}
+</div>
+<div class="footer">
+    <span>&copy;{{ 'now'|date('Y') }} - itoffers.online</span>
+</div>
+</body>
+</html>

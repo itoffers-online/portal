@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\Offer;
 
+use HireInSocial\Component\CQRS\System\Handler;
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Application\Offer\Offers;
-use HireInSocial\Offers\Application\System\Calendar;
-use HireInSocial\Offers\Application\System\Handler;
 use HireInSocial\Offers\Application\User\Users;
 use Ramsey\Uuid\Uuid;
 

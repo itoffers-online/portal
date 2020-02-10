@@ -15,6 +15,7 @@ time range.
 Hire in Social is modular monolith with following contexts:
 
 * [Offers](/php/hireinsocial/src/HireInSocial/Offers)
+* [Notifications](/php/hireinsocial/src/HireInSocial/Notifications)
 
 ## Supported channels 
 

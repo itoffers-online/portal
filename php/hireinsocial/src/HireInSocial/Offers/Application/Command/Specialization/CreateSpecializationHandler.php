@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\Specialization;
 
+use HireInSocial\Component\CQRS\System\Handler;
 use HireInSocial\Offers\Application\Specialization\Specialization;
 use HireInSocial\Offers\Application\Specialization\Specializations;
-use HireInSocial\Offers\Application\System\Handler;
 
 final class CreateSpecializationHandler implements Handler
 {

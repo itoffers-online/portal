@@ -14,6 +14,6 @@ for applications that are later forwarded to recruiters.
 
 ### Notifications Context
 
-// @TODO
+Notifies potentially interested people about actions in portal. For example, notify recruiter that offer was posted.  
 
 [Read Mode](Notifications/README.md) 

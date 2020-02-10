@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Tests\Offers\Application\MotherObject\Facebook;
 
-use HireInSocial\Offers\Application\System\Calendar;
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 
 final class CalendarMother

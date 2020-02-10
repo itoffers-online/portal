@@ -16,10 +16,10 @@ namespace HireInSocial\Offers\Infrastructure\Flysystem\Application\System;
 use function array_keys;
 use function array_map;
 use function file_get_contents;
+use HireInSocial\Component\Storage\FileStorage;
+use HireInSocial\Component\Storage\FileStorage\File;
 use HireInSocial\Offers\Application\Assertion;
 use HireInSocial\Offers\Application\Exception\Exception;
-use HireInSocial\Offers\Application\System\FileStorage;
-use HireInSocial\Offers\Application\System\FileStorage\File;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Azure\AzureAdapter;
 use League\Flysystem\Filesystem;
@@ -30,7 +30,7 @@ use function sprintf;
 final class FlysystemStorage implements FileStorage
 {
     /**
-     * @var \League\Flysystem\Filesystem
+     * @var Filesystem
      */
     private $filesystem;
 

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\Twitter;
 
+use HireInSocial\Component\CQRS\System\Handler;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Offer\Offers;
 use HireInSocial\Offers\Application\Specialization\Specializations;
-use HireInSocial\Offers\Application\System\Handler;
 use HireInSocial\Offers\Application\Twitter\Tweet;
 use HireInSocial\Offers\Application\Twitter\Tweets;
 use HireInSocial\Offers\Application\Twitter\Twitter;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\User;
 
+use HireInSocial\Component\CQRS\System\Query;
 use HireInSocial\Offers\Application\Query\User\Model\User;
-use HireInSocial\Offers\Application\System\Query;
 
 interface UserQuery extends Query
 {

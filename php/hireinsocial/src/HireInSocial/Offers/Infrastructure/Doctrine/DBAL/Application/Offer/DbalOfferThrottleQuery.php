@@ -16,8 +16,8 @@ namespace HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 use function array_key_exists;
 use DateInterval;
 use Doctrine\DBAL\Connection;
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Application\Query\Offer\OfferThrottleQuery;
-use HireInSocial\Offers\Application\System\Calendar;
 
 final class DbalOfferThrottleQuery implements OfferThrottleQuery
 {

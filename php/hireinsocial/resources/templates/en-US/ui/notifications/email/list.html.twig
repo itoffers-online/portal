@@ -1,0 +1,35 @@
+{% extends '@theme/base.html.twig' %}
+
+{% block body %}
+<div class="container-fluid pt-4 bg-light">
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h3 class="mb-4">Notification Emails</h3>
+            <p>
+                This is list of all notification emails that system can send with possibility to preview html in the browser.
+            </p>
+            <div class="row mb-2 border-bottom">
+                <div class="col-lg-4">
+                    <strong>Name</strong>
+                </div>
+                <div class="col-lg-4"></div>
+                <div class="col-lg-4"></div>
+            </div>
+            <div class="row">
+                {% for email in emails %}
+                <div class="col-lg-3">
+                    {{ email.name }}
+                </div>
+                <div class="col-lg-6">
+                    {{ email.subject }}
+                </div>
+                <div class="col-lg-3 text-right">
+                    <a href="{{ url('email_preview', {emailName: email.type}) }}" target="_blank" class="btn btn-sm btn-primary">preview</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

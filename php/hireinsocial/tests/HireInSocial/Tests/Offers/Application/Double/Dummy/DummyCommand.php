@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace HireInSocial\Tests\Offers\Application\Double\Dummy;
 
+use HireInSocial\Component\CQRS\System\Command;
 use HireInSocial\Offers\Application\Command\ClassCommand;
-use HireInSocial\Offers\Application\System\Command;
 
 final class DummyCommand implements Command
 {

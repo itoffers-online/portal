@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\Facebook;
 
+use HireInSocial\Component\CQRS\System\Handler;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Facebook\Draft;
 use HireInSocial\Offers\Application\Facebook\FacebookGroupService;
@@ -20,7 +21,6 @@ use HireInSocial\Offers\Application\Facebook\Post;
 use HireInSocial\Offers\Application\Facebook\Posts;
 use HireInSocial\Offers\Application\Offer\Offers;
 use HireInSocial\Offers\Application\Specialization\Specializations;
-use HireInSocial\Offers\Application\System\Handler;
 use Ramsey\Uuid\Uuid;
 
 final class PagePostOfferAtGroupHandler implements Handler

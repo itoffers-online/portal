@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Offer;
 
-use HireInSocial\Offers\Application\System\Calendar;
+use HireInSocial\Offers\Application\Calendar;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 

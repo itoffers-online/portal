@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace HireInSocial\Tests\Offers\Application\Integration;
 
 use function App\symfony;
+use HireInSocial\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use HireInSocial\Config;
 use HireInSocial\HireInSocial;
 use function HireInSocial\Offers\Infrastructure\bootstrap;
@@ -21,6 +22,7 @@ use HireInSocial\Offers\Infrastructure\Flysystem\Application\System\FlysystemSto
 use HireInSocial\Tests\Offers\Application\Context\DatabaseContext;
 use HireInSocial\Tests\Offers\Application\Context\FilesystemContext;
 use HireInSocial\Tests\Offers\Application\Context\OffersContext;
+use HireInSocial\Tests\Offers\Application\Double\Spy\EventSubscriberSpy;
 use PHPUnit\Framework\TestCase;
 
 abstract class OffersTestCase extends TestCase
@@ -40,6 +42,11 @@ abstract class OffersTestCase extends TestCase
      */
     protected $filesystemContext;
 
+    /**
+     * @var EventSubscriberSpy
+     */
+    protected $publishedEvents;
+
     public function setUp() : void
     {
         /**
@@ -51,8 +58,13 @@ abstract class OffersTestCase extends TestCase
          * in this case it's justified to keep this dependency here.
          */
         $symfony = symfony(bootstrap(ROOT_DIR));
-
         $hireInSocial = $symfony->getContainer()->get(HireInSocial::class);
+
+        // So we can assert that event was published to the topic
+        $hireInSocial->eventBus()->registerTo(
+            InMemoryEventBus::TOPIC_OFFERS,
+            $this->publishedEvents = new EventSubscriberSpy()
+        );
 
         if ($hireInSocial->config()->getString(Config::ENV) !== 'test') {
             $this->fail(sprintf('Expected environment "test" but got "%s"', $hireInSocial->config()->getString(Config::ENV)));

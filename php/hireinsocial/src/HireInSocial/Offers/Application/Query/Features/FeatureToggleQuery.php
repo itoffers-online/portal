@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\Features;
 
+use HireInSocial\Component\CQRS\System\Query;
+use HireInSocial\Component\FeatureToggle\FeatureToggle;
 use HireInSocial\Offers\Application\Exception\Exception;
-use HireInSocial\Offers\Application\FeatureToggle;
-use HireInSocial\Offers\Application\System\Query;
 
 final class FeatureToggleQuery implements Query
 {

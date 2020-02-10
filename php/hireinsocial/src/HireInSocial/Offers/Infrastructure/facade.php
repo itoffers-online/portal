@@ -15,7 +15,13 @@ namespace HireInSocial\Offers\Infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Facebook\Facebook;
+use HireInSocial\Component\CQRS\EventStream;
+use HireInSocial\Component\CQRS\EventStream\Event;
+use HireInSocial\Component\CQRS\System;
+use HireInSocial\Component\CQRS\System\CommandBus;
+use HireInSocial\Component\CQRS\System\Queries;
 use HireInSocial\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
+use HireInSocial\Component\FeatureToggle\FeatureToggle;
 use HireInSocial\Component\Mailer\Mailer;
 use HireInSocial\Config;
 use HireInSocial\Offers\Application\Command\Facebook\PagePostOfferAtGroupHandler;
@@ -32,18 +38,15 @@ use HireInSocial\Offers\Application\Command\User\AddExtraOffersHandler;
 use HireInSocial\Offers\Application\Command\User\BlockUserHandler;
 use HireInSocial\Offers\Application\Command\User\FacebookConnectHandler;
 use HireInSocial\Offers\Application\Command\User\LinkedInConnectHandler;
-use HireInSocial\Offers\Application\EventStream;
-use HireInSocial\Offers\Application\EventStream\Event;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Facebook\FacebookGroupService;
-use HireInSocial\Offers\Application\FeatureToggle;
+use HireInSocial\Offers\Application\FeatureToggle\PostNewOffersFeature;
+use HireInSocial\Offers\Application\FeatureToggle\PostOfferAtFacebookGroupFeature;
+use HireInSocial\Offers\Application\FeatureToggle\TweetAboutOfferFeature;
 use HireInSocial\Offers\Application\Offer\EmailFormatter;
 use HireInSocial\Offers\Application\Offer\Event\OfferPostedEvent;
 use HireInSocial\Offers\Application\Offer\Throttling;
 use HireInSocial\Offers\Application\Query\Features\FeatureToggleQuery;
-use HireInSocial\Offers\Application\System;
-use HireInSocial\Offers\Application\System\CommandBus;
-use HireInSocial\Offers\Application\System\Queries;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Facebook\DbalFacebookFacebookQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalApplicationQuery;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
@@ -112,13 +115,12 @@ function offersFacade(
                     case OfferPostedEvent::class:
                         $name = InMemoryEventBus::OFFERS_EVENT_OFFER_POST;
 
-                        $this->eventBus->publishTo(InMemoryEventBus::TOPIC_OFFERS, $event);
                         break;
                     default:
                         throw new Exception(\sprintf("Unknown event class %s", \get_class($event)));
                 }
 
-                $this->eventBus->publishTo('offers', new \HireInSocial\Component\EventBus\Event(
+                $this->eventBus->publishTo(InMemoryEventBus::TOPIC_OFFERS, new \HireInSocial\Component\EventBus\Event(
                     $event->id(),
                     $event->occurredAt(),
                     $name,
@@ -183,9 +185,9 @@ function offersFacade(
     $emailFormatter = new EmailFormatter($twig);
 
     $featureToggle = new FeatureToggle(
-        new FeatureToggle\PostNewOffersFeature($config->getBool(Config::FEATURE_POST_NEW_OFFERS)),
-        new FeatureToggle\PostOfferAtFacebookGroupFeature($config->getBool(Config::FEATURE_POST_OFFER_AT_FACEBOOK)),
-        new FeatureToggle\TweetAboutOfferFeature($config->getBool(Config::FEATURE_TWEET_ABOUT_OFFER))
+        new PostNewOffersFeature($config->getBool(Config::FEATURE_POST_NEW_OFFERS)),
+        new PostOfferAtFacebookGroupFeature($config->getBool(Config::FEATURE_POST_OFFER_AT_FACEBOOK)),
+        new TweetAboutOfferFeature($config->getBool(Config::FEATURE_TWEET_ABOUT_OFFER))
     );
 
     return new Offers(

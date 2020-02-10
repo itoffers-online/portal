@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Routing;
 
+use App\Notifications\Controller\EmailController;
 use App\Offers\Controller\FacebookController;
 use App\Offers\Controller\IndexController;
 use App\Offers\Controller\LinkedInController;
@@ -80,6 +81,15 @@ final class Factory
 
         if (\in_array($env, ['dev', 'test'], true)) {
             $routes->import('@FrameworkBundle/Resources/config/routing/errors.xml', '/_error');
+
+            $routes->addRoute(
+                new Route('/email', ['_controller' => [EmailController::class, 'listAction']]),
+                'email_list'
+            );
+            $routes->addRoute(
+                new Route('/email/preview/{emailName}', ['_controller' => [EmailController::class, 'previewAction']]),
+                'email_preview'
+            );
         }
     }
 

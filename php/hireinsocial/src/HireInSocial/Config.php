@@ -22,9 +22,15 @@ final class Config
 {
     public const ROOT_PATH = 'root_path';
 
+    public const CACHE_PATH = 'cache_path';
+
+    public const LOGS_PATH = 'logs_path';
+
     public const DOMAIN = 'domain';
 
     public const CONTACT_EMAIL = 'contact_email';
+
+    public const REPORT_EMAIL = 'report_email';
 
     public const FB_PAGE_URL = 'fb_page_url';
 
@@ -106,11 +112,14 @@ final class Config
     {
         return new self([
             self::ROOT_PATH => $projectRootPath,
+            self::CACHE_PATH => getenv('HIS_CACHE_PATH'),
+            self::LOGS_PATH => getenv('HIS_LOGS_PATH'),
             self::ENV => getenv('HIS_ENV'),
             self::LOCALE => getenv('HIS_LOCALE'),
             self::TIMEZONE => getenv('HIS_TIMEZONE'),
             self::DOMAIN => getenv('HIS_DOMAIN'),
-            self::CONTACT_EMAIL => 'contact@itoffers.online',
+            self::CONTACT_EMAIL => 'contact@' . getenv('HIS_DOMAIN'),
+            self::REPORT_EMAIL => 'report@' . getenv('HIS_DOMAIN'),
             self::FB_PAGE_URL => 'https://www.facebook.com/itoffers.online/',
             self::SYMFONY_SECRET => getenv('HIS_SYMFONY_SECRET'),
             self::REDIS_DSN => getenv('HIS_REDIS_DSN'),

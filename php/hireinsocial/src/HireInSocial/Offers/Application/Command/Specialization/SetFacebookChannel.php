@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\Specialization;
 
+use HireInSocial\Component\CQRS\System\Command;
 use HireInSocial\Offers\Application\Command\ClassCommand;
-use HireInSocial\Offers\Application\System\Command;
 
 final class SetFacebookChannel implements Command
 {

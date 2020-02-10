@@ -11,7 +11,6 @@ use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use HireInSocial\HireInSocial;
-use HireInSocial\Offers\Application\System;
 use HireInSocial\Offers\Infrastructure\Doctrine\DBAL\Schema\HireInSocialSchemaProvider;
 use HireInSocial\Config;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -29,7 +28,7 @@ $connection = $hireInSocial->dbal();
 $entityManager = $hireInSocial->orm();
 
 $migrationsConfig = new MigrationConfiguration($connection);
-$migrationsConfig->setMigrationsNamespace(System::class . '\\Doctrine\\DBAL\\Migrations');
+$migrationsConfig->setMigrationsNamespace('HireInSocial\\Doctrine\\DBAL\\Migrations');
 $migrationsConfig->setMigrationsTableName('his_db_migration');
 $migrationsConfig->setMigrationsDirectory($hireInSocial->config()->getString(Config::ROOT_PATH) . '/db/migrations');
 $migrationsConfig->registerMigrationsFromDirectory($hireInSocial->config()->getString(Config::ROOT_PATH) . '/db/migrations');

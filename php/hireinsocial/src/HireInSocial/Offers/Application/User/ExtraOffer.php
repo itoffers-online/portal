@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Application\User;
 
 use HireInSocial\Offers\Application\Assertion;
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Application\Offer\Offer;
-use HireInSocial\Offers\Application\System\Calendar;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 

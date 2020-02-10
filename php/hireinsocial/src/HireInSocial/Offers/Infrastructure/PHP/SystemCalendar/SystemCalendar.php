@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Infrastructure\PHP\SystemCalendar;
 
-use HireInSocial\Offers\Application\System\Calendar;
+use HireInSocial\Offers\Application\Calendar;
 
 final class SystemCalendar implements Calendar
 {

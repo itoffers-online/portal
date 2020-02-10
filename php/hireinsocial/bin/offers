@@ -29,7 +29,6 @@ require $projectRootPath . '/src/autoload.php';
 
 $hireInSocial = symfony(bootstrap($projectRootPath))->getContainer()->get(HireInSocial::class);
 
-
 $application = new Application('Hire in Social - Offers');
 
 $application->add(new Test\PostOffer($hireInSocial->offers(), $hireInSocial->config()->getString(Config::LOCALE)));

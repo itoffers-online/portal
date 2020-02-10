@@ -20,13 +20,23 @@ use HireInSocial\Component\Mailer\Mailer;
 use HireInSocial\Config;
 use HireInSocial\Notifications\Application\Event\OfferPostedEvent;
 use HireInSocial\Notifications\Application\Exception\Exception;
+use HireInSocial\Notifications\Infrastructure\Offers\ModuleOffers;
+use HireInSocial\Notifications\Infrastructure\Twig\TwigEmailFormatter;
 use HireInSocial\Notifications\Notifications;
+use HireInSocial\Offers\Offers;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use Twig\Environment;
 
-function notificationsFacade(Config $config, InMemoryEventBus $eventBus, Mailer $mailer, LoggerInterface $logger) : Notifications
+function notificationsFacade(Config $config, InMemoryEventBus $eventBus, Offers $offersModule, Mailer $mailer, Environment $twig, LoggerInterface $logger) : Notifications
 {
-    $notifications = new Notifications($mailer);
+    $notifications = new Notifications(
+        $mailer,
+        new ModuleOffers($offersModule),
+        new TwigEmailFormatter($twig),
+        $config->getString(Config::CONTACT_EMAIL),
+        $config->getString(Config::DOMAIN)
+    );
 
     $eventBus->registerTo('offers', new class($notifications, $logger) implements Subscriber {
         /**

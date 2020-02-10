@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\Offer;
 
-use HireInSocial\Offers\Application\System\Query;
+use HireInSocial\Component\CQRS\System\Query;
 
 interface ApplicationQuery extends Query
 {

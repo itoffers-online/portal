@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers;
 
+use HireInSocial\Component\CQRS\System;
+use HireInSocial\Component\CQRS\System\Command;
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Query\Facebook\FacebookQuery;
 use HireInSocial\Offers\Application\Query\Features\FeatureToggleQuery;
@@ -23,9 +26,6 @@ use HireInSocial\Offers\Application\Query\Specialization\SpecializationQuery;
 use HireInSocial\Offers\Application\Query\Twitter\TweetsQuery;
 use HireInSocial\Offers\Application\Query\User\ExtraOffersQuery;
 use HireInSocial\Offers\Application\Query\User\UserQuery;
-use HireInSocial\Offers\Application\System;
-use HireInSocial\Offers\Application\System\Calendar;
-use HireInSocial\Offers\Application\System\Command;
 
 /**
  * Module - Offers
@@ -41,7 +41,7 @@ final class Offers
     private $system;
 
     /**
-     * @var System\Calendar
+     * @var Calendar
      */
     private $calendar;
 

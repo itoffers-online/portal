@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Tests\Offers\Application\Integration\Command\Offer;
 
+use HireInSocial\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Offer\Throttling;
 use HireInSocial\Offers\Application\Query\Offer\OfferFilter;
@@ -42,6 +43,7 @@ final class PostOfferTest extends OffersTestCase
             $offer->offerPDF()
         );
         $this->assertTrue($offer->postedBy($user->id()));
+        $this->assertSame(InMemoryEventBus::OFFERS_EVENT_OFFER_POST, $this->publishedEvents->lastEvent()->name());
     }
 
     public function test_posting_offer_too_fast() : void

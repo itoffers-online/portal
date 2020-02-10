@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Tests\Offers\Application\Context;
 
-use HireInSocial\Offers\Application\System\FileStorage;
+use HireInSocial\Component\Storage\FileStorage;
 
 final class FilesystemContext
 {

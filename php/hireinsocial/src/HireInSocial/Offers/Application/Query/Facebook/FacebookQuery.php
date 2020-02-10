@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\Facebook;
 
+use HireInSocial\Component\CQRS\System\Query;
 use HireInSocial\Offers\Application\Query\Facebook\Model\FacebookPost;
-use HireInSocial\Offers\Application\System\Query;
 
 interface FacebookQuery extends Query
 {

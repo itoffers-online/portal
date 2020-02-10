@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\User;
 
+use HireInSocial\Component\CQRS\System\Handler;
 use HireInSocial\Offers\Application\Assertion;
-use HireInSocial\Offers\Application\System\Calendar;
-use HireInSocial\Offers\Application\System\Handler;
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Application\User\ExtraOffer;
 use HireInSocial\Offers\Application\User\ExtraOffers;
 use HireInSocial\Offers\Application\User\Users;

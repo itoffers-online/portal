@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Query\Specialization;
 
+use HireInSocial\Component\CQRS\System\Query;
 use HireInSocial\Offers\Application\Query\Specialization\Model\Specialization;
 use HireInSocial\Offers\Application\Query\Specialization\Model\Specializations;
-use HireInSocial\Offers\Application\System\Query;
 
 interface SpecializationQuery extends Query
 {

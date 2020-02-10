@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Application\Offer;
 
 use DateInterval;
-use HireInSocial\Offers\Application\System\Calendar;
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Application\User\User;
 
 final class Throttling

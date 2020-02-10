@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Offer;
 
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Application\Offer\Application\EmailHash;
-use HireInSocial\Offers\Application\System\Calendar;
 use Ramsey\Uuid\Uuid;
 
 class Application

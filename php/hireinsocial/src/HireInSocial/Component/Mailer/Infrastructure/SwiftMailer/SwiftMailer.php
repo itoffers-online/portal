@@ -47,7 +47,7 @@ final class SwiftMailer implements Mailer
     /**
      * @throws Exception
      */
-    public function send(Email $email, Sender $sender, Recipients $recipients, Attachments $attachments) : void
+    public function send(Email $email, Sender $sender, Recipients $recipients, Attachments $attachments = null) : void
     {
         $message = (new \Swift_Message($email->subject()))
             ->setFrom([$sender->email() => $sender->name()])
@@ -62,8 +62,10 @@ final class SwiftMailer implements Mailer
                 : $message->addTo($recipient->email(), $recipient->name());
         }
 
-        foreach ($attachments as $attachment) {
-            $message->attach(\Swift_Attachment::fromPath($attachment->filePath()));
+        if ($attachments) {
+            foreach ($attachments as $attachment) {
+                $message->attach(\Swift_Attachment::fromPath($attachment->filePath()));
+            }
         }
 
         if (!$this->swiftMailer->send($message)) {

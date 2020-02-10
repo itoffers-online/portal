@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\Offer;
 
+use HireInSocial\Component\CQRS\EventStream;
+use HireInSocial\Component\CQRS\System\Handler;
+use HireInSocial\Component\Storage\FileStorage;
+use HireInSocial\Component\Storage\FileStorage\File;
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Description\Requirements;
-use HireInSocial\Offers\Application\EventStream;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Offer\Company;
 use HireInSocial\Offers\Application\Offer\Contact;
@@ -34,10 +38,6 @@ use HireInSocial\Offers\Application\Offer\Slugs;
 use HireInSocial\Offers\Application\Offer\Throttling;
 use HireInSocial\Offers\Application\Specialization\Specialization;
 use HireInSocial\Offers\Application\Specialization\Specializations;
-use HireInSocial\Offers\Application\System\Calendar;
-use HireInSocial\Offers\Application\System\FileStorage;
-use HireInSocial\Offers\Application\System\FileStorage\File;
-use HireInSocial\Offers\Application\System\Handler;
 use HireInSocial\Offers\Application\User\ExtraOffers;
 use HireInSocial\Offers\Application\User\User;
 use HireInSocial\Offers\Application\User\Users;

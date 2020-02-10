@@ -16,8 +16,8 @@ namespace HireInSocial\Offers\Application\Offer;
 use Cocur\Slugify\Slugify;
 use DateTimeImmutable;
 use Hashids\Hashids;
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Application\Offer\Position\SeniorityLevels;
-use HireInSocial\Offers\Application\System\Calendar;
 use Ramsey\Uuid\UuidInterface;
 use function random_int;
 

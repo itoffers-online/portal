@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\FeatureToggle;
 
+use HireInSocial\Component\CQRS\System\Command;
+use HireInSocial\Component\FeatureToggle\Feature;
 use HireInSocial\Offers\Application\Command\Twitter\TweetAboutOffer;
-use HireInSocial\Offers\Application\System\Command;
 
 final class TweetAboutOfferFeature implements Feature
 {

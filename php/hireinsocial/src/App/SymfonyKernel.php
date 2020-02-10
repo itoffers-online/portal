@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Notifications\Controller\EmailController;
 use App\Offers\Controller\FacebookController;
 use App\Offers\Controller\IndexController;
 use App\Offers\Controller\LayoutController;
@@ -106,6 +107,7 @@ final class SymfonyKernel extends Kernel
         $c->autowire(UserController::class)->addTag('controller.service_arguments');
         $c->autowire(StaticController::class)->addTag('controller.service_arguments');
         $c->autowire(SecurityController::class)->addTag('controller.service_arguments');
+        $c->autowire(EmailController::class)->addTag('controller.service_arguments');
     }
 
     public function getProjectDir() : string
@@ -115,12 +117,12 @@ final class SymfonyKernel extends Kernel
 
     public function getCacheDir() : string
     {
-        return $this->getProjectDir().'/var/cache/' . $this->environment . '/symfony';
+        return $this->config->getString(Config::CACHE_PATH) . '/symfony/' . $this->environment;
     }
 
     public function getLogDir() : string
     {
-        return $this->getProjectDir().'/var/logs';
+        return $this->config->getString(Config::LOGS_PATH);
     }
 
     protected function setupParameters(ContainerBuilder $c) : void
@@ -138,7 +140,8 @@ final class SymfonyKernel extends Kernel
 
         $c->register(HireInSocial::class)
             ->setPublic(true)
-            ->setAutowired(true);
+            ->setAutowired(true)
+            ->addMethodCall('boot');
 
         $c->register(OfferExtension::class)
             ->addArgument($this->config->getString(Config::LOCALE));
@@ -219,13 +222,15 @@ final class SymfonyKernel extends Kernel
             'twig',
             [
                 'paths' => [
+                    $this->config->getString(Config::ROOT_PATH) . '/resources/templates/' . $this->config->getString(Config::LOCALE) . '/ui/theme' => 'theme',
                     $this->config->getString(Config::ROOT_PATH) . '/resources/templates/' . $this->config->getString(Config::LOCALE) . '/ui/offers' => 'offers',
+                    $this->config->getString(Config::ROOT_PATH) . '/resources/templates/' . $this->config->getString(Config::LOCALE) . '/ui/notifications' => 'notifications',
                 ],
                 'default_path' => $this->config->getString(Config::ROOT_PATH) . '/resources/templates',
                 'date' => [
                     'timezone' => $this->config->getString(Config::TIMEZONE),
                 ],
-                'cache' => $this->config->getString(Config::ROOT_PATH) . '/var/cache/' . $this->config->getString(Config::ENV) . '/twig',
+                'cache' => $this->getCacheDir() . '/twig',
                 'globals' => [
                     'apply_email_template' => $this->config->getString(Config::APPLY_EMAIL_TEMPLATE),
                     'facebook' => [
@@ -247,6 +252,7 @@ final class SymfonyKernel extends Kernel
                         'storage_url' => $this->config->getJson(Config::FILESYSTEM_CONFIG)['storage_url'],
                     ],
                     'contact_email' => $this->config->getString(Config::CONTACT_EMAIL),
+                    'report_email' => $this->config->getString(Config::REPORT_EMAIL),
                     'his' => [
                         'old_offer_days' => $this->config->getInt(Config::OLD_OFFER_DAYS),
                         'domain' => $this->config->getString(Config::DOMAIN),
@@ -280,7 +286,7 @@ final class SymfonyKernel extends Kernel
                     'file_log' => [
                         'type' => 'stream',
                         'path' => '%kernel.logs_dir%/%kernel.environment%_symfony.log',
-                        'level' => 'debug',
+                        'level' => 'ERROR',
                         'channels' => [
                             '!event', '!console', '!request', '!security',
                         ],
@@ -300,12 +306,16 @@ final class SymfonyKernel extends Kernel
             'timeout' => 10,
             'transport' => 'smtp',
             'spool' => [
-                'type' => 'memory',
+                'type' => 'file',
+                'path' => $this->config->getString(Config::CACHE_PATH) . '/swiftmailer/' . $this->getEnvironment(),
             ],
             'disable_delivery' => false,
         ];
 
-        if ($this->environment === 'test') {
+        if ($this->getEnvironment() === 'test') {
+            $parameters['spool'] = [
+                'type' => 'memory',
+            ];
             $parameters['disable_delivery'] = true;
         }
 

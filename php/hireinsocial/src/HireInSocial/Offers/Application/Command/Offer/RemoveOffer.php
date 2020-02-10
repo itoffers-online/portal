@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace HireInSocial\Offers\Application\Command\Offer;
 
+use HireInSocial\Component\CQRS\System\Command;
 use HireInSocial\Offers\Application\Command\ClassCommand;
-use HireInSocial\Offers\Application\System\Command;
 
 final class RemoveOffer implements Command
 {

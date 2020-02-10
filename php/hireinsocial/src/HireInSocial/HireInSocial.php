@@ -40,6 +40,11 @@ use Twig\Environment;
 final class HireInSocial
 {
     /**
+     * @var bool
+     */
+    private $booted;
+
+    /**
      * @var Config
      */
     private $config;
@@ -90,6 +95,15 @@ final class HireInSocial
         $this->logger = $logger;
         $this->templatingEngine = $twig;
         $this->mailer = $mailer;
+        $this->booted = false;
+    }
+
+    public function boot() : void
+    {
+        if ($this->booted === false) {
+            $this->offers();
+            $this->notifications();
+        }
     }
 
     /**
@@ -110,7 +124,14 @@ final class HireInSocial
     public function notifications() : Notifications
     {
         if (null === $this->notifications) {
-            $this->notifications = notificationsFacade($this->config(), $this->eventBus(), $this->mailer(), $this->logger());
+            $this->notifications = notificationsFacade(
+                $this->config(),
+                $this->eventBus(),
+                $this->offers(),
+                $this->mailer(),
+                $this->templatingEngine(),
+                $this->logger(),
+            );
         }
 
         return $this->notifications;
@@ -194,7 +215,7 @@ final class HireInSocial
         $configuration->setMetadataCacheImpl($cache);
         $configuration->setQueryCacheImpl($cache);
 
-        $configuration->setProxyDir($this->config()->getString(Config::ROOT_PATH) . '/var/cache/orm');
+        $configuration->setProxyDir($this->config()->getString(Config::CACHE_PATH) . '/doctrine/orm/' . $this->config()->getString(Config::ENV));
         $configuration->setProxyNamespace('DoctrineProxy');
         $configuration->setAutoGenerateProxyClasses($this->isDevMode());
 
@@ -207,17 +228,12 @@ final class HireInSocial
         return $this->orm;
     }
 
-    private function mailer() : Mailer
+    public function mailer() : Mailer
     {
         return new SwiftMailer($this->config()->getString(Config::DOMAIN), $this->mailer);
     }
 
-    private function templatingEngine() : Environment
-    {
-        return $this->templatingEngine;
-    }
-
-    private function eventBus() : InMemoryEventBus
+    public function eventBus() : InMemoryEventBus
     {
         if (null !== $this->eventBus) {
             return $this->eventBus;
@@ -226,5 +242,10 @@ final class HireInSocial
         $this->eventBus = new InMemoryEventBus();
 
         return $this->eventBus;
+    }
+
+    private function templatingEngine() : Environment
+    {
+        return $this->templatingEngine;
     }
 }

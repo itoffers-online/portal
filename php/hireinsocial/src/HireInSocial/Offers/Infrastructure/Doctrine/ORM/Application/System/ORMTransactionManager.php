@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Infrastructure\Doctrine\ORM\Application\System;
 
 use Doctrine\ORM\EntityManagerInterface;
-use HireInSocial\Offers\Application\System\TransactionManager;
+use HireInSocial\Component\CQRS\System\TransactionManager;
 
 final class ORMTransactionManager implements TransactionManager
 {

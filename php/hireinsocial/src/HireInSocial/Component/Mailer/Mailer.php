@@ -17,5 +17,5 @@ interface Mailer
 {
     public function domain() : string;
 
-    public function send(Email $email, Sender $sender, Recipients $recipients, Attachments $attachments) : void;
+    public function send(Email $email, Sender $sender, Recipients $recipients, Attachments $attachments = null) : void;
 }

@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace HireInSocial\Offers\Application\Command\Offer;
 
 use function array_map;
+use HireInSocial\Component\CQRS\System\Handler;
 use HireInSocial\Component\Mailer\Attachments;
 use HireInSocial\Component\Mailer\Email;
 use HireInSocial\Component\Mailer\Mailer;
 use HireInSocial\Component\Mailer\Recipient;
 use HireInSocial\Component\Mailer\Recipients;
 use HireInSocial\Component\Mailer\Sender;
+use HireInSocial\Offers\Application\Calendar;
 use HireInSocial\Offers\Application\Command\Offer\Apply\Attachment;
 use HireInSocial\Offers\Application\Exception\Exception;
 use HireInSocial\Offers\Application\Hash\Encoder;
@@ -28,8 +30,6 @@ use HireInSocial\Offers\Application\Offer\Application\EmailHash;
 use HireInSocial\Offers\Application\Offer\Applications;
 use HireInSocial\Offers\Application\Offer\EmailFormatter;
 use HireInSocial\Offers\Application\Offer\Offers;
-use HireInSocial\Offers\Application\System\Calendar;
-use HireInSocial\Offers\Application\System\Handler;
 use Ramsey\Uuid\Uuid;
 use function sprintf;
 

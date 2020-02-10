@@ -16,6 +16,7 @@ This is a technical documentation of the project.
   * [Terraform](/terraform/README.md)
   * [Architecture](/docs/architecture/README.md)
   * [System Setup](/php/hireinsocial/README.md)
+  * [Emails](/docs/emails.md)
 * [Features](/php/hireinsocial/docs/README.md)
   * [Contexts](/php/hireinsocial/src/HireInSocial/README.md)
     * [Offers](/php/hireinsocial/src/HireInSocial/Offers/README.md) / [Offers UI](/php/hireinsocial/src/App/Offers/README.md)

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace HireInSocial\Tests\Offers\Application\Double\Dummy;
 
-use HireInSocial\Offers\Application\System\TransactionManager;
+use HireInSocial\Component\CQRS\System\TransactionManager;
 
 final class DummyTransactionManager implements TransactionManager
 {

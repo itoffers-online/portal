@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Offers\Command\Offer\Test;
 
 use Faker\Factory;
+use HireInSocial\Notifications\Notifications;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Company;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Contact;
 use HireInSocial\Offers\Application\Command\Offer\Offer\Contract;
@@ -60,6 +61,11 @@ final class PostOffer extends Command
      * @var SymfonyStyle
      */
     private $io;
+
+    /**
+     * @var Notifications
+     */
+    private $notifications;
 
     public function __construct(Offers $offers, string $locale)
     {
@@ -123,9 +129,9 @@ final class PostOffer extends Command
                 $user->id(),
                 new Offer(
                     new Company(
-                        'Hire in Social',
-                        'https://hirein.social/best-developers-company',
-                        'Hire in Social is recruiting portal that connects recruiters with candidates'
+                        'itoffers.online',
+                        'https://itoffers.online',
+                        'itoffers.online is recruiting portal that connects recruiters with candidates'
                     ),
                     new Position(
                         \random_int(0, 4),
