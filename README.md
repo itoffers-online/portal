@@ -15,11 +15,11 @@ This is a technical documentation of the project.
   * [Local SSL](/ssl/README.md)
   * [Terraform](/terraform/README.md)
   * [Architecture](/docs/architecture/README.md)
-  * [System Setup](/php/hireinsocial/README.md)
+  * [System Setup](/php/itoffers/README.md)
   * [Emails](/docs/emails.md)
-* [Features](/php/hireinsocial/docs/README.md)
-  * [Contexts](/php/hireinsocial/src/HireInSocial/README.md)
-    * [Offers](/php/hireinsocial/src/HireInSocial/Offers/README.md) / [Offers UI](/php/hireinsocial/src/App/Offers/README.md)
+* [Features](/php/itoffers/docs/README.md)
+  * [Contexts](/php/itoffers/src/ITOffers/README.md)
+    * [Offers](/php/itoffers/src/ITOffers/Offers/README.md) / [Offers UI](/php/itoffers/src/App/Offers/README.md)
 * [Roadmap](https://github.com/norzechowicz/hire-in-social/projects/1)
 
 ## ⚠️ Heads Up

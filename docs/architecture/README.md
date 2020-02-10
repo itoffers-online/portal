@@ -3,7 +3,7 @@
 This project uses [Structurizr](https://structurizr.com/public/49192) and [C4 model](https://c4model.com) to visualize
 architecture. 
 
-Below diagrams are generated directly from code, please check [structurizr.php](/php/hireinsocial/structurizr/structurizr.php) for
+Below diagrams are generated directly from code, please check [structurizr.php](/php/itoffers/structurizr/structurizr.php) for
 more details. 
 
 ## Context 

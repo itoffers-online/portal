@@ -1,0 +1,57 @@
+#!/usr/bin/env php
+<?php
+
+use Doctrine\DBAL\Migrations\Configuration\Configuration as MigrationConfiguration;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
+use Doctrine\DBAL\Tools\Console\ConsoleRunner;
+use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
+use Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand;
+use Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand;
+use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
+use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
+use ITOffers\ITOffersOnline;
+use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Schema\ITOffersSchemaProvider;
+use ITOffers\Config;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use function App\symfony;
+use function ITOffers\Offers\Infrastructure\bootstrap;
+
+$projectRootPath = dirname(__DIR__);
+
+require $projectRootPath . '/src/autoload.php';
+
+$itoffers = symfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOnline::class);
+
+$connection = $itoffers->dbal();
+$entityManager = $itoffers->orm();
+
+$migrationsConfig = new MigrationConfiguration($connection);
+$migrationsConfig->setMigrationsNamespace('ITOffers\\Doctrine\\DBAL\\Migrations');
+$migrationsConfig->setMigrationsTableName('his_db_migration');
+$migrationsConfig->setMigrationsDirectory($itoffers->config()->getString(Config::ROOT_PATH) . '/db/migrations');
+$migrationsConfig->registerMigrationsFromDirectory($itoffers->config()->getString(Config::ROOT_PATH) . '/db/migrations');
+$migrationsConfig->setMigrationsAreOrganizedByYearAndMonth(true);
+
+$migrateCommand = new MigrateCommand();
+$migrateCommand->setMigrationConfiguration($migrationsConfig);
+
+$diffCommand = new DiffCommand(
+    new ITOffersSchemaProvider($entityManager)
+);
+$diffCommand->setMigrationConfiguration($migrationsConfig);
+
+$helperSet = new HelperSet([
+    'db' => new ConnectionHelper($connection),
+    'em' => new EntityManagerHelper($entityManager),
+    'question' => new QuestionHelper(),
+]);
+
+ConsoleRunner::run($helperSet, [
+    $migrateCommand,
+    $diffCommand,
+    new GenerateProxiesCommand(),
+    new MetadataCommand(),
+    new QueryCommand()
+]);

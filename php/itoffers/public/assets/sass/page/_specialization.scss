@@ -1,0 +1,13 @@
+.offers {
+  .offer {
+    &:hover {
+      box-shadow: $box-shadow;
+
+      h4 {
+        a {
+          color: $blue !important;
+        }
+      }
+    }
+  }
+}

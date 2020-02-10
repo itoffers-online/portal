@@ -1,0 +1,13 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="ITOffers\Offers\Application\Offer\Slug" table="his_job_offer_slug">
+
+        <id name="slug" type="text">
+            <generator strategy="NONE" />
+        </id>
+        <field name="offerId" type="guid" />
+        <field name="createdAt" type="datetime_immutable" />
+    </entity>
+</doctrine-mapping>

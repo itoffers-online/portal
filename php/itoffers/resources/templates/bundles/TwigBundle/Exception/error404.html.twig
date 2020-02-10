@@ -1,0 +1,23 @@
+{% extends '@theme/base.html.twig' %}
+
+{% block body %}
+<div class="container-fluid">
+    <section class="jumbotron text-center bg-white">
+        <div class="container mt-5 mb-2">
+            <h1 class="jumbotron-heading">The page you are looking for doesn't exist.</h1>
+            <p class="lead text-muted">
+                If that was a job offer it could be removed by the recruiter.
+            </p>
+            <p>
+                <a href="{{ url('home') }}" class="btn btn-primary my-2">Find better offers!</a>
+            </p>
+            <p class="small text-muted mt-5">
+                There is always a better offer somewhere there.
+            </p>
+        </div>
+    </section>
+    <div class="container">
+        <hr />
+    </div>
+</div>
+{% endblock %}

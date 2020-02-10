@@ -4,7 +4,7 @@
   become_user: www-data
   hosts: "{{ deployhosts }}"
   vars:
-    project_root: "/var/www/hireinsocial"
+    project_root: "/var/www/itoffers"
     project_upload: "{{ project_root }}/master"
     current_path: "{{ project_root }}/current"
     release_path: "{{ project_upload }}/{{ deploy_directory }}"

@@ -9,7 +9,7 @@ namespace PHPSTORM_META
         '' => '@',
     ]));
 
-    override(\HireInSocial\Component\CQRS\System::query(0), map([
+    override(\ITOffers\Component\CQRS\System::query(0), map([
         '' => '@',
     ]));
 }

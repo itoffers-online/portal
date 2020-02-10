@@ -1,0 +1,16 @@
+.specialization {
+  .logo img {
+    max-width: 100px;
+  }
+
+  a {
+    color: $dark;
+  }
+  &:hover {
+    box-shadow: $box-shadow;
+
+    a {
+      color: $blue;
+    }
+  }
+}

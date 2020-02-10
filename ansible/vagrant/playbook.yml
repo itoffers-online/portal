@@ -1,33 +1,33 @@
 ---
-- name: Configure hireinsocial vagrant dev env
+- name: Configure itoffers vagrant dev env
   hosts: all
   become: yes
   remote_user: vagrant
   vars:
     env_timezone: "UTC"
-    env_hostname: "hireinsocial-dev-vagrant"
+    env_hostname: "itof-dev-vagrant"
 
-    nginx_vhost_host: "hireinsocial.local"
+    nginx_vhost_host: "itoffers.local"
     nginx_vhost_php: true
     nginx_vhost:
       servers:
-        - server_name: hireinsocial.local
+        - server_name: itoffers.local
           port: 80
           error_log: false
           access_log: false
-          web_root: "/var/www/hireinsocial/php/hireinsocial/public"
+          web_root: "/var/www/itoffers/php/itoffers/public"
           locations:
             - path: "~ ^.*$"
               content: |
                 return 301 https://$server_name$request_uri;
-        - server_name: hireinsocial.local
+        - server_name: itoffers.local
           port: 443
           ssl: true
-          ssl_cert: /etc/ssl/hireinsocial.local.crt
-          ssl_key: /etc/ssl/hireinsocial.local.key
+          ssl_cert: /etc/ssl/itoffers.local.crt
+          ssl_key: /etc/ssl/itoffers.local.key
           error_log: true
           access_log: true
-          web_root: "/var/www/hireinsocial/php/hireinsocial/public"
+          web_root: "/var/www/itoffers/php/itoffers/public"
           locations:
             - path: /
               content: |
@@ -70,25 +70,25 @@
       - "php{{ php7_version }}-imap"
       - "php{{ php7_version }}-phpdbg"
 
-    openssl_cert_common_name: "hireinsocial.local"
+    openssl_cert_common_name: "itoffers.local"
     openssl_cert_alternate_names:
-      - "hireinsocial.local"
+      - "itoffers.local"
       - "localhost"
     openssl_cert_ips:
       - "127.0.0.1"
 
-    openssl_ca_name: "HireInSocial Development CA"
-    openssl_cert_email: "contact@hireinsocial.local"
-    openssl_cert_name: "hireinsocial.local"
+    openssl_ca_name: "itoffers.online Development CA"
+    openssl_cert_email: "contact@itoffers.local"
+    openssl_cert_name: "itoffers.local"
     openssl_generate_ca: true
 
     pg_version: 11
     pg_users:
-      - { name: "hireinsocial", password: "hireinsocial", permissions: "LOGIN", password_encrypted: "yes"}
+      - { name: "itoffers", password: "itoffers", permissions: "LOGIN", password_encrypted: "yes"}
     pg_databases:
-      - { name: "hireinsocial_prod", owner: "hireinsocial" }
-      - { name: "hireinsocial_test", owner: "hireinsocial" }
-      - { name: "hireinsocial_dev", owner: "hireinsocial" }
+      - { name: "itoffers_prod", owner: "itoffers" }
+      - { name: "itoffers_test", owner: "itoffers" }
+      - { name: "itoffers_dev", owner: "itoffers" }
 
     pg_cfg_srv_shared_buffers: 128MB
     pg_cfg_srv_work_mem: 64MB

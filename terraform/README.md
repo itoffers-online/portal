@@ -16,9 +16,9 @@ At this point only Azure provider is supported but feel free to provide others.
 Prepare env variables: 
 
 ```
-export TF_VAR_his_dev_az_subscription_id="changeme"
-export TF_VAR_his_dev_az_tenant_id="changeme"
-export TF_VAR_his_dev_az_prefix="YOUR_INITIALS_OR_SOMETHING"
+export TF_VAR_itof_dev_az_subscription_id="changeme"
+export TF_VAR_itof_dev_az_tenant_id="changeme"
+export TF_VAR_itof_dev_az_prefix="YOUR_INITIALS_OR_SOMETHING"
 ```
 
 ---

@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+use App\Twitter\Command\AuthenticationUrl;
+use App\Twitter\Command\GetToken;
+use App\Twitter\Command\StatusUpdate;
+use App\Twitter\Command\VerifyCredentials;
+use ITOffers\ITOffersOnline;
+use Symfony\Component\Console\Application;
+use function App\symfony;
+use function ITOffers\Offers\Infrastructure\bootstrap;
+
+$projectRootPath = dirname(__DIR__);
+
+require $projectRootPath . '/src/autoload.php';
+
+$hireInSocial = symfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOnline::class);
+
+$application = new Application('itoffers.online - Twitter');
+
+$application->add(new AuthenticationUrl($hireInSocial->config()));
+$application->add(new GetToken($hireInSocial->config()));
+$application->add(new StatusUpdate($hireInSocial->config()));
+$application->add(new VerifyCredentials($hireInSocial->config()));
+
+$application->run();

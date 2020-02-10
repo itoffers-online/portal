@@ -1,0 +1,60 @@
+{% extends '@theme/base.html.twig' %}
+
+{% block body %}
+<div class="container-fluid bg-light">
+    <div class="container pt-4">
+        <h4>Post job offer</h4>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                {% for specialization in specializations %}
+                    <div class="col-md-3 mb-4">
+                        <div class="card specialization" data-href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}" >
+                            <div class="card-title text-center mt-2">
+                                <h4>
+                                    <a class="text-decoration-none font-weight-light" href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">
+                                        {{ specialization.slug|specialization_name }}
+                                    </a>
+                                </h4>
+                                <div class="logo">
+                                    <a href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">
+                                        {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
+                                    </a>
+                                </div>
+                                <div class="mt-3">
+                                    <a data-post-offer class="btn btn-outline-dark btn-sm" href="{{ url('offer_new', {'specSlug' : specialization.slug}) }}">post <i class="fas fa-long-arrow-alt-right"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <ul class="list-unstyled small">
+                    <li class="mb-1">Job offer can belong to only one specialization.</li>
+                    <li class="mb-1">All offers are displayed by {{ itof.old_offer_days }} days.</li>
+                    <li class="mb-1">Posting offers is <strong>free</strong>.</li>
+                    <li class="mb-1">
+                        Before posting new offer you need to login using:
+                        <ul>
+                            <li>Facebook</li>
+                            <li data-toggle="tooltip" data-placement="left" title="Coming soon!"><s>LinkedIn</s></li>
+                        </ul>
+                    </li>
+                    <li class="mb-1">
+                        New offers can be automatically posted by us at:
+                        <ul>
+                            <li>Facebook</li>
+                            <li>Twitter</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="small">
+                    We are still in <strong>beta tests</strong>, if there is anything we can do to improve, please let us know at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <embeddable name="ITOffers\Offers\Application\Offer\Position">
+        <field name="seniorityLevel" type="smallint"/>
+        <field name="name"/>
+        <field name="description" length="1024"/>
+    </embeddable>
+</doctrine-mapping>

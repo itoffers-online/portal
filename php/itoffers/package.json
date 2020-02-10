@@ -1,0 +1,30 @@
+{
+  "name": "itoffers",
+  "version": "1.0.0",
+  "description": "Hire in Social",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "assets:build": "node_modules/.bin/webpack-cli"
+  },
+  "author": "",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "autoprefixer": "^9.7.3",
+    "bootstrap": "^4.4.1",
+    "css-loader": "^3.4.0",
+    "dotenv": "^8.2.0",
+    "jquery": "^3.4.1",
+    "node-sass": "^4.13.0",
+    "popper.js": "^1.16.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.1.2",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "savemyform.jquery": "^1.5.0"
+  }
+}

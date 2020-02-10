@@ -18,7 +18,7 @@ cp inventories/hosts.dists inventories/hosts
 
 # Staging Deployment
 ```
-ansible-playbook deploy.yml -i inventories/hosts --extra-vars='{"deployhosts":"his-stag-vm", "artefact_path":"./../../php/hireinsocial/build/hireinsocial-archive.tar"}'
+ansible-playbook deploy.yml -i inventories/hosts --extra-vars='{"deployhosts":"itof-stag-vm", "artefact_path":"./../../php/itoffers/build/itoffers-archive.tar"}'
 ```
 
 ---

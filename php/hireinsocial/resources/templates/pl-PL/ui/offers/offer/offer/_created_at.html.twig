@@ -1,7 +1,0 @@
-{% if offer|offer_older_than(15) %}
-    <span class="text-danger" data-toggle="tooltip" data-placement="top" title="This offer is a bit old."><i class="text-gray-500 fas fa-clock mr-2"></i> {{ offer.createdAt|time_diff }}</span>
-{% elseif offer|offer_older_than(5) %}
-    <span class="text-warning" data-toggle="tooltip" data-placement="top" title="This offer is around few days already."><i class="text-gray-500 fas fa-clock mr-2"></i> {{ offer.createdAt|time_diff }}</span>
-{% else %}
-    <span class="text-success font-weight-bold" data-toggle="tooltip" data-placement="top" title="Brand new!"><i class="text-gray-500 fas fa-clock mr-2"></i> {{ offer.createdAt|time_diff }}</span>
-{% endif %}

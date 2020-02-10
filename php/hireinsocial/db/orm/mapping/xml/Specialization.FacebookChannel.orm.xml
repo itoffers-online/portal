@@ -1,9 +1,0 @@
-<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
-                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
-                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <embeddable name="HireInSocial\Offers\Application\Specialization\FacebookChannel">
-        <embedded name="page" class="HireInSocial\Offers\Application\Facebook\Page"/>
-        <embedded name="group" class="HireInSocial\Offers\Application\Facebook\Group"/>
-    </embeddable>
-</doctrine-mapping>

@@ -1,0 +1,18 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="ITOffers\Offers\Application\Twitter\Tweet" table="his_twitter_tweet">
+
+        <id name="id" type="string">
+            <generator strategy="NONE" />
+        </id>
+
+        <field name="jobOfferId" type="guid" />
+
+
+        <indexes>
+            <index name="idx_twitter_tweet_job_offer_id" columns="job_offer_id"/>
+        </indexes>
+    </entity>
+</doctrine-mapping>

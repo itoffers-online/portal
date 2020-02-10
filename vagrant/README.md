@@ -30,7 +30,7 @@ Now you should add following entry to your `/etc/hosts` if you want to use custo
 for development. 
 
 ```
-10.0.0.200  hireinsocial.local
+10.1.0.200  itoffers.local
 ```
 
 This step is recommended one, but it's also optional, feel free to skip it if you are ok with typing ip address in browser.

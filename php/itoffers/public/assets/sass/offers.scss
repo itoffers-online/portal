@@ -1,0 +1,31 @@
+$assets-path: '/assets';
+
+@import "typography";
+
+@import "bootstrap/custom";
+@import "~bootstrap/scss/bootstrap";
+
+@import "buttons";
+@import "page/home";
+@import "page/offer_details";
+@import "page/specialization";
+
+.text-blue {
+  color: $blue;
+}
+
+.text-gray-500 {
+  color: $gray-500;
+}
+
+.text-green {
+  color: $green;
+}
+
+label {
+  font-size: 0.9rem;
+}
+
+[data-href] {
+  cursor: pointer;
+}

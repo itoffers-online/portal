@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+use App\Offers\Command\Email\ScanMessages;
+use Ddeboer\Imap\Server;
+use ITOffers\Config;
+use ITOffers\ITOffersOnline;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Filesystem\Filesystem;
+use function App\symfony;
+use function ITOffers\Offers\Infrastructure\bootstrap;
+
+$projectRootPath = dirname(__DIR__);
+
+require $projectRootPath . '/src/autoload.php';
+
+$itoffers = symfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOnline::class);
+
+$serverConfig = $itoffers->config()->getJson(Config::APPLY_EMAIL_CONFIG);
+
+$server = new Server($serverConfig['host'], $serverConfig['port']);
+$connection = $server->authenticate($serverConfig['username'], $serverConfig['password']);
+$fs = new Filesystem();
+
+(new Application('email-scan', '1.0.0'))
+    ->add(new ScanMessages($itoffers->offers(), $connection, $fs))
+    ->getApplication()
+    ->setDefaultCommand(ScanMessages::NAME, true)
+    ->run();
