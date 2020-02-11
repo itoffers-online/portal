@@ -20,6 +20,8 @@ use Safe\Exceptions\JsonException;
 
 final class Config
 {
+    public const ENV = 'env';
+
     public const ROOT_PATH = 'root_path';
 
     public const CACHE_PATH = 'cache_path';
@@ -32,17 +34,11 @@ final class Config
 
     public const REPORT_EMAIL = 'report_email';
 
-    public const FB_PAGE_URL = 'fb_page_url';
-
-    public const ENV = 'env';
-
     public const LOCALE = 'locale';
 
     public const TIMEZONE = 'timezone';
 
     public const SYMFONY_SECRET = 'symfony_secret';
-
-    public const REDIS_DSN = 'redis_dsn';
 
     public const APPLY_EMAIL_TEMPLATE = 'apply_email_template';
 
@@ -58,6 +54,8 @@ final class Config
 
     public const GOOGLE_MAPS_KEY = 'google_maps_key';
 
+    public const GOOGLE_ANALYTICS_CODE = 'google_analytics_code';
+
     public const DB_HOST = 'db_host';
 
     public const DB_PORT = 'db_port';
@@ -68,19 +66,19 @@ final class Config
 
     public const DB_NAME = 'db_name';
 
+    public const REDIS_DSN = 'redis_dsn';
+
+    public const REDIS_DB_DOCTRINE_CACHE = 'REDIS_DB_DOCTRINE_CACHE';
+
+    public const FB_PAGE_URL = 'fb_page_url';
+
     public const FB_APP_ID = 'facebook_app_id';
 
     public const FB_APP_SECRET = 'facebook_app_secret';
 
-    public const GOOGLE_ANALYTICS_CODE = 'google_analytics_code';
-
     public const LINKEDIN_APP_ID = 'linkedin_app_id';
 
     public const LINKEDIN_APP_SECRET = 'linkedin_app_secret';
-
-    public const THROTTLE_DURATION = 'throttle_duration';
-
-    public const REDIS_DB_DOCTRINE_CACHE = 'REDIS_DB_DOCTRINE_CACHE';
 
     public const OLD_OFFER_DAYS = 'old_offer_days';
 
@@ -91,6 +89,8 @@ final class Config
     public const TWITTER_ACCESS_TOKEN = 'twitter_access_token';
 
     public const TWITTER_ACCESS_TOKEN_SECRET = 'twitter_access_token_secret';
+
+    public const NOTIFICATIONS_DISABLED = 'notifications_disabled';
 
     public const FEATURE_POST_NEW_OFFERS = 'feature_post_new_offers';
 
@@ -134,7 +134,6 @@ final class Config
             self::FB_APP_SECRET => getenv('ITOF_FB_APP_SECRET'),
             self::LINKEDIN_APP_ID => getenv('ITOF_LINKEDIN_APP_ID'),
             self::LINKEDIN_APP_SECRET => getenv('ITOF_LINKEDIN_APP_SECRET'),
-            self::THROTTLE_DURATION => getenv('ITOF_THROTTLE_DURATION'),
             self::FILESYSTEM_CONFIG => getenv('ITOF_FILESYSTEM_CONFIG'),
             self::DB_HOST => getenv('ITOF_DB_HOST'),
             self::DB_PORT => getenv('ITOF_DB_PORT'),
@@ -147,6 +146,7 @@ final class Config
             self::TWITTER_API_SECRET_KEY => getenv('ITOF_TWITTER_API_SECRET_KEY'),
             self::TWITTER_ACCESS_TOKEN => getenv('ITOF_TWITTER_ACCESS_TOKEN'),
             self::TWITTER_ACCESS_TOKEN_SECRET => getenv('ITOF_TWITTER_ACCESS_TOKEN_SECRET'),
+            self::NOTIFICATIONS_DISABLED => \filter_var(getenv('ITOF_NOTIFICATIONS_DISABLED'), FILTER_VALIDATE_BOOLEAN),
             self::FEATURE_POST_NEW_OFFERS => \filter_var(getenv('ITOF_FEATURE_POST_NEW_OFFERS'), FILTER_VALIDATE_BOOLEAN),
             self::FEATURE_POST_OFFER_AT_FACEBOOK => \filter_var(getenv('ITOF_FEATURE_POST_OFFER_AT_FACEBOOK'), FILTER_VALIDATE_BOOLEAN),
             self::FEATURE_TWEET_ABOUT_OFFER => \filter_var(getenv('ITOF_FEATURE_TWEET_ABOUT_OFFER'), FILTER_VALIDATE_BOOLEAN),

@@ -4,6 +4,6 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <embeddable name="ITOffers\Offers\Application\Offer\Description\Requirements">
         <field name="description" length="1024"/>
-        <field name="skills" type="his_offer_description_requirements_skill" />
+        <field name="skills" type="itof_offer_description_requirements_skill" />
     </embeddable>
 </doctrine-mapping>

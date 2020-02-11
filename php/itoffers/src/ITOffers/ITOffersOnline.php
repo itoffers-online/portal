@@ -132,6 +132,10 @@ final class ITOffersOnline
                 $this->templatingEngine(),
                 $this->logger(),
             );
+
+            if ($this->config()->getBool(Config::NOTIFICATIONS_DISABLED)) {
+                $this->notifications->disable();
+            }
         }
 
         return $this->notifications;

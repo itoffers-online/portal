@@ -46,8 +46,8 @@ final class DbalSpecializationQuery implements SpecializationQuery
                      s.facebook_channel_group_id as fb_group_id,
                      s.twitter_account_id,
                      s.twitter_screen_name,
-                     (SELECT COUNT(*) FROM his_job_offer WHERE specialization_id = s.id) as offers_count
-                  FROM his_specialization s 
+                     (SELECT COUNT(*) FROM itof_job_offer WHERE specialization_id = s.id) as offers_count
+                  FROM itof_specialization s 
                   ORDER BY offers_count desc
 SQL
                 )
@@ -65,8 +65,8 @@ SQL
                 <<<SQL
           SELECT 
              s.slug, 
-             (SELECT COUNT(*) FROM his_job_offer WHERE specialization_id = s.id) as offers_count
-          FROM his_specialization s 
+             (SELECT COUNT(*) FROM itof_job_offer WHERE specialization_id = s.id) as offers_count
+          FROM itof_specialization s 
           ORDER BY offers_count desc
 SQL
             )
@@ -84,7 +84,7 @@ SQL
                s.facebook_channel_group_id as fb_group_id,
                s.twitter_account_id,
                s.twitter_screen_name
-            FROM his_specialization s
+            FROM itof_specialization s
             WHERE s.slug = :slug
 SQL
             ,
@@ -104,9 +104,9 @@ SQL
         $offersData = $this->connection->fetchAssoc(
             <<<SQL
             SELECT 
-               (SELECT COUNT(*) FROM his_job_offer  WHERE specialization_id = :specializationId) as total_count,
+               (SELECT COUNT(*) FROM itof_job_offer  WHERE specialization_id = :specializationId) as total_count,
                o.created_at
-            FROM his_job_offer o 
+            FROM itof_job_offer o 
             WHERE o.specialization_id = :specializationId
             ORDER BY o.created_at DESC LIMIT 1
 SQL

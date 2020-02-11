@@ -47,7 +47,7 @@ final class DbalOfferQuery implements OfferQuery
 
     public function total() : int
     {
-        return (int) $this->connection->fetchColumn('SELECT COUNT(*) FROM his_job_offer o WHERE o.removed_at IS NULL');
+        return (int) $this->connection->fetchColumn('SELECT COUNT(*) FROM itof_job_offer o WHERE o.removed_at IS NULL');
     }
 
     public function findAll(OfferFilter $filter) : Offers
@@ -59,7 +59,7 @@ final class DbalOfferQuery implements OfferQuery
                 os.slug, 
                 s.slug as specialization_slug, 
                 CAST(o.salary->>\'max\' as INTEGER) as salary_max,
-                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+                (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
             ');
 
         $this->prepareFindQueryBuilder($filter, $queryBuilder);
@@ -101,8 +101,8 @@ final class DbalOfferQuery implements OfferQuery
     {
         $queryBuilder = $this->connection->createQueryBuilder()
             ->select('COUNT(o.id)')
-            ->from('his_job_offer', 'o')
-            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->from('itof_job_offer', 'o')
+            ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
             ->where('o.removed_at IS NULL');
 
         if ($filter->specialization()) {
@@ -130,7 +130,7 @@ final class DbalOfferQuery implements OfferQuery
         if ($filter->afterOfferId()) {
             $queryBuilder->andWhere('o.id <> :afterOfferId')
                 ->setParameter('afterOfferId', $filter->afterOfferId());
-            $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM his_job_offer WHERE id = :afterOfferId)');
+            $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM itof_job_offer WHERE id = :afterOfferId)');
         }
 
         if ($filter->sinceDate()) {
@@ -153,12 +153,12 @@ final class DbalOfferQuery implements OfferQuery
                 op.path as offer_pdf, 
                 os.slug, 
                 s.slug as specialization_slug,
-                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+                (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
             ')
-            ->from('his_job_offer_slug', 'os')
-            ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
-            ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
-            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->from('itof_job_offer_slug', 'os')
+            ->leftJoin('os', 'itof_job_offer', 'o', 'os.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
             ->where('o.id = :id')
             ->andWhere('o.removed_at IS NULL')
             ->setParameters(
@@ -182,12 +182,12 @@ final class DbalOfferQuery implements OfferQuery
                 o.*, 
                 os.slug, 
                 s.slug as specialization_slug,
-                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+                (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
             ')
-            ->from('his_job_offer_slug', 'os')
-            ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
-            ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
-            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->from('itof_job_offer_slug', 'os')
+            ->leftJoin('os', 'itof_job_offer', 'o', 'os.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
             ->where('o.email_hash = :emailHash')
             ->andWhere('o.removed_at IS NULL')
             ->setParameters(
@@ -212,12 +212,12 @@ final class DbalOfferQuery implements OfferQuery
                 op.path as offer_pdf, 
                 os.slug, 
                 s.slug as specialization_slug,
-                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+                (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
             ')
-            ->from('his_job_offer_slug', 'os')
-            ->leftJoin('os', 'his_job_offer', 'o', 'os.offer_id = o.id')
-            ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
-            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
+            ->from('itof_job_offer_slug', 'os')
+            ->leftJoin('os', 'itof_job_offer', 'o', 'os.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
             ->where('os.slug = :offerSlug')
             ->andWhere('o.removed_at IS NULL')
             ->setParameters(
@@ -242,14 +242,14 @@ final class DbalOfferQuery implements OfferQuery
                 op.path as offer_pdf, 
                 os.slug, 
                 s.slug as specialization_slug,
-                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+                (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
             ')
-            ->from('his_job_offer', 'o')
-            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
-            ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
-            ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->from('itof_job_offer', 'o')
+            ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
+            ->leftJoin('o', 'itof_job_offer_slug', 'os', 'os.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
             ->where('s.slug = :specializationSlug')
-            ->andWhere('o.created_at < (SELECT created_at FROM his_job_offer WHERE id = :previousOfferId)')
+            ->andWhere('o.created_at < (SELECT created_at FROM itof_job_offer WHERE id = :previousOfferId)')
             ->andWhere('o.id <> :previousOfferId')
             ->andWhere('o.removed_at IS NULL')
             ->orderBy('o.created_at', 'DESC')
@@ -277,14 +277,14 @@ final class DbalOfferQuery implements OfferQuery
                 op.path as offer_pdf,
                 os.slug, 
                 s.slug as specialization_slug,
-                (SELECT COUNT(a.*) FROM his_job_offer_application a WHERE o.id = a.offer_id) as applications_count
+                (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
             ')
-            ->from('his_job_offer', 'o')
-            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
-            ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
-            ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->from('itof_job_offer', 'o')
+            ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
+            ->leftJoin('o', 'itof_job_offer_slug', 'os', 'os.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
             ->where('s.slug = :specializationSlug')
-            ->andWhere('o.created_at > (SELECT created_at FROM his_job_offer WHERE id = :previousOfferId)')
+            ->andWhere('o.created_at > (SELECT created_at FROM itof_job_offer WHERE id = :previousOfferId)')
             ->andWhere('o.id <> :previousOfferId')
             ->andWhere('o.removed_at IS NULL')
             ->orderBy('o.created_at', 'ASC')
@@ -370,10 +370,10 @@ final class DbalOfferQuery implements OfferQuery
     private function prepareFindQueryBuilder(OfferFilter $filter, QueryBuilder $queryBuilder) : void
     {
         $queryBuilder
-            ->from('his_job_offer', 'o')
-            ->leftJoin('o', 'his_specialization', 's', 'o.specialization_id = s.id')
-            ->leftJoin('o', 'his_job_offer_slug', 'os', 'os.offer_id = o.id')
-            ->leftJoin('o', 'his_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->from('itof_job_offer', 'o')
+            ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
+            ->leftJoin('o', 'itof_job_offer_slug', 'os', 'os.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
             ->where('o.removed_at IS NULL');
 
         if ($filter->specialization()) {
@@ -401,7 +401,7 @@ final class DbalOfferQuery implements OfferQuery
         if ($filter->afterOfferId()) {
             $queryBuilder->andWhere('o.id <> :afterOfferId')
                 ->setParameter('afterOfferId', $filter->afterOfferId());
-            $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM his_job_offer WHERE id = :afterOfferId)');
+            $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM itof_job_offer WHERE id = :afterOfferId)');
         }
 
         if ($filter->sinceDate()) {

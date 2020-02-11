@@ -2,7 +2,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="ITOffers\Offers\Application\Offer\Offer" table="his_job_offer">
+    <entity name="ITOffers\Offers\Application\Offer\Offer" table="itof_job_offer">
 
         <id name="id" type="guid">
             <generator strategy="NONE" />
@@ -11,7 +11,7 @@
         <field name="userId" type="guid" />
         <field name="specializationId" type="guid" />
         <field name="createdAt" type="datetime_immutable" />
-        <field name="salary" type="his_offer_salary" nullable="true"/>
+        <field name="salary" type="itof_offer_salary" nullable="true"/>
         <field name="removedAt" type="datetime_immutable" nullable="true"/>
 
         <embedded name="locale" class="ITOffers\Offers\Application\Offer\Locale" />

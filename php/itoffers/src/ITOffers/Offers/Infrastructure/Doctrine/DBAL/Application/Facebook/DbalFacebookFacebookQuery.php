@@ -33,7 +33,7 @@ final class DbalFacebookFacebookQuery implements FacebookQuery
     public function findFacebookPost(string $offerId) : ?FacebookPost
     {
         $postData = $this->connection->fetchAssoc('
-            SELECT fb_id, job_offer_id FROM his_facebook_post WHERE job_offer_id = :offerId', [
+            SELECT fb_id, job_offer_id FROM itof_facebook_post WHERE job_offer_id = :offerId', [
             'offerId' => $offerId,
         ]);
 

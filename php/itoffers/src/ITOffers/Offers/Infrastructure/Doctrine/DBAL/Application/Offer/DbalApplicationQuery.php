@@ -39,7 +39,7 @@ final class DbalApplicationQuery implements ApplicationQuery
     public function alreadyApplied(string $offerId, string $email) : bool
     {
         return (bool) $this->connection->fetchColumn(
-            'SELECT COUNT(*) FROM his_job_offer_application WHERE offer_id = :offerId AND email_hash = :emailHash',
+            'SELECT COUNT(*) FROM itof_job_offer_application WHERE offer_id = :offerId AND email_hash = :emailHash',
             [
             'offerId' => $offerId,
             'emailHash' => EmailHash::fromRaw($email, $this->encoder)->toString(),
@@ -49,7 +49,7 @@ final class DbalApplicationQuery implements ApplicationQuery
 
     public function countFor(string $offerId) : int
     {
-        return (int) $this->connection->fetchColumn('SELECT COUNT(*) FROM his_job_offer_application WHERE offer_id = :offerId', [
+        return (int) $this->connection->fetchColumn('SELECT COUNT(*) FROM itof_job_offer_application WHERE offer_id = :offerId', [
             'offerId' => $offerId,
         ]);
     }

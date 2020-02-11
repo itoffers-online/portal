@@ -33,7 +33,7 @@ final class DbalUserQuery implements UserQuery
     {
         $userData = $this->connection->createQueryBuilder()
             ->select('u.*')
-            ->from('his_user', 'u')
+            ->from('itof_user', 'u')
             ->where('u.fb_user_app_id = :facebookUserAppId')
             ->setParameters(
                 [
@@ -53,7 +53,7 @@ final class DbalUserQuery implements UserQuery
     {
         $userData = $this->connection->createQueryBuilder()
             ->select('u.*')
-            ->from('his_user', 'u')
+            ->from('itof_user', 'u')
             ->where('u.linked_in_user_app_id = :linkedInUserAppId')
             ->setParameters(
                 [
@@ -73,7 +73,7 @@ final class DbalUserQuery implements UserQuery
     {
         $userData = $this->connection->createQueryBuilder()
             ->select('u.*')
-            ->from('his_user', 'u')
+            ->from('itof_user', 'u')
             ->where('u.id = :id')
             ->setParameters(
                 [
@@ -93,7 +93,7 @@ final class DbalUserQuery implements UserQuery
     {
         $userData = $this->connection->createQueryBuilder()
             ->select('u.*')
-            ->from('his_user', 'u')
+            ->from('itof_user', 'u')
             ->where('u.email_address = :email')
             ->setParameters(
                 [

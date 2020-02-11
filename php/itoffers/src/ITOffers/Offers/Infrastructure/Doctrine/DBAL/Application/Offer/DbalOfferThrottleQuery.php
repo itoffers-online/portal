@@ -99,7 +99,7 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
     {
         return (int) $this->connection->createQueryBuilder()
             ->select('COUNT(o.*)')
-            ->from('his_job_offer', 'o')
+            ->from('itof_job_offer', 'o')
             ->where('o.user_id = :userId')
             ->andWhere('o.created_at >= :since')
             ->setParameters([

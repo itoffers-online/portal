@@ -3,7 +3,7 @@
   version: "1.0.0"
 
 - name: iroquoisorg.tools
-  version: "1.0.0"
+  version: "1.0.1"
 
 - name: iroquoisorg.openssl
   version: "1.0.0"

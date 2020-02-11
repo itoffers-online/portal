@@ -33,7 +33,7 @@ final class DbalTweetsQuery implements TweetsQuery
     {
         $tweetsData = $this->connection->createQueryBuilder()
             ->select('id, job_offer_id')
-            ->from('his_twitter_tweet', 'tw')
+            ->from('itof_twitter_tweet', 'tw')
             ->where('tw.job_offer_id = :jobOfferId')
             ->setMaxResults(1)
             ->setParameters(
@@ -44,7 +44,7 @@ final class DbalTweetsQuery implements TweetsQuery
             ->fetchAll();
 
         $postData = $this->connection->fetchAssoc('
-            SELECT fb_id, job_offer_id FROM his_facebook_post WHERE job_offer_id = :offerId', [
+            SELECT fb_id, job_offer_id FROM itof_facebook_post WHERE job_offer_id = :offerId', [
             'offerId' => $offerId,
         ]);
 

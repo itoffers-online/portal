@@ -23,7 +23,7 @@ final class SkillsType extends JsonType
 {
     use PrivateFields;
 
-    public const NAME = 'his_offer_description_requirements_skill';
+    public const NAME = 'itof_offer_description_requirements_skill';
 
     public function getName() : string
     {

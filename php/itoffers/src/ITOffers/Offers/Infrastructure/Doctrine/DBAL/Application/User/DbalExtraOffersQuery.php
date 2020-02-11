@@ -33,7 +33,7 @@ final class DbalExtraOffersQuery implements ExtraOffersQuery
     {
         return (int) $this->connection->createQueryBuilder()
             ->select('COUNT(eo.*)')
-            ->from('his_extra_offer', 'eo')
+            ->from('itof_extra_offer', 'eo')
             ->where('eo.user_id = :userId')
             ->andWhere('eo.expires_at > NOW()')
             ->andWhere('eo.used_at IS NULL')
@@ -49,7 +49,7 @@ final class DbalExtraOffersQuery implements ExtraOffersQuery
     {
         $extraOffersData = $this->connection->createQueryBuilder()
             ->select('eo.*')
-            ->from('his_extra_offer', 'eo')
+            ->from('itof_extra_offer', 'eo')
             ->where('eo.user_id = :userId')
             ->andWhere('eo.expires_at > NOW()')
             ->andWhere('eo.used_at IS NULL')

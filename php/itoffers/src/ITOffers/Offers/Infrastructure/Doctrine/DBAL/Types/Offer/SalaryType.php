@@ -23,7 +23,7 @@ final class SalaryType extends JsonType
 {
     use PrivateFields;
 
-    public const NAME = 'his_offer_salary';
+    public const NAME = 'itof_offer_salary';
 
     public function getName() : string
     {
