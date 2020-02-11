@@ -1,4 +1,7 @@
-# Hire In Social 💼
+<div style="padding:3rem; background:#343a40; color: #f8f9fa;font-family: Work Sans, sans-serif; text-align: center;">
+    <h1 style="font-weight:normal;"><a href="https://itoffers.online" target="_blank" style="color: #f8f9fa; text-decoration: none;">it<span style="color:#80f24b">offers</span>.online</a></h1>
+</div>
+
 
 Hire in Social is a portal that connects IT Recruiters with Candidates helping them to find the best possible job offers.   
 
