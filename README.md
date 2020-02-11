@@ -3,7 +3,7 @@
 </div>
 
 
-Hire in Social is a portal that connects IT Recruiters with Candidates helping them to find the best possible job offers.   
+itoffers.online is a portal that connects IT Recruiters with Candidates helping them to find the best possible job offers.   
 
 > Transparency is the key to quality, that's why this project is developed and published as an open source. 
 
@@ -25,8 +25,3 @@ This is a technical documentation of the project.
     * [Offers](/php/itoffers/src/ITOffers/Offers/README.md) / [Offers UI](/php/itoffers/src/App/Offers/README.md)
 * [Roadmap](https://github.com/norzechowicz/hire-in-social/projects/1)
 
-## ⚠️ Heads Up
-
-This is experimental, pet project where I test thing before using them in commercial projects. 
-Hire in Social was never released anywhere, and I'm not sure if it will be released at all. 
-Think about it as about my personal playground. 
