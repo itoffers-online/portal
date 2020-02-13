@@ -29,7 +29,7 @@ $entityManager = $itoffers->orm();
 
 $migrationsConfig = new MigrationConfiguration($connection);
 $migrationsConfig->setMigrationsNamespace('ITOffers\\Doctrine\\DBAL\\Migrations');
-$migrationsConfig->setMigrationsTableName('his_db_migration');
+$migrationsConfig->setMigrationsTableName('itof_db_migration');
 $migrationsConfig->setMigrationsDirectory($itoffers->config()->getString(Config::ROOT_PATH) . '/db/migrations');
 $migrationsConfig->registerMigrationsFromDirectory($itoffers->config()->getString(Config::ROOT_PATH) . '/db/migrations');
 $migrationsConfig->setMigrationsAreOrganizedByYearAndMonth(true);

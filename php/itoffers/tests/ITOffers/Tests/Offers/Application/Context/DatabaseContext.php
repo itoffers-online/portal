@@ -30,7 +30,7 @@ final class DatabaseContext
     public function purgeDatabase() : void
     {
         foreach ($this->connection->getSchemaManager()->listTables() as $table) {
-            if ($table->getName() === 'his_db_migration') {
+            if ($table->getName() === 'itof_db_migration') {
                 continue ;
             }
 

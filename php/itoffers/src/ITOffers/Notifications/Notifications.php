@@ -103,7 +103,7 @@ final class Notifications
                         $this->contactEmail
                     ),
                     new Recipients(
-                        new Recipient('norbert@orzechowicz.pl', $offer->recruiterName())
+                        new Recipient($offer->recruiterEmail(), $offer->recruiterName())
                     )
                 );
 
