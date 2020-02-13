@@ -25,5 +25,4 @@ This is a technical documentation of the project.
 * [Features](/php/itoffers/docs/README.md)
   * [Contexts](/php/itoffers/src/ITOffers/README.md)
     * [Offers](/php/itoffers/src/ITOffers/Offers/README.md) / [Offers UI](/php/itoffers/src/App/Offers/README.md)
-* [Roadmap](https://github.com/norzechowicz/hire-in-social/projects/1)
 
