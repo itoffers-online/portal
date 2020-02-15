@@ -54,8 +54,8 @@ jobs:
         working-directory: ./php/portal
         run: composer test
         env:
-          HIS_REDIS_DSN: redis://localhost:${{ job.services.redis.ports[6379] }}
-          HIS_DB_PORT: ${{ job.services.postgres.ports[5432] }}
+          ITOF_REDIS_DSN: redis://localhost:${{ job.services.redis.ports[6379] }}
+          ITOF_DB_PORT: ${{ job.services.postgres.ports[5432] }}
 
       - name: Run mutation tests
         run: phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --only-covered
