@@ -64,29 +64,12 @@ jobs:
         run: phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --only-covered
         working-directory: ./php/portal
 
-      - name: Upload unit tests coverage to Codecov
+      - name: Upload tests coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./php/portal/var/phpunit/coverage/unit.xml
+          file: ./php/portal/var/phpunit/coverage/clover.xml
           flags: unit
           fail_ci_if_error: true
         if: success()
 
-      - name: Upload integration tests coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./php/portal/var/phpunit/coverage/integration.xml
-          flags: unit
-          fail_ci_if_error: true
-        if: success()
-
-      - name: Upload functional tests coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./php/portal/var/phpunit/coverage/functional.xml
-          flags: unit
-          fail_ci_if_error: true
-        if: success()
