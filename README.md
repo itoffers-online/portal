@@ -9,7 +9,8 @@ itoffers.online is a portal that connects IT Recruiters with Candidates helping 
 
 This is a technical documentation of the project. 
 
-![Github CI](https://github.com/itoffers-online/portal/workflows/Github%20CI/badge.svg)
+* ![Github CI](https://github.com/itoffers-online/portal/workflows/Github%20CI/badge.svg)
+* [![codecov](https://codecov.io/gh/itoffers-online/portal/branch/master/graph/badge.svg)](https://codecov.io/gh/itoffers-online/portal)
 
 ### Table of contents:
 
