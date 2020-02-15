@@ -14,8 +14,16 @@
     </php>
 
     <filter>
+
         <whitelist>
-            <directory>./src/ITOffers</directory>
+            <directory>./src/ITOffers/Component</directory>
+            <directory>./src/ITOffers/Notifications</directory>
+            <directory>./src/ITOffers/Offers</directory>
+            <exclude>
+                <directory>./src/ITOffers/Offers/Infrastructure</directory>
+                <directory>./src/ITOffers/Notifications/Infrastructure</directory>
+                <directory>./src/ITOffers/Component/*/Infrastructure</directory>
+            </exclude>
         </whitelist>
     </filter>
 

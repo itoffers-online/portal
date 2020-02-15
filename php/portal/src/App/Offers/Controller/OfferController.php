@@ -143,6 +143,7 @@ final class OfferController extends AbstractController
                             true,
                             $offerData['location']['country'],
                             $offerData['location']['city'],
+                            $offerData['location']['address'],
                             new LatLng((float) $offerData['location']['lat'], (float) $offerData['location']['lng'])
                         );
 

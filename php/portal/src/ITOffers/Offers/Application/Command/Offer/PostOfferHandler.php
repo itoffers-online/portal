@@ -163,6 +163,7 @@ final class PostOfferHandler implements Handler
             $location = Location::partiallyRemote(
                 $command->offer()->location()->countryCode(),
                 $command->offer()->location()->city(),
+                $command->offer()->location()->address(),
                 $command->offer()->location()->latLng()->lat(),
                 $command->offer()->location()->latLng()->lng(),
             );
@@ -172,6 +173,7 @@ final class PostOfferHandler implements Handler
             $location = Location::atOffice(
                 $command->offer()->location()->countryCode(),
                 $command->offer()->location()->city(),
+                $command->offer()->location()->address(),
                 $command->offer()->location()->latLng()->lat(),
                 $command->offer()->location()->latLng()->lng(),
             );

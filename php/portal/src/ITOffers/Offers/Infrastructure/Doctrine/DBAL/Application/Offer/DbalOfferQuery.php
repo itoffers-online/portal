@@ -343,6 +343,7 @@ final class DbalOfferQuery implements OfferQuery
                     $offerData['location_remote'],
                     $offerData['location_country_code'],
                     $offerData['location_city'],
+                    $offerData['location_address'],
                     $offerData['location_lat'] ? (float) $offerData['location_lat'] : null,
                     $offerData['location_lng'] ? (float) $offerData['location_lng'] : null
                 ),

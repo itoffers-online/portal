@@ -68,7 +68,7 @@ final class Countries
         'CX' => 'Christmas Island',
         'CC' => 'Cocos (Keeling) Islands',
         'CO' => 'Colombia',
-        'KM' => 'Comoros the',
+        'KM' => 'Comoros',
         'CD' => 'Congo',
         'CG' => 'Congo the',
         'CK' => 'Cook Islands',

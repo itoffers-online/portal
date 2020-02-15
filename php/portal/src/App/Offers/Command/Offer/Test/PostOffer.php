@@ -138,7 +138,7 @@ final class PostOffer extends Command
                         $input->getOption('title'),
                         'Full stack Software developer position, you will work mostly on web applications with automated and scalable infrastructure.'
                     ),
-                    new Location($faker->boolean, $faker->countryCode, $faker->city, new LatLng(50.16212, 19.9353153)),
+                    new Location($faker->boolean, $faker->countryCode, $faker->city, $faker->address, new LatLng(50.16212, 19.9353153)),
                     $noSalary ? null : new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                     new Contract('Contract'),
                     new Description(

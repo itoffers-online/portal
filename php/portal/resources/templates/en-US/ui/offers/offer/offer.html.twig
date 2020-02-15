@@ -21,14 +21,28 @@
 
 {% block stylesheets %}
 {{ parent() }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+      crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
 <style type="text/css">
     .specialization-logo img {
         width: 7.5rem;
+    }
+    #offer-location-map {
+        height: 280px;
     }
 </style>
 {% endblock %}
 
 {% block javascripts %}
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""
+></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
 <script>
     $(window.document).ready(function() {
         $('#job-apply').on('click', function(event) {
@@ -74,7 +88,22 @@
                 $('#job-apply-mobile').addClass('d-none')
                 $('#job-apply-info-mobile').removeClass('d-none');
             });
-        })
+        });
+
+        {% if offer.location.partiallyRemote or offer.location.atOffice %}
+            var offerLocationMap = L.map('offer-location-map')
+                .setView([{{ offer.location.lat|raw }}, {{ offer.location.lng|raw }}], 16);
+
+            L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(offerLocationMap);
+
+            L.marker([{{ offer.location.lat|raw }}, {{ offer.location.lng|raw }}])
+                .addTo(offerLocationMap)
+                .bindPopup('{{ offer.location.address|spaceless|replace({"\n":' ', "\r":' '}) }}')
+                .openPopup();
+
+        {% endif %}
     });
 </script>
 {% endblock %}
@@ -265,7 +294,7 @@
                                 <h6 class="small text-gray-500 font-weight-bold">Location</h6>
                                 <small><i class="text-green fas fa-map-marker-alt mr-2"></i> <span data-toggle="tooltip" data-placement="top" title="{{ offer.location.countryCode|offer_location_country_name }}">{{ offer.location.countryCode|offer_location_country_flag }}</span> {{ offer.location.city }}</small>
                                 <section class="mt-4 d-none d-lg-block">
-                                    <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&zoom=16&size=556x274&maptype=roadmap&markers=color:blue%7C{{ offer.location.lat|raw }},{{ offer.location.lng|raw }}&key={{ google.maps.key|raw }}" alt="Map with location"/>
+                                    <div id="offer-location-map"></div>
                                 </section>
                             </div>
                         </div>

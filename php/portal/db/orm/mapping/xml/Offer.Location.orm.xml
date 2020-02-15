@@ -6,6 +6,7 @@
         <field name="remote" type="boolean"/>
         <field name="countryCode" length="2" nullable="true"/>
         <field name="city" length="512" nullable="true"/>
+        <field name="address" length="2048" nullable="true"/>
         <field name="lat" type="float" nullable="true"/>
         <field name="lng" type="float" nullable="true"/>
     </embeddable>

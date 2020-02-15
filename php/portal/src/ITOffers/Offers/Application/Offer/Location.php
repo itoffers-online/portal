@@ -33,6 +33,11 @@ final class Location
     private $city;
 
     /**
+     * @var string |null
+     */
+    private $address;
+
+    /**
      * @var float
      */
     private $lat;
@@ -54,7 +59,7 @@ final class Location
         return $location;
     }
 
-    public static function partiallyRemote(string $countryCode, string $city, float $lat, float $lng) : self
+    public static function partiallyRemote(string $countryCode, string $city, string $address, float $lat, float $lng) : self
     {
         Assertion::length($countryCode, 2);
         Assertion::betweenLength($city, 3, 512);
@@ -66,6 +71,7 @@ final class Location
         $location = new self();
         $location->countryCode = $countryCode;
         $location->city = $city;
+        $location->address = $address;
         $location->remote = true;
         $location->lat = $lat;
         $location->lng = $lng;
@@ -73,7 +79,7 @@ final class Location
         return $location;
     }
 
-    public static function atOffice(string $countryCode, string $city, float $lat, float $lng) : self
+    public static function atOffice(string $countryCode, string $city, string $address, float $lat, float $lng) : self
     {
         Assertion::length($countryCode, 2);
         Assertion::betweenLength($city, 3, 512);
@@ -85,6 +91,7 @@ final class Location
         $location = new self();
         $location->countryCode = $countryCode;
         $location->city = $city;
+        $location->address = $address;
         $location->remote = false;
         $location->lat = $lat;
         $location->lng = $lng;
@@ -92,9 +99,6 @@ final class Location
         return $location;
     }
 
-    /**
-     * @return string|null
-     */
     public function countryCode() : ?string
     {
         return $this->countryCode;
@@ -103,6 +107,11 @@ final class Location
     public function city() : ?string
     {
         return $this->city;
+    }
+
+    public function address() : ?string
+    {
+        return $this->address;
     }
 
     public function isRemote() : bool

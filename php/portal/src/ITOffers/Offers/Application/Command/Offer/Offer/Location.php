@@ -33,15 +33,21 @@ final class Location
     private $city;
 
     /**
+     * @var string|null
+     */
+    private $address;
+
+    /**
      * @var LatLng|null
      */
     private $latLng;
 
-    public function __construct(bool $remote, ?string $countryCode = null, ?string $city = null, ?LatLng $latLng = null)
+    public function __construct(bool $remote, ?string $countryCode = null, ?string $city = null, ?string $address = null, ?LatLng $latLng = null)
     {
         $this->remote = $remote;
         $this->countryCode = $countryCode;
         $this->city = $city;
+        $this->address = $address;
         $this->latLng = $latLng;
     }
 
@@ -53,6 +59,11 @@ final class Location
     public function city() : ?string
     {
         return $this->city;
+    }
+
+    public function address() : ?string
+    {
+        return $this->address;
     }
 
     public function remote() : bool
