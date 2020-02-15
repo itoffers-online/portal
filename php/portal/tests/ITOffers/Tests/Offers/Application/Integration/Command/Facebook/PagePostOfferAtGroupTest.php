@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Integration\Command\Facebook;
 
+use ITOffers\Component\CQRS\Exception\Exception;
 use ITOffers\Offers\Application\Command\Facebook\PagePostOfferAtGroup;
 use ITOffers\Offers\Application\Command\Specialization\SetFacebookChannel;
-use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Query\Facebook\Model\FacebookPost;
 use ITOffers\Tests\Offers\Application\Integration\OffersTestCase;
 

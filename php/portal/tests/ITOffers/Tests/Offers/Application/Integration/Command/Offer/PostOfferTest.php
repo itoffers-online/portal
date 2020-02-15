@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Integration\Command\Offer;
 
+use ITOffers\Component\CQRS\Exception\Exception;
 use ITOffers\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
-use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Offer\Throttling;
 use ITOffers\Offers\Application\Query\Offer\OfferFilter;
 use ITOffers\Tests\Offers\Application\Integration\OffersTestCase;
