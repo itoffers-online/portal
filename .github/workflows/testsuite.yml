@@ -62,31 +62,31 @@ jobs:
         working-directory: ./php/portal
 
       - name: Upload unit tests coverage to Codecov
-          uses: codecov/codecov-action@v1
-          with:
-            token: ${{ secrets.CODECOV_TOKEN }}
-            file: ./var/phpunit/coverage/unit.xml
-            flags: unit
-            fail_ci_if_error: true
-          working-directory: ./php/portal
-          if: success()
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./var/phpunit/coverage/unit.xml
+          flags: unit
+          fail_ci_if_error: true
+        working-directory: ./php/portal
+        if: success()
 
       - name: Upload integration tests coverage to Codecov
-          uses: codecov/codecov-action@v1
-          with:
-            token: ${{ secrets.CODECOV_TOKEN }}
-            file: ./var/phpunit/coverage/integration.xml
-            flags: unit
-            fail_ci_if_error: true
-          working-directory: ./php/portal
-          if: success()
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./var/phpunit/coverage/integration.xml
+          flags: unit
+          fail_ci_if_error: true
+        working-directory: ./php/portal
+        if: success()
 
       - name: Upload functional tests coverage to Codecov
-          uses: codecov/codecov-action@v1
-          with:
-            token: ${{ secrets.CODECOV_TOKEN }}
-            file: ./var/phpunit/coverage/functional.xml
-            flags: unit
-            fail_ci_if_error: true
-          working-directory: ./php/portal
-          if: success()
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./var/phpunit/coverage/functional.xml
+          flags: unit
+          fail_ci_if_error: true
+        working-directory: ./php/portal
+        if: success()
