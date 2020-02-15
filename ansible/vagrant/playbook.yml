@@ -15,7 +15,7 @@
           port: 80
           error_log: false
           access_log: false
-          web_root: "/var/www/itoffers/php/itoffers/public"
+          web_root: "/var/www/portal/php/itoffers/public"
           locations:
             - path: "~ ^.*$"
               content: |
@@ -27,7 +27,7 @@
           ssl_key: /etc/ssl/itoffers.local.key
           error_log: true
           access_log: true
-          web_root: "/var/www/itoffers/php/itoffers/public"
+          web_root: "/var/www/portal/php/itoffers/public"
           locations:
             - path: /
               content: |

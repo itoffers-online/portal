@@ -10,23 +10,27 @@
 
     <php>
         <ini name="error_reporting" value="-1" />
+        <ini name="memory_limit" value="-1" />
     </php>
 
     <filter>
         <whitelist>
-            <directory>./src/ITOffers/Offers/Application</directory>
-            <directory>./src/ITOffers/Offers/Common</directory>
+            <directory>./src/ITOffers</directory>
         </whitelist>
     </filter>
 
     <testsuites>
         <testsuite name="functional">
-            <directory>tests/App/Tests</directory>
+            <directory>tests/App/Tests/Offers/Functional</directory>
         </testsuite>
         <testsuite name="integration">
+            <directory>tests/App/Tests/Offers/Integration</directory>
             <directory>tests/ITOffers/Tests/Offers/Application/Integration</directory>
+            <directory>tests/ITOffers/Tests/Component/**/Integration</directory>
         </testsuite>
         <testsuite name="unit">
+            <directory>tests/App/Tests/Offers/Unit</directory>
+            <directory>tests/ITOffers/Tests/Component/**/Unit</directory>
             <directory>tests/ITOffers/Tests/Offers/Application/Unit</directory>
             <directory>tests/ITOffers/Tests/Offers/Infrastructure/Unit</directory>
         </testsuite>

@@ -3,7 +3,8 @@
   "source": {
     "directories": [
       "src/ITOffers/Offers/Application",
-      "src/ITOffers/Offers/Common"
+      "src/ITOffers/Component",
+      "src/ITOffers/Notifications"
     ]
   },
   "logs": {

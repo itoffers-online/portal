@@ -7,7 +7,7 @@ all instructions in this readme are prepared for it.
 
 ```
 $ vagrant ssh
-$ cd /var/www/itoffers/php/itoffers
+$ cd /var/www/portal/php/itoffers
 $ composer install
 $ composer assets:install
 ```
@@ -17,7 +17,7 @@ $ composer assets:install
 Check [.env.dist file](/php/itoffers/.env.dist) and create your own local copy:
 
 ```
-$ cp /var/www/itoffers/php/itoffers/.env.dist /var/www/itoffers/php/itoffers/.env
+$ cp /var/www/portal/php/itoffers/.env.dist /var/www/portal/php/itoffers/.env
 ```
  
 ## User interface

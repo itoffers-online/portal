@@ -13,9 +13,9 @@ jobs:
       postgres:
         image: postgres:11.2
         env:
-          POSTGRES_USER: hireinsocial
-          POSTGRES_PASSWORD: hireinsocial
-          POSTGRES_DB: hireinsocial_test
+          POSTGRES_USER: itoffers
+          POSTGRES_PASSWORD: itoffers
+          POSTGRES_DB: itoffers_test
         ports:
           - 5432/tcp
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -37,7 +37,7 @@ jobs:
         id: composer-cache
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
-        working-directory: ./php/itoffers
+        working-directory: ./php/portal
 
       - uses: actions/cache@v1
         with:
@@ -47,11 +47,11 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependecies through composer
-        working-directory: ./php/itoffers
+        working-directory: ./php/portal
         run: composer install
 
       - name: Run testsuite
-        working-directory: ./php/itoffers
+        working-directory: ./php/portal
         run: composer test
         env:
           HIS_REDIS_DSN: redis://localhost:${{ job.services.redis.ports[6379] }}
@@ -59,5 +59,34 @@ jobs:
 
       - name: Run mutation tests
         run: phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --only-covered
-        working-directory: ./php/itoffers
+        working-directory: ./php/portal
 
+      - name: Upload unit tests coverage to Codecov
+          uses: codecov/codecov-action@v1
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }}
+            file: ./var/phpunit/coverage/unit.xml
+            flags: unit
+            fail_ci_if_error: true
+          working-directory: ./php/portal
+          if: success()
+
+      - name: Upload integration tests coverage to Codecov
+          uses: codecov/codecov-action@v1
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }}
+            file: ./var/phpunit/coverage/integration.xml
+            flags: unit
+            fail_ci_if_error: true
+          working-directory: ./php/portal
+          if: success()
+
+      - name: Upload functional tests coverage to Codecov
+          uses: codecov/codecov-action@v1
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }}
+            file: ./var/phpunit/coverage/functional.xml
+            flags: unit
+            fail_ci_if_error: true
+          working-directory: ./php/portal
+          if: success()
