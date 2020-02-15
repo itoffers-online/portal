@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace ITOffers\Component\CQRS;
 
+use ITOffers\Component\CQRS\Exception\Exception;
 use ITOffers\Component\CQRS\System\Command;
 use ITOffers\Component\CQRS\System\CommandBus;
 use ITOffers\Component\CQRS\System\Queries;
 use ITOffers\Component\CQRS\System\Query;
 use ITOffers\Component\FeatureToggle\FeatureToggle;
 use ITOffers\Offers\Application\Calendar;
-use ITOffers\Offers\Application\Exception\Exception;
 use Psr\Log\LoggerInterface;
 use Throwable;
 

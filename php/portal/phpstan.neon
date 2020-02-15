@@ -38,6 +38,7 @@ services:
                     - ITOffers\Offers\Application\Twitter\Tweet
                     - ITOffers\Offers\Application\Specialization\Specialization
                     # Exceptions
+                    - ITOffers\Component\CQRS\Exception\Exception
                     - ITOffers\Component\Mailer\Exception\Exception
                     - ITOffers\Offers\Application\Exception\Exception
                     - ITOffers\Offers\Application\Exception\InvalidAssertionException

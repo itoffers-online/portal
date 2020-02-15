@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Integration\Command\User;
 
+use ITOffers\Component\CQRS\Exception\Exception;
 use ITOffers\Offers\Application\Command\User\FacebookConnect;
-use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Tests\Offers\Application\Integration\OffersTestCase;
 use Ramsey\Uuid\Uuid;
 
