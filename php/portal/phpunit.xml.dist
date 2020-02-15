@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="tests/bootstrap.php"
+>
+
+    <php>
+        <ini name="error_reporting" value="-1" />
+        <ini name="memory_limit" value="-1" />
+    </php>
+
+    <filter>
+
+        <whitelist>
+            <directory>./src/ITOffers/Component</directory>
+            <directory>./src/ITOffers/Notifications</directory>
+            <directory>./src/ITOffers/Offers</directory>
+            <exclude>
+                <directory>./src/ITOffers/Offers/Infrastructure</directory>
+                <directory>./src/ITOffers/Notifications/Infrastructure</directory>
+                <directory>./src/ITOffers/Component/*/Infrastructure</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <testsuites>
+        <testsuite name="functional">
+            <directory>tests/App/Tests/Offers/Functional</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>tests/App/Tests/Offers/Integration</directory>
+            <directory>tests/ITOffers/Tests/Offers/Application/Integration</directory>
+            <directory>tests/ITOffers/Tests/Component/**/Integration</directory>
+        </testsuite>
+        <testsuite name="unit">
+            <directory>tests/App/Tests/Offers/Unit</directory>
+            <directory>tests/ITOffers/Tests/Component/**/Unit</directory>
+            <directory>tests/ITOffers/Tests/Offers/Application/Unit</directory>
+            <directory>tests/ITOffers/Tests/Offers/Infrastructure/Unit</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

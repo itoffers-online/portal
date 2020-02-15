@@ -1,0 +1,47 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-webmozart-assert/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+rules:
+    - Ergebnis\PHPStan\Rules\Expressions\NoEvalRule
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests
+        - bin
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    autoload_files:
+        - tests/bootstrap.php
+    ignoreErrors:
+        -
+            message: '#(.*)#'
+            path: src/App/Offers/Controller/LinkedInAccess.php
+services:
+        -
+            class: Ergebnis\PHPStan\Rules\Classes\FinalRule
+            arguments:
+                allowAbstractClasses: true
+                classesNotRequiredToBeAbstractOrFinal:
+                    # Doctrine ORM Entities
+                    - ITOffers\Offers\Application\User\User
+                    - ITOffers\Offers\Application\User\ExtraOffer
+                    - ITOffers\Offers\Application\Offer\Offer
+                    - ITOffers\Offers\Application\Offer\Slug
+                    - ITOffers\Offers\Application\Offer\OfferPDF
+                    - ITOffers\Offers\Application\Offer\Application
+                    - ITOffers\Offers\Application\User\ExtraOffer
+                    - ITOffers\Offers\Application\Facebook\Post
+                    - ITOffers\Offers\Application\Twitter\Tweet
+                    - ITOffers\Offers\Application\Specialization\Specialization
+                    # Exceptions
+                    - ITOffers\Component\CQRS\Exception\Exception
+                    - ITOffers\Component\Mailer\Exception\Exception
+                    - ITOffers\Offers\Application\Exception\Exception
+                    - ITOffers\Offers\Application\Exception\InvalidAssertionException
+                    - ITOffers\Notifications\Application\Exception\Exception
+            tags:
+                - phpstan.rules.rule

@@ -1,0 +1,178 @@
+{
+    "name": "itoffers-online/portal",
+    "type": "project",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Norbert Orzechowicz",
+            "email": "contact@norbert.tech"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/App",
+            "ITOffers\\": "src/ITOffers",
+            "DoctrineProxy\\": "var/cache/doctrine/orm"
+        },
+        "files": [
+            "src/ITOffers/Offers/Infrastructure/facade.php",
+            "src/ITOffers/Notifications/Infrastructure/facade.php",
+            "src/ITOffers/bootstrap.php",
+            "src/App/symfony.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/App/Tests",
+            "ITOffers\\Tests\\" : "tests/ITOffers/Tests"
+        }
+    },
+    "require": {
+        "php": "^7.3",
+        "ext-json": "*",
+        "ext-libxml": "*",
+        "ext-mbstring": "*",
+        "ext-pdo_pgsql": "*",
+        "abraham/twitteroauth": "^1.1",
+        "beberlei/assert": "^3.2",
+        "cocur/slugify": "^3.2",
+        "ddeboer/imap": "^1.7",
+        "doctrine/dbal": "^2.9",
+        "doctrine/migrations": "^1.8",
+        "doctrine/orm": "^2.6",
+        "facebook/graph-sdk": "^5.7",
+        "fzaninotto/faker": "^1.9",
+        "google/recaptcha": "^1.2",
+        "hashids/hashids": "^3.0",
+        "imagine/imagine": "^1.2",
+        "league/flysystem": "^1.0",
+        "league/flysystem-azure": "^1.0",
+        "league/oauth2-linkedin": "^5.1",
+        "monolog/monolog": "^1.24",
+        "p3k/emoji-detector": "^0.2.1",
+        "pelago/emogrifier": "^3.1",
+        "predis/predis": "^1.1",
+        "psr/log": "^1.1",
+        "psr/simple-cache": "^1.0",
+        "ramsey/uuid": "^3.8",
+        "sensiolabs/security-checker": "^5.0",
+        "stidges/country-flags": "^1.0",
+        "swiftmailer/swiftmailer": "^6.0",
+        "symfony/cache": "^4.4",
+        "symfony/console": "^4.4",
+        "symfony/dotenv": "^4.4",
+        "symfony/form": "^4.4",
+        "symfony/framework-bundle": "^4.4",
+        "symfony/http-kernel": "^4.4",
+        "symfony/intl": "^4.4",
+        "symfony/lock": "^4.4",
+        "symfony/monolog-bundle": "^3.3",
+        "symfony/security-csrf": "^4.4",
+        "symfony/stopwatch": "^4.4",
+        "symfony/swiftmailer-bundle": "^3.4",
+        "symfony/templating": "^4.4",
+        "symfony/translation": "^4.4",
+        "symfony/twig-bundle": "^4.4",
+        "symfony/validator": "^4.4",
+        "symfony/yaml": "^4.4",
+        "thecodingmachine/safe": "^0.1.13",
+        "twig/extensions": "^1.5",
+        "twig/twig": "^2.6"
+    },
+    "require-dev": {
+        "ergebnis/phpstan-rules": "^0.14.2",
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "infection/infection": "^0.15.0",
+        "norberttech/md-link-linter": "@dev",
+        "nyholm/psr7": "^1.2",
+        "phpstan/phpdoc-parser": "0.4.2",
+        "phpstan/phpstan": "^0.12.3",
+        "phpstan/phpstan-doctrine": "^0.12.6",
+        "phpstan/phpstan-phpunit": "^0.12.3",
+        "phpstan/phpstan-symfony": "^0.12.1",
+        "phpstan/phpstan-webmozart-assert": "^0.12.0",
+        "phpunit/phpunit": "^8.0",
+        "rector/rector": "^0.6.3",
+        "sensiolabs-de/deptrac-shim": "^0.5.0",
+        "structurizr-php/structurizr-php": "@dev",
+        "symfony/browser-kit": "^4.4",
+        "symfony/css-selector": "^4.4",
+        "symfony/http-client": "^5.0"
+    },
+    "scripts": {
+        "assets:install": [
+            "npm ci",
+            "@assets:build"
+        ],
+        "assets:build": [
+            "npm run assets:build"
+        ],
+        "build": [
+            "@test",
+            "@composer:install:prod",
+            "ITOF_ENV=PROD bin/db orm:generate-proxies -n",
+            "composer archive --no-interaction --dir=build --file=itoffers-archive",
+            "composer install"
+        ],
+        "composer:install:prod": [
+            "SYMFONY_ENV=prod composer install --no-interaction --optimize-autoloader --no-dev"
+        ],
+        "cs:php:fix": [
+            "php-cs-fixer fix"
+        ],
+        "test": [
+            "rm -rf ./var/phpunit",
+            "security-checker security:check",
+            "./vendor/bin/deptrac",
+            "@test:php:cs",
+            "@db:reset:test",
+            "@symfony:cache:clear:test",
+            "phpdbg -qrr ./vendor/bin/phpunit --coverage-clover ./var/phpunit/coverage/clover.xml"
+        ],
+        "test:md": [
+            "mdlinklint ./../../ --exclude=vendor"
+        ],
+        "test:php:cs": [
+            "phpstan analyse -c phpstan.neon",
+            "php-cs-fixer fix -v --dry-run --using-cache=no"
+        ],
+        "db:reset": [
+            "@db:drop",
+            "@db:migrate",
+            "bin/db orm:generate-proxies -n"
+        ],
+        "db:reset:test": [
+            "@db:drop:test",
+            "@db:migrate:test",
+            "ITOF_ENV=test bin/db orm:generate-proxies -n"
+        ],
+        "db:drop": "bin/db-drop -n",
+        "db:migrate": "bin/db migrations:migrate -n",
+        "db:drop:test": "ITOF_ENV=test bin/db-drop -n",
+        "db:migrate:test": "ITOF_ENV=test bin/db migrations:migrate -n",
+        "symfony:cache:clear": "bin/symfony cache:clear",
+        "symfony:cache:clear:test": "ITOF_ENV=test bin/symfony cache:clear"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "archive": {
+        "exclude": [
+            ".*",
+            "bin/db-drop",
+            "bin/redis-flush",
+            "bin/his-dev",
+            "bin/filesystem",
+            "build",
+            "!vendor",
+            "var/*",
+            "tests",
+            "README.md",
+            "phpunit.xml",
+            ".php_cs",
+            ".env.dist",
+            ".env.test",
+            "phpunit.xml.dist"
+        ]
+    }
+}

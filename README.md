@@ -9,7 +9,8 @@ itoffers.online is a portal that connects IT Recruiters with Candidates helping 
 
 This is a technical documentation of the project. 
 
-![Github CI](https://github.com/itoffers-online/portal/workflows/Github%20CI/badge.svg)
+* ![Github CI](https://github.com/itoffers-online/portal/workflows/Github%20CI/badge.svg)
+* [![codecov](https://codecov.io/gh/itoffers-online/portal/branch/master/graph/badge.svg)](https://codecov.io/gh/itoffers-online/portal)
 
 ### Table of contents:
 
@@ -23,6 +24,7 @@ This is a technical documentation of the project.
   * [System Setup](/php/itoffers/README.md)
   * [Emails](/docs/emails.md)
 * [Features](/php/itoffers/docs/README.md)
-  * [Contexts](/php/itoffers/src/ITOffers/README.md)
+  * [Modules](/php/itoffers/src/ITOffers/README.md)
     * [Offers](/php/itoffers/src/ITOffers/Offers/README.md) / [Offers UI](/php/itoffers/src/App/Offers/README.md)
+    * [Notifications](/php/itoffers/src/ITOffers/Notifications/README.md) 
 
