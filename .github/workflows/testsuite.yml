@@ -69,7 +69,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./php/portal/var/phpunit/coverage/clover.xml
-          name: Test Suite
+          name: "Test Suite"
           fail_ci_if_error: true
         if: success()
 
