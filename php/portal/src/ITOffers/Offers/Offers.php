@@ -25,6 +25,7 @@ use ITOffers\Offers\Application\Query\Offer\OfferThrottleQuery;
 use ITOffers\Offers\Application\Query\Specialization\SpecializationQuery;
 use ITOffers\Offers\Application\Query\Twitter\TweetsQuery;
 use ITOffers\Offers\Application\Query\User\ExtraOffersQuery;
+use ITOffers\Offers\Application\Query\User\OfferAutoRenewQuery;
 use ITOffers\Offers\Application\Query\User\UserQuery;
 
 /**
@@ -144,6 +145,17 @@ final class Offers
 
         if (!$query instanceof ExtraOffersQuery) {
             throw new Exception("Expected ExtraOffersQuery but got " . \get_class($query));
+        }
+
+        return $query;
+    }
+
+    public function offerAutoRenewQuery() : OfferAutoRenewQuery
+    {
+        $query = $this->system->query(OfferAutoRenewQuery::class);
+
+        if (!$query instanceof OfferAutoRenewQuery) {
+            throw new Exception("Expected OfferAutoRenewQuery but got " . \get_class($query));
         }
 
         return $query;

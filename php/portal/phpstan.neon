@@ -34,6 +34,7 @@ services:
                     - ITOffers\Offers\Application\Offer\OfferPDF
                     - ITOffers\Offers\Application\Offer\Application
                     - ITOffers\Offers\Application\User\ExtraOffer
+                    - ITOffers\Offers\Application\User\OfferAutoRenew
                     - ITOffers\Offers\Application\Facebook\Post
                     - ITOffers\Offers\Application\Twitter\Tweet
                     - ITOffers\Offers\Application\Specialization\Specialization

@@ -35,6 +35,7 @@ use ITOffers\Offers\Application\Command\Specialization\SetFacebookChannelHandler
 use ITOffers\Offers\Application\Command\Specialization\SetTwitterChannelHandler;
 use ITOffers\Offers\Application\Command\Twitter\TweetAboutOfferHandler;
 use ITOffers\Offers\Application\Command\User\AddExtraOffersHandler;
+use ITOffers\Offers\Application\Command\User\AddOfferAutoRenewsHandler;
 use ITOffers\Offers\Application\Command\User\BlockUserHandler;
 use ITOffers\Offers\Application\Command\User\FacebookConnectHandler;
 use ITOffers\Offers\Application\Command\User\LinkedInConnectHandler;
@@ -54,6 +55,7 @@ use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferThro
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Specialization\DbalSpecializationQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Twitter\DbalTweetsQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalExtraOffersQuery;
+use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalOfferAutoRenewQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalUserQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMApplications;
@@ -64,6 +66,7 @@ use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSp
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Twitter\ORMTweets;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\User\ORMExtraOffers;
+use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\User\ORMOfferAutoRenews;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\User\ORMUsers;
 use ITOffers\Offers\Infrastructure\Facebook\FacebookGraphSDK;
 use ITOffers\Offers\Infrastructure\Flysystem\Application\System\FlysystemStorage;
@@ -180,6 +183,7 @@ function offersFacade(
     $ormUsers = new ORMUsers($entityManager);
     $ormExtraOffers = new ORMExtraOffers($entityManager);
     $ormApplications = new ORMApplications($entityManager);
+    $ormOfferAutoRenews = new ORMOfferAutoRenews($entityManager);
 
     $encoder = new SHA256Encoder();
     $emailFormatter = new EmailFormatter($twig);
@@ -255,6 +259,11 @@ function offersFacade(
                     $ormExtraOffers,
                     $calendar
                 ),
+                new AddOfferAutoRenewsHandler(
+                    $ormUsers,
+                    $ormOfferAutoRenews,
+                    $calendar
+                ),
                 new ApplyThroughEmailHandler(
                     $mailer,
                     $ormOffers,
@@ -270,6 +279,7 @@ function offersFacade(
                 new DbalSpecializationQuery($dbalConnection),
                 new DbalUserQuery($dbalConnection),
                 new DbalExtraOffersQuery($dbalConnection),
+                new DbalOfferAutoRenewQuery($dbalConnection),
                 new DbalApplicationQuery($dbalConnection, $encoder),
                 new DbalFacebookFacebookQuery($dbalConnection),
                 new DbalTweetsQuery($dbalConnection),
