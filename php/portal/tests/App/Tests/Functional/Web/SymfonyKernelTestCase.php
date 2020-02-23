@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Web;
 
-use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use function App\symfony;
 use App\SymfonyKernel;
 use ITOffers\Config;
 use ITOffers\ITOffersOnline;
 use function ITOffers\Offers\Infrastructure\bootstrap;
 use ITOffers\Offers\Offers;
+use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Offers\Application\Context\DatabaseContext;
 use ITOffers\Tests\Offers\Application\Context\OffersContext;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -29,7 +29,7 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
     /**
      * @var ITOffersOnline
      */
-    protected static $hireInSocial;
+    protected static $itoffers;
 
     /**
      * @var OffersContext
@@ -53,15 +53,15 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
 
     protected static function itoffers() : ITOffersOnline
     {
-        if (null === static::$hireInSocial) {
-            static::$hireInSocial = static::$kernel->getContainer()->get(ITOffersOnline::class);
+        if (null === static::$itoffers) {
+            static::$itoffers = static::$kernel->getContainer()->get(ITOffersOnline::class);
         }
 
-        if (static::$hireInSocial->config()->getString(Config::ENV) !== 'test') {
-            throw new \RuntimeException(sprintf('Expected environment "test" but got "%s"', static::$hireInSocial->config()->getString(Config::ENV)));
+        if (static::$itoffers->config()->getString(Config::ENV) !== 'test') {
+            throw new \RuntimeException(sprintf('Expected environment "test" but got "%s"', static::$itoffers->config()->getString(Config::ENV)));
         }
 
-        return static::$hireInSocial;
+        return static::$itoffers;
     }
 
     protected static function offersFacade() : Offers
@@ -77,7 +77,10 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
         $this->databaseContext = new DatabaseContext(static::itoffers()->dbal());
 
         $this->databaseContext->purgeDatabase();
-        static::itoffers()->calendar()->setCurrentTime(new \DateTimeImmutable());
+        /** @var CalendarStub $calendar */
+        $calendar = static::itoffers()->calendar();
+
+        $calendar->setCurrentTime(new \DateTimeImmutable());
     }
 
     public function config() : Config
@@ -87,6 +90,9 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
 
     public function setCurrentTime(\DateTimeImmutable $currentTime) : void
     {
-        static::itoffers()->calendar()->setCurrentTime($currentTime);
+        /** @var CalendarStub $calendar */
+        $calendar = static::itoffers()->calendar();
+
+        $calendar->setCurrentTime($currentTime);
     }
 }

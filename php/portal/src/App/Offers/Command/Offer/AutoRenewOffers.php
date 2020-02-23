@@ -61,7 +61,6 @@ final class AutoRenewOffers extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
-
         $offersIds = \array_map(
             function (OfferAutoRenew $autoRenew) : string {
                 return $autoRenew->offerId();
@@ -75,9 +74,8 @@ final class AutoRenewOffers extends Command
             try {
                 $this->offers->handle(new RenewOffer($offerId));
                 $totalRenewedOffers += 1;
-
             } catch (\Throwable $e) {
-                $this->io->error(\sprintf('Can\'t renew offer with id %s, please check logs for more details.', $offersIds));
+                $this->io->error(\sprintf('Can\'t renew offer with id %s, please check logs for more details.', $offerId));
             }
         }
 

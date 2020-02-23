@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Query\Offer;
 
-use ITOffers\Offers\Application\Assertion;
 use ITOffers\Offers\Application\Query\AbstractFilter;
 use ITOffers\Offers\Application\Query\Filter\Column;
 

@@ -26,7 +26,7 @@ final class DescriptionType extends AbstractType
     {
         $builder
             ->add('requirements', RequirementsType::class, [
-                'label' => false
+                'label' => false,
             ])
             ->add('benefits', TextareaType::class, [
                 'constraints' => [

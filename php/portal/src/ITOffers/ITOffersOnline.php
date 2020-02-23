@@ -28,7 +28,6 @@ use ITOffers\Component\Calendar\Infrastructure\PHP\SystemCalendar\SystemCalendar
 use ITOffers\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use ITOffers\Component\Mailer\Infrastructure\SwiftMailer\SwiftMailer;
 use ITOffers\Component\Mailer\Mailer;
-use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use function ITOffers\Notifications\Infrastructure\notificationsFacade;
 use ITOffers\Notifications\Notifications;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Platform\PostgreSQL11Platform;
@@ -36,6 +35,7 @@ use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\Description\Require
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\SalaryType;
 use function ITOffers\Offers\Infrastructure\offersFacade;
 use ITOffers\Offers\Offers;
+use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
