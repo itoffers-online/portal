@@ -1,12 +1,14 @@
 #!/usr/bin/env php
 <?php
 
+use App\Offers\Command\Offer\AutoRenewOffers;
 use App\Offers\Command\Offer\RemoveOffer;
 use App\Offers\Command\Offer\ThumbnailRegenerate as OfferThumbnailRegenerate;
 use App\Offers\Command\Specialization\RemoveTwitterChannel;
 use App\Offers\Command\Specialization\SetTwitterChannel;
 use App\Offers\Command\Specialization\ThumbnailRegenerate;
 use App\Offers\Command\User\AddExtraOffers;
+use App\Offers\Command\User\AddOfferAutoRenews;
 use App\Offers\Command\User\BlockUser;
 use ITOffers\Config;
 use App\Offers\Command\Specialization\CreateSpecialization;
@@ -45,9 +47,11 @@ $application->add(new OfferThumbnailRegenerate(
 ));
 $application->add(new BlockUser($hireInSocial->offers()));
 $application->add(new AddExtraOffers($hireInSocial->offers()));
+$application->add(new AddOfferAutoRenews($hireInSocial->offers()));
 $application->add(new ThumbnailRegenerate(
     $hireInSocial->offers(),
     new ImagineSpecializationThumbnail($hireInSocial->config()->getString(Config::ROOT_PATH), new SpecializationExtension($hireInSocial->config()->getString(Config::LOCALE)))
 ));
+$application->add(new AutoRenewOffers($hireInSocial->offers()));
 
 $application->run();

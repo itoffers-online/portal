@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Application\Command\Offer;
 
 use function array_map;
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Component\CQRS\System\Handler;
 use ITOffers\Component\Mailer\Attachments;
 use ITOffers\Component\Mailer\Email;
@@ -21,7 +22,6 @@ use ITOffers\Component\Mailer\Mailer;
 use ITOffers\Component\Mailer\Recipient;
 use ITOffers\Component\Mailer\Recipients;
 use ITOffers\Component\Mailer\Sender;
-use ITOffers\Offers\Application\Calendar;
 use ITOffers\Offers\Application\Command\Offer\Apply\Attachment;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Hash\Encoder;

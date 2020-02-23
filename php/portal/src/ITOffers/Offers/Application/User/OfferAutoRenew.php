@@ -13,14 +13,16 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\User;
 
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Assertion;
-use ITOffers\Offers\Application\Calendar;
 use ITOffers\Offers\Application\Offer\Offer;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class OfferAutoRenew
 {
+    private const MAX_OFFER_AUTO_RENEWS = 2;
+
     /**
      * @var string
      */
@@ -35,6 +37,11 @@ class OfferAutoRenew
      * @var \DateTimeImmutable
      */
     private $expiresAt;
+
+    /**
+     * @var \DateTimeImmutable
+     */
+    private $renewAfter;
 
     /**
      * @var \DateTimeImmutable
@@ -67,11 +74,16 @@ class OfferAutoRenew
         return new self($userId, new \DateInterval(\sprintf('P%dD', $days)), $calendar);
     }
 
-    public function assign(Offer $offer, Calendar $calendar) : void
+    public function assign(Offer $offer, OfferAutoRenews $offerAutoRenews, \DateInterval $renewIn, Calendar $calendar) : void
     {
         Assertion::null($this->offerId, "Offer renew already assigned");
+        Assertion::same($renewIn->invert, 0, "Renew in interval can't be negative");
+        Assertion::true($offer->getUserId()->equals(Uuid::fromString($this->userId)), 'Offer doesn\'t belong to auto renew owner.');
         Assertion::true($this->expiresAt >= $calendar->currentTime(), "Offer renew already expired");
+        Assertion::lessThan($offerAutoRenews->countAssignedTo($offer), self::MAX_OFFER_AUTO_RENEWS, "There are already 2 auto renews assigned to that offer.");
+
         $this->offerId = $offer->id();
+        $this->renewAfter = $calendar->currentTime()->add($renewIn);
     }
 
     public function renew(Offer $offer, Calendar $calendar) : void

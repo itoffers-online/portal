@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace ITOffers\Offers\Infrastructure\PHP\SystemCalendar;
+namespace ITOffers\Component\Calendar\Infrastructure\PHP\SystemCalendar;
 
-use ITOffers\Offers\Application\Calendar;
+use ITOffers\Component\Calendar\Calendar;
 
 final class SystemCalendar implements Calendar
 {

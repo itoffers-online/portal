@@ -18,21 +18,15 @@ final class OfferAutoRenew
     /**
      * @var string
      */
-    private $userId;
+    private $offerId;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $expiresAt;
-
-    public function __construct(string $userId, \DateTimeImmutable $expiresAt)
+    public function __construct(string $offerId)
     {
-        $this->userId = $userId;
-        $this->expiresAt = $expiresAt;
+        $this->offerId = $offerId;
     }
 
-    public function expiresAt() : \DateTimeImmutable
+    public function offerId() : string
     {
-        return $this->expiresAt;
+        return $this->offerId;
     }
 }

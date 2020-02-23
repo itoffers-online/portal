@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace ITOffers\Tests\Offers\Application\Double\Stub;
+namespace ITOffers\Tests\Component\Calendar\Double\Stub;
 
-use ITOffers\Offers\Application\Calendar;
+use ITOffers\Component\Calendar\Calendar;
 
 final class CalendarStub implements Calendar
 {
@@ -40,5 +40,10 @@ final class CalendarStub implements Calendar
     public function addDays(int $days) : void
     {
         $this->currentTime = $this->currentTime->modify(sprintf('+%d days', $days));
+    }
+
+    public function setCurrentTime(\DateTimeImmutable $currentTime) : void
+    {
+        $this->currentTime = $currentTime->setTimezone(new \DateTimeZone('UTC'));
     }
 }

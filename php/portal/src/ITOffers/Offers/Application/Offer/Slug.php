@@ -16,7 +16,7 @@ namespace ITOffers\Offers\Application\Offer;
 use Cocur\Slugify\Slugify;
 use DateTimeImmutable;
 use Hashids\Hashids;
-use ITOffers\Offers\Application\Calendar;
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Offer\Position\SeniorityLevels;
 use Ramsey\Uuid\UuidInterface;
 use function random_int;

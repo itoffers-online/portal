@@ -71,6 +71,7 @@ final class UserController extends AbstractController
             'user' => $this->itoffers->offers()->userQuery()->findById($userId),
             'offersMore' => $offerMore,
             'offersLeft' => $this->itoffers->offers()->offerThrottleQuery()->offersLeft($userId),
+            'offerAutoRenewsCount' => $this->itoffers->offers()->offerAutoRenewQuery()->countUnassignedNotExpired($userId),
             'extraOffersCount' => $this->itoffers->offers()->extraOffersQuery()->countNotExpired($userId),
             'extraOffer' => $this->itoffers->offers()->extraOffersQuery()->findClosesToExpire($userId),
             'offers' => $offers,

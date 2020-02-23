@@ -130,7 +130,7 @@ final class ScanMessagesTest extends ConsoleTestCase
     {
         $user = $this->offersContext->createUser();
         $this->offersContext->createSpecialization('spec');
-        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), 'spec'));
+        $this->offersContext->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), 'spec'));
 
         $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor('spec'))->first();
 

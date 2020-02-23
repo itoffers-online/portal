@@ -44,17 +44,15 @@ final class OfferRemoveTest extends ConsoleTestCase
         );
 
         $this->assertEquals(0, $commandTester->getStatusCode());
-        $this->assertNull($this->offersContext->offersFacade()->offerQuery()->findById($offer->id()->toString()));
+        $this->assertNull($this->offersContext->module()->offerQuery()->findById($offer->id()->toString()));
     }
 
     public function createOffer() : Offer
     {
         $user = $this->offersContext->createUser();
         $this->offersContext->createSpecialization('spec');
-        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), 'spec'));
+        $this->offersContext->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), 'spec'));
 
-        $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor('spec'))->first();
-
-        return $offer;
+        return $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor('spec'))->first();
     }
 }

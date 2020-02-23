@@ -22,14 +22,14 @@ final class CreateSpecializationTest extends OffersTestCase
     {
         $slug = 'php';
 
-        $this->systemContext->offersFacade()->handle(new CreateSpecialization($slug));
+        $this->offers->module()->handle(new CreateSpecialization($slug));
 
         $this->assertTrue(
-            $this->systemContext->offersFacade()->specializationQuery()->all()->has($slug)
+            $this->offers->module()->specializationQuery()->all()->has($slug)
         );
         $this->assertCount(
             1,
-            $this->systemContext->offersFacade()->specializationQuery()->all()
+            $this->offers->module()->specializationQuery()->all()
         );
     }
 }

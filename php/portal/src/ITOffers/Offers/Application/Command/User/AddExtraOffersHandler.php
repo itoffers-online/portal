@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Command\User;
 
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Component\CQRS\System\Handler;
 use ITOffers\Offers\Application\Assertion;
-use ITOffers\Offers\Application\Calendar;
 use ITOffers\Offers\Application\User\ExtraOffer;
 use ITOffers\Offers\Application\User\ExtraOffers;
 use ITOffers\Offers\Application\User\Users;

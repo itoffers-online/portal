@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\InMemory\Application\Offer;
 
+use ITOffers\Component\Reflection\PrivateFields;
 use ITOffers\Offers\Application\Offer\Offer;
 use ITOffers\Offers\Application\Offer\Offers;
 use ITOffers\Offers\Application\Offer\UserOffers;
 use ITOffers\Offers\Application\User\User;
-use ITOffers\Offers\Common\PrivateFields;
 use Ramsey\Uuid\UuidInterface;
 
 final class InMemoryOffers implements Offers

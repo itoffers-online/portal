@@ -20,9 +20,9 @@ final class AddOfferAutoRenewsTest extends OffersTestCase
 {
     public function test_adding_offer_autor_renews() : void
     {
-        $user = $this->systemContext->createUser();
+        $user = $this->offers->createUser();
 
-        $this->systemContext->offersFacade()->handle(
+        $this->offers->module()->handle(
             new AddOfferAutoRenews(
                 $user->id(),
                 $count = 5,
@@ -30,6 +30,6 @@ final class AddOfferAutoRenewsTest extends OffersTestCase
             )
         );
 
-        $this->assertSame(5, $this->systemContext->offersFacade()->offerAutoRenewQuery()->countUnassignedNotExpired($user->id()));
+        $this->assertSame(5, $this->offers->module()->offerAutoRenewQuery()->countUnassignedNotExpired($user->id()));
     }
 }

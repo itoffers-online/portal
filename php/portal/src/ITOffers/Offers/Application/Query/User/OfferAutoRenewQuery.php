@@ -15,10 +15,18 @@ namespace ITOffers\Offers\Application\Query\User;
 
 use ITOffers\Component\CQRS\System\Query;
 use ITOffers\Offers\Application\Query\User\Model\OfferAutoRenew;
+use ITOffers\Offers\Application\Query\User\Model\UnassignedAutoRenew;
 
 interface OfferAutoRenewQuery extends Query
 {
+    public function countRenewsLeft(string $offerId) : int;
+
     public function countUnassignedNotExpired(string $userId) : int;
 
-    public function findUnassignedClosesToExpire(string $userId) : ?OfferAutoRenew;
+    public function findUnassignedClosesToExpire(string $userId) : ?UnassignedAutoRenew;
+
+    /**
+     * @return OfferAutoRenew[]
+     */
+    public function findAllToRenew() : array;
 }

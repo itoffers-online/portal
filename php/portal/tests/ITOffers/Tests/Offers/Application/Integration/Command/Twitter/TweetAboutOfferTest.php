@@ -22,10 +22,10 @@ final class TweetAboutOfferTest extends OffersTestCase
 {
     public function test_tweeting_about_offer() : void
     {
-        $user = $this->systemContext->createUser();
-        $specialization = $this->systemContext->createSpecialization($specialization = 'spec');
-        $offer = $this->systemContext->createOffer($user->id(), $specialization->slug());
-        $this->systemContext->offersFacade()->handle(new SetTwitterChannel(
+        $user = $this->offers->createUser();
+        $specialization = $this->offers->createSpecialization($specialization = 'spec');
+        $offer = $this->offers->createOffer($user->id(), $specialization->slug());
+        $this->offers->module()->handle(new SetTwitterChannel(
             $specialization->slug(),
             'account_id',
             'account',
@@ -33,8 +33,8 @@ final class TweetAboutOfferTest extends OffersTestCase
             'secret',
         ));
 
-        $this->systemContext->offersFacade()->handle(new TweetAboutOffer($offer->id()->toString(), 'This is offer message for facebook'));
+        $this->offers->module()->handle(new TweetAboutOffer($offer->id()->toString(), 'This is offer message for facebook'));
 
-        $this->assertInstanceOf(Tweet::class, $this->systemContext->offersFacade()->tweetsQuery()->findTweet($offer->id()->toString()));
+        $this->assertInstanceOf(Tweet::class, $this->offers->module()->tweetsQuery()->findTweet($offer->id()->toString()));
     }
 }

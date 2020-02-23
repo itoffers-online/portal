@@ -23,9 +23,12 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Proxy\ProxyFactory;
+use ITOffers\Component\Calendar\Calendar;
+use ITOffers\Component\Calendar\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use ITOffers\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use ITOffers\Component\Mailer\Infrastructure\SwiftMailer\SwiftMailer;
 use ITOffers\Component\Mailer\Mailer;
+use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use function ITOffers\Notifications\Infrastructure\notificationsFacade;
 use ITOffers\Notifications\Notifications;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Platform\PostgreSQL11Platform;
@@ -80,6 +83,11 @@ final class ITOffersOnline
     private $templatingEngine;
 
     /**
+     * @var Calendar
+     */
+    private $calendar;
+
+    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -112,7 +120,7 @@ final class ITOffersOnline
     public function offers() : Offers
     {
         if (null === $this->offers) {
-            $this->offers = offersFacade($this->config(), $this->orm(), $this->mailer(), $this->templatingEngine(), $this->eventBus(), $this->logger());
+            $this->offers = offersFacade($this->config(), $this->orm(), $this->mailer(), $this->templatingEngine(), $this->calendar(), $this->eventBus(), $this->logger());
         }
 
         return $this->offers;
@@ -230,6 +238,21 @@ final class ITOffersOnline
         $this->orm = EntityManager::create($this->dbal(), $configuration);
 
         return $this->orm;
+    }
+
+    public function calendar() : Calendar
+    {
+        if ($this->calendar !== null) {
+            return $this->calendar;
+        }
+
+        if ($this->isTestEnvironment()) {
+            $this->calendar = new CalendarStub();
+        } else {
+            $this->calendar = new SystemCalendar(new \DateTimeZone($this->config->getString(Config::TIMEZONE)));
+        }
+
+        return $this->calendar;
     }
 
     public function mailer() : Mailer

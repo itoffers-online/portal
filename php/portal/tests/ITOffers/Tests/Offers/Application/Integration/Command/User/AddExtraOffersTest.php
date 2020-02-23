@@ -20,9 +20,9 @@ final class AddExtraOffersTest extends OffersTestCase
 {
     public function test_adding_extra_offers() : void
     {
-        $user = $this->systemContext->createUser();
+        $user = $this->offers->createUser();
 
-        $this->systemContext->offersFacade()->handle(
+        $this->offers->module()->handle(
             new AddExtraOffers(
                 $user->id(),
                 $count = 5,
@@ -30,6 +30,6 @@ final class AddExtraOffersTest extends OffersTestCase
             )
         );
 
-        $this->assertSame(5, $this->systemContext->offersFacade()->extraOffersQuery()->countNotExpired($user->id()));
+        $this->assertSame(5, $this->offers->module()->extraOffersQuery()->countNotExpired($user->id()));
     }
 }

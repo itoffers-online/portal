@@ -15,9 +15,10 @@ namespace ITOffers\Offers\Application\Offer;
 
 use DateTimeImmutable;
 use Hashids\Hashids;
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Assertion;
-use ITOffers\Offers\Application\Calendar;
 use ITOffers\Offers\Application\Specialization\Specialization;
+use ITOffers\Offers\Application\User\OfferAutoRenews;
 use ITOffers\Offers\Application\User\User;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -223,5 +224,12 @@ class Offer
         Assertion::true(Uuid::fromString($this->userId)->equals($user->id()));
 
         $this->removedAt = $calendar->currentTime();
+    }
+
+    public function renew(OfferAutoRenews $offerAutoRenews, Calendar $calendar) : void
+    {
+        $offerAutoRenews->getUnusedFor($this->id())
+            ->renew($this, $calendar);
+        $this->createdAt = $calendar->currentTime();
     }
 }

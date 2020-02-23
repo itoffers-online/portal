@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Application\Offer;
 
 use DateInterval;
-use ITOffers\Offers\Application\Calendar;
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\User\User;
 
 final class Throttling

@@ -16,8 +16,8 @@ namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Types\Offer;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\JsonType;
+use ITOffers\Component\Reflection\PrivateFields;
 use ITOffers\Offers\Application\Offer\Salary;
-use ITOffers\Offers\Common\PrivateFields;
 
 final class SalaryType extends JsonType
 {

@@ -37,14 +37,9 @@ final class OfferFilter extends AbstractFilter
     private $specialization;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var int|null
      */
-    private $sinceDate;
-
-    /**
-     * @var \DateTimeImmutable|null
-     */
-    private $tillDate;
+    private $createInLastDays;
 
     /**
      * @var bool|null
@@ -73,7 +68,7 @@ final class OfferFilter extends AbstractFilter
 
     private function __construct(int $fromLastDays = 20)
     {
-        $this->newerThan(new \DateTimeImmutable(\sprintf('-%d days', $fromLastDays), new \DateTimeZone('UTC')));
+        $this->createInLastDays = $fromLastDays;
     }
 
     public static function allFor(string $specialization, int $fromLastDays = 20) : self
@@ -87,27 +82,9 @@ final class OfferFilter extends AbstractFilter
     public static function all() : self
     {
         $filter = new self();
-        $filter->sinceDate = null;
+        $filter->createInLastDays = null;
 
         return $filter;
-    }
-
-    public function newerThan(\DateTimeImmutable $dateTime) : self
-    {
-        Assertion::eq($dateTime->getTimezone(), new \DateTimeZone('UTC'), 'Timezone UTC is required for filter.');
-
-        $this->sinceDate = $dateTime;
-
-        return $this;
-    }
-
-    public function olderThan(\DateTimeImmutable $dateTime) : self
-    {
-        Assertion::eq($dateTime->getTimezone(), new \DateTimeZone('UTC'), 'Timezone UTC is required for filter.');
-
-        $this->tillDate = $dateTime;
-
-        return $this;
     }
 
     public function showAfter(string $offerId) : self
@@ -117,14 +94,9 @@ final class OfferFilter extends AbstractFilter
         return $this;
     }
 
-    public function sinceDate() : ?\DateTimeImmutable
+    public function createdInLastDays() : ?int
     {
-        return $this->sinceDate;
-    }
-
-    public function tillDate() : ?\DateTimeImmutable
-    {
-        return $this->tillDate;
+        return $this->createInLastDays;
     }
 
     public function specialization() : ?string

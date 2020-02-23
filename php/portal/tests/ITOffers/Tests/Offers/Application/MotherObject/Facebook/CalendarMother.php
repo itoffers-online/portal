@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\MotherObject\Facebook;
 
-use ITOffers\Offers\Application\Calendar;
-use ITOffers\Offers\Infrastructure\PHP\SystemCalendar\SystemCalendar;
+use ITOffers\Component\Calendar\Calendar;
+use ITOffers\Component\Calendar\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 
 final class CalendarMother
 {

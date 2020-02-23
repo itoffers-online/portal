@@ -19,7 +19,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200218211226 extends AbstractMigration
+final class Version20200222190803 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
@@ -41,9 +41,10 @@ final class Version20200218211226 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX idx_unique_email ON itof_user (email_address)');
         $this->addSql('COMMENT ON COLUMN itof_user.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN itof_user.blocked_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE itof_offer_auto_renew (id UUID NOT NULL, user_id UUID NOT NULL, expires_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, offer_id UUID DEFAULT NULL, renewed_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE itof_offer_auto_renew (id UUID NOT NULL, user_id UUID NOT NULL, expires_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, renew_after TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT NULL, offer_id UUID DEFAULT NULL, renewed_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN itof_offer_auto_renew.expires_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN itof_offer_auto_renew.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN itof_offer_auto_renew.renew_after IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN itof_offer_auto_renew.renewed_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE itof_facebook_post (fb_id VARCHAR(255) NOT NULL, job_offer_id UUID NOT NULL, PRIMARY KEY(fb_id))');
         $this->addSql('CREATE INDEX idx_fb_post_job_offer_id ON itof_facebook_post (job_offer_id)');

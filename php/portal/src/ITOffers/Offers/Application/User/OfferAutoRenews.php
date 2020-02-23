@@ -13,13 +13,18 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\User;
 
+use ITOffers\Offers\Application\Offer\Offer;
 use Ramsey\Uuid\UuidInterface;
 
 interface OfferAutoRenews
 {
     public function add(OfferAutoRenew ...$offerAutoRenews) : void;
 
-    public function findUnassignedClosesToExpire(UuidInterface $userId) : ?OfferAutoRenew;
+    public function getUnassignedClosesToExpire(User $user) : OfferAutoRenew;
 
-    public function countNotAssignedNotExpired(UuidInterface $userId) : int;
+    public function getUnusedFor(UuidInterface $offerId) : OfferAutoRenew;
+
+    public function countUnassignedNotExpired(UuidInterface $userId) : int;
+
+    public function countAssignedTo(Offer $offer) : int;
 }

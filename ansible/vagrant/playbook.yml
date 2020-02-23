@@ -7,6 +7,10 @@
     env_timezone: "UTC"
     env_hostname: "itof-dev-vagrant"
 
+    env_vars:
+      ITOF_CACHE_PATH: "/var/www/itoffers/php/portal/var/cache"
+      ITOF_LOGS_PATH: "/var/www/itoffers/php/portal/var/logs"
+
     nginx_vhost_host: "itoffers.local"
     nginx_vhost_php: true
     nginx_vhost:

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\User;
 
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Assertion;
-use ITOffers\Offers\Application\Calendar;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -87,5 +87,10 @@ class User
     public function block(Calendar $calendar) : void
     {
         $this->blockedAt = $calendar->currentTime();
+    }
+
+    public function email() : string
+    {
+        return $this->email;
     }
 }

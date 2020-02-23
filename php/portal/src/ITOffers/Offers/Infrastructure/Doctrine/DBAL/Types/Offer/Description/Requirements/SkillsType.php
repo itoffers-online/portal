@@ -16,8 +16,8 @@ namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\Description\R
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\JsonType;
+use ITOffers\Component\Reflection\PrivateFields;
 use ITOffers\Offers\Application\Offer\Description\Requirements\Skill;
-use ITOffers\Offers\Common\PrivateFields;
 
 final class SkillsType extends JsonType
 {

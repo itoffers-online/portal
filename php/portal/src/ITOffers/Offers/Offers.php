@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers;
 
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Component\CQRS\System;
 use ITOffers\Component\CQRS\System\Command;
-use ITOffers\Offers\Application\Calendar;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Query\Facebook\FacebookQuery;
 use ITOffers\Offers\Application\Query\Features\FeatureToggleQuery;

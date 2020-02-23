@@ -15,6 +15,7 @@ namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\User;
 
 use Doctrine\DBAL\Connection;
 use ITOffers\Offers\Application\Query\User\Model\OfferAutoRenew;
+use ITOffers\Offers\Application\Query\User\Model\UnassignedAutoRenew;
 use ITOffers\Offers\Application\Query\User\OfferAutoRenewQuery;
 
 final class DbalOfferAutoRenewQuery implements OfferAutoRenewQuery
@@ -27,6 +28,21 @@ final class DbalOfferAutoRenewQuery implements OfferAutoRenewQuery
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
+    }
+
+    public function countRenewsLeft(string $offerId) : int
+    {
+        return (int) $this->connection->createQueryBuilder()
+            ->select('COUNT(oar.*)')
+            ->from('itof_offer_auto_renew', 'oar')
+            ->where('oar.offer_id = :offerId')
+            ->andWhere('oar.renewed_at IS NULL')
+            ->setParameters(
+                [
+                    'offerId' => $offerId,
+                ]
+            )->execute()
+        ->fetchColumn();
     }
 
     public function countUnassignedNotExpired(string $userId) : int
@@ -46,7 +62,7 @@ final class DbalOfferAutoRenewQuery implements OfferAutoRenewQuery
             ->fetchColumn();
     }
 
-    public function findUnassignedClosesToExpire(string $userId) : ?OfferAutoRenew
+    public function findUnassignedClosesToExpire(string $userId) : ?UnassignedAutoRenew
     {
         $extraOffersData = $this->connection->createQueryBuilder()
             ->select('oar.*')
@@ -70,9 +86,29 @@ final class DbalOfferAutoRenewQuery implements OfferAutoRenewQuery
 
         $firstExtraOffer = \current($extraOffersData);
 
-        return new OfferAutoRenew(
+        return new UnassignedAutoRenew(
             $firstExtraOffer['user_id'],
             new \DateTimeImmutable($firstExtraOffer['expires_at'])
+        );
+    }
+
+    public function findAllToRenew() : array
+    {
+        $offerAutoRenewsData = $this->connection->createQueryBuilder()
+            ->select('oar.*')
+            ->from('itof_offer_auto_renew', 'oar')
+            ->andWhere('oar.renew_after <= NOW()')
+            ->andWhere('oar.renewed_at IS NULL')
+            ->andWhere('oar.offer_id IS NOT NULL')
+            ->orderBy('oar.expires_at', 'ASC')
+            ->execute()
+            ->fetchAll();
+
+        return \array_map(
+            function (array $offerAutoRenewData) : OfferAutoRenew {
+                return new OfferAutoRenew($offerAutoRenewData['offer_id']);
+            },
+            $offerAutoRenewsData
         );
     }
 }

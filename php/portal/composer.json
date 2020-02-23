@@ -129,6 +129,9 @@
             "@symfony:cache:clear:test",
             "phpdbg -qrr ./vendor/bin/phpunit --coverage-clover ./var/phpunit/coverage/clover.xml"
         ],
+        "test:coverage:html": [
+            "phpdbg -qrr ./vendor/bin/phpunit --coverage-html ./var/phpunit/coverage/html"
+        ],
         "test:md": [
             "mdlinklint ./../../ --exclude=vendor"
         ],

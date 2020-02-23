@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Web;
 
+use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use function App\symfony;
 use App\SymfonyKernel;
 use ITOffers\Config;
@@ -50,7 +51,7 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
         return symfony(bootstrap(ROOT_DIR));
     }
 
-    protected static function hireInSocial() : ITOffersOnline
+    protected static function itoffers() : ITOffersOnline
     {
         if (null === static::$hireInSocial) {
             static::$hireInSocial = static::$kernel->getContainer()->get(ITOffersOnline::class);
@@ -65,7 +66,7 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
 
     protected static function offersFacade() : Offers
     {
-        return static::hireInSocial()->offers();
+        return static::itoffers()->offers();
     }
 
     public function setUp() : void
@@ -73,8 +74,19 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
         static::bootKernel();
 
         $this->offersContext = new OffersContext(static::offersFacade());
-        $this->databaseContext = new DatabaseContext(static::hireInSocial()->dbal());
+        $this->databaseContext = new DatabaseContext(static::itoffers()->dbal());
 
         $this->databaseContext->purgeDatabase();
+        static::itoffers()->calendar()->setCurrentTime(new \DateTimeImmutable());
+    }
+
+    public function config() : Config
+    {
+        return static::itoffers()->config();
+    }
+
+    public function setCurrentTime(\DateTimeImmutable $currentTime) : void
+    {
+        static::itoffers()->calendar()->setCurrentTime($currentTime);
     }
 }
