@@ -1,6 +1,6 @@
 ---
 - name: iroquoisorg.env
-  version: "1.0.0"
+  version: "2.0.2"
 
 - name: iroquoisorg.tools
   version: "1.0.1"

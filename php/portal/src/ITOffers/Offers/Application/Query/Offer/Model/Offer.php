@@ -111,9 +111,6 @@ final class Offer
         return $this->userId;
     }
 
-    /**
-     * @return string
-     */
     public function locale() : string
     {
         return $this->locale;

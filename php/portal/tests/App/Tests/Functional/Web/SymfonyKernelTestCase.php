@@ -19,6 +19,7 @@ use ITOffers\Config;
 use ITOffers\ITOffersOnline;
 use function ITOffers\Offers\Infrastructure\bootstrap;
 use ITOffers\Offers\Offers;
+use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Offers\Application\Context\DatabaseContext;
 use ITOffers\Tests\Offers\Application\Context\OffersContext;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -28,7 +29,7 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
     /**
      * @var ITOffersOnline
      */
-    protected static $hireInSocial;
+    protected static $itoffers;
 
     /**
      * @var OffersContext
@@ -50,22 +51,22 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
         return symfony(bootstrap(ROOT_DIR));
     }
 
-    protected static function hireInSocial() : ITOffersOnline
+    protected static function itoffers() : ITOffersOnline
     {
-        if (null === static::$hireInSocial) {
-            static::$hireInSocial = static::$kernel->getContainer()->get(ITOffersOnline::class);
+        if (null === static::$itoffers) {
+            static::$itoffers = static::$kernel->getContainer()->get(ITOffersOnline::class);
         }
 
-        if (static::$hireInSocial->config()->getString(Config::ENV) !== 'test') {
-            throw new \RuntimeException(sprintf('Expected environment "test" but got "%s"', static::$hireInSocial->config()->getString(Config::ENV)));
+        if (static::$itoffers->config()->getString(Config::ENV) !== 'test') {
+            throw new \RuntimeException(sprintf('Expected environment "test" but got "%s"', static::$itoffers->config()->getString(Config::ENV)));
         }
 
-        return static::$hireInSocial;
+        return static::$itoffers;
     }
 
     protected static function offersFacade() : Offers
     {
-        return static::hireInSocial()->offers();
+        return static::itoffers()->offers();
     }
 
     public function setUp() : void
@@ -73,8 +74,25 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
         static::bootKernel();
 
         $this->offersContext = new OffersContext(static::offersFacade());
-        $this->databaseContext = new DatabaseContext(static::hireInSocial()->dbal());
+        $this->databaseContext = new DatabaseContext(static::itoffers()->dbal());
 
         $this->databaseContext->purgeDatabase();
+        /** @var CalendarStub $calendar */
+        $calendar = static::itoffers()->calendar();
+
+        $calendar->setCurrentTime(new \DateTimeImmutable());
+    }
+
+    public function config() : Config
+    {
+        return static::itoffers()->config();
+    }
+
+    public function setCurrentTime(\DateTimeImmutable $currentTime) : void
+    {
+        /** @var CalendarStub $calendar */
+        $calendar = static::itoffers()->calendar();
+
+        $calendar->setCurrentTime($currentTime);
     }
 }

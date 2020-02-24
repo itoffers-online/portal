@@ -24,15 +24,15 @@ final class SetTwitterChannelTest extends OffersTestCase
     {
         $slug = 'php';
 
-        $this->systemContext->offersFacade()->handle(new CreateSpecialization($slug));
-        $this->systemContext->offersFacade()->handle(new SetTwitterChannel($slug, 'twitter_id', 'screen_name', 'token', 'secret'));
+        $this->offers->module()->handle(new CreateSpecialization($slug));
+        $this->offers->module()->handle(new SetTwitterChannel($slug, 'twitter_id', 'screen_name', 'token', 'secret'));
 
         $this->assertEquals(
             new TwitterChannel(
                 'twitter_id',
                 'screen_name'
             ),
-            $this->systemContext->offersFacade()->specializationQuery()->findBySlug($slug)->twitterChannel()
+            $this->offers->module()->specializationQuery()->findBySlug($slug)->twitterChannel()
         );
     }
 }

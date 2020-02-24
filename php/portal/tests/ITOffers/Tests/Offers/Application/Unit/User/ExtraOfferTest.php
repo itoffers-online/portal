@@ -15,7 +15,7 @@ namespace ITOffers\Tests\Offers\Application\Unit\User;
 
 use ITOffers\Offers\Application\Exception\InvalidAssertionException;
 use ITOffers\Offers\Application\User\ExtraOffer;
-use ITOffers\Tests\Offers\Application\Double\Stub\CalendarStub;
+use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Offers\Application\MotherObject\Offer\OfferMother;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;

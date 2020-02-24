@@ -2,22 +2,23 @@ Vagrant.configure(2) do |config|
 
   config.vm.define :itoffers do |itoffers|
     itoffers.vm.box = "bento/ubuntu-18.04"
-    itoffers.vm.network :private_network, ip: "10.1.0.200"
+    itoffers.vm.network :private_network, ip: "10.0.0.200"
     itoffers.vm.network "forwarded_port", guest: 80, host: 80
     itoffers.vm.network "forwarded_port", guest: 443, host: 443
     itoffers.ssh.forward_agent = true
 
-    itoffers.vm.provider :vmware_fusion do |v|
-      v.gui = false
-      v.vmx["memsize"] = "4096"
-      v.vmx["numvcpus"] = "2"
-    end
 
     itoffers.vm.provider :virtualbox do |v|
       v.gui = false
       v.name = "itoffers.online"
       v.memory = 4096
       v.cpus = 2
+    end
+
+    itoffers.vm.provider :vmware_fusion do |v|
+      v.gui = false
+      v.vmx["memsize"] = "4096"
+      v.vmx["numvcpus"] = "2"
     end
 
     itoffers.vm.provider :parallels do |v|

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\MotherObject\User;
 
+use ITOffers\Component\Reflection\PrivateFields;
 use ITOffers\Offers\Application\User\User;
-use ITOffers\Offers\Common\PrivateFields;
 use ITOffers\Tests\Offers\Application\MotherObject\Facebook\CalendarMother;
 use Ramsey\Uuid\UuidInterface;
 

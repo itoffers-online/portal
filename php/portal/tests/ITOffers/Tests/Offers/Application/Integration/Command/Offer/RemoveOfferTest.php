@@ -23,15 +23,15 @@ final class RemoveOfferTest extends OffersTestCase
 {
     public function test_removing_offer() : void
     {
-        $user = $this->systemContext->createUser();
-        $this->systemContext->createSpecialization($specialization = 'spec');
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
+        $user = $this->offers->createUser();
+        $this->offers->createSpecialization($specialization = 'spec');
+        $this->offers->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
 
-        $offerQuery = $this->systemContext->offersFacade()->offerQuery();
+        $offerQuery = $this->offers->module()->offerQuery();
 
         $offer = $offerQuery->findAll(OfferFilter::allFor($specialization))->first();
 
-        $this->systemContext->offersFacade()->handle(new RemoveOffer($offer->id()->toString(), $user->id()));
+        $this->offers->module()->handle(new RemoveOffer($offer->id()->toString(), $user->id()));
 
         $this->assertEquals(0, $offerQuery->total());
         $this->assertEquals(0, $offerQuery->findAll(OfferFilter::all())->count());
@@ -41,8 +41,8 @@ final class RemoveOfferTest extends OffersTestCase
         $this->assertNull($offerQuery->findByEmailHash($offer->emailHash()));
 
         $this->assertEquals(
-            $this->systemContext->offersFacade()->offerThrottleQuery()->limit() - 1,
-            $this->systemContext->offersFacade()->offerThrottleQuery()->offersLeft($user->id())
+            $this->offers->module()->offerThrottleQuery()->limit() - 1,
+            $this->offers->module()->offerThrottleQuery()->offersLeft($user->id())
         );
     }
 }

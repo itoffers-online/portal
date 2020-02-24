@@ -16,7 +16,7 @@ namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 use function array_key_exists;
 use DateInterval;
 use Doctrine\DBAL\Connection;
-use ITOffers\Offers\Application\Calendar;
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Query\Offer\OfferThrottleQuery;
 
 final class DbalOfferThrottleQuery implements OfferThrottleQuery

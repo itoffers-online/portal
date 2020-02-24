@@ -15,6 +15,7 @@ namespace App\Tests\Offers\Functional\Web;
 
 use App\Tests\Functional\Web\WebTestCase;
 use Faker\Factory;
+use ITOffers\Config;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Salary;
 use ITOffers\Offers\Application\Query\Offer\OfferFilter;
 use ITOffers\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
@@ -113,7 +114,7 @@ final class OfferTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->offersContext->createUser();
-        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $this->specialization));
+        $this->offersContext->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $this->specialization));
 
         $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($this->specialization))->first();
 
@@ -127,7 +128,7 @@ final class OfferTest extends WebTestCase
         $client = static::createClient();
         $this->authenticate($client, $user);
 
-        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $this->specialization));
+        $this->offersContext->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $this->specialization));
 
         $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($this->specialization))->first();
 
@@ -148,7 +149,7 @@ final class OfferTest extends WebTestCase
     {
         $user = $this->offersContext->createUser();
         $client = static::createClient();
-        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $this->specialization));
+        $this->offersContext->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $this->specialization));
         $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($this->specialization))->first();
 
         $client->request('GET', $client->getContainer()->get('router')->generate('offer_remove', ['offerSlug' => $offer->slug()]));
@@ -182,7 +183,6 @@ final class OfferTest extends WebTestCase
         $client = static::createClient();
         $this->authenticate($client, $user);
 
-
         $offer = $this->offersContext->createOffer($authorOffer->id(), $this->specialization);
 
         $client->request(
@@ -191,5 +191,25 @@ final class OfferTest extends WebTestCase
         );
 
         $this->assertSame(403, $client->getResponse()->getStatusCode());
+    }
+
+    public function test_opening_expired_offer() : void
+    {
+        $authorOffer = $this->offersContext->createUser();
+        $user = $this->offersContext->createUser();
+
+        $client = static::createClient();
+        $this->authenticate($client, $user);
+
+        $this->setCurrentTime(new \DateTimeImmutable(\sprintf('-%d days', $this->config()->getInt(Config::OLD_OFFER_DAYS) + 1)));
+
+        $offer = $this->offersContext->createOffer($authorOffer->id(), $this->specialization);
+
+        $crawler = $client->request('GET', $client->getContainer()->get('router')->generate('offer', ['offerSlug' => $offer->slug()]));
+
+        $this->assertSame(200, $client->getResponse()->getStatusCode());
+
+        $this->assertSame("noindex", $crawler->filter('meta[name=robots]')->attr("content"));
+        $this->assertCount(1, $crawler->filter('[data-offer-expired-warning]'));
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
-use ITOffers\Offers\Application\Calendar;
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Offer\Application\EmailHash;
 use Ramsey\Uuid\Uuid;
 

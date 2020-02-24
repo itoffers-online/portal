@@ -1,16 +1,75 @@
 {% extends '@theme/base.html.twig' %}
 
 {% block body %}
-    <div id="accordion">
-        {% include '@offers/home/faq/_question.html.twig' with {
-            number: 2,
-            question: "Can I edit my job offer?",
-            answer: "No, job offer can't be updated after you post it however it can be removed and added once again."
-        } only %}
-        {% include '@offers/home/faq/_question.html.twig' with {
-            number: 3,
-            question: "How often can I post new job offers?",
-            answer: "Job offer can't be post more frequently than once per day."
-        } only %}
+<div class="container-fluid">
+    <div class="container mt-4">
+        <h3>Frequently Asked Questions</h3>
+        <div id="accordion">
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 1,
+                question: "Can I edit my job offer?",
+                answer: "No, job offer can't be updated after you post it however it can be removed and added once again."
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 2,
+                question: "How long my job offer will be available for candidates?",
+                answer: "After " ~ itof.old_offer_days ~ " candidates will not be able to find it at specialization page, those who access through direct url will be warned that offer might be outdated."
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 3,
+                question: "How long it usually takes for the offer to become available?",
+                answer: "It usually takes less than a minute to publish the offer at specialization page and selected social channels."
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 4,
+                question: "Where my offer will be available?",
+                answer: "That depends, by default all offers are available at specialization page, offers from some categories can be also automatically propagated at our social channels."
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 5,
+                question: "What are the social channels?",
+                answer: "Social channel is for example Facebook Group. Our system is automatically posting offers at our dedicated Facebook Groups, so it will reach only interested candidates, without spam."
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 6,
+                question: "What are the supported social channels?",
+                answer: "Currently it's Facebook and Twitter, but we are working on adding more."
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 7,
+                question: "In my specialization social channels are unavialble?",
+                answer: "We are working on adding all social channels to all specialiazations."
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 8,
+                question: "How many offers I can post at once?",
+                answer: "You can post 2 offers imidiatelly in any category, then you need to wait 14 days for the quota to regenerate."
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 9,
+                question: "What are the Extra Offers?",
+                answer: "Extra offers are offers you can post even when you are throttled, they are time limited so better don't wait too long!"
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 10,
+                question: "Is there a way to post more job offers at once?",
+                answer: "There is! Email us at " ~ contact_email ~ " to get more details!"
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 11,
+                question: "What is offer auto renew?",
+                answer: "It's a feature that once offer pass " ~ itof.old_offer_days ~ " days, our system will auto renew it, making it once again available at specialization page and in the search."
+            } only %}
+            {% include '@offers/home/faq/_question.html.twig' with {
+                number: 12,
+                question: "Does offer auto renew post offers at social channels like Facebook or Twitter once again?",
+                answer: "No, that feature is available only when posting offer for the first time and only at specific groups."
+            } only %}
+        </div>
+        <p class="mt-4">
+            Your question is not at the list? Contact us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.
+        </p>
     </div>
+</div>
+
 {% endblock %}

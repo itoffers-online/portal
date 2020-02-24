@@ -15,6 +15,7 @@ namespace ITOffers\Tests\Offers\Application\Context;
 
 use Faker\Factory;
 use ITOffers\Offers\Application\Command\User\AddExtraOffers;
+use ITOffers\Offers\Application\Command\User\AddOfferAutoRenews;
 use ITOffers\Offers\Application\Command\User\FacebookConnect;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer;
 use ITOffers\Offers\Application\Query\Specialization\Model\Specialization;
@@ -36,7 +37,7 @@ final class OffersContext
         $this->offers = $offers;
     }
 
-    public function offersFacade() : Offers
+    public function module() : Offers
     {
         return $this->offers;
     }
@@ -60,6 +61,11 @@ final class OffersContext
     public function addExtraOffer(User $user, int $expiresInDays) : void
     {
         $this->offers->handle(new AddExtraOffers($user->id(), 1, $expiresInDays));
+    }
+
+    public function addOfferAutRenewOffer(User $user, int $expiresInDays) : void
+    {
+        $this->offers->handle(new AddOfferAutoRenews($user->id(), 1, $expiresInDays));
     }
 
     public function createOffer(string $userId, string $specializationSlug) : Offer

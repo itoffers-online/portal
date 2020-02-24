@@ -52,8 +52,8 @@
                             </div>
                             <div class="text-center pt-2 pb-4">
                                 <h2><i class="far fa-file"></i></h2>
-                                <h3 class="font-weight-light">Regular Offers</h3>
-                                <h5 class="font-weight-light">{{ offersLeft }} left</h5>
+                                <h3 class="font-weight-light">{{ offersLeft }} left</h3>
+                                <h5 class="font-weight-light">Regular Offers</h5>
                             </div>
                         </div>
                     </div>
@@ -74,8 +74,8 @@
                             </div>
                             <div class="text-center pt-2 pb-4">
                                 <h2><i class="fas fa-redo text-blue"></i></h2>
-                                <h3 class="font-weight-light">Instant Offers</h3>
-                                <h5 class="font-weight-light">{{ extraOffersCount }} left</h5>
+                                <h3 class="font-weight-light">{{ extraOffersCount }} left</h3>
+                                <h5 class="font-weight-light">Instant Offers</h5>
                             </div>
                         </div>
                         {% if extraOffer %}
@@ -85,22 +85,22 @@
                         {% endif %}
                     </div>
                     <div class="col-3">
-                        <div class="bg-light border disabled mb-4">
+                        <div class="bg-white border mb-4">
                             <div class="small text-right pt-2 pr-2">
                                 <a href="#"
                                    data-toggle="popover"
                                    data-trigger="focus"
-                                   title="Offer Renewal"
-                                   data-content="Let use renew your offer automatically once it expires or tell us how many days before expiration offer should be renewed"
+                                   title="Offer Auto Renew"
+                                   data-content="Automatically renew expiring offers in order to extend offer life up to 6 weeks. One offer can be auto renewed maximum 2 times."
                                    data-placement="right"
                                 >
-                                    <i class="far fa-question-circle"></i>
+                                    <i class="far fa-question-circle "></i>
                                 </a>
                             </div>
                             <div class="text-center pt-2 pb-4">
-                                <h2><i class="fas fa-tachometer-alt text-gray-500"></i></h2>
-                                <h3 class="font-weight-light text-gray-500">Offer Renewal</h3>
-                                <h5 class="font-weight-light text-gray-500">Coming Soon!</h5>
+                                <h2><i class="fas fa-tachometer-alt text-green"></i></h2>
+                                <h3 class="font-weight-light">{{ offerAutoRenewsCount }} left</h3>
+                                <h5 class="font-weight-light">Auto Renews</h5>
                             </div>
                         </div>
                     </div>

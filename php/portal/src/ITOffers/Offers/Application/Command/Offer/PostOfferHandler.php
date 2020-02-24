@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Command\Offer;
 
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Component\CQRS\EventStream;
 use ITOffers\Component\CQRS\System\Handler;
 use ITOffers\Component\Storage\FileStorage;
 use ITOffers\Component\Storage\FileStorage\File;
-use ITOffers\Offers\Application\Calendar;
 use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Offer\Company;

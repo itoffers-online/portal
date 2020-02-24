@@ -44,14 +44,14 @@ final class BlockUserTest extends ConsoleTestCase
         );
 
         $this->assertEquals(0, $commandTester->getStatusCode());
-        $this->assertTrue($this->offersContext->offersFacade()->userQuery()->findById($offer->userId()->toString())->isBlocked());
+        $this->assertTrue($this->offersContext->module()->userQuery()->findById($offer->userId()->toString())->isBlocked());
     }
 
     public function createOffer() : Offer
     {
         $user = $this->offersContext->createUser();
         $this->offersContext->createSpecialization('spec');
-        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), 'spec'));
+        $this->offersContext->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), 'spec'));
 
         return $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor('spec'))->first();
     }

@@ -16,6 +16,7 @@ namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Query\QueryBuilder;
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Company;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Contact;
@@ -40,9 +41,15 @@ final class DbalOfferQuery implements OfferQuery
      */
     private $connection;
 
-    public function __construct(Connection $connection)
+    /**
+     * @var Calendar
+     */
+    private $calendar;
+
+    public function __construct(Connection $connection, Calendar $calendar)
     {
         $this->connection = $connection;
+        $this->calendar = $calendar;
     }
 
     public function total() : int
@@ -133,9 +140,14 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM itof_job_offer WHERE id = :afterOfferId)');
         }
 
-        if ($filter->sinceDate()) {
+        if ($filter->createdInLastDays()) {
             $queryBuilder->andWhere('o.created_at >= :sinceDate')
-                ->setParameter('sinceDate', $filter->sinceDate()->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()));
+                ->setParameter(
+                    'sinceDate',
+                    $this->calendar->currentTime()
+                        ->modify(\sprintf('-%d days', $filter->createdInLastDays()))
+                        ->format($this->connection->getDatabasePlatform()->getDateTimeFormatString())
+                );
         }
 
         $queryBuilder->setParameter('specializationSlug', $filter->specialization());
@@ -405,9 +417,14 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->andWhere('o.created_at <= (SELECT created_at FROM itof_job_offer WHERE id = :afterOfferId)');
         }
 
-        if ($filter->sinceDate()) {
+        if ($filter->createdInLastDays()) {
             $queryBuilder->andWhere('o.created_at >= :sinceDate')
-                ->setParameter('sinceDate', $filter->sinceDate()->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()));
+                ->setParameter(
+                    'sinceDate',
+                    $this->calendar->currentTime()
+                        ->modify(\sprintf('-%d days', $filter->createdInLastDays()))
+                        ->format($this->connection->getDatabasePlatform()->getDateTimeFormatString())
+                );
         }
 
         $queryBuilder->setMaxResults($filter->limit());

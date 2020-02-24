@@ -29,6 +29,7 @@ final class RequirementsType extends AbstractType
     {
         $builder
             ->add('skills', CollectionType::class, [
+                'label' => false,
                 'entry_type' => RequirementType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -54,6 +55,7 @@ final class RequirementsType extends AbstractType
                 ],
             ])
             ->add('description', TextareaType::class, [
+                'label' => false,
                 'constraints' => [
                     new Length(['min' => 0, 'max' => 2048]),
                     new NotContainsEmoji(),

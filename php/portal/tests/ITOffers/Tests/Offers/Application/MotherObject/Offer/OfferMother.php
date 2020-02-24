@@ -15,6 +15,7 @@ namespace ITOffers\Tests\Offers\Application\MotherObject\Offer;
 
 use Faker\Factory;
 use ITOffers\Offers\Application\Offer;
+use ITOffers\Offers\Application\User\User;
 use ITOffers\Tests\Offers\Application\MotherObject\Facebook\CalendarMother;
 use ITOffers\Tests\Offers\Application\MotherObject\Specialization\SpecializationMother;
 use ITOffers\Tests\Offers\Application\MotherObject\User\UserMother;
@@ -27,7 +28,12 @@ final class OfferMother
         return self::withName('position', 'company');
     }
 
-    public static function withName(string $positionName, string $companyName) : Offer\Offer
+    public static function byUser(User $user) : Offer\Offer
+    {
+        return self::withName('position', 'company', $user);
+    }
+
+    public static function withName(string $positionName, string $companyName, ?User $user = null) : Offer\Offer
     {
         $faker = Factory::create();
 
@@ -35,7 +41,7 @@ final class OfferMother
             Uuid::uuid4(),
             SpecializationMother::random(),
             new Offer\Locale('en_US'),
-            UserMother::random(),
+            $user ? $user : UserMother::random(),
             new Offer\Company($companyName, $faker->url, $faker->text(512)),
             new Offer\Position(\random_int(Offer\Position\SeniorityLevels::INTERN, Offer\Position\SeniorityLevels::EXPERT), $positionName, $faker->text(1024)),
             Offer\Location::remote(),

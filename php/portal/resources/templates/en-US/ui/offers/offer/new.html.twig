@@ -268,7 +268,7 @@
                 <div class="form-group">
                     <div class="form-check custom-switch">
                         <input type="checkbox" id="offer_post_at_homepage" class="custom-control-input disabled disable_save" checked disabled value="1">
-                        <label class="switch-custom custom-control-label" for="offer_post_at_homepage">{{ specialization.slug|specialization_name }} offers list</label>
+                        <label class="switch-custom custom-control-label" for="offer_post_at_homepage">{{ specialization.slug|specialization_name }} specialization offers list</label>
                     </div>
                 </div>
                 {% if specialization.facebookChannel and postOfferAtFacebookGroupEnabled %}
@@ -341,7 +341,7 @@
             </div>
         </div>
         {{ form_row(form._token, {attr: {class: 'disable_save'}}) }}
-        {{ form_end(form) }}
+        {{ form_end(form, {'render_rest': false}) }}
     </div>
 </div>
 {% endblock %}

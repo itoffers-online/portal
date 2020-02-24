@@ -15,6 +15,7 @@ namespace ITOffers\Offers\Infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Facebook\Facebook;
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Component\CQRS\EventStream;
 use ITOffers\Component\CQRS\EventStream\Event;
 use ITOffers\Component\CQRS\System;
@@ -26,8 +27,10 @@ use ITOffers\Component\Mailer\Mailer;
 use ITOffers\Config;
 use ITOffers\Offers\Application\Command\Facebook\PagePostOfferAtGroupHandler;
 use ITOffers\Offers\Application\Command\Offer\ApplyThroughEmailHandler;
+use ITOffers\Offers\Application\Command\Offer\AssignAutoRenewHandler;
 use ITOffers\Offers\Application\Command\Offer\PostOfferHandler;
 use ITOffers\Offers\Application\Command\Offer\RemoveOfferHandler;
+use ITOffers\Offers\Application\Command\Offer\RenewOfferHandler;
 use ITOffers\Offers\Application\Command\Specialization\CreateSpecializationHandler;
 use ITOffers\Offers\Application\Command\Specialization\RemoveFacebookChannelHandler;
 use ITOffers\Offers\Application\Command\Specialization\RemoveTwitterChannelHandler;
@@ -35,6 +38,7 @@ use ITOffers\Offers\Application\Command\Specialization\SetFacebookChannelHandler
 use ITOffers\Offers\Application\Command\Specialization\SetTwitterChannelHandler;
 use ITOffers\Offers\Application\Command\Twitter\TweetAboutOfferHandler;
 use ITOffers\Offers\Application\Command\User\AddExtraOffersHandler;
+use ITOffers\Offers\Application\Command\User\AddOfferAutoRenewsHandler;
 use ITOffers\Offers\Application\Command\User\BlockUserHandler;
 use ITOffers\Offers\Application\Command\User\FacebookConnectHandler;
 use ITOffers\Offers\Application\Command\User\LinkedInConnectHandler;
@@ -54,6 +58,7 @@ use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferThro
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Specialization\DbalSpecializationQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Twitter\DbalTweetsQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalExtraOffersQuery;
+use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalOfferAutoRenewQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalUserQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMApplications;
@@ -64,16 +69,15 @@ use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Specialization\ORMSp
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\System\ORMTransactionManager;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Twitter\ORMTweets;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\User\ORMExtraOffers;
+use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\User\ORMOfferAutoRenews;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\User\ORMUsers;
 use ITOffers\Offers\Infrastructure\Facebook\FacebookGraphSDK;
 use ITOffers\Offers\Infrastructure\Flysystem\Application\System\FlysystemStorage;
 use ITOffers\Offers\Infrastructure\PHP\Hash\SHA256Encoder;
-use ITOffers\Offers\Infrastructure\PHP\SystemCalendar\SystemCalendar;
 use ITOffers\Offers\Infrastructure\Twitter\OAuthTwitter;
 use ITOffers\Offers\Offers;
 use ITOffers\Tests\Offers\Application\Double\Dummy\DummyFacebook;
 use ITOffers\Tests\Offers\Application\Double\Dummy\DummyTwitter;
-use ITOffers\Tests\Offers\Application\Double\Stub\CalendarStub;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
 
@@ -82,6 +86,7 @@ function offersFacade(
     EntityManager $entityManager,
     Mailer $mailer,
     Environment $twig,
+    Calendar $calendar,
     InMemoryEventBus $eventBus,
     LoggerInterface $logger
 ) : Offers {
@@ -133,23 +138,8 @@ function offersFacade(
     };
 
     switch ($config->getString(Config::ENV)) {
-        case 'prod':
-            $calendar = new SystemCalendar(new \DateTimeZone('UTC'));
-            $twitter = new OAuthTwitter(
-                $config->getString(Config::TWITTER_API_KEY),
-                $config->getString(Config::TWITTER_API_SECRET_KEY),
-            );
-            $facebook = new FacebookGraphSDK(
-                new Facebook([
-                    'app_id' => $config->getString(Config::FB_APP_ID),
-                    'app_secret' => $config->getString(Config::FB_APP_SECRET),
-                ]),
-                $logger
-            );
-
-            break;
         case 'dev':
-            $calendar = new CalendarStub(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
+        case 'prod':
             $twitter = new OAuthTwitter(
                 $config->getString(Config::TWITTER_API_KEY),
                 $config->getString(Config::TWITTER_API_SECRET_KEY),
@@ -164,7 +154,6 @@ function offersFacade(
 
             break;
         case 'test':
-            $calendar = new CalendarStub(new \DateTimeImmutable('now', new \DateTimeZone('UTC')));
             $twitter = new DummyTwitter();
             $facebook = new DummyFacebook();
 
@@ -180,6 +169,7 @@ function offersFacade(
     $ormUsers = new ORMUsers($entityManager);
     $ormExtraOffers = new ORMExtraOffers($entityManager);
     $ormApplications = new ORMApplications($entityManager);
+    $ormOfferAutoRenews = new ORMOfferAutoRenews($entityManager, $calendar);
 
     $encoder = new SHA256Encoder();
     $emailFormatter = new EmailFormatter($twig);
@@ -255,6 +245,22 @@ function offersFacade(
                     $ormExtraOffers,
                     $calendar
                 ),
+                new AddOfferAutoRenewsHandler(
+                    $ormUsers,
+                    $ormOfferAutoRenews,
+                    $calendar
+                ),
+                new AssignAutoRenewHandler(
+                    $ormUsers,
+                    $ormOffers,
+                    $ormOfferAutoRenews,
+                    $calendar
+                ),
+                new RenewOfferHandler(
+                    $ormOffers,
+                    $ormOfferAutoRenews,
+                    $calendar
+                ),
                 new ApplyThroughEmailHandler(
                     $mailer,
                     $ormOffers,
@@ -266,10 +272,11 @@ function offersFacade(
             ),
             new Queries(
                 new DbalOfferThrottleQuery($throttling->limit(), $throttling->since(), $dbalConnection, $calendar),
-                new DbalOfferQuery($dbalConnection),
+                new DbalOfferQuery($dbalConnection, $calendar),
                 new DbalSpecializationQuery($dbalConnection),
                 new DbalUserQuery($dbalConnection),
                 new DbalExtraOffersQuery($dbalConnection),
+                new DbalOfferAutoRenewQuery($dbalConnection),
                 new DbalApplicationQuery($dbalConnection, $encoder),
                 new DbalFacebookFacebookQuery($dbalConnection),
                 new DbalTweetsQuery($dbalConnection),

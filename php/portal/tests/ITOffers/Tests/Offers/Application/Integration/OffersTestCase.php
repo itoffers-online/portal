@@ -30,7 +30,7 @@ abstract class OffersTestCase extends TestCase
     /**
      * @var OffersContext
      */
-    protected $systemContext;
+    protected $offers;
 
     /**
      * @var DatabaseContext
@@ -70,7 +70,7 @@ abstract class OffersTestCase extends TestCase
             $this->fail(sprintf('Expected environment "test" but got "%s"', $hireInSocial->config()->getString(Config::ENV)));
         }
 
-        $this->systemContext = new OffersContext($hireInSocial->offers());
+        $this->offers = new OffersContext($hireInSocial->offers());
         $this->databaseContext = new DatabaseContext($hireInSocial->dbal());
         $this->filesystemContext = new FilesystemContext(FlysystemStorage::create($hireInSocial->config()->getJson(Config::FILESYSTEM_CONFIG)));
 

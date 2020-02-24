@@ -25,7 +25,9 @@ final class DescriptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder
-            ->add('requirements', RequirementsType::class)
+            ->add('requirements', RequirementsType::class, [
+                'label' => false,
+            ])
             ->add('benefits', TextareaType::class, [
                 'constraints' => [
                     new Length(['min' => 100, 'max' => 2048]),

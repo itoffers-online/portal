@@ -24,12 +24,12 @@ final class RemoveTwitterChannelTest extends OffersTestCase
     {
         $slug = 'php';
 
-        $this->systemContext->offersFacade()->handle(new CreateSpecialization($slug));
-        $this->systemContext->offersFacade()->handle(new SetTwitterChannel($slug, 'twitter_id', 'screen_name', 'token', 'secret'));
-        $this->systemContext->offersFacade()->handle(new RemoveTwitterChannel($slug));
+        $this->offers->module()->handle(new CreateSpecialization($slug));
+        $this->offers->module()->handle(new SetTwitterChannel($slug, 'twitter_id', 'screen_name', 'token', 'secret'));
+        $this->offers->module()->handle(new RemoveTwitterChannel($slug));
 
         $this->assertNull(
-            $this->systemContext->offersFacade()->specializationQuery()->findBySlug($slug)->twitterChannel()
+            $this->offers->module()->specializationQuery()->findBySlug($slug)->twitterChannel()
         );
     }
 }

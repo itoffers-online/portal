@@ -22,7 +22,7 @@ final class FacebookConnectHandlerTest extends OffersTestCase
 {
     public function test_adding_extra_offers() : void
     {
-        $this->systemContext->offersFacade()->handle(
+        $this->offers->module()->handle(
             new FacebookConnect(
                 Uuid::uuid4()->toString(),
                 'user@itoffers.online'
@@ -32,7 +32,7 @@ final class FacebookConnectHandlerTest extends OffersTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Email user@itoffers.online already used by different account');
 
-        $this->systemContext->offersFacade()->handle(
+        $this->offers->module()->handle(
             new FacebookConnect(
                 Uuid::uuid4()->toString(),
                 'user@itoffers.online'

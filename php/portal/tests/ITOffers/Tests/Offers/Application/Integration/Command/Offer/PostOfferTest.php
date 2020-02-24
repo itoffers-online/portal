@@ -25,19 +25,19 @@ final class PostOfferTest extends OffersTestCase
 {
     public function test_posting_offer() : void
     {
-        $user = $this->systemContext->createUser();
+        $user = $this->offers->createUser();
 
-        $this->systemContext->createSpecialization($specialization = 'spec');
-        $this->systemContext->offersFacade()->handle(PostOfferMother::randomWithPDF(
+        $this->offers->createSpecialization($specialization = 'spec');
+        $this->offers->module()->handle(PostOfferMother::randomWithPDF(
             Uuid::uuid4()->toString(),
             $user->id(),
             $specialization,
             __DIR__ . '/fixtures/blank.pdf'
         ));
 
-        $offer = $this->systemContext->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($specialization))->first();
+        $offer = $this->offers->module()->offerQuery()->findAll(OfferFilter::allFor($specialization))->first();
 
-        $this->assertEquals(1, $this->systemContext->offersFacade()->offerQuery()->total());
+        $this->assertEquals(1, $this->offers->module()->offerQuery()->total());
         $this->assertEquals(
             sprintf('/offer/%s/offer.pdf', $offer->id()->toString()),
             $offer->offerPDF()
@@ -48,42 +48,42 @@ final class PostOfferTest extends OffersTestCase
 
     public function test_posting_offer_too_fast() : void
     {
-        $user = $this->systemContext->createUser();
-        $this->systemContext->createSpecialization($specialization = 'spec');
+        $user = $this->offers->createUser();
+        $this->offers->createSpecialization($specialization = 'spec');
 
         for ($postedOffers = 0; $postedOffers < Throttling::LIMIT; $postedOffers++) {
-            $this->systemContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
+            $this->offers->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
         }
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage(sprintf('User "%s" is throttled', $user->id()));
 
-        $this->assertTrue($this->systemContext->offersFacade()->offerThrottleQuery()->isThrottled($user->id()));
+        $this->assertTrue($this->offers->module()->offerThrottleQuery()->isThrottled($user->id()));
 
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
+        $this->offers->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
     }
 
     public function test_posting_offer_too_fast_with_extra_offer() : void
     {
-        $user = $this->systemContext->createUser();
-        $this->systemContext->createSpecialization($specialization = 'spec');
+        $user = $this->offers->createUser();
+        $this->offers->createSpecialization($specialization = 'spec');
 
-        $this->systemContext->addExtraOffer($user, $expiresInDays = 1);
-        $this->systemContext->addExtraOffer($user, $expiresInDays = 3);
+        $this->offers->addExtraOffer($user, $expiresInDays = 1);
+        $this->offers->addExtraOffer($user, $expiresInDays = 3);
 
         for ($postedOffers = 0; $postedOffers < Throttling::LIMIT; $postedOffers++) {
-            $this->systemContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
+            $this->offers->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
         }
 
-        $this->assertSame(2, $this->systemContext->offersFacade()->extraOffersQuery()->countNotExpired($user->id()));
-        $this->assertTrue($this->systemContext->offersFacade()->offerThrottleQuery()->isThrottled($user->id()));
+        $this->assertSame(2, $this->offers->module()->extraOffersQuery()->countNotExpired($user->id()));
+        $this->assertTrue($this->offers->module()->offerThrottleQuery()->isThrottled($user->id()));
 
-        $this->systemContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
+        $this->offers->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $specialization));
 
-        $this->assertSame(1, $this->systemContext->offersFacade()->extraOffersQuery()->countNotExpired($user->id()));
+        $this->assertSame(1, $this->offers->module()->extraOffersQuery()->countNotExpired($user->id()));
         $this->assertGreaterThanOrEqual(
             2,
-            $this->systemContext->offersFacade()->extraOffersQuery()->findClosesToExpire($user->id())->expiresAt()->diff(new \DateTimeImmutable())->days
+            $this->offers->module()->extraOffersQuery()->findClosesToExpire($user->id())->expiresAt()->diff(new \DateTimeImmutable())->days
         );
     }
 }

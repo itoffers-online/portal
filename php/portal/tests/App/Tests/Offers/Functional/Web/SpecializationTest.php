@@ -15,7 +15,7 @@ namespace App\Tests\Offers\Functional\Web;
 
 use App\Tests\Functional\Web\WebTestCase;
 use ITOffers\Offers\Application\Query\Offer\OfferFilter;
-use ITOffers\Tests\Offers\Application\Double\Stub\CalendarStub;
+use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
 use Ramsey\Uuid\Uuid;
 
@@ -37,8 +37,8 @@ final class SpecializationTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
-        $this->offersContext->offersFacade()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
+        $this->offersContext->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
+        $this->offersContext->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization));
 
         $crawler = $client->request(
             'GET',
@@ -68,7 +68,7 @@ final class SpecializationTest extends WebTestCase
 
         $crawler = $client->submit($form);
 
-        $this->assertCount(1, $crawler->filter('[data-offer-id]'));
+        $this->assertCount(1, $crawler->filter('[data-offer-id]'), $client->getResponse()->getContent());
     }
 
     public function test_filter_out_not_remote_offers() : void
