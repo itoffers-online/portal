@@ -20,35 +20,17 @@ use Ramsey\Uuid\UuidInterface;
 
 class User
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $fbUserAppId;
+    private string $email;
 
-    /**
-     * @var string
-     */
-    private $linkedInUserAppId;
+    private \DateTimeImmutable $createdAt;
 
-    /**
-     * @var string
-     */
-    private $email;
+    private ?string $fbUserAppId = null;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $createdAt;
+    private ?string $linkedInUserAppId = null;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $blockedAt;
+    private ?\DateTimeImmutable $blockedAt = null;
 
     private function __construct(\DateTimeImmutable $createdAt, string $email)
     {

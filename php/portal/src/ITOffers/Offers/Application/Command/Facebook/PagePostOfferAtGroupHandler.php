@@ -25,25 +25,13 @@ use Ramsey\Uuid\Uuid;
 
 final class PagePostOfferAtGroupHandler implements Handler
 {
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var Posts
-     */
-    private $posts;
+    private Posts $posts;
 
-    /**
-     * @var Specializations
-     */
-    private $specializations;
+    private Specializations $specializations;
 
-    /**
-     * @var FacebookGroupService
-     */
-    private $facebookGroupService;
+    private FacebookGroupService $facebookGroupService;
 
     public function __construct(
         Offers $offers,

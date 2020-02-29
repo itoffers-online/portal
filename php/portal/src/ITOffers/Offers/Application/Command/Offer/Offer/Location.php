@@ -17,30 +17,15 @@ use ITOffers\Offers\Application\Command\Offer\Offer\Location\LatLng;
 
 final class Location
 {
-    /**
-     * @var bool
-     */
-    private $remote;
+    private bool $remote;
 
-    /**
-     * @var string|null
-     */
-    private $countryCode;
+    private ?string $countryCode;
 
-    /**
-     * @var string|null
-     */
-    private $city;
+    private ?string $city;
 
-    /**
-     * @var string|null
-     */
-    private $address;
+    private ?string $address;
 
-    /**
-     * @var LatLng|null
-     */
-    private $latLng;
+    private ?LatLng $latLng;
 
     public function __construct(bool $remote, ?string $countryCode = null, ?string $city = null, ?string $address = null, ?LatLng $latLng = null)
     {

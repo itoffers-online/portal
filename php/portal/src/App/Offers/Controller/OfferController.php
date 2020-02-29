@@ -22,6 +22,8 @@ use ITOffers\Offers\Application\Command\Offer\Offer\Company;
 use ITOffers\Offers\Application\Command\Offer\Offer\Contact;
 use ITOffers\Offers\Application\Command\Offer\Offer\Contract;
 use ITOffers\Offers\Application\Command\Offer\Offer\Description;
+use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements;
+use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Application\Command\Offer\Offer\Location;
 use ITOffers\Offers\Application\Command\Offer\Offer\Location\LatLng;
 use ITOffers\Offers\Application\Command\Offer\Offer\Offer;
@@ -50,30 +52,15 @@ final class OfferController extends AbstractController
     use FacebookAccess;
     use RedirectAfterLogin;
 
-    /**
-     * @var ITOffersOnline
-     */
-    private $itoffers;
+    private ITOffersOnline $itoffers;
 
-    /**
-     * @var Facebook
-     */
-    private $facebook;
+    private Facebook $facebook;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private ParameterBagInterface $parameterBag;
 
-    /**
-     * @var OfferThumbnail
-     */
-    private $offerThumbnail;
+    private OfferThumbnail $offerThumbnail;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         ITOffersOnline $itoffers,
@@ -169,16 +156,14 @@ final class OfferController extends AbstractController
                         new Contract($offerData['contract']),
                         new Description(
                             $offerData['description']['benefits'],
-                            new Description\Requirements(
+                            new Requirements(
                                 $offerData['description']['requirements']['description'],
                                 ...\array_map(
-                                    function (array $skillData) {
-                                        return new Description\Requirements\Skill(
-                                            $skillData['skill'],
-                                            (bool) $skillData['required'],
-                                            $skillData['experience'],
-                                        );
-                                    },
+                                    fn (array $skillData) => new Skill(
+                                        $skillData['skill'],
+                                        (bool) $skillData['required'],
+                                        $skillData['experience'],
+                                    ),
                                     $offerData['description']['requirements']['skills']
                                 )
                             )

@@ -17,10 +17,7 @@ use Doctrine\DBAL\Connection;
 
 final class DatabaseContext
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

@@ -15,20 +15,11 @@ namespace ITOffers\Offers\Application\Command\Offer\Offer;
 
 final class Company
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
 
     public function __construct(string $name, string $url, string $description)
     {

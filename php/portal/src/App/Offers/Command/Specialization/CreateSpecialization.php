@@ -33,15 +33,9 @@ final class CreateSpecialization extends Command
      */
     protected static $defaultName = self::NAME;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var SymfonyStyle
-     */
-    private $io;
+    private SymfonyStyle $io;
 
     public function __construct(Offers $offers)
     {

@@ -20,10 +20,7 @@ final class RenewOffer implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
     public function __construct(string $offerId)
     {

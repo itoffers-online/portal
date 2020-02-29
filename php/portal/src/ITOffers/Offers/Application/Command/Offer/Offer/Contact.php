@@ -15,20 +15,11 @@ namespace ITOffers\Offers\Application\Command\Offer\Offer;
 
 final class Contact
 {
-    /**
-     * @var string
-     */
-    private $email;
+    private string $email;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string|null
-     */
-    private $phone;
+    private ?string $phone;
 
     public function __construct(string $email, string $name, ?string $phone = null)
     {

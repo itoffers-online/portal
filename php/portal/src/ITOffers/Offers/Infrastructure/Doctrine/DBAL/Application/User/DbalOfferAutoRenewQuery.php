@@ -20,10 +20,7 @@ use ITOffers\Offers\Application\Query\User\OfferAutoRenewQuery;
 
 final class DbalOfferAutoRenewQuery implements OfferAutoRenewQuery
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -105,9 +102,7 @@ final class DbalOfferAutoRenewQuery implements OfferAutoRenewQuery
             ->fetchAll();
 
         return \array_map(
-            function (array $offerAutoRenewData) : OfferAutoRenew {
-                return new OfferAutoRenew($offerAutoRenewData['offer_id']);
-            },
+            fn (array $offerAutoRenewData) : OfferAutoRenew => new OfferAutoRenew($offerAutoRenewData['offer_id']),
             $offerAutoRenewsData
         );
     }

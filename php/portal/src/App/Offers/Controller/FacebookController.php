@@ -28,25 +28,13 @@ final class FacebookController extends AbstractController
     use FacebookAccess;
     use RedirectAfterLogin;
 
-    /**
-     * @var ITOffersOnline
-     */
-    private $itoffers;
+    private ITOffersOnline $itoffers;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var Facebook
-     */
-    private $facebook;
+    private Facebook $facebook;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         ITOffersOnline $itoffers,

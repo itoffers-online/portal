@@ -15,30 +15,15 @@ namespace ITOffers\Offers\Application\Command\Offer\Offer;
 
 final class Salary
 {
-    /**
-     * @var int
-     */
-    private $min;
+    private int $min;
 
-    /**
-     * @var int
-     */
-    private $max;
+    private int $max;
 
-    /**
-     * @var string
-     */
-    private $currencyCode;
+    private string $currencyCode;
 
-    /**
-     * @var bool
-     */
-    private $net;
+    private bool $net;
 
-    /**
-     * @var string
-     */
-    private $periodType;
+    private string $periodType;
 
     public function __construct(int $min, int $max, string $currencyCode, bool $net, string $periodType)
     {

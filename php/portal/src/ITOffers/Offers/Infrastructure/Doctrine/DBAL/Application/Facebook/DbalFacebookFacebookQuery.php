@@ -20,10 +20,7 @@ use Ramsey\Uuid\Uuid;
 
 final class DbalFacebookFacebookQuery implements FacebookQuery
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

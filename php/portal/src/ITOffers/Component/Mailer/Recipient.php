@@ -15,20 +15,11 @@ namespace ITOffers\Component\Mailer;
 
 final class Recipient
 {
-    /**
-     * @var string
-     */
-    private $email;
+    private string $email;
 
-    /**
-     * @var string|null
-     */
-    private $name;
+    private ?string $name;
 
-    /**
-     * @var bool
-     */
-    private $bcc;
+    private bool $bcc;
 
     public function __construct(string $email, string $name = null)
     {

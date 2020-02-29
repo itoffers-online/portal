@@ -15,20 +15,11 @@ namespace ITOffers\Offers\Application\Command\Offer\Offer\Description\Requiremen
 
 final class Skill
 {
-    /**
-     * @var string
-     */
-    private $skill;
+    private string $skill;
 
-    /**
-     * @var bool
-     */
-    private $required;
+    private bool $required;
 
-    /**
-     * @var int|null
-     */
-    private $experienceYears;
+    private ?int $experienceYears;
 
     public function __construct(string $skill, bool $required, ?int $experienceYears = null)
     {

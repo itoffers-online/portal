@@ -17,23 +17,20 @@ use ITOffers\Offers\Application\Query\Offer\Model\Offer\Description\Requirements
 
 final class Requirements
 {
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
 
     /**
      * @var Skill[]
      */
-    private $skills;
+    private array
+
+ $skills;
 
     public function __construct(string $description, Skill ...$skills)
     {
         \uasort(
             $skills,
-            function (Skill $skill, Skill $nextSkill) {
-                return $nextSkill->experienceYears() <=> $skill->experienceYears();
-            }
+            fn (Skill $skill, Skill $nextSkill) => $nextSkill->experienceYears() <=> $skill->experienceYears()
         );
         $this->description = $description;
         $this->skills = $skills;
@@ -56,9 +53,7 @@ final class Requirements
     {
         return \array_filter(
             $this->skills,
-            function (Skill $skill) {
-                return $skill->required();
-            }
+            fn (Skill $skill) => $skill->required()
         );
     }
 
@@ -66,9 +61,7 @@ final class Requirements
     {
         return \array_filter(
             $this->skills,
-            function (Skill $skill) {
-                return !$skill->required();
-            }
+            fn (Skill $skill) => !$skill->required()
         );
     }
 }

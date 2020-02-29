@@ -15,27 +15,20 @@ namespace ITOffers\Offers\UserInterface;
 
 final class MetricSuffix
 {
-    const CONVERT_THRESHOLD = 1000;
+    const CONVERT_THRESHOLD = 1_000;
 
-    /**
-     * @var int
-     */
-    private $number;
+    private int $number;
 
-    /**
-     * @var string
-     */
-    private $locale;
+    private string $locale;
 
-    /**
-     * @var array
-     */
-    private $binaryPrefixes = [
-        1000000000000000 => '#.##P',
-        1000000000000 => '#.##T',
-        1000000000 => '#.##G',
-        1000000 => '#.##M',
-        1000 => '#.#k',
+    private array
+
+ $binaryPrefixes = [
+        1_000_000_000_000_000 => '#.##P',
+        1_000_000_000_000 => '#.##T',
+        1_000_000_000 => '#.##G',
+        1_000_000 => '#.##M',
+        1_000 => '#.#k',
         0 => '#.#',
     ];
 

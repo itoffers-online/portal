@@ -19,10 +19,7 @@ use ITOffers\Offers\Application\Query\User\Model\ExtraOffer;
 
 final class DbalExtraOffersQuery implements ExtraOffersQuery
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

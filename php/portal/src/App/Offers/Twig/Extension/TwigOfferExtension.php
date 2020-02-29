@@ -19,10 +19,7 @@ use Twig\TwigFilter;
 
 final class TwigOfferExtension extends AbstractExtension
 {
-    /**
-     * @var OfferExtension
-     */
-    private $extension;
+    private OfferExtension $extension;
 
     public function __construct(OfferExtension $extension)
     {

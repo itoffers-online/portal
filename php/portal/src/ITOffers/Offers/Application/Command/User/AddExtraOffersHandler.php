@@ -23,20 +23,11 @@ use Ramsey\Uuid\Uuid;
 
 final class AddExtraOffersHandler implements Handler
 {
-    /**
-     * @var Users
-     */
-    private $users;
+    private Users $users;
 
-    /**
-     * @var ExtraOffers
-     */
-    private $extraOffers;
+    private ExtraOffers $extraOffers;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(Users $users, ExtraOffers $extraOffers, Calendar $calendar)
     {
@@ -56,9 +47,7 @@ final class AddExtraOffersHandler implements Handler
         $user = $this->users->getById(Uuid::fromString($command->userId()));
 
         $this->extraOffers->add(...\array_map(
-            function () use ($user, $command) {
-                return ExtraOffer::expiresInDays($user->id(), $command->expiresInDays(), $this->calendar);
-            },
+            fn () => ExtraOffer::expiresInDays($user->id(), $command->expiresInDays(), $this->calendar),
             \range(1, $command->count())
         ));
     }

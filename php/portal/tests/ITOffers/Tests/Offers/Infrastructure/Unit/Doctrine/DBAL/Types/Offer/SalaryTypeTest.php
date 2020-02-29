@@ -36,7 +36,7 @@ final class SalaryTypeTest extends TypeTestCase
     {
         return [
             [null],
-            [SalaryMother::netPLN(1000, 5000)],
+            [SalaryMother::netPLN(1_000, 5_000)],
         ];
     }
 }

@@ -18,26 +18,17 @@ use ITOffers\Offers\Application\Offer\Position\SeniorityLevels;
 
 final class Position
 {
-    /**
-     * @var int
-     */
-    private $seniorityLevel;
+    private int $seniorityLevel;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
 
     public function __construct(int $seniorityLevel, string $name, string $description)
     {
         Assertion::inArray($seniorityLevel, SeniorityLevels::all());
         Assertion::betweenLength($name, 3, 255);
-        Assertion::betweenLength($description, 50, 2048);
+        Assertion::betweenLength($description, 50, 2_048);
 
         $this->seniorityLevel = $seniorityLevel;
         $this->name = $name;

@@ -20,15 +20,9 @@ use ITOffers\Offers\Application\Query\Offer\ApplicationQuery;
 
 final class DbalApplicationQuery implements ApplicationQuery
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var Encoder
-     */
-    private $encoder;
+    private Encoder $encoder;
 
     public function __construct(Connection $connection, Encoder $encoder)
     {

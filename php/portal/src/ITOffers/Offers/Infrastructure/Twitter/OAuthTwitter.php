@@ -20,15 +20,9 @@ use ITOffers\Offers\Application\Twitter\Twitter;
 
 final class OAuthTwitter implements Twitter
 {
-    /**
-     * @var string
-     */
-    private $apiKey;
+    private string $apiKey;
 
-    /**
-     * @var string
-     */
-    private $apiSecret;
+    private string $apiSecret;
 
     public function __construct(string $apiKey, string $apiSecret)
     {

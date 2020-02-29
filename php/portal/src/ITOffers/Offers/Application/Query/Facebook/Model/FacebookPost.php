@@ -17,15 +17,9 @@ use Ramsey\Uuid\UuidInterface;
 
 final class FacebookPost
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var UuidInterface
-     */
-    private $offerId;
+    private UuidInterface $offerId;
 
     public function __construct(string $id, UuidInterface $offerId)
     {

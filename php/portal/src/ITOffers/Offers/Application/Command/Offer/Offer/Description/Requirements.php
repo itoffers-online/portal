@@ -17,15 +17,12 @@ use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements\Ski
 
 final class Requirements
 {
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
 
     /**
      * @var Skill[]
      */
-    private $skills;
+    private array $skills;
 
     public function __construct(string $description, Skill ...$skills)
     {

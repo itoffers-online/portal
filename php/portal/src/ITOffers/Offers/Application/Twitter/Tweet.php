@@ -18,15 +18,9 @@ use ITOffers\Offers\Application\Offer\Offer;
 
 class Tweet
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $jobOfferId;
+    private string $jobOfferId;
 
     public function __construct(string $id, Offer $offer)
     {

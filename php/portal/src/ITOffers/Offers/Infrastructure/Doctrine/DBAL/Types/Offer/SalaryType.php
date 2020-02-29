@@ -18,6 +18,7 @@ use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\JsonType;
 use ITOffers\Component\Reflection\PrivateFields;
 use ITOffers\Offers\Application\Offer\Salary;
+use ITOffers\Offers\Application\Offer\Salary\Period;
 
 final class SalaryType extends JsonType
 {
@@ -46,7 +47,7 @@ final class SalaryType extends JsonType
             'currency_code' => self::getPrivatePropertyValue($value, 'currencyCode'),
             'net' => self::getPrivatePropertyValue($value, 'net'),
             'period_type' => self::getPrivatePropertyValue(self::getPrivatePropertyValue($value, 'period'), 'type'),
-        ]);
+        ], JSON_THROW_ON_ERROR);
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
@@ -55,14 +56,14 @@ final class SalaryType extends JsonType
             return $value;
         }
 
-        $data = \json_decode($value, true);
+        $data = \json_decode($value, true, 512, JSON_THROW_ON_ERROR);
 
         return new Salary(
             $data['min'],
             $data['max'],
             $data['currency_code'],
             $data['net'],
-            Salary\Period::fromString($data['period_type'])
+            Period::fromString($data['period_type'])
         );
     }
 

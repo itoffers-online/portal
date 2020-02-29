@@ -17,35 +17,17 @@ use ITOffers\Offers\Application\Assertion;
 
 final class Location
 {
-    /**
-     * @var bool
-     */
-    private $remote;
+    private bool $remote;
 
-    /**
-     * @var string |null
-     */
-    private $countryCode;
+    private ?string $countryCode;
 
-    /**
-     * @var string|null
-     */
-    private $city;
+    private ?string $city;
 
-    /**
-     * @var string |null
-     */
-    private $address;
+    private ?string $address;
 
-    /**
-     * @var float
-     */
-    private $lat;
+    private float $lat;
 
-    /**
-     * @var float
-     */
-    private $lng;
+    private float $lng;
 
     private function __construct()
     {

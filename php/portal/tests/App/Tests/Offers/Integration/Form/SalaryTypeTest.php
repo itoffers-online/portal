@@ -30,7 +30,7 @@ final class SalaryTypeTest extends TypeTestCase
     public function test_submit_only_min() : void
     {
         $formData = [
-            'min' => 1500,
+            'min' => 1_500,
             'max' => null,
         ];
         $form = $this->factory->create(SalaryType::class, null, []);
@@ -45,7 +45,7 @@ final class SalaryTypeTest extends TypeTestCase
     {
         $formData = [
             'min' => null,
-            'max' => 1500,
+            'max' => 1_500,
         ];
         $form = $this->factory->create(SalaryType::class, null, []);
         $form->submit($formData);
@@ -58,8 +58,8 @@ final class SalaryTypeTest extends TypeTestCase
     public function test_submit_min_greater_than_max() : void
     {
         $formData = [
-            'min' => 5000,
-            'max' => 1500,
+            'min' => 5_000,
+            'max' => 1_500,
         ];
         $form = $this->factory->create(SalaryType::class, null, []);
         $form->submit($formData);

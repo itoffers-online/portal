@@ -21,10 +21,7 @@ final class TweetAboutOfferFeature implements Feature
 {
     public const NAME = 'tweet_about_offer';
 
-    /**
-     * @var bool
-     */
-    private $enabled;
+    private bool $enabled;
 
     public function __construct(bool $enabled)
     {

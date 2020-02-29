@@ -17,10 +17,7 @@ use ITOffers\Component\Calendar\Calendar;
 
 final class SystemCalendar implements Calendar
 {
-    /**
-     * @var \DateTimeZone
-     */
-    private $timeZone;
+    private \DateTimeZone $timeZone;
 
     public function __construct(\DateTimeZone $timeZone)
     {

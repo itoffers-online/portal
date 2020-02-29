@@ -35,9 +35,7 @@ final class Specializations extends \ArrayObject
         return \current(
             \array_filter(
                 (array) $this,
-                function (Specialization $specialization) use ($offer) {
-                    return $specialization->is($offer->specializationSlug());
-                }
+                fn (Specialization $specialization) => $specialization->is($offer->specializationSlug())
             )
         );
     }
@@ -46,9 +44,7 @@ final class Specializations extends \ArrayObject
     {
         return (bool) \array_filter(
             (array) $this,
-            function (Specialization $specialization) use ($slug) {
-                return $specialization->is($slug);
-            }
+            fn (Specialization $specialization) => $specialization->is($slug)
         );
     }
 
@@ -57,9 +53,7 @@ final class Specializations extends \ArrayObject
         return \current(
             \array_filter(
                 (array) $this,
-                function (Specialization $specialization) use ($slug) {
-                    return $specialization->is($slug);
-                }
+                fn (Specialization $specialization) => $specialization->is($slug)
             )
         );
     }
@@ -71,9 +65,7 @@ final class Specializations extends \ArrayObject
     {
         return \array_filter(
             (array) $this,
-            function (Specialization $specialization) {
-                return $specialization->facebookChannel();
-            }
+            fn (Specialization $specialization) => $specialization->facebookChannel()
         );
     }
 
@@ -84,9 +76,7 @@ final class Specializations extends \ArrayObject
     {
         return \array_filter(
             (array) $this,
-            function (Specialization $specialization) {
-                return $specialization->twitterChannel();
-            }
+            fn (Specialization $specialization) => $specialization->twitterChannel()
         );
     }
 }

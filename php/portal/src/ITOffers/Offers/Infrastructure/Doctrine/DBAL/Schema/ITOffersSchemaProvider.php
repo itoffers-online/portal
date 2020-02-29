@@ -19,10 +19,7 @@ use Doctrine\ORM\EntityManager;
 
 final class ITOffersSchemaProvider implements SchemaProviderInterface
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     public function __construct(EntityManager $entityManager)
     {

@@ -40,7 +40,7 @@ final class PositionType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'constraints' => [
-                    new Length(['min' => 50, 'max' => 1024]),
+                    new Length(['min' => 50, 'max' => 1_024]),
                     new NotContainsEmoji(),
                 ],
             ])

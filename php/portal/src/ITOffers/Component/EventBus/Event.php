@@ -17,25 +17,13 @@ use Ramsey\Uuid\UuidInterface;
 
 final class Event
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var UuidInterface
-     */
-    private $eventId;
+    private UuidInterface $eventId;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $occurredAt;
+    private \DateTimeImmutable $occurredAt;
 
-    /**
-     * @var array
-     */
-    private $payload;
+    private array $payload;
 
     public function __construct(UuidInterface $id, \DateTimeImmutable $occurredAt, string $name, array $payload)
     {

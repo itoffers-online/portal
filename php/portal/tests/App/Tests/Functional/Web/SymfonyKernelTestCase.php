@@ -26,20 +26,11 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class SymfonyKernelTestCase extends KernelTestCase
 {
-    /**
-     * @var ITOffersOnline
-     */
-    protected static $itoffers;
+    protected static ?ITOffersOnline $itoffers = null;
 
-    /**
-     * @var OffersContext
-     */
-    protected $offersContext;
+    protected OffersContext $offersContext;
 
-    /**
-     * @var DatabaseContext
-     */
-    protected $databaseContext;
+    protected DatabaseContext $databaseContext;
 
     protected static function getKernelClass()
     {

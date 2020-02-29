@@ -18,28 +18,21 @@ use ITOffers\Offers\Application\Offer\Description\Requirements\Skill;
 
 final class Requirements
 {
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
 
     /**
      * @var Skill[]
      */
-    private $skills;
+    private array $skills;
 
     public function __construct(string $description, Skill ...$skills)
     {
-        Assertion::betweenLength($description, 100, 2048);
+        Assertion::betweenLength($description, 100, 2_048);
 
         Assertion::count(
-            \array_unique(\array_map(function (Skill $skill) {
-                return \mb_strtolower($skill->name());
-            }, $skills)),
+            \array_unique(\array_map(fn (Skill $skill) => \mb_strtolower($skill->name()), $skills)),
             \count($skills),
-            \sprintf('Skills can\'t be duplicated: %s', \implode(', ', \array_map(function (Skill $skill) {
-                return \mb_strtolower($skill->name());
-            }, $skills)))
+            \sprintf('Skills can\'t be duplicated: %s', \implode(', ', \array_map(fn (Skill $skill) => \mb_strtolower($skill->name()), $skills)))
         );
         Assertion::maxCount($skills, 50, 'Can\'t add more than 50 skills');
 

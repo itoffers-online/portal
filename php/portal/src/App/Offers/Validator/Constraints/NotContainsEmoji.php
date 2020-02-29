@@ -20,10 +20,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class NotContainsEmoji extends Constraint
 {
-    /**
-     * @var string
-     */
-    public $message = 'Text contains emoji, that at this point are not allowed.';
+    public string $message = 'Text contains emoji, that at this point are not allowed.';
 
     public function validatedBy() : string
     {

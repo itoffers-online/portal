@@ -24,20 +24,11 @@ use ITOffers\Offers\UserInterface\SpecializationThumbnail;
 
 final class ImagineSpecializationThumbnail implements SpecializationThumbnail
 {
-    /**
-     * @var string
-     */
-    private $projectRootDir;
+    private string $projectRootDir;
 
-    /**
-     * @var ImagineColors
-     */
-    private $colors;
+    private ImagineColors $colors;
 
-    /**
-     * @var SpecializationExtension
-     */
-    private $specializationExtension;
+    private SpecializationExtension $specializationExtension;
 
     public function __construct(string $projectRootDir, SpecializationExtension $specializationExtension)
     {
@@ -55,7 +46,7 @@ final class ImagineSpecializationThumbnail implements SpecializationThumbnail
         }
 
         $imagine = new Imagine();
-        $size  = new Box($width = 1200, $height = 640);
+        $size  = new Box($width = 1_200, $height = 640);
 
         $image = $imagine->create($size, $this->colors->light());
 
@@ -158,7 +149,7 @@ final class ImagineSpecializationThumbnail implements SpecializationThumbnail
             $destinationPath,
             $options = [
                 'resolution-units' => ImageInterface::RESOLUTION_PIXELSPERINCH,
-                'resolution-x' => 1240,
+                'resolution-x' => 1_240,
                 'resolution-y' => 640,
             ]
         );

@@ -58,7 +58,7 @@
       - 'short_open_tag = 0'
 
     php_http_connector: fpm
-    php_version: "7.3"
+    php_version: "7.4"
     php_extensions:
       - "php{{ php7_version }}-cli"
       - "php{{ php7_version }}-gd"

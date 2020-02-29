@@ -18,10 +18,7 @@ use Symfony\Component\Intl\Locales;
 
 final class Locale
 {
-    /**
-     * @var string
-     */
-    private $code;
+    private string $code;
 
     public function __construct(string $code)
     {

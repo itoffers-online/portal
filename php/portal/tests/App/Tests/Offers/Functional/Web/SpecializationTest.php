@@ -21,10 +21,7 @@ use Ramsey\Uuid\Uuid;
 
 final class SpecializationTest extends WebTestCase
 {
-    /**
-     * @var string
-     */
-    private $specialization = 'spec';
+    private string $specialization = 'spec';
 
     public function setUp() : void
     {
@@ -93,16 +90,16 @@ final class SpecializationTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('[data-offer-id]'));
     }
 
-    public function test_sort_by_salary_ASC() : void
+    public function test_sort_by_salary__asc() : void
     {
         /** @var CalendarStub $calendar */
         $calendar = $this->offersFacade()->calendar();
         $calendar->goBack($seconds = 15);
-        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 5000));
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 5_000));
         $calendar->goBack($seconds = 10);
-        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 3000));
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 3_000));
         $calendar->goBack($seconds = 5);
-        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 7000));
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 7_000));
 
 
         $client = static::createClient();
@@ -120,27 +117,25 @@ final class SpecializationTest extends WebTestCase
 
 
         $salaries = \array_map(
-            function (\DOMElement $node) {
-                return (int) $node->getAttribute('data-salary-max');
-            },
+            fn (\DOMElement $node) => (int) $node->getAttribute('data-salary-max'),
             (array) $crawler->filter('[data-salary-max]')->getIterator()
         );
 
-        $this->assertEquals(3000, $salaries[0]);
-        $this->assertEquals(5000, $salaries[1]);
-        $this->assertEquals(7000, $salaries[2]);
+        $this->assertEquals(3_000, $salaries[0]);
+        $this->assertEquals(5_000, $salaries[1]);
+        $this->assertEquals(7_000, $salaries[2]);
     }
 
-    public function test_sort_by_created_at_ASC() : void
+    public function test_sort_by_created_at__asc() : void
     {
         /** @var CalendarStub $calendar */
         $calendar = $this->offersFacade()->calendar();
         $calendar->goBack($seconds = 15);
-        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 5000));
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 5_000));
         $calendar->goBack($seconds = 10);
-        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 3000));
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 3_000));
         $calendar->goBack($seconds = 5);
-        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1000, $max = 7000));
+        $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 7_000));
 
 
         $client = static::createClient();
@@ -158,14 +153,12 @@ final class SpecializationTest extends WebTestCase
 
 
         $salaries = \array_map(
-            function (\DOMElement $node) {
-                return (int) $node->getAttribute('data-salary-max');
-            },
+            fn (\DOMElement $node) => (int) $node->getAttribute('data-salary-max'),
             (array) $crawler->filter('[data-salary-max]')->getIterator()
         );
 
-        $this->assertEquals(7000, $salaries[0]);
-        $this->assertEquals(3000, $salaries[1]);
-        $this->assertEquals(5000, $salaries[2]);
+        $this->assertEquals(7_000, $salaries[0]);
+        $this->assertEquals(3_000, $salaries[1]);
+        $this->assertEquals(5_000, $salaries[2]);
     }
 }

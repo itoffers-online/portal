@@ -17,15 +17,9 @@ use ITOffers\Offers\Application\Assertion;
 
 final class File
 {
-    /**
-     * @var string
-     */
-    private $destinationPath;
+    private string $destinationPath;
 
-    /**
-     * @var string
-     */
-    private $tmpPath;
+    private string $tmpPath;
 
     public function __construct(string $dstPath, string $tmpPath)
     {

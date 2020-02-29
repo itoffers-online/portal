@@ -19,10 +19,7 @@ use ITOffers\Offers\Application\Specialization\Specializations;
 
 final class CreateSpecializationHandler implements Handler
 {
-    /**
-     * @var Specializations
-     */
-    private $specializations;
+    private Specializations $specializations;
 
     public function __construct(Specializations $specializations)
     {

@@ -28,15 +28,9 @@ use Throwable;
 
 final class FacebookGraphSDK implements Facebook
 {
-    /**
-     * @var FacebookSDK
-     */
-    private $facebook;
+    private FacebookSDK $facebook;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(FacebookSDK $facebook, LoggerInterface $logger)
     {

@@ -1,9 +1,12 @@
 parameters:
-  php_version_features: '7.3'
+  php_version_features: '7.4'
   paths:
     - 'src'
     - 'tests'
   auto_import_names: true
   import_short_classes: false
-services:
-  Rector\TypeDeclaration\Rector\Property\PropertyTypeDeclarationRector: ~
+  sets:
+    - 'php71'
+    - 'php72'
+    - 'php73'
+    - 'php74'

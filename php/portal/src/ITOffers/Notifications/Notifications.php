@@ -20,6 +20,7 @@ use ITOffers\Component\Mailer\Recipients;
 use ITOffers\Component\Mailer\Sender;
 use ITOffers\Notifications\Application\Email\EmailFormatter;
 use ITOffers\Notifications\Application\Event;
+use ITOffers\Notifications\Application\Event\OfferPostedEvent;
 use ITOffers\Notifications\Application\Exception\Exception;
 use ITOffers\Notifications\Application\Offers;
 
@@ -37,35 +38,17 @@ use ITOffers\Notifications\Application\Offers;
  */
 final class Notifications
 {
-    /**
-     * @var bool
-     */
-    private $disabled;
+    private bool $disabled;
 
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private Mailer $mailer;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var EmailFormatter
-     */
-    private $emailFormatter;
+    private EmailFormatter $emailFormatter;
 
-    /**
-     * @var string
-     */
-    private $contactEmail;
+    private string $contactEmail;
 
-    /**
-     * @var string
-     */
-    private $domain;
+    private string $domain;
 
     public function __construct(
         Mailer $mailer,
@@ -89,7 +72,7 @@ final class Notifications
         }
 
         switch (\get_class($event)) {
-            case Event\OfferPostedEvent::class:
+            case OfferPostedEvent::class:
 
                 $offer = $this->offers->getById($event->offerId());
                 $this->mailer->send(

@@ -23,12 +23,9 @@ final class CommandBus
     /**
      * @var Handler[]
      */
-    private $handlers;
+    private array $handlers;
 
-    /**
-     * @var TransactionManager
-     */
-    private $transactionManager;
+    private TransactionManager $transactionManager;
 
     public function __construct(TransactionManager $transactionManager, Handler ...$handlers)
     {

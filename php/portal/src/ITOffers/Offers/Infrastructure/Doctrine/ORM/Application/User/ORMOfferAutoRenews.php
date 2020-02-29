@@ -25,15 +25,9 @@ use Ramsey\Uuid\UuidInterface;
 
 final class ORMOfferAutoRenews implements OfferAutoRenews
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    private EntityManager $entityManager;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(EntityManager $entityManager, Calendar $calendar)
     {

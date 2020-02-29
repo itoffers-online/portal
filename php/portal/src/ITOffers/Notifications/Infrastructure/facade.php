@@ -39,15 +39,9 @@ function notificationsFacade(Config $config, InMemoryEventBus $eventBus, Offers 
     );
 
     $eventBus->registerTo('offers', new class($notifications, $logger) implements Subscriber {
-        /**
-         * @var Notifications
-         */
-        private $notifications;
+        private Notifications $notifications;
 
-        /**
-         * @var LoggerInterface
-         */
-        private $logger;
+        private LoggerInterface $logger;
 
         public function __construct(Notifications $notifications, LoggerInterface $logger)
         {

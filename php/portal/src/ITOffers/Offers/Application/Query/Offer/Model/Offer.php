@@ -27,55 +27,25 @@ use Ramsey\Uuid\UuidInterface;
 
 final class Offer
 {
-    /**
-     * @var UuidInterface
-     */
-    private $id;
+    private UuidInterface $id;
 
-    /**
-     * @var string
-     */
-    private $slug;
+    private string $slug;
 
-    /**
-     * @var string
-     */
-    private $emailHash;
+    private string $emailHash;
 
-    /**
-     * @var string
-     */
-    private $locale;
+    private string $locale;
 
-    /**
-     * @var UuidInterface|null
-     */
-    private $userId;
+    private ?UuidInterface $userId;
 
-    /**
-     * @var string
-     */
-    private $specializationSlug;
+    private string $specializationSlug;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $createdAt;
+    private \DateTimeImmutable $createdAt;
 
-    /**
-     * @var Parameters
-     */
-    private $parameters;
+    private Parameters $parameters;
 
-    /**
-     * @var int
-     */
-    private $applicationsCount;
+    private int $applicationsCount;
 
-    /**
-     * @var OfferPDF|null
-     */
-    private $offerPDF;
+    private ?OfferPDF $offerPDF;
 
     public function __construct(
         UuidInterface $id,

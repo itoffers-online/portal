@@ -20,20 +20,11 @@ final class AddOfferAutoRenews implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var int
-     */
-    private $count;
+    private int $count;
 
-    /**
-     * @var int
-     */
-    private $expiresInDays;
+    private int $expiresInDays;
 
     public function __construct(string $userId, int $count, int $expiresInDays)
     {

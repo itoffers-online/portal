@@ -21,20 +21,11 @@ use Ramsey\Uuid\Uuid;
 
 final class RenewOfferHandler implements Handler
 {
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var OfferAutoRenews
-     */
-    private $offerAutoRenews;
+    private OfferAutoRenews $offerAutoRenews;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(
         Offers $offers,

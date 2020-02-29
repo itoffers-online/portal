@@ -15,15 +15,9 @@ namespace ITOffers\Offers\Application\Query\Specialization\Model\Specialization;
 
 final class Offers
 {
-    /**
-     * @var int
-     */
-    private $count;
+    private int $count;
 
-    /**
-     * @var \DateTimeImmutable|null
-     */
-    private $latestOfferDate;
+    private ?\DateTimeImmutable $latestOfferDate;
 
     private function __construct()
     {

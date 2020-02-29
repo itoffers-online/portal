@@ -21,55 +21,25 @@ use Ramsey\Uuid\UuidInterface;
 
 class Specialization
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $slug;
+    private string $slug;
 
-    /**
-     * @var string|null
-     */
-    private $facebookChannelPageId;
+    private ?string $facebookChannelPageId = null;
 
-    /**
-     * @var string|null
-     */
-    private $facebookChannelPageAccessToken;
+    private ?string $facebookChannelPageAccessToken = null;
 
-    /**
-     * @var string|null
-     */
-    private $facebookChannelGroupId;
+    private ?string $facebookChannelGroupId = null;
 
-    /**
-     * @var string|null
-     */
-    private $facebookChannelGroupName;
+    private ?string $facebookChannelGroupName = null;
 
-    /**
-     * @var string|null
-     */
-    private $twitterAccountId;
+    private ?string $twitterAccountId = null;
 
-    /**
-     * @var string|null
-     */
-    private $twitterScreenName;
+    private ?string $twitterScreenName = null;
 
-    /**
-     * @var string|null
-     */
-    private $twitteroAuthToken;
+    private ?string $twitteroAuthToken = null;
 
-    /**
-     * @var string|null
-     */
-    private $twitteroAuthTokenSecret;
+    private ?string $twitteroAuthTokenSecret = null;
 
     public function __construct(string $slug)
     {

@@ -15,35 +15,17 @@ namespace ITOffers\Offers\Application\Query\Offer\Model\Offer;
 
 final class Location
 {
-    /**
-     * @var bool
-     */
-    private $remote;
+    private bool $remote;
 
-    /**
-     * @var string|null
-     */
-    private $countryCode;
+    private ?string $countryCode;
 
-    /**
-     * @var string|null
-     */
-    private $city;
+    private ?string $city;
 
-    /**
-     * @var string|null
-     */
-    private $address;
+    private ?string $address;
 
-    /**
-     * @var float|null
-     */
-    private $lat;
+    private ?float $lat;
 
-    /**
-     * @var float|null
-     */
-    private $lng;
+    private ?float $lng;
 
     public function __construct(bool $remote, ?string $countryCode = null, ?string $city = null, ?string $address = null, ?float $lat = null, ?float $lng = null)
     {

@@ -29,10 +29,7 @@ final class Period
 
     private const IN_TOTAL = 'IN_TOTAL';
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
     private function __construct(string $type)
     {

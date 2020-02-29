@@ -13,21 +13,14 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Infrastructure\Unit\Doctrine\DBAL\Types;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\TestCase;
 
 abstract class TypeTestCase extends TestCase
 {
-    /**
-     * @var AbstractPlatform
-     */
-    protected $platform;
+    protected MockPlatform $platform;
 
-    /**
-     * @var Type
-     */
-    protected $type;
+    protected Type $type;
 
     protected function setUp() : void
     {

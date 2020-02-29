@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace ITOffers\Tests\Offers\Application\MotherObject\Offer;
 
 use ITOffers\Offers\Application\Offer\Salary;
+use ITOffers\Offers\Application\Offer\Salary\Period;
 
 final class SalaryMother
 {
     public static function netPLN(int $min, int $max) : Salary
     {
-        return new Salary($min, $max, 'PLN', true, Salary\Period::perMonth());
+        return new Salary($min, $max, 'PLN', true, Period::perMonth());
     }
 }

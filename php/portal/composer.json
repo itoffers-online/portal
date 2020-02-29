@@ -1,7 +1,7 @@
 {
     "name": "itoffers-online/portal",
     "type": "project",
-    "license": "GPL-3.0-or-later",
+    "license": "RPL-1.5",
     "authors": [
         {
             "name": "Norbert Orzechowicz",
@@ -28,7 +28,7 @@
         }
     },
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
@@ -81,7 +81,7 @@
     },
     "require-dev": {
         "ergebnis/phpstan-rules": "^0.14.2",
-        "friendsofphp/php-cs-fixer": "^2.14",
+        "friendsofphp/php-cs-fixer": "dev-master#70e0c017afd31ad66c1171c0f6343c13a9a387b5",
         "infection/infection": "^0.15.0",
         "norberttech/md-link-linter": "@dev",
         "nyholm/psr7": "^1.2",
@@ -92,8 +92,8 @@
         "phpstan/phpstan-symfony": "^0.12.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.0",
         "phpunit/phpunit": "^8.0",
-        "rector/rector": "^0.6.3",
-        "sensiolabs-de/deptrac-shim": "^0.5.0",
+        "rector/rector": "^0.7.2",
+        "sensiolabs-de/deptrac-shim": "^0.6.0",
         "structurizr-php/structurizr-php": "@dev",
         "symfony/browser-kit": "^4.4",
         "symfony/css-selector": "^4.4",
@@ -123,6 +123,7 @@
         "test": [
             "rm -rf ./var/phpunit",
             "security-checker security:check",
+            "./vendor/bin/rector process --dry-run",
             "./vendor/bin/deptrac",
             "@test:php:cs",
             "@db:reset:test",

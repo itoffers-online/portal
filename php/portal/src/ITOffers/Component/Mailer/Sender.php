@@ -17,20 +17,11 @@ use ITOffers\Offers\Application\Assertion;
 
 final class Sender
 {
-    /**
-     * @var string
-     */
-    private $email;
+    private string $email;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $replyEmail;
+    private string $replyEmail;
 
     public function __construct(string $email, string $name, string $replyEmail)
     {

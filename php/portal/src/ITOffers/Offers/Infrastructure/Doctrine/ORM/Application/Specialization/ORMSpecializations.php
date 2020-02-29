@@ -20,10 +20,7 @@ use ITOffers\Offers\Application\Specialization\Specializations;
 
 final class ORMSpecializations implements Specializations
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     public function __construct(EntityManager $entityManager)
     {

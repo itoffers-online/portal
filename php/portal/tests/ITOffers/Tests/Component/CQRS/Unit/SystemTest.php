@@ -14,8 +14,12 @@ declare(strict_types=1);
 namespace ITOffers\Tests\Component\CQRS\Unit;
 
 use ITOffers\Component\CQRS\EventStream;
+use ITOffers\Component\CQRS\EventStream\Event;
 use ITOffers\Component\CQRS\Exception\Exception;
 use ITOffers\Component\CQRS\System;
+use ITOffers\Component\CQRS\System\CommandBus;
+use ITOffers\Component\CQRS\System\Handler;
+use ITOffers\Component\CQRS\System\Queries;
 use ITOffers\Component\FeatureToggle\FeatureToggle;
 use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Component\CQRS\Double\Stub\EventStreamStub;
@@ -32,10 +36,10 @@ final class SystemTest extends TestCase
     public function test_handling_command_disabled_by_feature_toggle() : void
     {
         $system = new System(
-            new System\CommandBus(
+            new CommandBus(
                 new DummyTransactionManager()
             ),
-            new System\Queries(),
+            new Queries(),
             new FeatureToggle(
                 new DisabledFeatureStub(DummyCommand::class)
             ),
@@ -61,13 +65,10 @@ final class SystemTest extends TestCase
             ->method('flush');
 
         $system = new System(
-            new System\CommandBus(
+            new CommandBus(
                 new DummyTransactionManager(),
-                new class($eventStream) implements System\Handler {
-                    /**
-                     * @var EventStream
-                     */
-                    private $eventStream;
+                new class($eventStream) implements Handler {
+                    private EventStream $eventStream;
 
                     public function __construct(EventStream $eventStream)
                     {
@@ -81,7 +82,7 @@ final class SystemTest extends TestCase
 
                     public function __invoke() : void
                     {
-                        $this->eventStream->record(new class implements EventStream\Event {
+                        $this->eventStream->record(new class implements Event {
                             public function id() : UuidInterface
                             {
                                 return Uuid::uuid4();
@@ -100,7 +101,7 @@ final class SystemTest extends TestCase
                     }
                 }
             ),
-            new System\Queries(),
+            new Queries(),
             new FeatureToggle(),
             new CalendarStub(),
             $eventStream,
@@ -121,13 +122,10 @@ final class SystemTest extends TestCase
             ->willThrowException(new \RuntimeException('Can\'t Flush'));
 
         $system = new System(
-            new System\CommandBus(
+            new CommandBus(
                 new DummyTransactionManager(),
-                new class($eventStream) implements System\Handler {
-                    /**
-                     * @var EventStream
-                     */
-                    private $eventStream;
+                new class($eventStream) implements Handler {
+                    private EventStream $eventStream;
 
                     public function __construct(EventStream $eventStream)
                     {
@@ -141,7 +139,7 @@ final class SystemTest extends TestCase
 
                     public function __invoke() : void
                     {
-                        $this->eventStream->record(new class implements EventStream\Event {
+                        $this->eventStream->record(new class implements Event {
                             public function id() : UuidInterface
                             {
                                 return Uuid::uuid4();
@@ -160,7 +158,7 @@ final class SystemTest extends TestCase
                     }
                 }
             ),
-            new System\Queries(),
+            new Queries(),
             new FeatureToggle(),
             new CalendarStub(),
             $eventStream,

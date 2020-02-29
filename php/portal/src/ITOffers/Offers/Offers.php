@@ -36,15 +36,9 @@ use ITOffers\Offers\Application\Query\User\UserQuery;
  */
 final class Offers
 {
-    /**
-     * @var System
-     */
-    private $system;
+    private System $system;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(System $system, Calendar $calendar)
     {

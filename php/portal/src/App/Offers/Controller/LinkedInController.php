@@ -28,25 +28,13 @@ final class LinkedInController extends AbstractController
     use LinkedInAccess;
     use RedirectAfterLogin;
 
-    /**
-     * @var ITOffersOnline
-     */
-    private $itoffers;
+    private ITOffersOnline $itoffers;
 
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private RouterInterface $router;
 
-    /**
-     * @var LinkedIn
-     */
-    private $linkedIn;
+    private LinkedIn $linkedIn;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         ITOffersOnline $itoffers,

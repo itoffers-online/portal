@@ -18,15 +18,9 @@ use ITOffers\Offers\Application\Offer\Offer;
 
 final class Draft
 {
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @var string
-     */
-    private $link;
+    private string $link;
 
     private function __construct(string $message, string $link)
     {

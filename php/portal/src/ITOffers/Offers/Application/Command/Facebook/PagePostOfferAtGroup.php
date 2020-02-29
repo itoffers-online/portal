@@ -20,15 +20,9 @@ final class PagePostOfferAtGroup implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
     public function __construct(string $offerId, string $message)
     {

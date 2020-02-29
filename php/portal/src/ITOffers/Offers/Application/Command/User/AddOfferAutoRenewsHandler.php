@@ -23,20 +23,11 @@ use Ramsey\Uuid\Uuid;
 
 final class AddOfferAutoRenewsHandler implements Handler
 {
-    /**
-     * @var Users
-     */
-    private $users;
+    private Users $users;
 
-    /**
-     * @var OfferAutoRenews
-     */
-    private $offerAutoRenews;
+    private OfferAutoRenews $offerAutoRenews;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(Users $users, OfferAutoRenews $offerAutoRenews, Calendar $calendar)
     {
@@ -56,9 +47,7 @@ final class AddOfferAutoRenewsHandler implements Handler
         $user = $this->users->getById(Uuid::fromString($command->userId()));
 
         $this->offerAutoRenews->add(...\array_map(
-            function () use ($user, $command) {
-                return OfferAutoRenew::expiresInDays($user->id(), $command->expiresInDays(), $this->calendar);
-            },
+            fn () => OfferAutoRenew::expiresInDays($user->id(), $command->expiresInDays(), $this->calendar),
             \range(1, $command->count())
         ));
     }

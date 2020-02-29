@@ -17,10 +17,7 @@ use ITOffers\Component\Storage\FileStorage;
 
 final class FilesystemContext
 {
-    /**
-     * @var FileStorage
-     */
-    private $fileStorage;
+    private FileStorage $fileStorage;
 
     public function __construct(FileStorage $fileStorage)
     {

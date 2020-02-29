@@ -22,6 +22,8 @@ use ITOffers\Offers\Application\Query\Offer\Model\Offer\Company;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Contact;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Contract;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Description;
+use ITOffers\Offers\Application\Query\Offer\Model\Offer\Description\Requirements;
+use ITOffers\Offers\Application\Query\Offer\Model\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Location;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\OfferPDF;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Parameters;
@@ -36,15 +38,9 @@ use Ramsey\Uuid\Uuid;
 
 final class DbalOfferQuery implements OfferQuery
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(Connection $connection, Calendar $calendar)
     {
@@ -97,9 +93,7 @@ final class DbalOfferQuery implements OfferQuery
             ->fetchAll();
 
         return new OffersSeniorityLevel(...\array_map(
-            function (array $data) {
-                return new OfferSeniorityLevel($data['position_seniority_level'], $data['count']);
-            },
+            fn (array $data) => new OfferSeniorityLevel($data['position_seniority_level'], $data['count']),
             $offersCountData
         ));
     }
@@ -318,8 +312,8 @@ final class DbalOfferQuery implements OfferQuery
 
     private function hydrateOffer(array $offerData) : Offer
     {
-        $salary = isset($offerData['salary']) ? \json_decode($offerData['salary'], true) : null;
-        $skills = isset($offerData['description_requirements_skills']) ? \json_decode($offerData['description_requirements_skills'], true) : null;
+        $salary = isset($offerData['salary']) ? \json_decode($offerData['salary'], true, 512, JSON_THROW_ON_ERROR) : null;
+        $skills = isset($offerData['description_requirements_skills']) ? \json_decode($offerData['description_requirements_skills'], true, 512, JSON_THROW_ON_ERROR) : null;
         $offerPDF = isset($offerData['offer_pdf']) ? new OfferPDF($offerData['offer_pdf']) : null;
 
         return new Offer(
@@ -336,17 +330,15 @@ final class DbalOfferQuery implements OfferQuery
                 new Contract($offerData['contract_type']),
                 new Description(
                     $offerData['description_benefits'],
-                    new Description\Requirements(
+                    new Requirements(
                         $offerData['description_requirements_description'],
                         ...$skills
                             ? \array_map(
-                                function (array $skillData) {
-                                    return new Description\Requirements\Skill(
-                                        $skillData['name'],
-                                        $skillData['required'],
-                                        $skillData['experience_years'],
-                                    );
-                                },
+                                fn (array $skillData) => new Skill(
+                                    $skillData['name'],
+                                    $skillData['required'],
+                                    $skillData['experience_years'],
+                                ),
                                 $skills
                             ) : []
                     )

@@ -15,10 +15,7 @@ namespace ITOffers\Offers\UserInterface;
 
 final class SpecializationExtension
 {
-    /**
-     * @var string
-     */
-    private $locale;
+    private string $locale;
 
     public function __construct(string $locale)
     {

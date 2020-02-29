@@ -25,75 +25,33 @@ use Ramsey\Uuid\UuidInterface;
 
 class Offer
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $emailHash;
+    private string $emailHash;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var string
-     */
-    private $specializationId;
+    private string $specializationId;
 
-    /**
-     * @var Locale
-     */
-    private $locale;
+    private Locale $locale;
 
-    /**
-     * @var DateTimeImmutable
-     */
-    private $createdAt;
+    private \DateTimeImmutable $createdAt;
 
-    /**
-     * @var Company
-     */
-    private $company;
+    private Company $company;
 
-    /**
-     * @var Position
-     */
-    private $position;
+    private Position $position;
 
-    /**
-     * @var Location
-     */
-    private $location;
+    private Location $location;
 
-    /**
-     * @var Salary|null
-     */
-    private $salary;
+    private ?Salary $salary = null;
 
-    /**
-     * @var Contract
-     */
-    private $contract;
+    private Contract $contract;
 
-    /**
-     * @var Description
-     */
-    private $description;
+    private Description $description;
 
-    /**
-     * @var Contact
-     */
-    private $contact;
+    private Contact $contact;
 
-    /**
-     * @var DateTimeImmutable
-     */
-    private $removedAt;
+    private ?\DateTimeImmutable $removedAt = null;
 
     private function __construct(
         UuidInterface $id,
@@ -111,7 +69,7 @@ class Offer
     ) {
         $this->id = $id->toString();
         $this->userId = $userId->toString();
-        $this->emailHash = (new Hashids())->encode(time() + \random_int(0, 5000));
+        $this->emailHash = (new Hashids())->encode(time() + \random_int(0, 5_000));
         $this->specializationId = $specializationId->toString();
         $this->locale = $locale;
         $this->company = $company;

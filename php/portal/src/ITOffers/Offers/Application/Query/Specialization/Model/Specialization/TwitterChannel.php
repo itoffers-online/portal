@@ -15,15 +15,9 @@ namespace ITOffers\Offers\Application\Query\Specialization\Model\Specialization;
 
 final class TwitterChannel
 {
-    /**
-     * @var string
-     */
-    private $accountId;
+    private string $accountId;
 
-    /**
-     * @var string
-     */
-    private $screenName;
+    private string $screenName;
 
     public function __construct(string $accountId, string $screenName)
     {

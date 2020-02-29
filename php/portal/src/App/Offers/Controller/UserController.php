@@ -24,15 +24,9 @@ final class UserController extends AbstractController
 {
     use RedirectAfterLogin;
 
-    /**
-     * @var ITOffersOnline
-     */
-    private $itoffers;
+    private ITOffersOnline $itoffers;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(ITOffersOnline $itoffers, LoggerInterface $logger)
     {

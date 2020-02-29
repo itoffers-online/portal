@@ -15,30 +15,15 @@ namespace ITOffers\Offers\Application\Query\User\Model;
 
 final class User
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $email;
+    private string $email;
 
-    /**
-     * @var string|null
-     */
-    private $fbAppId;
+    private ?string $fbAppId;
 
-    /**
-     * @var string|null
-     */
-    private $linkedInAppId;
+    private ?string $linkedInAppId;
 
-    /**
-     * @var bool
-     */
-    private $isBlocked;
+    private bool $isBlocked;
 
     public function __construct(string $id, string $email, ?string $fbAppId, ?string $linkedInAppId, bool $isBlocked)
     {

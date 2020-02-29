@@ -24,15 +24,9 @@ final class SecurityController extends AbstractController
 {
     public const USER_SESSION_KEY = '_his_user_id';
 
-    /**
-     * @var Facebook
-     */
-    private $facebook;
+    private Facebook $facebook;
 
-    /**
-     * @var LinkedIn
-     */
-    private $linkedIn;
+    private LinkedIn $linkedIn;
 
     public function __construct(Facebook $facebook, LinkedIn $linkedIn)
     {

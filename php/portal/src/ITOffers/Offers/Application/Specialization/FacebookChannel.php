@@ -18,15 +18,9 @@ use ITOffers\Offers\Application\Facebook\Page;
 
 final class FacebookChannel
 {
-    /**
-     * @var Page
-     */
-    private $page;
+    private Page $page;
 
-    /**
-     * @var Group
-     */
-    private $group;
+    private Group $group;
 
     public function __construct(Page $page, Group $group)
     {

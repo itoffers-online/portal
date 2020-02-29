@@ -19,6 +19,8 @@ use ITOffers\Offers\Application\Command\Offer\Offer\Company;
 use ITOffers\Offers\Application\Command\Offer\Offer\Contact;
 use ITOffers\Offers\Application\Command\Offer\Offer\Contract;
 use ITOffers\Offers\Application\Command\Offer\Offer\Description;
+use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements;
+use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Application\Command\Offer\Offer\Location;
 use ITOffers\Offers\Application\Command\Offer\Offer\Location\LatLng;
 use ITOffers\Offers\Application\Command\Offer\Offer\Offer;
@@ -47,25 +49,13 @@ final class PostOffer extends Command
      */
     protected static $defaultName = self::NAME;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var string
-     */
-    private $locale;
+    private string $locale;
 
-    /**
-     * @var SymfonyStyle
-     */
-    private $io;
+    private SymfonyStyle $io;
 
-    /**
-     * @var Notifications
-     */
-    private $notifications;
+    private Notifications $notifications;
 
     public function __construct(Offers $offers, string $locale)
     {
@@ -139,11 +129,11 @@ final class PostOffer extends Command
                         'Full stack Software developer position, you will work mostly on web applications with automated and scalable infrastructure.'
                     ),
                     new Location($faker->boolean, $faker->countryCode, $faker->city, $faker->address, new LatLng(50.16212, 19.9353153)),
-                    $noSalary ? null : new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
+                    $noSalary ? null : new Salary($faker->numberBetween(1_000, 5_000), $faker->numberBetween(5_000, 20_000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                     new Contract('Contract'),
                     new Description(
                         'We don\'t have strict number of days off, you take as much as you need, you can work remotely or in the office',
-                        new Description\Requirements(
+                        new Requirements(
                             'Candidate for this position needs to be solid, reliable and meet all our expectations. You need to have at least 5 years of commercial experience.',
                             ...$this->generateSkills()
                         )
@@ -175,21 +165,17 @@ final class PostOffer extends Command
         $skills = ['php', 'git', 'js', 'jenkins', 'terraform', 'ansible', 'elixir', 'mongo', 'postgresql', 'mysql'];
         $randomSkills = \array_unique(
             \array_map(
-                function (int $i) use ($skills) {
-                    return $skills[\random_int(0, \count($skills) - 1)];
-                },
+                fn (int $i) => $skills[\random_int(0, \count($skills) - 1)],
                 \range(0, \random_int(0, 5))
             )
         );
 
         return \array_map(
-            function (string $skill) {
-                return new Description\Requirements\Skill(
-                    $skill,
-                    (bool) \random_int(0, 1),
-                    (bool) \random_int(0, 1) ? \random_int(1, 10) : null
-                );
-            },
+            fn (string $skill) => new Skill(
+                $skill,
+                (bool) \random_int(0, 1),
+                (bool) \random_int(0, 1) ? \random_int(1, 10) : null
+            ),
             $randomSkills
         );
     }

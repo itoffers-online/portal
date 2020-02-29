@@ -30,15 +30,9 @@ final class AutoRenewOffers extends Command
      */
     protected static $defaultName = self::NAME;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var SymfonyStyle
-     */
-    private $io;
+    private SymfonyStyle $io;
 
     public function __construct(Offers $offers)
     {
@@ -62,9 +56,7 @@ final class AutoRenewOffers extends Command
     protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $offersIds = \array_map(
-            function (OfferAutoRenew $autoRenew) : string {
-                return $autoRenew->offerId();
-            },
+            fn (OfferAutoRenew $autoRenew) : string => $autoRenew->offerId(),
             $this->offers->offerAutoRenewQuery()->findAllToRenew()
         );
 

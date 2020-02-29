@@ -21,10 +21,7 @@ final class PostOfferAtFacebookGroupFeature implements Feature
 {
     public const NAME = 'post_offer_at_facebook_group';
 
-    /**
-     * @var bool
-     */
-    private $enabled;
+    private bool $enabled;
 
     public function __construct(bool $enabled)
     {

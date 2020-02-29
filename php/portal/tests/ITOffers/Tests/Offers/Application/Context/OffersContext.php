@@ -27,10 +27,7 @@ use Ramsey\Uuid\Uuid;
 
 final class OffersContext
 {
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
     public function __construct(Offers $offers)
     {

@@ -21,35 +21,17 @@ use Ramsey\Uuid\UuidInterface;
 
 class ExtraOffer
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $createdAt;
+    private \DateTimeImmutable $createdAt;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $expiresAt;
+    private \DateTimeImmutable $expiresAt;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $usedAt;
+    private ?\DateTimeImmutable $usedAt = null;
 
-    /**
-     * @var string
-     */
-    private $offerId;
+    private ?string $offerId = null;
 
     public function __construct(UuidInterface $userId, \DateInterval $expiresIn, Calendar $calendar)
     {

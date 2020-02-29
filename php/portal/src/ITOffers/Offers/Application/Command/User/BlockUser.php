@@ -20,10 +20,7 @@ final class BlockUser implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
     public function __construct(string $userId)
     {

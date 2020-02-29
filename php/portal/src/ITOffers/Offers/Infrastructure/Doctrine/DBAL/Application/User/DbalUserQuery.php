@@ -19,10 +19,7 @@ use ITOffers\Offers\Application\Query\User\UserQuery;
 
 final class DbalUserQuery implements UserQuery
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

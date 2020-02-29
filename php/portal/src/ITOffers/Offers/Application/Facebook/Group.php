@@ -17,15 +17,9 @@ use ITOffers\Offers\Application\Assertion;
 
 final class Group
 {
-    /**
-     * @var string
-     */
-    private $fbId;
+    private string $fbId;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     public function __construct(string $fbId, string $name)
     {

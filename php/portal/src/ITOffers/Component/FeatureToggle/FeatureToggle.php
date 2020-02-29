@@ -21,7 +21,7 @@ final class FeatureToggle
     /**
      * @var Feature[]
      */
-    private $features;
+    private array $features;
 
     public function __construct(Feature ...$features)
     {

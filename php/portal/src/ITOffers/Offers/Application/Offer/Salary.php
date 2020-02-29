@@ -18,30 +18,15 @@ use ITOffers\Offers\Application\Offer\Salary\Period;
 
 final class Salary
 {
-    /**
-     * @var int
-     */
-    private $min;
+    private int $min;
 
-    /**
-     * @var int
-     */
-    private $max;
+    private int $max;
 
-    /**
-     * @var string
-     */
-    private $currencyCode;
+    private string $currencyCode;
 
-    /**
-     * @var bool
-     */
-    private $net;
+    private bool $net;
 
-    /**
-     * @var Period
-     */
-    private $period;
+    private Period $period;
 
     public function __construct(int $min, int $max, string $currencyCode, bool $net, Period $period)
     {

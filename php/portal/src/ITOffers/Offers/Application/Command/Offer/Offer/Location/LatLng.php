@@ -15,15 +15,9 @@ namespace ITOffers\Offers\Application\Command\Offer\Offer\Location;
 
 final class LatLng
 {
-    /**
-     * @var float
-     */
-    private $lat;
+    private float $lat;
 
-    /**
-     * @var float
-     */
-    private $lng;
+    private float $lng;
 
     public function __construct(float $lat, float $lng)
     {

@@ -20,15 +20,9 @@ use Ramsey\Uuid\Uuid;
 
 final class BlockUserHandler implements Handler
 {
-    /**
-     * @var Users
-     */
-    private $users;
+    private Users $users;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(Users $users, Calendar $calendar)
     {

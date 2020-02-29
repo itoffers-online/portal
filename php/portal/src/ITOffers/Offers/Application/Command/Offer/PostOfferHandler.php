@@ -18,12 +18,13 @@ use ITOffers\Component\CQRS\EventStream;
 use ITOffers\Component\CQRS\System\Handler;
 use ITOffers\Component\Storage\FileStorage;
 use ITOffers\Component\Storage\FileStorage\File;
-use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements;
+use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Offer\Company;
 use ITOffers\Offers\Application\Offer\Contact;
 use ITOffers\Offers\Application\Offer\Contract;
 use ITOffers\Offers\Application\Offer\Description;
+use ITOffers\Offers\Application\Offer\Description\Requirements;
 use ITOffers\Offers\Application\Offer\Event\OfferPostedEvent;
 use ITOffers\Offers\Application\Offer\Locale;
 use ITOffers\Offers\Application\Offer\Location;
@@ -33,6 +34,7 @@ use ITOffers\Offers\Application\Offer\OfferPDFs;
 use ITOffers\Offers\Application\Offer\Offers;
 use ITOffers\Offers\Application\Offer\Position;
 use ITOffers\Offers\Application\Offer\Salary;
+use ITOffers\Offers\Application\Offer\Salary\Period;
 use ITOffers\Offers\Application\Offer\Slug;
 use ITOffers\Offers\Application\Offer\Slugs;
 use ITOffers\Offers\Application\Offer\Throttling;
@@ -45,55 +47,25 @@ use Ramsey\Uuid\Uuid;
 
 final class PostOfferHandler implements Handler
 {
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var Users
-     */
-    private $users;
+    private Users $users;
 
-    /**
-     * @var Throttling
-     */
-    private $throttling;
+    private Throttling $throttling;
 
-    /**
-     * @var Specializations
-     */
-    private $specializations;
+    private Specializations $specializations;
 
-    /**
-     * @var Slugs
-     */
-    private $slugs;
+    private Slugs $slugs;
 
-    /**
-     * @var OfferPDFs
-     */
-    private $offerPDFs;
+    private OfferPDFs $offerPDFs;
 
-    /**
-     * @var FileStorage
-     */
-    private $fileStorage;
+    private FileStorage $fileStorage;
 
-    /**
-     * @var ExtraOffers
-     */
-    private $extraOffers;
+    private ExtraOffers $extraOffers;
 
-    /**
-     * @var EventStream
-     */
-    private $eventStream;
+    private EventStream $eventStream;
 
     public function __construct(
         Calendar $calendar,
@@ -201,7 +173,7 @@ final class PostOfferHandler implements Handler
                     $command->offer()->salary()->max(),
                     $command->offer()->salary()->currencyCode(),
                     $command->offer()->salary()->isNet(),
-                    Salary\Period::fromString(\mb_strtoupper($command->offer()->salary()->periodType()))
+                    Period::fromString(\mb_strtoupper($command->offer()->salary()->periodType()))
                 )
                 : null,
             new Contract(
@@ -209,16 +181,14 @@ final class PostOfferHandler implements Handler
             ),
             new Description(
                 $command->offer()->description()->benefits(),
-                new Description\Requirements(
+                new Requirements(
                     $command->offer()->description()->requirements()->description(),
                     ...\array_map(
-                        function (Requirements\Skill $skill) {
-                            return new Description\Requirements\Skill(
-                                $skill->skill(),
-                                $skill->required(),
-                                $skill->experienceYears()
-                            );
-                        },
+                        fn (Skill $skill) => new Description\Requirements\Skill(
+                            $skill->skill(),
+                            $skill->required(),
+                            $skill->experienceYears()
+                        ),
                         $command->offer()->description()->requirements()->skills()
                     )
                 )

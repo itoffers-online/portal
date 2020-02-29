@@ -30,20 +30,11 @@ final class PerformanceCheckCommand extends Command
      */
     protected static $defaultName = self::NAME;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var Config
-     */
-    private $config;
+    private Config $config;
 
-    /**
-     * @var SymfonyStyle
-     */
-    private $io;
+    private SymfonyStyle $io;
 
     public function __construct(Offers $offers, Config $config)
     {
@@ -78,7 +69,7 @@ final class PerformanceCheckCommand extends Command
         $this->io->table(
             ['Environment', 'Memory Usage'],
             [
-                [$this->config->getString(Config::ENV), sprintf("%.2f MB", $event->getMemory() / 1048576)],
+                [$this->config->getString(Config::ENV), sprintf("%.2f MB", $event->getMemory() / 1_048_576)],
             ]
         );
 

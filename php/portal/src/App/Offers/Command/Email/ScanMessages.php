@@ -40,30 +40,15 @@ final class ScanMessages extends Command
      */
     protected static $defaultName = self::NAME;
 
-    /**
-     * @var \ITOffers\Offers\Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var \Ddeboer\Imap\ConnectionInterface
-     */
-    private $connection;
+    private ConnectionInterface $connection;
 
-    /**
-     * @var string
-     */
-    private $tmpBasePath;
+    private string $tmpBasePath;
 
-    /**
-     * @var SymfonyStyle
-     */
-    private $io;
+    private SymfonyStyle $io;
 
-    /**
-     * @var Filesystem
-     */
-    private $fs;
+    private Filesystem $fs;
 
     public function __construct(Offers $offers, ConnectionInterface $connection, Filesystem $filesystem)
     {
@@ -138,11 +123,9 @@ final class ScanMessages extends Command
                     $message->getSubject(),
                     $message->getBodyHtml(),
                     ...\array_map(
-                        function (AttachmentTmpPath $attachmentTmpPath) {
-                            return new Attachment(
-                                $attachmentTmpPath->toString()
-                            );
-                        },
+                        fn (AttachmentTmpPath $attachmentTmpPath) => new Attachment(
+                            $attachmentTmpPath->toString()
+                        ),
                         $attachments
                     )
                 ));

@@ -15,15 +15,9 @@ namespace ITOffers\Offers\Application\Query\User\Model;
 
 final class UnassignedAutoRenew
 {
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $expiresAt;
+    private \DateTimeImmutable $expiresAt;
 
     public function __construct(string $userId, \DateTimeImmutable $expiresAt)
     {

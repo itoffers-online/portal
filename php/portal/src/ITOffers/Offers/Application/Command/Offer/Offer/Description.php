@@ -17,15 +17,9 @@ use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements;
 
 final class Description
 {
-    /**
-     * @var Requirements
-     */
-    private $requirements;
+    private Requirements $requirements;
 
-    /**
-     * @var string
-     */
-    private $benefits;
+    private string $benefits;
 
     public function __construct(string $benefits, Requirements $requirements)
     {

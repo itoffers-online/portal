@@ -15,15 +15,9 @@ namespace ITOffers\Offers\Application\Query\Filter;
 
 final class Column
 {
-    /**
-     * @var string
-     */
-    private $column;
+    private string $column;
 
-    /**
-     * @var string
-     */
-    private $direction;
+    private string $direction;
 
     private function __construct()
     {

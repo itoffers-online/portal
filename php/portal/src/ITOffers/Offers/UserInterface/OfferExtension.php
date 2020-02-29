@@ -22,10 +22,7 @@ use Stidges\CountryFlags\CountryFlag;
 
 final class OfferExtension
 {
-    /**
-     * @var string
-     */
-    private $locale;
+    private string $locale;
 
     public function __construct(string $locale)
     {

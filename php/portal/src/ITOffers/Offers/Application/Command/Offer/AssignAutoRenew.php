@@ -20,20 +20,11 @@ final class AssignAutoRenew implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
-    /**
-     * @var int
-     */
-    private $renewAfterDays;
+    private int $renewAfterDays;
 
     public function __construct(string $userId, string $offerId, int $renewAfterDays)
     {
