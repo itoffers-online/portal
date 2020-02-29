@@ -23,7 +23,7 @@ final class Location
     private $remote;
 
     /**
-     * @var string |null
+     * @var string|null
      */
     private $countryCode;
 
@@ -33,7 +33,7 @@ final class Location
     private $city;
 
     /**
-     * @var string |null
+     * @var string|null
      */
     private $address;
 

@@ -22,6 +22,8 @@ use ITOffers\Offers\Application\Command\Offer\Offer\Company;
 use ITOffers\Offers\Application\Command\Offer\Offer\Contact;
 use ITOffers\Offers\Application\Command\Offer\Offer\Contract;
 use ITOffers\Offers\Application\Command\Offer\Offer\Description;
+use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements;
+use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Application\Command\Offer\Offer\Location;
 use ITOffers\Offers\Application\Command\Offer\Offer\Location\LatLng;
 use ITOffers\Offers\Application\Command\Offer\Offer\Offer;
@@ -169,11 +171,11 @@ final class OfferController extends AbstractController
                         new Contract($offerData['contract']),
                         new Description(
                             $offerData['description']['benefits'],
-                            new Description\Requirements(
+                            new Requirements(
                                 $offerData['description']['requirements']['description'],
                                 ...\array_map(
                                     function (array $skillData) {
-                                        return new Description\Requirements\Skill(
+                                        return new Skill(
                                             $skillData['skill'],
                                             (bool) $skillData['required'],
                                             $skillData['experience'],

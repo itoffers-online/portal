@@ -17,6 +17,7 @@ use Doctrine\DBAL\Connection;
 use ITOffers\Offers\Application\Query\Specialization\Model\Specialization;
 use ITOffers\Offers\Application\Query\Specialization\Model\Specialization\FacebookChannel;
 use ITOffers\Offers\Application\Query\Specialization\Model\Specialization\Offers;
+use ITOffers\Offers\Application\Query\Specialization\Model\Specialization\TwitterChannel;
 use ITOffers\Offers\Application\Query\Specialization\Model\Specializations;
 use ITOffers\Offers\Application\Query\Specialization\SpecializationQuery;
 
@@ -131,7 +132,7 @@ SQL
                 )
                 : null,
             ($data['twitter_account_id'])
-                ? new Specialization\TwitterChannel(
+                ? new TwitterChannel(
                     $data['twitter_account_id'],
                     $data['twitter_screen_name']
                 )

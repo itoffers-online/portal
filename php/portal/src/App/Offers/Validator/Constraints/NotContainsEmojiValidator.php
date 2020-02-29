@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Validator\Constraints;
 
+use function Emoji\detect_emoji;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -34,7 +35,7 @@ final class NotContainsEmojiValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        if (\Emoji\detect_emoji($value)) {
+        if (detect_emoji($value)) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }

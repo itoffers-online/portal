@@ -18,6 +18,7 @@ use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\JsonType;
 use ITOffers\Component\Reflection\PrivateFields;
 use ITOffers\Offers\Application\Offer\Salary;
+use ITOffers\Offers\Application\Offer\Salary\Period;
 
 final class SalaryType extends JsonType
 {
@@ -62,7 +63,7 @@ final class SalaryType extends JsonType
             $data['max'],
             $data['currency_code'],
             $data['net'],
-            Salary\Period::fromString($data['period_type'])
+            Period::fromString($data['period_type'])
         );
     }
 

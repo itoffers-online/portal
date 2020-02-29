@@ -1,5 +1,5 @@
 parameters:
-  php_version_features: '7.3'
+  php_version_features: '7.4'
   paths:
     - 'src'
     - 'tests'

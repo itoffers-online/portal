@@ -22,6 +22,8 @@ use ITOffers\Offers\Application\Query\Offer\Model\Offer\Company;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Contact;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Contract;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Description;
+use ITOffers\Offers\Application\Query\Offer\Model\Offer\Description\Requirements;
+use ITOffers\Offers\Application\Query\Offer\Model\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Location;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\OfferPDF;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Parameters;
@@ -336,12 +338,12 @@ final class DbalOfferQuery implements OfferQuery
                 new Contract($offerData['contract_type']),
                 new Description(
                     $offerData['description_benefits'],
-                    new Description\Requirements(
+                    new Requirements(
                         $offerData['description_requirements_description'],
                         ...$skills
                             ? \array_map(
                                 function (array $skillData) {
-                                    return new Description\Requirements\Skill(
+                                    return new Skill(
                                         $skillData['name'],
                                         $skillData['required'],
                                         $skillData['experience_years'],

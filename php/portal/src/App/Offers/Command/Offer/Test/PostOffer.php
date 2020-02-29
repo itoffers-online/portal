@@ -19,6 +19,8 @@ use ITOffers\Offers\Application\Command\Offer\Offer\Company;
 use ITOffers\Offers\Application\Command\Offer\Offer\Contact;
 use ITOffers\Offers\Application\Command\Offer\Offer\Contract;
 use ITOffers\Offers\Application\Command\Offer\Offer\Description;
+use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements;
+use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Application\Command\Offer\Offer\Location;
 use ITOffers\Offers\Application\Command\Offer\Offer\Location\LatLng;
 use ITOffers\Offers\Application\Command\Offer\Offer\Offer;
@@ -143,7 +145,7 @@ final class PostOffer extends Command
                     new Contract('Contract'),
                     new Description(
                         'We don\'t have strict number of days off, you take as much as you need, you can work remotely or in the office',
-                        new Description\Requirements(
+                        new Requirements(
                             'Candidate for this position needs to be solid, reliable and meet all our expectations. You need to have at least 5 years of commercial experience.',
                             ...$this->generateSkills()
                         )
@@ -184,7 +186,7 @@ final class PostOffer extends Command
 
         return \array_map(
             function (string $skill) {
-                return new Description\Requirements\Skill(
+                return new Skill(
                     $skill,
                     (bool) \random_int(0, 1),
                     (bool) \random_int(0, 1) ? \random_int(1, 10) : null

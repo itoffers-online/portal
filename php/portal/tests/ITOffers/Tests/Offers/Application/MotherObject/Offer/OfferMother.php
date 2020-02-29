@@ -14,7 +14,19 @@ declare(strict_types=1);
 namespace ITOffers\Tests\Offers\Application\MotherObject\Offer;
 
 use Faker\Factory;
-use ITOffers\Offers\Application\Offer;
+use ITOffers\Offers\Application\Offer\Company;
+use ITOffers\Offers\Application\Offer\Contact;
+use ITOffers\Offers\Application\Offer\Contract;
+use ITOffers\Offers\Application\Offer\Description;
+use ITOffers\Offers\Application\Offer\Description\Requirements;
+use ITOffers\Offers\Application\Offer\Description\Requirements\Skill;
+use ITOffers\Offers\Application\Offer\Locale;
+use ITOffers\Offers\Application\Offer\Location;
+use ITOffers\Offers\Application\Offer\Offer;
+use ITOffers\Offers\Application\Offer\Position;
+use ITOffers\Offers\Application\Offer\Position\SeniorityLevels;
+use ITOffers\Offers\Application\Offer\Salary;
+use ITOffers\Offers\Application\Offer\Salary\Period;
 use ITOffers\Offers\Application\User\User;
 use ITOffers\Tests\Offers\Application\MotherObject\Facebook\CalendarMother;
 use ITOffers\Tests\Offers\Application\MotherObject\Specialization\SpecializationMother;
@@ -23,42 +35,42 @@ use Ramsey\Uuid\Uuid;
 
 final class OfferMother
 {
-    public static function random() : Offer\Offer
+    public static function random() : Offer
     {
         return self::withName('position', 'company');
     }
 
-    public static function byUser(User $user) : Offer\Offer
+    public static function byUser(User $user) : Offer
     {
         return self::withName('position', 'company', $user);
     }
 
-    public static function withName(string $positionName, string $companyName, ?User $user = null) : Offer\Offer
+    public static function withName(string $positionName, string $companyName, ?User $user = null) : Offer
     {
         $faker = Factory::create();
 
-        return Offer\Offer::post(
+        return Offer::post(
             Uuid::uuid4(),
             SpecializationMother::random(),
-            new Offer\Locale('en_US'),
+            new Locale('en_US'),
             $user ? $user : UserMother::random(),
-            new Offer\Company($companyName, $faker->url, $faker->text(512)),
-            new Offer\Position(\random_int(Offer\Position\SeniorityLevels::INTERN, Offer\Position\SeniorityLevels::EXPERT), $positionName, $faker->text(1024)),
-            Offer\Location::remote(),
-            new Offer\Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, Offer\Salary\Period::perMonth()),
-            new Offer\Contract('B2B'),
-            new Offer\Description(
+            new Company($companyName, $faker->url, $faker->text(512)),
+            new Position(\random_int(SeniorityLevels::INTERN, SeniorityLevels::EXPERT), $positionName, $faker->text(1024)),
+            Location::remote(),
+            new Salary($faker->numberBetween(1000, 5000), $faker->numberBetween(5000, 20000), 'PLN', $faker->boolean, Period::perMonth()),
+            new Contract('B2B'),
+            new Description(
                 $faker->text(1024),
-                new Offer\Description\Requirements(
+                new Requirements(
                     $faker->text(2048),
-                    new Offer\Description\Requirements\Skill(
+                    new Skill(
                         'php',
                         true,
                         10
                     )
                 ),
             ),
-            new Offer\Contact(
+            new Contact(
                 $faker->email,
                 $faker->name,
                 '+1 333333333'

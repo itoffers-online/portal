@@ -18,12 +18,13 @@ use ITOffers\Component\CQRS\EventStream;
 use ITOffers\Component\CQRS\System\Handler;
 use ITOffers\Component\Storage\FileStorage;
 use ITOffers\Component\Storage\FileStorage\File;
-use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements;
+use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Offer\Company;
 use ITOffers\Offers\Application\Offer\Contact;
 use ITOffers\Offers\Application\Offer\Contract;
 use ITOffers\Offers\Application\Offer\Description;
+use ITOffers\Offers\Application\Offer\Description\Requirements;
 use ITOffers\Offers\Application\Offer\Event\OfferPostedEvent;
 use ITOffers\Offers\Application\Offer\Locale;
 use ITOffers\Offers\Application\Offer\Location;
@@ -33,6 +34,7 @@ use ITOffers\Offers\Application\Offer\OfferPDFs;
 use ITOffers\Offers\Application\Offer\Offers;
 use ITOffers\Offers\Application\Offer\Position;
 use ITOffers\Offers\Application\Offer\Salary;
+use ITOffers\Offers\Application\Offer\Salary\Period;
 use ITOffers\Offers\Application\Offer\Slug;
 use ITOffers\Offers\Application\Offer\Slugs;
 use ITOffers\Offers\Application\Offer\Throttling;
@@ -201,7 +203,7 @@ final class PostOfferHandler implements Handler
                     $command->offer()->salary()->max(),
                     $command->offer()->salary()->currencyCode(),
                     $command->offer()->salary()->isNet(),
-                    Salary\Period::fromString(\mb_strtoupper($command->offer()->salary()->periodType()))
+                    Period::fromString(\mb_strtoupper($command->offer()->salary()->periodType()))
                 )
                 : null,
             new Contract(
@@ -209,10 +211,10 @@ final class PostOfferHandler implements Handler
             ),
             new Description(
                 $command->offer()->description()->benefits(),
-                new Description\Requirements(
+                new Requirements(
                     $command->offer()->description()->requirements()->description(),
                     ...\array_map(
-                        function (Requirements\Skill $skill) {
+                        function (Skill $skill) {
                             return new Description\Requirements\Skill(
                                 $skill->skill(),
                                 $skill->required(),

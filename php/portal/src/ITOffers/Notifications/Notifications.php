@@ -20,6 +20,7 @@ use ITOffers\Component\Mailer\Recipients;
 use ITOffers\Component\Mailer\Sender;
 use ITOffers\Notifications\Application\Email\EmailFormatter;
 use ITOffers\Notifications\Application\Event;
+use ITOffers\Notifications\Application\Event\OfferPostedEvent;
 use ITOffers\Notifications\Application\Exception\Exception;
 use ITOffers\Notifications\Application\Offers;
 
@@ -89,7 +90,7 @@ final class Notifications
         }
 
         switch (\get_class($event)) {
-            case Event\OfferPostedEvent::class:
+            case OfferPostedEvent::class:
 
                 $offer = $this->offers->getById($event->offerId());
                 $this->mailer->send(
