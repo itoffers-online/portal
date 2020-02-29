@@ -81,7 +81,7 @@
     },
     "require-dev": {
         "ergebnis/phpstan-rules": "^0.14.2",
-        "friendsofphp/php-cs-fixer": "^2.14",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "infection/infection": "^0.15.0",
         "norberttech/md-link-linter": "@dev",
         "nyholm/psr7": "^1.2",

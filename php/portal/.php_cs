@@ -39,5 +39,7 @@ return PhpCsFixer\Config::create()
         'declare_strict_types' => true,
         'blank_line_after_opening_tag' => true,
         'no_unused_imports' => true,
+        'no_unset_on_property' => true,
+        'no_null_property_initialization' => true
     ])
     ->setFinder($finder);
