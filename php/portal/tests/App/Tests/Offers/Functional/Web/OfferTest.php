@@ -20,7 +20,6 @@ use ITOffers\Offers\Application\Query\Offer\Model\Offer\Salary;
 use ITOffers\Offers\Application\Query\Offer\OfferFilter;
 use ITOffers\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Response;
 
 final class OfferTest extends WebTestCase
@@ -90,17 +89,8 @@ final class OfferTest extends WebTestCase
             'offer[contact][email]' => $faker->email,
             'offer[contact][name]' => $faker->name,
             'offer[contact][phone]' => '+12123123123',
-            'offer[channels][facebook_group]' => 1,
-            'offer[channels][twitter]' => 1,
             'offer[_token]' => $client->getContainer()->get('security.csrf.token_manager')->getToken('new_offer'),
         ]);
-
-        /** @var ChoiceFormField $choiceField */
-        $choiceField = $form['offer[channels][facebook_group]'];
-        $choiceField->untick();
-        /** @var ChoiceFormField $choiceField */
-        $choiceField = $form['offer[channels][twitter]'];
-        $choiceField->untick();
 
         $client->submit($form);
 

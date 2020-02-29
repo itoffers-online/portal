@@ -1,7 +1,7 @@
 {
     "name": "itoffers-online/portal",
     "type": "project",
-    "license": "GPL-3.0-or-later",
+    "license": "RPL-1.5",
     "authors": [
         {
             "name": "Norbert Orzechowicz",
@@ -28,7 +28,7 @@
         }
     },
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
