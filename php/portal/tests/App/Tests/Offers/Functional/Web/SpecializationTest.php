@@ -90,7 +90,7 @@ final class SpecializationTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('[data-offer-id]'));
     }
 
-    public function test_sort_by_salary_ASC() : void
+    public function test_sort_by_salary__asc() : void
     {
         /** @var CalendarStub $calendar */
         $calendar = $this->offersFacade()->calendar();
@@ -126,7 +126,7 @@ final class SpecializationTest extends WebTestCase
         $this->assertEquals(7_000, $salaries[2]);
     }
 
-    public function test_sort_by_created_at_ASC() : void
+    public function test_sort_by_created_at__asc() : void
     {
         /** @var CalendarStub $calendar */
         $calendar = $this->offersFacade()->calendar();

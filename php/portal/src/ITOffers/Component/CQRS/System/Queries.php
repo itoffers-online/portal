@@ -17,9 +17,7 @@ use ITOffers\Offers\Application\Exception\Exception;
 
 final class Queries
 {
-    private array
-
- $queries;
+    private array $queries;
 
     public function __construct(Query ...$queries)
     {

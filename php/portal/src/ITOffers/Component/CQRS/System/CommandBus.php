@@ -23,9 +23,7 @@ final class CommandBus
     /**
      * @var Handler[]
      */
-    private array
-
- $handlers;
+    private array $handlers;
 
     private TransactionManager $transactionManager;
 

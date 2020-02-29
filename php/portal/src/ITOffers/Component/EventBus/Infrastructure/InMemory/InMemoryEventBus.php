@@ -25,9 +25,7 @@ final class InMemoryEventBus
     /**
      * @var array<array<Subscriber>>
      */
-    private array
-
- $topics;
+    private array $topics;
 
     public function __construct()
     {

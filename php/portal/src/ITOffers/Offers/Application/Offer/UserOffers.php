@@ -22,11 +22,9 @@ final class UserOffers implements \Countable
     private \DateTimeImmutable $since;
 
     /**
-     * @var \ITOffers\Offers\Application\Offer\Offer[]
+     * @var Offer[]
      */
-    private array
-
- $offers;
+    private array $offers;
 
     public function __construct(User $user, \DateTimeImmutable $since, Offer ...$offers)
     {

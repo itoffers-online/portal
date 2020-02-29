@@ -24,9 +24,7 @@ final class OfferPostedEvent implements Event
 
     private \DateTimeImmutable $occurredAt;
 
-    private array
-
- $payload;
+    private array $payload;
 
     public function __construct(Offer $offer)
     {

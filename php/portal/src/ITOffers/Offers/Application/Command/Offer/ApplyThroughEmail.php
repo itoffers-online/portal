@@ -32,9 +32,7 @@ final class ApplyThroughEmail implements Command
     /**
      * @var mixed[]
      */
-    private array
-
- $attachments;
+    private array $attachments;
 
     public function __construct(
         string $offerId,

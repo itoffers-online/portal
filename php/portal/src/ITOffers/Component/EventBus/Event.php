@@ -23,9 +23,7 @@ final class Event
 
     private \DateTimeImmutable $occurredAt;
 
-    private array
-
- $payload;
+    private array $payload;
 
     public function __construct(UuidInterface $id, \DateTimeImmutable $occurredAt, string $name, array $payload)
     {

@@ -98,9 +98,7 @@ final class Config
 
     public const FEATURE_TWEET_ABOUT_OFFER = 'feature_tweet_about_offer';
 
-    private array
-
- $config;
+    private array $config;
 
     private function __construct(array $config)
     {

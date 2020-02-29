@@ -29,9 +29,7 @@ use function sprintf;
 
 final class FlysystemStorage implements FileStorage
 {
-    private array
-
- $config;
+    private array $config;
 
     private Filesystem $filesystem;
 
