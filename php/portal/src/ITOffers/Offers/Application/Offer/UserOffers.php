@@ -41,6 +41,6 @@ final class UserOffers implements \Countable
 
     public function count() : int
     {
-        return \count($this->offers);
+        return is_countable($this->offers) ? \count($this->offers) : 0;
     }
 }

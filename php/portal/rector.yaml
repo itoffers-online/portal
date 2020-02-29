@@ -5,5 +5,7 @@ parameters:
     - 'tests'
   auto_import_names: true
   import_short_classes: false
+  sets:
+    - 'php71'
 services:
   Rector\TypeDeclaration\Rector\Property\PropertyTypeDeclarationRector: ~

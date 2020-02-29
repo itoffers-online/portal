@@ -38,7 +38,7 @@ final class RequirementsType extends AbstractType
                     new Count(['max' => 50]),
                     new Callback([
                         'callback' => function ($object, ExecutionContextInterface $context, $payload) {
-                            if (!\count($object)) {
+                            if (!(is_countable($object) ? \count($object) : 0)) {
                                 return ;
                             }
 
@@ -46,7 +46,7 @@ final class RequirementsType extends AbstractType
                                 return \mb_strtolower($skillData['skill']);
                             }, $object));
 
-                            if (\count($skills) !== \count($object)) {
+                            if (\count($skills) !== (is_countable($object) ? \count($object) : 0)) {
                                 $context->buildViolation('Skills are not unique.')
                                     ->addViolation();
                             }
