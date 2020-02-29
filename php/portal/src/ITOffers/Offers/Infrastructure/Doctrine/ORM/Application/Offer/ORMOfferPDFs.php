@@ -19,10 +19,7 @@ use ITOffers\Offers\Application\Offer\OfferPDFs;
 
 final class ORMOfferPDFs implements OfferPDFs
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     public function __construct(EntityManager $entityManager)
     {

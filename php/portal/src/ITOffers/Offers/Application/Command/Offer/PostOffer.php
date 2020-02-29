@@ -21,35 +21,17 @@ final class PostOffer implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
-    /**
-     * @var string
-     */
-    private $specialization;
+    private string $specialization;
 
-    /**
-     * @var string
-     */
-    private $locale;
+    private string $locale;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var Offer
-     */
-    private $offer;
+    private Offer $offer;
 
-    /**
-     * @var string|null
-     */
-    private $offerPDFPath;
+    private ?string $offerPDFPath;
 
     public function __construct(
         string $offerId,

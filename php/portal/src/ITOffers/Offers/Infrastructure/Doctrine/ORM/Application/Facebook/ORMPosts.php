@@ -20,10 +20,7 @@ use ITOffers\Offers\Application\Offer\Offer;
 
 final class ORMPosts implements Posts
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     public function __construct(EntityManager $entityManager)
     {

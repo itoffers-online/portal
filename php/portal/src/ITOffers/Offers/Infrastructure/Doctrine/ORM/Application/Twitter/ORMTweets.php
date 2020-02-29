@@ -20,10 +20,7 @@ use ITOffers\Offers\Application\Twitter\Tweets;
 
 final class ORMTweets implements Tweets
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     public function __construct(EntityManager $entityManager)
     {

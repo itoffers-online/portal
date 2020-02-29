@@ -29,15 +29,14 @@ use function sprintf;
 
 final class FlysystemStorage implements FileStorage
 {
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
+    private Filesystem $filesystem;
 
     /**
      * @var mixed[]
      */
-    private $config;
+    private array
+
+ $config;
 
     public function __construct(Filesystem $filesystem)
     {

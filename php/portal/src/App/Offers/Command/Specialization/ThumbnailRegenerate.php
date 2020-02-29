@@ -30,20 +30,11 @@ final class ThumbnailRegenerate extends Command
      */
     protected static $defaultName = self::NAME;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var SpecializationThumbnail
-     */
-    private $specializationThumbnail;
+    private SpecializationThumbnail $specializationThumbnail;
 
-    /**
-     * @var SymfonyStyle
-     */
-    private $io;
+    private SymfonyStyle $io;
 
     public function __construct(Offers $offers, SpecializationThumbnail $specializationThumbnail)
     {

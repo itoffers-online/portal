@@ -20,20 +20,13 @@ use Ramsey\Uuid\UuidInterface;
 
 final class OfferPostedEvent implements Event
 {
-    /**
-     * @var UuidInterface
-     */
-    private $id;
+    private UuidInterface $id;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $occurredAt;
+    private \DateTimeImmutable $occurredAt;
 
-    /**
-     * @var array
-     */
-    private $payload;
+    private array
+
+ $payload;
 
     public function __construct(Offer $offer)
     {

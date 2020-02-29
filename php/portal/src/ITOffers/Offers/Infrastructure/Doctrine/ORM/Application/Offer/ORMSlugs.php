@@ -19,10 +19,7 @@ use ITOffers\Offers\Application\Offer\Slugs;
 
 final class ORMSlugs implements Slugs
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     public function __construct(EntityManager $entityManager)
     {

@@ -67,13 +67,11 @@ final class RequirementsTypeTest extends TypeTestCase
         $formData = [
             'description' => \str_repeat('a', 150),
             'skills' => \array_map(
-                function (int $i) {
-                    return [
-                        'skill' => 'skill_' . $i,
-                        'required' => 0,
-                        'experience' => 5,
-                    ];
-                },
+                fn (int $i) => [
+                    'skill' => 'skill_' . $i,
+                    'required' => 0,
+                    'experience' => 5,
+                ],
                 \range(0, 100)
             ),
         ];

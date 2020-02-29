@@ -20,15 +20,9 @@ final class RemoveOffer implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
     public function __construct(string $offerId, string $userId)
     {

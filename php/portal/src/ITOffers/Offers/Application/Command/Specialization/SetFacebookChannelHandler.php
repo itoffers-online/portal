@@ -21,10 +21,7 @@ use ITOffers\Offers\Application\Specialization\Specializations;
 
 final class SetFacebookChannelHandler implements Handler
 {
-    /**
-     * @var Specializations
-     */
-    private $specializations;
+    private Specializations $specializations;
 
     public function __construct(Specializations $specializations)
     {

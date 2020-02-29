@@ -17,15 +17,9 @@ use ITOffers\Offers\Application\Assertion;
 
 final class Page
 {
-    /**
-     * @var string
-     */
-    private $fbId;
+    private string $fbId;
 
-    /**
-     * @var string
-     */
-    private $accessToken;
+    private string $accessToken;
 
     public function __construct(string $fbId, string $accessToken)
     {

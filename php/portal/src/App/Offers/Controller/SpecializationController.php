@@ -26,20 +26,11 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 final class SpecializationController extends AbstractController
 {
-    /**
-     * @var ITOffersOnline
-     */
-    private $itoffers;
+    private ITOffersOnline $itoffers;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private ParameterBagInterface $parameterBag;
 
-    /**
-     * @var SpecializationThumbnail
-     */
-    private $specializationThumbnail;
+    private SpecializationThumbnail $specializationThumbnail;
 
     public function __construct(
         ITOffersOnline $itoffers,

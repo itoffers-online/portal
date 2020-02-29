@@ -15,15 +15,9 @@ namespace ITOffers\Offers\Application\Query\Specialization\Model\Specialization;
 
 final class FacebookChannel
 {
-    /**
-     * @var string
-     */
-    private $pageId;
+    private string $pageId;
 
-    /**
-     * @var string
-     */
-    private $groupId;
+    private string $groupId;
 
     public function __construct(string $pageId, string $groupId)
     {

@@ -24,10 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class OfferTest extends WebTestCase
 {
-    /**
-     * @var string
-     */
-    private $specialization = 'php';
+    private string $specialization = 'php';
 
     public function setUp() : void
     {
@@ -71,9 +68,9 @@ final class OfferTest extends WebTestCase
             'offer[company][description]' => $faker->text(512),
             'offer[position][seniorityLevel]' => \random_int(0, 4),
             'offer[position][name]' => 'Software Developer',
-            'offer[position][description]' => $faker->text(1024),
-            'offer[salary][min]' => 1000,
-            'offer[salary][max]' => 5000,
+            'offer[position][description]' => $faker->text(1_024),
+            'offer[salary][min]' => 1_000,
+            'offer[salary][max]' => 5_000,
             'offer[salary][currency]' => 'USD',
             'offer[salary][net]' => 1,
             'offer[salary][period_type]' => Salary::PERIOD_TYPE_MONTH,
@@ -84,8 +81,8 @@ final class OfferTest extends WebTestCase
             'offer[location][city]' => 'Cracow',
             'offer[location][lat]' => '50.06212',
             'offer[location][lng]' => '19.9353153',
-            'offer[description][requirements][description]' => $faker->text(1024),
-            'offer[description][benefits]' => $faker->text(1024),
+            'offer[description][requirements][description]' => $faker->text(1_024),
+            'offer[description][benefits]' => $faker->text(1_024),
             'offer[contact][email]' => $faker->email,
             'offer[contact][name]' => $faker->name,
             'offer[contact][phone]' => '+12123123123',

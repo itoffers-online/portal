@@ -23,10 +23,7 @@ final class PostNewOffersFeature implements Feature
 {
     public const NAME = 'post_new_offers';
 
-    /**
-     * @var bool
-     */
-    private $enabled;
+    private bool $enabled;
 
     public function __construct(bool $enabled)
     {

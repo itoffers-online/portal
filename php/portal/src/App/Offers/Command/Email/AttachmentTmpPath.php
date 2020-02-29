@@ -15,15 +15,9 @@ namespace App\Offers\Command\Email;
 
 final class AttachmentTmpPath
 {
-    /**
-     * @var string
-     */
-    private $basePath;
+    private string $basePath;
 
-    /**
-     * @var string
-     */
-    private $filename;
+    private string $filename;
 
     public function __construct(string $basePath, string $filename)
     {

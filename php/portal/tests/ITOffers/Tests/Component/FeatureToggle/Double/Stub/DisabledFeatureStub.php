@@ -18,10 +18,7 @@ use ITOffers\Component\FeatureToggle\Feature;
 
 final class DisabledFeatureStub implements Feature
 {
-    /**
-     * @var string
-     */
-    private $commandClass;
+    private string $commandClass;
 
     public function __construct(string $commandClass)
     {

@@ -38,35 +38,17 @@ use ITOffers\Notifications\Application\Offers;
  */
 final class Notifications
 {
-    /**
-     * @var bool
-     */
-    private $disabled;
+    private bool $disabled;
 
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private Mailer $mailer;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var EmailFormatter
-     */
-    private $emailFormatter;
+    private EmailFormatter $emailFormatter;
 
-    /**
-     * @var string
-     */
-    private $contactEmail;
+    private string $contactEmail;
 
-    /**
-     * @var string
-     */
-    private $domain;
+    private string $domain;
 
     public function __construct(
         Mailer $mailer,

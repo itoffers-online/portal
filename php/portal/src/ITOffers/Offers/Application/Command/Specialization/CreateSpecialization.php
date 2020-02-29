@@ -20,10 +20,7 @@ final class CreateSpecialization implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $slug;
+    private string $slug;
 
     public function __construct(string $slug)
     {

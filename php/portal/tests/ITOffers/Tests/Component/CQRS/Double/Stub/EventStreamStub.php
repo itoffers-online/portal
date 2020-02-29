@@ -18,10 +18,9 @@ use ITOffers\Component\CQRS\EventStream\Event;
 
 final class EventStreamStub implements EventStream
 {
-    /**
-     * @var array
-     */
-    private $events;
+    private array
+
+ $events;
 
     public function __construct()
     {

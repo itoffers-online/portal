@@ -23,40 +23,19 @@ class OfferAutoRenew
 {
     private const MAX_OFFER_AUTO_RENEWS = 2;
 
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $expiresAt;
+    private \DateTimeImmutable $expiresAt;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $renewAfter;
+    private \DateTimeImmutable $renewAfter;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $createdAt;
+    private \DateTimeImmutable $createdAt;
 
-    /**
-     * @var UuidInterface|null
-     */
-    private $offerId;
+    private ?UuidInterface $offerId = null;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $renewedAt;
+    private ?\DateTimeImmutable $renewedAt = null;
 
     private function __construct(UuidInterface $userId, \DateInterval $expiresIn, Calendar $calendar)
     {

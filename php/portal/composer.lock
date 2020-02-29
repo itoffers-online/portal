@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa4ca8af9d7603a5100320de6d854e80",
+    "content-hash": "101092ef84ff316441d4f0435dc828b8",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -10035,16 +10035,16 @@
         },
         {
             "name": "sensiolabs-de/deptrac-shim",
-            "version": "0.5.0",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs-de/deptrac-shim.git",
-                "reference": "551e560e1403261fd2e066aeaf426cd45ab77da3"
+                "reference": "12d6c938317f2fdb84e30676830e51ae0953b920"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs-de/deptrac-shim/zipball/551e560e1403261fd2e066aeaf426cd45ab77da3",
-                "reference": "551e560e1403261fd2e066aeaf426cd45ab77da3",
+                "url": "https://api.github.com/repos/sensiolabs-de/deptrac-shim/zipball/12d6c938317f2fdb84e30676830e51ae0953b920",
+                "reference": "12d6c938317f2fdb84e30676830e51ae0953b920",
                 "shasum": ""
             },
             "require": {
@@ -10073,7 +10073,7 @@
                 }
             ],
             "description": "deptrac phar distribution",
-            "time": "2019-03-15T14:24:52+00:00"
+            "time": "2019-10-18T14:03:03+00:00"
         },
         {
             "name": "structurizr-php/structurizr-php",

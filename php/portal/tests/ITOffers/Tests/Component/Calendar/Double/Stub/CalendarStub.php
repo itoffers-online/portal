@@ -17,10 +17,7 @@ use ITOffers\Component\Calendar\Calendar;
 
 final class CalendarStub implements Calendar
 {
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $currentTime;
+    private \DateTimeImmutable $currentTime;
 
     public function __construct(\DateTimeImmutable $currentTime = null)
     {

@@ -15,15 +15,9 @@ namespace ITOffers\Offers\Application\Query\Offer\Model;
 
 final class OfferSeniorityLevel
 {
-    /**
-     * @var int
-     */
-    private $level;
+    private int $level;
 
-    /**
-     * @var int
-     */
-    private $offersCount;
+    private int $offersCount;
 
     public function __construct(int $level, int $offersCount)
     {

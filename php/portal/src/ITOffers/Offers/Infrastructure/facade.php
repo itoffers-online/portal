@@ -95,12 +95,11 @@ function offersFacade(
         /**
          * @var Event[]
          */
-        private $events;
+        private array
 
-        /**
-         * @var InMemoryEventBus
-         */
-        private $eventBus;
+ $events;
+
+        private InMemoryEventBus $eventBus;
 
         public function __construct(InMemoryEventBus $eventBus)
         {

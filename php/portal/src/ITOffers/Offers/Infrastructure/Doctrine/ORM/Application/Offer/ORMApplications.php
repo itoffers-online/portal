@@ -21,10 +21,7 @@ use ITOffers\Offers\Application\Offer\Offer;
 
 final class ORMApplications implements Applications
 {
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     public function __construct(EntityManager $entityManager)
     {

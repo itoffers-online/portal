@@ -17,20 +17,16 @@ use ITOffers\Offers\Application\User\User;
 
 final class UserOffers implements \Countable
 {
-    /**
-     * @var \ITOffers\Offers\Application\User\User
-     */
-    private $user;
+    private User $user;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $since;
+    private \DateTimeImmutable $since;
 
     /**
      * @var \ITOffers\Offers\Application\Offer\Offer[]
      */
-    private $offers;
+    private array
+
+ $offers;
 
     public function __construct(User $user, \DateTimeImmutable $since, Offer ...$offers)
     {

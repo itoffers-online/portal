@@ -23,20 +23,11 @@ use function random_int;
 
 class Slug
 {
-    /**
-     * @var string
-     */
-    private $slug;
+    private string $slug;
 
-    /**
-     * @var UuidInterface
-     */
-    private $offerId;
+    private UuidInterface $offerId;
 
-    /**
-     * @var DateTimeImmutable
-     */
-    private $createdAt;
+    private \DateTimeImmutable $createdAt;
 
     private function __construct(string $value, UuidInterface $offerId, DateTimeImmutable $createdAt)
     {
@@ -51,7 +42,7 @@ class Slug
         $slugify = new Slugify();
 
         return new self(
-            sprintf('%s-%s', $slugify->slugify(SeniorityLevels::toString($offer->position()->seniorityLevel()) . ' ' . $offer->position()->name() . ' ' . $offer->company()->name()), $hashids->encode(time() + random_int(0, 5000))),
+            sprintf('%s-%s', $slugify->slugify(SeniorityLevels::toString($offer->position()->seniorityLevel()) . ' ' . $offer->position()->name() . ' ' . $offer->company()->name()), $hashids->encode(time() + random_int(0, 5_000))),
             $offer->id(),
             $calendar->currentTime()
         );

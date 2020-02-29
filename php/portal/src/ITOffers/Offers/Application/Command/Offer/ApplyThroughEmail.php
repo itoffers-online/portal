@@ -21,30 +21,20 @@ final class ApplyThroughEmail implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
-    /**
-     * @var string
-     */
-    private $from;
+    private string $from;
 
-    /**
-     * @var string
-     */
-    private $subject;
+    private string $subject;
 
-    /**
-     * @var string
-     */
-    private $htmlBody;
+    private string $htmlBody;
 
     /**
      * @var mixed[]
      */
-    private $attachments;
+    private array
+
+ $attachments;
 
     public function __construct(
         string $offerId,

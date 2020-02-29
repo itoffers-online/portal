@@ -22,25 +22,13 @@ use Ramsey\Uuid\Uuid;
 
 final class AssignAutoRenewHandler implements Handler
 {
-    /**
-     * @var Users
-     */
-    private $users;
+    private Users $users;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var OfferAutoRenews
-     */
-    private $offerAutoRenews;
+    private OfferAutoRenews $offerAutoRenews;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(Users $users, Offers $offers, OfferAutoRenews $offerAutoRenews, Calendar $calendar)
     {

@@ -20,15 +20,9 @@ use Ramsey\Uuid\UuidInterface;
 
 class Post
 {
-    /**
-     * @var string
-     */
-    private $fbId;
+    private string $fbId;
 
-    /**
-     * @var string
-     */
-    private $jobOfferId;
+    private string $jobOfferId;
 
     public function __construct(string $fbId, Offer $offer)
     {

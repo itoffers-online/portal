@@ -18,10 +18,7 @@ use Imagine\Image\Palette\RGB;
 
 final class ImagineColors
 {
-    /**
-     * @var RGB
-     */
-    private $palette;
+    private RGB $palette;
 
     public function __construct()
     {

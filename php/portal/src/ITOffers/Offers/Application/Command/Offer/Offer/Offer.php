@@ -15,40 +15,19 @@ namespace ITOffers\Offers\Application\Command\Offer\Offer;
 
 final class Offer
 {
-    /**
-     * @var Company
-     */
-    private $company;
+    private Company $company;
 
-    /**
-     * @var Position
-     */
-    private $position;
+    private Position $position;
 
-    /**
-     * @var Location
-     */
-    private $location;
+    private Location $location;
 
-    /**
-     * @var Salary|null
-     */
-    private $salary;
+    private ?Salary $salary;
 
-    /**
-     * @var Contract
-     */
-    private $contract;
+    private Contract $contract;
 
-    /**
-     * @var Description
-     */
-    private $description;
+    private Description $description;
 
-    /**
-     * @var Contact
-     */
-    private $contact;
+    private Contact $contact;
 
     public function __construct(
         Company $company,

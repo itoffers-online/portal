@@ -20,15 +20,9 @@ final class FacebookConnect implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $fbUserAppId;
+    private string $fbUserAppId;
 
-    /**
-     * @var string
-     */
-    private $email;
+    private string $email;
 
     public function __construct(string $fbUserAppId, string $email)
     {

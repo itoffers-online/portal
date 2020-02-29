@@ -42,13 +42,11 @@ final class SkillsType extends JsonType
 
         return \json_encode(
             \array_map(
-                function (Skill $skill) {
-                    return [
-                        'name' => self::getPrivatePropertyValue($skill, 'name'),
-                        'required' => self::getPrivatePropertyValue($skill, 'required'),
-                        'experience_years' => self::getPrivatePropertyValue($skill, 'experienceYears'),
-                    ];
-                },
+                fn (Skill $skill) => [
+                    'name' => self::getPrivatePropertyValue($skill, 'name'),
+                    'required' => self::getPrivatePropertyValue($skill, 'required'),
+                    'experience_years' => self::getPrivatePropertyValue($skill, 'experienceYears'),
+                ],
                 $value
             ),
             JSON_THROW_ON_ERROR
@@ -68,13 +66,11 @@ final class SkillsType extends JsonType
         }
 
         return \array_map(
-            function (array $skillData) {
-                return new Skill(
-                    $skillData['name'],
-                    (bool) $skillData['required'],
-                    $skillData['experience_years'],
-                );
-            },
+            fn (array $skillData) => new Skill(
+                $skillData['name'],
+                (bool) $skillData['required'],
+                $skillData['experience_years'],
+            ),
             $data
         );
     }

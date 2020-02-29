@@ -19,10 +19,7 @@ use ITOffers\Offers\Application\Exception\Exception;
 
 final class FeatureToggleQuery implements Query
 {
-    /**
-     * @var FeatureToggle
-     */
-    private $featureToggle;
+    private FeatureToggle $featureToggle;
 
     public function __construct(FeatureToggle $featureToggle)
     {

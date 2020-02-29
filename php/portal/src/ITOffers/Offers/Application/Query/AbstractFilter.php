@@ -18,20 +18,16 @@ use ITOffers\Offers\Application\Query\Filter\Column;
 
 abstract class AbstractFilter
 {
-    /**
-     * @var int
-     */
-    protected $limit = 50;
+    protected int $limit = 50;
 
-    /**
-     * @var int|null
-     */
-    protected $offset;
+    protected ?int $offset = null;
 
     /**
      * @var mixed[]
      */
-    private $sortBy = [];
+    private array
+
+ $sortBy = [];
 
     public function changeSize(int $limit, int $offset) : self
     {

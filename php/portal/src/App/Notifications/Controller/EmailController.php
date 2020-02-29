@@ -23,15 +23,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class EmailController extends AbstractController
 {
-    /**
-     * @var ITOffersOnline
-     */
-    private $itoffers;
+    private ITOffersOnline $itoffers;
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private ParameterBagInterface $parameterBag;
 
     public function __construct(ITOffersOnline $itoffers, ParameterBagInterface $parameterBag)
     {

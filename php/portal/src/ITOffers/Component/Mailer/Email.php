@@ -17,15 +17,9 @@ use ITOffers\Offers\Application\Assertion;
 
 final class Email
 {
-    /**
-     * @var string
-     */
-    private $subject;
+    private string $subject;
 
-    /**
-     * @var string
-     */
-    private $htmlContent;
+    private string $htmlContent;
 
     public function __construct(string $subject, string $htmlBody)
     {

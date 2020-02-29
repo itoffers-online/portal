@@ -15,10 +15,7 @@ namespace ITOffers\Offers\Application\Query\Offer\Model\Offer;
 
 final class Contract
 {
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
     public function __construct(string $type)
     {

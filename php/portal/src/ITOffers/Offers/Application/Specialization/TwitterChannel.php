@@ -17,25 +17,13 @@ use ITOffers\Offers\Application\Assertion;
 
 final class TwitterChannel
 {
-    /**
-     * @var string
-     */
-    private $accountId;
+    private string $accountId;
 
-    /**
-     * @var string
-     */
-    private $screenName;
+    private string $screenName;
 
-    /**
-     * @var string
-     */
-    private $oauthToken;
+    private string $oauthToken;
 
-    /**
-     * @var string
-     */
-    private $oauthSecret;
+    private string $oauthSecret;
 
     public function __construct(string $accountId, string $screenName, string $oauthToken, string $oauthSecret)
     {

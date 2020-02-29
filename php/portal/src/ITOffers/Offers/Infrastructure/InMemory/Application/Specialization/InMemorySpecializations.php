@@ -23,7 +23,9 @@ final class InMemorySpecializations implements Specializations
     /**
      * @var Specialization[]
      */
-    private $specializations;
+    private array
+
+ $specializations;
 
     public function __construct(Specialization ...$specializations)
     {

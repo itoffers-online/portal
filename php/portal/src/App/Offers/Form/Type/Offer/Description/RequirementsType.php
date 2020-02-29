@@ -42,9 +42,7 @@ final class RequirementsType extends AbstractType
                                 return ;
                             }
 
-                            $skills = \array_unique(\array_map(function (array $skillData) {
-                                return \mb_strtolower($skillData['skill']);
-                            }, $object));
+                            $skills = \array_unique(\array_map(fn (array $skillData) => \mb_strtolower($skillData['skill']), $object));
 
                             if (\count($skills) !== (is_countable($object) ? \count($object) : 0)) {
                                 $context->buildViolation('Skills are not unique.')
@@ -57,7 +55,7 @@ final class RequirementsType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => false,
                 'constraints' => [
-                    new Length(['min' => 0, 'max' => 2048]),
+                    new Length(['min' => 0, 'max' => 2_048]),
                     new NotContainsEmoji(),
                 ],
             ])

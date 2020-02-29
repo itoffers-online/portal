@@ -18,7 +18,9 @@ final class Countries
     /**
      * @var array<string>
      */
-    private static $names = [
+    private static array
+
+ $names = [
         'AF' => 'Afghanistan',
         'AX' => 'Aland Islands',
         'AL' => 'Albania',

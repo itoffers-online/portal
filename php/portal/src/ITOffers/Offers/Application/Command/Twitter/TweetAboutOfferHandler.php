@@ -24,25 +24,13 @@ use Ramsey\Uuid\Uuid;
 
 final class TweetAboutOfferHandler implements Handler
 {
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var Tweets
-     */
-    private $tweets;
+    private Tweets $tweets;
 
-    /**
-     * @var Specializations
-     */
-    private $specializations;
+    private Specializations $specializations;
 
-    /**
-     * @var Twitter
-     */
-    private $twitter;
+    private Twitter $twitter;
 
     public function __construct(
         Offers $offers,

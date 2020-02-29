@@ -25,35 +25,17 @@ use Throwable;
 
 final class System
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
-    /**
-     * @var Queries
-     */
-    private $queries;
+    private Queries $queries;
 
-    /**
-     * @var FeatureToggle
-     */
-    private $featureToggle;
+    private FeatureToggle $featureToggle;
 
-    /**
-     * @var EventStream
-     */
-    private $eventStream;
+    private EventStream $eventStream;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         CommandBus $commandBus,

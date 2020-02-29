@@ -20,30 +20,15 @@ final class SetTwitterChannel implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $specSlug;
+    private string $specSlug;
 
-    /**
-     * @var string
-     */
-    private $accountId;
+    private string $accountId;
 
-    /**
-     * @var string
-     */
-    private $screenName;
+    private string $screenName;
 
-    /**
-     * @var string
-     */
-    private $oauthToken;
+    private string $oauthToken;
 
-    /**
-     * @var string
-     */
-    private $oauthSecret;
+    private string $oauthSecret;
 
     public function __construct(
         string $specSlug,

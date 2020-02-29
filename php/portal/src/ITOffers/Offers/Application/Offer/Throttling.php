@@ -23,20 +23,11 @@ final class Throttling
 
     public const SINCE = 'P14D';
 
-    /**
-     * @var int
-     */
-    private $limit;
+    private int $limit;
 
-    /**
-     * @var DateInterval
-     */
-    private $since;
+    private \DateInterval $since;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(int $defaultLimit, DateInterval $since, Calendar $calendar)
     {

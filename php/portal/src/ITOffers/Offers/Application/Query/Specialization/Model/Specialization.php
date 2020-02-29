@@ -20,25 +20,13 @@ use function mb_strtolower;
 
 final class Specialization
 {
-    /**
-     * @var string
-     */
-    private $slug;
+    private string $slug;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var FacebookChannel|null
-     */
-    private $facebookChannel;
+    private ?FacebookChannel $facebookChannel = null;
 
-    /**
-     * @var TwitterChannel|null
-     */
-    private $twitterChannel;
+    private ?TwitterChannel $twitterChannel = null;
 
     public function __construct(string $slug, Offers $offers, ?FacebookChannel $facebookChannel = null, ?TwitterChannel $twitterChannel = null)
     {

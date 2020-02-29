@@ -30,7 +30,7 @@ final class DescriptionType extends AbstractType
             ])
             ->add('benefits', TextareaType::class, [
                 'constraints' => [
-                    new Length(['min' => 100, 'max' => 2048]),
+                    new Length(['min' => 100, 'max' => 2_048]),
                     new NotContainsEmoji(),
                 ],
             ])

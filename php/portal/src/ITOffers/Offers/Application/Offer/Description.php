@@ -18,19 +18,13 @@ use ITOffers\Offers\Application\Offer\Description\Requirements;
 
 final class Description
 {
-    /**
-     * @var string
-     */
-    private $benefits;
+    private string $benefits;
 
-    /**
-     * @var Requirements
-     */
-    private $requirements;
+    private Requirements $requirements;
 
     public function __construct(string $benefits, Requirements $requirements)
     {
-        Assertion::betweenLength($benefits, 100, 2048);
+        Assertion::betweenLength($benefits, 100, 2_048);
 
         $this->benefits = $benefits;
         $this->requirements = $requirements;

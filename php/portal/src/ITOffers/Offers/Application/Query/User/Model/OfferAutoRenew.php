@@ -15,10 +15,7 @@ namespace ITOffers\Offers\Application\Query\User\Model;
 
 final class OfferAutoRenew
 {
-    /**
-     * @var string
-     */
-    private $offerId;
+    private string $offerId;
 
     public function __construct(string $offerId)
     {

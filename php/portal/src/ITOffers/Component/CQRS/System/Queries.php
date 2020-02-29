@@ -17,10 +17,9 @@ use ITOffers\Offers\Application\Exception\Exception;
 
 final class Queries
 {
-    /**
-     * @var mixed[]|Query[]
-     */
-    private $queries;
+    private array
+
+ $queries;
 
     public function __construct(Query ...$queries)
     {

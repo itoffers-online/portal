@@ -20,10 +20,7 @@ final class RemoveTwitterChannel implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $specSlug;
+    private string $specSlug;
 
     public function __construct(string $specSlug)
     {

@@ -22,15 +22,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class OfferToForm
 {
-    /**
-     * @var string
-     */
-    private $offerSlug;
+    private string $offerSlug;
 
-    /**
-     * @var string
-     */
-    private $userId;
+    private string $userId;
 
     public function __construct(string $offerSlug, string $userId)
     {
@@ -91,13 +85,11 @@ final class OfferToForm
                     'description' => $offer->description()->requirements()->description(),
                     'skills' => \count($offer->description()->requirements()->skills())
                         ? \array_map(
-                            function (Skill $skill) {
-                                return [
-                                    'skill' => $skill->name(),
-                                    'required' => $skill->required(),
-                                    'experience' => $skill->experienceYears(),
-                                ];
-                            },
+                            fn (Skill $skill) => [
+                                'skill' => $skill->name(),
+                                'required' => $skill->required(),
+                                'experience' => $skill->experienceYears(),
+                            ],
                             $offer->description()->requirements()->skills()
                         ) : [],
                 ],

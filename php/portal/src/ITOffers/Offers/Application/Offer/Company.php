@@ -17,28 +17,19 @@ use ITOffers\Offers\Application\Assertion;
 
 final class Company
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
 
     public function __construct(string $name, string $url, string $description)
     {
         Assertion::betweenLength($name, 3, 255);
         Assertion::url($url);
-        Assertion::betweenLength($url, 1, 2083);
+        Assertion::betweenLength($url, 1, 2_083);
 
-        Assertion::betweenLength($description, 10, 2048);
+        Assertion::betweenLength($description, 10, 2_048);
 
         $this->name = $name;
         $this->url = $url;

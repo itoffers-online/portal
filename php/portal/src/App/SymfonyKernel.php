@@ -54,10 +54,7 @@ use Twig\Extensions\TextExtension;
 
 final class SymfonyKernel extends Kernel
 {
-    /**
-     * @var Config
-     */
-    private $config;
+    private Config $config;
 
     use MicroKernelTrait;
 

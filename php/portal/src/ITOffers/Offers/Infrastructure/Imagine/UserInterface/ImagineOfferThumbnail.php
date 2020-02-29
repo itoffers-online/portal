@@ -26,20 +26,11 @@ use function round;
 
 final class ImagineOfferThumbnail implements OfferThumbnail
 {
-    /**
-     * @var string
-     */
-    private $projectRootDir;
+    private string $projectRootDir;
 
-    /**
-     * @var OfferExtension
-     */
-    private $offerExtension;
+    private OfferExtension $offerExtension;
 
-    /**
-     * @var ImagineColors
-     */
-    private $colors;
+    private ImagineColors $colors;
 
     public function __construct(string $projectRootDir, OfferExtension $offerExtension)
     {
@@ -57,7 +48,7 @@ final class ImagineOfferThumbnail implements OfferThumbnail
         }
 
         $imagine = new Imagine();
-        $size  = new Box($width = 1200, $height = 640);
+        $size  = new Box($width = 1_200, $height = 640);
 
         $paddingTop = 120;
         $paddingLeft = 20;
@@ -443,7 +434,7 @@ final class ImagineOfferThumbnail implements OfferThumbnail
             $destinationPath,
             $options = [
                 'resolution-units' => ImageInterface::RESOLUTION_PIXELSPERINCH,
-                'resolution-x' => 1240,
+                'resolution-x' => 1_240,
                 'resolution-y' => 640,
             ]
         );

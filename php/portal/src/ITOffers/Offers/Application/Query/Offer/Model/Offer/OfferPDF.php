@@ -15,10 +15,7 @@ namespace ITOffers\Offers\Application\Query\Offer\Model\Offer;
 
 final class OfferPDF
 {
-    /**
-     * @var string
-     */
-    private $path;
+    private string $path;
 
     public function __construct(string $path)
     {

@@ -9,5 +9,4 @@ parameters:
     - 'php71'
     - 'php72'
     - 'php73'
-services:
-  Rector\TypeDeclaration\Rector\Property\PropertyTypeDeclarationRector: ~
+    - 'php74'

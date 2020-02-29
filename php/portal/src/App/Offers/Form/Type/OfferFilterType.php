@@ -41,9 +41,7 @@ final class OfferFilterType extends AbstractType
                     'Added at ascending' => OfferFilter::SORT_CREATED_AT_ASC,
                     'Added at descending' => OfferFilter::SORT_CREATED_AT_DESC,
                 ],
-                'choice_value' => function (string $value = null) {
-                    return $value;
-                },
+                'choice_value' => fn (string $value = null) => $value,
                 'required' => false,
             ])
         ;

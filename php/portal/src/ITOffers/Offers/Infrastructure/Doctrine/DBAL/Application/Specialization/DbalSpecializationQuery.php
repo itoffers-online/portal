@@ -23,10 +23,7 @@ use ITOffers\Offers\Application\Query\Specialization\SpecializationQuery;
 
 final class DbalSpecializationQuery implements SpecializationQuery
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -59,9 +56,7 @@ SQL
     public function allSlugs() : array
     {
         return \array_map(
-            function ($data) {
-                return $data['slug'];
-            },
+            fn ($data) => $data['slug'],
             $this->connection->fetchAll(
                 <<<SQL
           SELECT 

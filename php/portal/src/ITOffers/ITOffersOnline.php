@@ -42,60 +42,27 @@ use Twig\Environment;
 
 final class ITOffersOnline
 {
-    /**
-     * @var bool
-     */
-    private $booted;
+    private bool $booted;
 
-    /**
-     * @var Config
-     */
-    private $config;
+    private Config $config;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private LoggerInterface $logger;
 
-    /**
-     * @var Notifications
-     */
-    private $notifications;
+    private Environment $templatingEngine;
 
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private \Swift_Mailer $mailer;
 
-    /**
-     * @var EntityManager
-     */
-    private $orm;
+    private ?Offers $offers = null;
 
-    /**
-     * @var \Swift_Mailer
-     */
-    private $mailer;
+    private ?Notifications $notifications = null;
 
-    /**
-     * @var Environment
-     */
-    private $templatingEngine;
+    private ?Connection $connection = null;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private ?EntityManager $orm = null;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private ?Calendar $calendar = null;
 
-    /**
-     * @var InMemoryEventBus
-     */
-    private $eventBus;
+    private ?InMemoryEventBus $eventBus = null;
 
     public function __construct(Config $config, LoggerInterface $logger, Environment $twig, \Swift_Mailer $mailer)
     {
@@ -119,7 +86,7 @@ final class ITOffersOnline
      */
     public function offers() : Offers
     {
-        if (null === $this->offers) {
+        if ($this->offers === null) {
             $this->offers = offersFacade($this->config(), $this->orm(), $this->mailer(), $this->templatingEngine(), $this->calendar(), $this->eventBus(), $this->logger());
         }
 
@@ -183,6 +150,7 @@ final class ITOffersOnline
         if (!Type::hasType(SalaryType::NAME)) {
             Type::addType(SalaryType::NAME, SalaryType::class);
         }
+
         if (!Type::hasType(SkillsType::NAME)) {
             Type::addType(SkillsType::NAME, SkillsType::class);
         }

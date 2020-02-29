@@ -15,10 +15,7 @@ namespace ITOffers\Component\Mailer;
 
 final class Attachment
 {
-    /**
-     * @var string
-     */
-    private $filepath;
+    private string $filepath;
 
     public function __construct(string $filepath)
     {

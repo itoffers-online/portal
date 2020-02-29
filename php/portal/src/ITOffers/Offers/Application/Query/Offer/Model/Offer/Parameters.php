@@ -15,40 +15,19 @@ namespace ITOffers\Offers\Application\Query\Offer\Model\Offer;
 
 final class Parameters
 {
-    /**
-     * @var Company
-     */
-    private $company;
+    private Company $company;
 
-    /**
-     * @var Contact
-     */
-    private $contact;
+    private Contact $contact;
 
-    /**
-     * @var Contract
-     */
-    private $contract;
+    private Contract $contract;
 
-    /**
-     * @var Description
-     */
-    private $description;
+    private Description $description;
 
-    /**
-     * @var Location
-     */
-    private $location;
+    private Location $location;
 
-    /**
-     * @var Position
-     */
-    private $position;
+    private Position $position;
 
-    /**
-     * @var Salary|null
-     */
-    private $salary;
+    private ?Salary $salary;
 
     public function __construct(
         Company $company,

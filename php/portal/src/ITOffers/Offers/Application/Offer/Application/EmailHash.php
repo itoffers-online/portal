@@ -18,10 +18,7 @@ use ITOffers\Offers\Application\Hash\Encoder;
 
 final class EmailHash
 {
-    /**
-     * @var string
-     */
-    private $hash;
+    private string $hash;
 
     private function __construct(string $hash)
     {

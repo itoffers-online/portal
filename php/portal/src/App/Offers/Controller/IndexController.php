@@ -20,10 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class IndexController extends AbstractController
 {
-    /**
-     * @var ITOffersOnline
-     */
-    private $itoffers;
+    private ITOffersOnline $itoffers;
 
     public function __construct(ITOffersOnline $itoffers)
     {

@@ -27,30 +27,15 @@ final class Salary
 
     public const PERIOD_TYPE_IN_TOTAL = 'IN_TOTAL';
 
-    /**
-     * @var int
-     */
-    private $min;
+    private int $min;
 
-    /**
-     * @var int
-     */
-    private $max;
+    private int $max;
 
-    /**
-     * @var string
-     */
-    private $currencyCode;
+    private string $currencyCode;
 
-    /**
-     * @var bool
-     */
-    private $net;
+    private bool $net;
 
-    /**
-     * @var string
-     */
-    private $periodType;
+    private string $periodType;
 
     public function __construct(int $min, int $max, string $currencyCode, bool $net, string $periodType)
     {

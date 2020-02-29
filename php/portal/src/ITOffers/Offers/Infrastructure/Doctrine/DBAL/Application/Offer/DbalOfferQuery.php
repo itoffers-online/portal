@@ -38,15 +38,9 @@ use Ramsey\Uuid\Uuid;
 
 final class DbalOfferQuery implements OfferQuery
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
     public function __construct(Connection $connection, Calendar $calendar)
     {
@@ -99,9 +93,7 @@ final class DbalOfferQuery implements OfferQuery
             ->fetchAll();
 
         return new OffersSeniorityLevel(...\array_map(
-            function (array $data) {
-                return new OfferSeniorityLevel($data['position_seniority_level'], $data['count']);
-            },
+            fn (array $data) => new OfferSeniorityLevel($data['position_seniority_level'], $data['count']),
             $offersCountData
         ));
     }
@@ -342,13 +334,11 @@ final class DbalOfferQuery implements OfferQuery
                         $offerData['description_requirements_description'],
                         ...$skills
                             ? \array_map(
-                                function (array $skillData) {
-                                    return new Skill(
-                                        $skillData['name'],
-                                        $skillData['required'],
-                                        $skillData['experience_years'],
-                                    );
-                                },
+                                fn (array $skillData) => new Skill(
+                                    $skillData['name'],
+                                    $skillData['required'],
+                                    $skillData['experience_years'],
+                                ),
                                 $skills
                             ) : []
                     )

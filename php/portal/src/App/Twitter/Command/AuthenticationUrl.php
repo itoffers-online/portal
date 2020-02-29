@@ -29,15 +29,9 @@ final class AuthenticationUrl extends Command
      */
     protected static $defaultName = self::NAME;
 
-    /**
-     * @var Config
-     */
-    private $config;
+    private Config $config;
 
-    /**
-     * @var SymfonyStyle
-     */
-    private $io;
+    private SymfonyStyle $io;
 
     public function __construct(Config $config)
     {

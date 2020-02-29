@@ -27,25 +27,13 @@ use PHPUnit\Framework\TestCase;
 
 abstract class OffersTestCase extends TestCase
 {
-    /**
-     * @var OffersContext
-     */
-    protected $offers;
+    protected OffersContext $offers;
 
-    /**
-     * @var DatabaseContext
-     */
-    protected $databaseContext;
+    protected DatabaseContext $databaseContext;
 
-    /**
-     * @var FilesystemContext
-     */
-    protected $filesystemContext;
+    protected FilesystemContext $filesystemContext;
 
-    /**
-     * @var EventSubscriberSpy
-     */
-    protected $publishedEvents;
+    protected EventSubscriberSpy $publishedEvents;
 
     public function setUp() : void
     {

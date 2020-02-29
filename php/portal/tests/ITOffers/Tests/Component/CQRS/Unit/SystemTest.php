@@ -68,10 +68,7 @@ final class SystemTest extends TestCase
             new CommandBus(
                 new DummyTransactionManager(),
                 new class($eventStream) implements Handler {
-                    /**
-                     * @var EventStream
-                     */
-                    private $eventStream;
+                    private EventStream $eventStream;
 
                     public function __construct(EventStream $eventStream)
                     {
@@ -128,10 +125,7 @@ final class SystemTest extends TestCase
             new CommandBus(
                 new DummyTransactionManager(),
                 new class($eventStream) implements Handler {
-                    /**
-                     * @var EventStream
-                     */
-                    private $eventStream;
+                    private EventStream $eventStream;
 
                     public function __construct(EventStream $eventStream)
                     {

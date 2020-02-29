@@ -21,10 +21,7 @@ use Ramsey\Uuid\UuidInterface;
 
 final class ModuleOffers implements Offers
 {
-    /**
-     * @var OffersModule
-     */
-    private $offersModule;
+    private OffersModule $offersModule;
 
     public function __construct(OffersModule $offersModule)
     {

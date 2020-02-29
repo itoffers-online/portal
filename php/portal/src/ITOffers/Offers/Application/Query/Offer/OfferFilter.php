@@ -30,40 +30,19 @@ final class OfferFilter extends AbstractFilter
 
     public const SORT_CREATED_AT_DESC = 'created_at_desc';
 
-    /**
-     * @var string|null
-     */
-    private $specialization;
+    private ?string $specialization = null;
 
-    /**
-     * @var int|null
-     */
-    private $createInLastDays;
+    private ?int $createInLastDays = null;
 
-    /**
-     * @var bool|null
-     */
-    private $remote;
+    private ?bool $remote = null;
 
-    /**
-     * @var bool|null
-     */
-    private $withSalary;
+    private ?bool $withSalary = null;
 
-    /**
-     * @var string|null
-     */
-    private $userId;
+    private ?string $userId = null;
 
-    /**
-     * @var string|null
-     */
-    private $afterOffer;
+    private ?string $afterOffer = null;
 
-    /**
-     * @var int|null
-     */
-    private $seniorityLevel;
+    private ?int $seniorityLevel = null;
 
     private function __construct(int $fromLastDays = 20)
     {

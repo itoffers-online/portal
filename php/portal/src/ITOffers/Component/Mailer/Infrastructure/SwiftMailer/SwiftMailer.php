@@ -23,15 +23,9 @@ use ITOffers\Component\Mailer\Sender;
 
 final class SwiftMailer implements Mailer
 {
-    /**
-     * @var string
-     */
-    private $domain;
+    private string $domain;
 
-    /**
-     * @var \Swift_Mailer
-     */
-    private $swiftMailer;
+    private \Swift_Mailer $swiftMailer;
 
     public function __construct(string $domain, \Swift_Mailer $swiftMailer)
     {

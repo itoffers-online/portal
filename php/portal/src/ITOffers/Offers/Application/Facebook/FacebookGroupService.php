@@ -18,10 +18,7 @@ use ITOffers\Offers\Application\Specialization\Specialization;
 
 final class FacebookGroupService
 {
-    /**
-     * @var Facebook
-     */
-    private $facebook;
+    private Facebook $facebook;
 
     public function __construct(Facebook $facebook)
     {

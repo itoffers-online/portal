@@ -35,35 +35,17 @@ use function sprintf;
 
 final class ApplyThroughEmailHandler implements Handler
 {
-    /**
-     * @var Mailer
-     */
-    private $mailer;
+    private Mailer $mailer;
 
-    /**
-     * @var Offers
-     */
-    private $offers;
+    private Offers $offers;
 
-    /**
-     * @var Applications
-     */
-    private $applications;
+    private Applications $applications;
 
-    /**
-     * @var Encoder
-     */
-    private $encoder;
+    private Encoder $encoder;
 
-    /**
-     * @var Calendar
-     */
-    private $calendar;
+    private Calendar $calendar;
 
-    /**
-     * @var EmailFormatter
-     */
-    private $emailFormatter;
+    private EmailFormatter $emailFormatter;
 
     public function __construct(
         Mailer $mailer,
@@ -108,9 +90,7 @@ final class ApplyThroughEmailHandler implements Handler
             new Recipients(new Recipient($offer->contact()->email(), $offer->contact()->name())),
             new Attachments(
                 ...array_map(
-                    function (Attachment $attachment) {
-                        return new Attachment($attachment->filePath());
-                    },
+                    fn (Attachment $attachment) => new Attachment($attachment->filePath()),
                     $command->attachments()
                 )
             )

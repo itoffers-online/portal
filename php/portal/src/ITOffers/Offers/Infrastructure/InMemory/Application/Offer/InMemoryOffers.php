@@ -27,7 +27,9 @@ final class InMemoryOffers implements Offers
     /**
      * @var Offer[]
      */
-    private $offers;
+    private array
+
+ $offers;
 
     public function __construct(Offer ...$offers)
     {
@@ -43,9 +45,7 @@ final class InMemoryOffers implements Offers
     {
         return \current(\array_filter(
             $this->offers,
-            function (Offer $offer) use ($offerId) {
-                return $offer->id()->equals($offerId);
-            }
+            fn (Offer $offer) => $offer->id()->equals($offerId)
         ));
     }
 
@@ -56,9 +56,7 @@ final class InMemoryOffers implements Offers
             $since,
             ...array_filter(
                 $this->offers,
-                function (Offer $offer) use ($user) {
-                    return self::getPrivatePropertyValue($offer, 'userId') === $user->id()->toString();
-                }
+                fn (Offer $offer) => self::getPrivatePropertyValue($offer, 'userId') === $user->id()->toString()
             )
         );
     }

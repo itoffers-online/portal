@@ -17,10 +17,7 @@ use ITOffers\Offers\Application\Query\Specialization\Model\Specialization;
 
 final class Tweet
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
     public function __construct(string $id)
     {

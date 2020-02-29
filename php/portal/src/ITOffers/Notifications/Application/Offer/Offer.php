@@ -17,50 +17,23 @@ use Ramsey\Uuid\UuidInterface;
 
 final class Offer
 {
-    /**
-     * @var UuidInterface
-     */
-    private $id;
+    private UuidInterface $id;
 
-    /**
-     * @var string
-     */
-    private $recruiterEmail;
+    private string $recruiterEmail;
 
-    /**
-     * @var string
-     */
-    private $recruiterName;
+    private string $recruiterName;
 
-    /**
-     * @var string
-     */
-    private $offerSlug;
+    private string $offerSlug;
 
-    /**
-     * @var string
-     */
-    private $specializationSlug;
+    private string $specializationSlug;
 
-    /**
-     * @var int
-     */
-    private $seniorityLevel;
+    private int $seniorityLevel;
 
-    /**
-     * @var string
-     */
-    private $position;
+    private string $position;
 
-    /**
-     * @var string
-     */
-    private $companyName;
+    private string $companyName;
 
-    /**
-     * @var string
-     */
-    private $companyUrl;
+    private string $companyUrl;
 
     public function __construct(
         UuidInterface $id,

@@ -20,15 +20,9 @@ final class LinkedInConnect implements Command
 {
     use ClassCommand;
 
-    /**
-     * @var string
-     */
-    private $userAppId;
+    private string $userAppId;
 
-    /**
-     * @var string
-     */
-    private $email;
+    private string $email;
 
     public function __construct(string $userAppId, string $email)
     {

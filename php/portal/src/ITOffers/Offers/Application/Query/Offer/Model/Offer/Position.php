@@ -15,20 +15,11 @@ namespace ITOffers\Offers\Application\Query\Offer\Model\Offer;
 
 final class Position
 {
-    /**
-     * @var int
-     */
-    private $seniorityLevel;
+    private int $seniorityLevel;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $description;
+    private string $description;
 
     public function __construct(int $seniorityLevel, string $name, string $description)
     {

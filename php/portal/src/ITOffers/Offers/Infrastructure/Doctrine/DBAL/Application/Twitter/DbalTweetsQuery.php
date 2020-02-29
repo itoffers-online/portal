@@ -19,10 +19,7 @@ use ITOffers\Offers\Application\Query\Twitter\TweetsQuery;
 
 final class DbalTweetsQuery implements TweetsQuery
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
