@@ -320,8 +320,8 @@ final class DbalOfferQuery implements OfferQuery
 
     private function hydrateOffer(array $offerData) : Offer
     {
-        $salary = isset($offerData['salary']) ? \json_decode($offerData['salary'], true) : null;
-        $skills = isset($offerData['description_requirements_skills']) ? \json_decode($offerData['description_requirements_skills'], true) : null;
+        $salary = isset($offerData['salary']) ? \json_decode($offerData['salary'], true, 512, JSON_THROW_ON_ERROR) : null;
+        $skills = isset($offerData['description_requirements_skills']) ? \json_decode($offerData['description_requirements_skills'], true, 512, JSON_THROW_ON_ERROR) : null;
         $offerPDF = isset($offerData['offer_pdf']) ? new OfferPDF($offerData['offer_pdf']) : null;
 
         return new Offer(

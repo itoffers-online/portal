@@ -50,7 +50,8 @@ final class SkillsType extends JsonType
                     ];
                 },
                 $value
-            )
+            ),
+            JSON_THROW_ON_ERROR
         );
     }
 
@@ -60,7 +61,7 @@ final class SkillsType extends JsonType
             return null;
         }
 
-        $data = \json_decode($value, true);
+        $data = \json_decode($value, true, 512, JSON_THROW_ON_ERROR);
 
         if (!$data) {
             return [];
