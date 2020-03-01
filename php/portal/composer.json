@@ -135,7 +135,9 @@
             "phpdbg -qrr ./vendor/bin/phpunit --coverage-html ./var/phpunit/coverage/html"
         ],
         "test:md": [
-            "mdlinklint ./../ --exclude=vendor --exclude=node_modules"
+            "pwd ./../../",
+            "ls ./../../",
+            "mdlinklint ./../../ --exclude=vendor --exclude=node_modules"
         ],
         "test:php:cs": [
             "phpstan analyse -c phpstan.neon",
