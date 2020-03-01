@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5724c9b542cf01dd7338731f678f55c",
+    "content-hash": "7d5672e54328b319aab58099843cde3b",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -7798,16 +7798,16 @@
         },
         {
             "name": "norberttech/md-link-linter",
-            "version": "dev-master",
+            "version": "0.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/norberttech/md-link-linter.git",
-                "reference": "7561c260fe6abd9408b6a3ec303953681a9b0af8"
+                "reference": "6f7e5d046f068976c137a8abf292f7627b48cb8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/norberttech/md-link-linter/zipball/7561c260fe6abd9408b6a3ec303953681a9b0af8",
-                "reference": "7561c260fe6abd9408b6a3ec303953681a9b0af8",
+                "url": "https://api.github.com/repos/norberttech/md-link-linter/zipball/6f7e5d046f068976c137a8abf292f7627b48cb8d",
+                "reference": "6f7e5d046f068976c137a8abf292f7627b48cb8d",
                 "shasum": ""
             },
             "require": {
@@ -7816,6 +7816,7 @@
                 "ext-dom": "*",
                 "ext-mbstring": "*",
                 "php": "^7.3",
+                "psr/log": "^1.1",
                 "symfony/console": "^4|^3.4"
             },
             "require-dev": {
@@ -7844,7 +7845,7 @@
             "authors": [
                 {
                     "name": "Norbert Orzechowicz",
-                    "email": "norbert@orzechowicz.pl"
+                    "email": "contact@norbert.tech"
                 }
             ],
             "description": "Markdown link linter",
@@ -7853,7 +7854,7 @@
                 "linter",
                 "markdown"
             ],
-            "time": "2020-01-12T11:30:15+00:00"
+            "time": "2020-03-01T18:53:24+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -10922,7 +10923,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "friendsofphp/php-cs-fixer": 20,
-        "norberttech/md-link-linter": 20,
         "structurizr-php/structurizr-php": 20
     },
     "prefer-stable": false,
