@@ -14,14 +14,14 @@ time range.
 
 Hire in Social is modular monolith with following contexts:
 
-* [Offers](/php/itoffers/src/ITOffers/Offers)
-* [Notifications](/php/itoffers/src/ITOffers/Notifications)
+* [Offers](/php/portal/src/ITOffers/Offers)
+* [Notifications](/php/portal/src/ITOffers/Notifications)
 
 ## Supported channels 
 
  * Website
     * Post offer at hire in social web page 
- * [Facebook](/php/itoffers/docs/channel/facebook.md) 
+ * [Facebook](/php/portal/docs/channel/facebook.md) 
     * Group 
         * Post offer as a Page that is linked to a Group
 

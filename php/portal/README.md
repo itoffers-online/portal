@@ -14,10 +14,10 @@ $ composer assets:install
 
 ## Configuration
 
-Check [.env.dist file](/php/itoffers/.env.dist) and create your own local copy:
+Check [.env.dist file](/php/portal/.env.dist) and create your own local copy:
 
 ```
-$ cp /var/www/portal/php/itoffers/.env.dist /var/www/portal/php/itoffers/.env
+$ cp /var/www/itoffers/php/portal/.env.dist /var/www/itoffers/php/portal/.env
 ```
  
 ## User interface
@@ -54,9 +54,9 @@ And open `./var/coverage/index.html` in your browser.
 
 Test types:
 
-* [Unit](tests/ITOffers/Tests/Application/Unit)
-* [Unit](tests/ITOffers/Tests/Infrastructure/Unit) (infrastructure)
-* [Integration](tests/ITOffers/Tests/Application/Integration) (application)
+* [Unit](tests/ITOffers/Tests/Offers/Application/Unit)
+* [Unit](tests/ITOffers/Tests/Offers/Infrastructure/Unit) (infrastructure)
+* [Integration](tests/ITOffers/Tests/Offers/Application/Integration) (application)
 * [Functional](tests/App/Tests/Functional)
 
 
