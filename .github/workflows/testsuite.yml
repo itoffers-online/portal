@@ -33,9 +33,15 @@ jobs:
         working-directory: ./php/portal
         run: pwd
 
+      - name: LS
+        working-directory: ./php/portal
+        run: ls
+
       - name: PWD
-        working-directory:
         run: pwd
+
+      - name: LS
+        run: ls
 
       - name: Setup PHP
         uses: shivammathur/setup-php@master
