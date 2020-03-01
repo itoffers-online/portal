@@ -29,20 +29,6 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: PWD
-        working-directory: ./php/portal
-        run: pwd
-
-      - name: LS
-        working-directory: ./php/portal
-        run: ls
-
-      - name: PWD
-        run: pwd
-
-      - name: LS
-        run: ls
-
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -69,7 +55,7 @@ jobs:
 
       - name: Run testsuite
         working-directory: ./php/portal
-        run: composer test
+        run: composer test --working-dir="$(pwd)"
         env:
           ITOF_REDIS_DSN: redis://localhost:${{ job.services.redis.ports[6379] }}
           ITOF_DB_PORT: ${{ job.services.postgres.ports[5432] }}
