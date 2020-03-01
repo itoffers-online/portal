@@ -25,9 +25,7 @@ abstract class AbstractFilter
     /**
      * @var mixed[]
      */
-    private array
-
- $sortBy = [];
+    private array $sortBy = [];
 
     public function changeSize(int $limit, int $offset) : self
     {

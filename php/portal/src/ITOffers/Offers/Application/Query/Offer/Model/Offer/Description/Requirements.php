@@ -22,9 +22,7 @@ final class Requirements
     /**
      * @var Skill[]
      */
-    private array
-
- $skills;
+    private array $skills;
 
     public function __construct(string $description, Skill ...$skills)
     {

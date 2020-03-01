@@ -95,9 +95,7 @@ function offersFacade(
         /**
          * @var Event[]
          */
-        private array
-
- $events;
+        private array $events;
 
         private InMemoryEventBus $eventBus;
 

@@ -24,9 +24,7 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
     /**
      * @var int[]
      */
-    private array
-
- $cache;
+    private array $cache;
 
     private int $limit;
 

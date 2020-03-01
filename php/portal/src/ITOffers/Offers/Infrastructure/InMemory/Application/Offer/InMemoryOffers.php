@@ -27,9 +27,7 @@ final class InMemoryOffers implements Offers
     /**
      * @var Offer[]
      */
-    private array
-
- $offers;
+    private array $offers;
 
     public function __construct(Offer ...$offers)
     {

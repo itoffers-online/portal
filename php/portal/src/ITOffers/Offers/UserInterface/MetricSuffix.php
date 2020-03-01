@@ -21,9 +21,7 @@ final class MetricSuffix
 
     private string $locale;
 
-    private array
-
- $binaryPrefixes = [
+    private array $binaryPrefixes = [
         1_000_000_000_000_000 => '#.##P',
         1_000_000_000_000 => '#.##T',
         1_000_000_000 => '#.##G',

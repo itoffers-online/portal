@@ -21,9 +21,7 @@ final class EventSubscriberSpy implements Subscriber
     /**
      * @var Event[]
      */
-    private array
-
- $events;
+    private array $events;
 
     public function __construct()
     {
