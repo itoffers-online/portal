@@ -29,6 +29,14 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
+      - name: PWD
+        working-directory: ./php/portal
+        run: pwd
+
+      - name: PWD
+        working-directory:
+        run: pwd
+        -
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
