@@ -1,6 +1,6 @@
 ## Facebook 
 
-[↩️ back](/php/itoffers/docs/README.md)
+[↩️ back](/php/portal/docs/README.md)
 
 In order to use Facebook as a social media destination channel you need to meet following requirements:
 
@@ -15,4 +15,4 @@ In order to use Facebook as a social media destination channel you need to meet 
 https://sujipthapa.co/blog/generating-never-expiring-facebook-page-access-token
 
 ---
-[↩️ back](/php/itoffers/docs/README.md) 
+[↩️ back](/php/portal/docs/README.md) 

@@ -3,6 +3,7 @@
 !/var/.gitkeep
 /var/
 /build/
+!/build/.gitkeep
 *.cache
 /public/upload
 /node_modules
