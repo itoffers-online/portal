@@ -55,10 +55,11 @@ jobs:
 
       - name: Run testsuite
         working-directory: ./php/portal
-        run: composer test --working-dir="$(pwd)"
+        run: composer test
         env:
           ITOF_REDIS_DSN: redis://localhost:${{ job.services.redis.ports[6379] }}
           ITOF_DB_PORT: ${{ job.services.postgres.ports[5432] }}
+          MD_LINTER_SCAN_DIR: /home/runner/work/portal/portal
 
       - name: Run mutation tests
         run: phpdbg -qrr ./vendor/bin/infection -vvv --test-framework-options='--testsuite=unit' --only-covered

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d5672e54328b319aab58099843cde3b",
+    "content-hash": "36c7277cc1284e215c6f663914f9cc41",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -7798,16 +7798,16 @@
         },
         {
             "name": "norberttech/md-link-linter",
-            "version": "0.0.6",
+            "version": "0.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/norberttech/md-link-linter.git",
-                "reference": "6f7e5d046f068976c137a8abf292f7627b48cb8d"
+                "reference": "f43e377cf1fbe0189aeaab2398c26e0ef3079858"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/norberttech/md-link-linter/zipball/6f7e5d046f068976c137a8abf292f7627b48cb8d",
-                "reference": "6f7e5d046f068976c137a8abf292f7627b48cb8d",
+                "url": "https://api.github.com/repos/norberttech/md-link-linter/zipball/f43e377cf1fbe0189aeaab2398c26e0ef3079858",
+                "reference": "f43e377cf1fbe0189aeaab2398c26e0ef3079858",
                 "shasum": ""
             },
             "require": {
@@ -7854,7 +7854,7 @@
                 "linter",
                 "markdown"
             ],
-            "time": "2020-03-01T18:53:24+00:00"
+            "time": "2020-03-01T19:28:21+00:00"
         },
         {
             "name": "nyholm/psr7",
