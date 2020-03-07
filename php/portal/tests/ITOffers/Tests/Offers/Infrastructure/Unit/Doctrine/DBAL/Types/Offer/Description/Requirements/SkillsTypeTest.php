@@ -29,22 +29,20 @@ final class SkillsTypeTest extends TypeTestCase
         return SkillsType::class;
     }
 
-    public function dataProvider() : array
+    public function dataProvider() : \Iterator
     {
-        return [
+        yield [
+            [],
+        ];
+        yield [
             [
-                [],
+                new Skill('php', true, 5),
+                new Skill('java', false),
+                new Skill('go', true),
             ],
-            [
-                [
-                    new Skill('php', true, 5),
-                    new Skill('java', false),
-                    new Skill('go', true),
-                ],
-            ],
-            [
-                null,
-            ],
+        ];
+        yield [
+            null,
         ];
     }
 }

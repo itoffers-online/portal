@@ -28,7 +28,6 @@ final class AssignAutoRenewTest extends OffersTestCase
         $this->offers->module()->handle(new AssignAutoRenew(
             $user->id(),
             $offer->id()->toString(),
-            $renewInDays = 10
         ));
 
         $this->assertSame(1, $this->offers->module()->offerAutoRenewQuery()->countRenewsLeft($offer->id()->toString()));

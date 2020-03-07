@@ -42,6 +42,20 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
         return symfony(bootstrap(ROOT_DIR));
     }
 
+    public function setUp() : void
+    {
+        static::bootKernel();
+
+        $this->offersContext = new OffersContext(static::offersFacade());
+        $this->databaseContext = new DatabaseContext(static::itoffers()->dbal());
+
+        $this->databaseContext->purgeDatabase();
+        /** @var CalendarStub $calendar */
+        $calendar = static::itoffers()->calendar();
+
+        $calendar->setCurrentTime(new \DateTimeImmutable());
+    }
+
     protected static function itoffers() : ITOffersOnline
     {
         if (null === static::$itoffers) {
@@ -58,20 +72,6 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
     protected static function offersFacade() : Offers
     {
         return static::itoffers()->offers();
-    }
-
-    public function setUp() : void
-    {
-        static::bootKernel();
-
-        $this->offersContext = new OffersContext(static::offersFacade());
-        $this->databaseContext = new DatabaseContext(static::itoffers()->dbal());
-
-        $this->databaseContext->purgeDatabase();
-        /** @var CalendarStub $calendar */
-        $calendar = static::itoffers()->calendar();
-
-        $calendar->setCurrentTime(new \DateTimeImmutable());
     }
 
     public function config() : Config

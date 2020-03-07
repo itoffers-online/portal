@@ -182,13 +182,14 @@ final class OfferTest extends WebTestCase
 
     public function test_opening_expired_offer() : void
     {
+        $client = static::createClient();
+
         $authorOffer = $this->offersContext->createUser();
         $user = $this->offersContext->createUser();
 
-        $client = static::createClient();
         $this->authenticate($client, $user);
 
-        $this->setCurrentTime(new \DateTimeImmutable(\sprintf('-%d days', $this->config()->getInt(Config::OLD_OFFER_DAYS) + 1)));
+        $this->setCurrentTime(new \DateTimeImmutable(\sprintf('-%d days', $this->config()->getInt(Config::OFFER_LIFETIME_DAYS) + 1)));
 
         $offer = $this->offersContext->createOffer($authorOffer->id(), $this->specialization);
 
@@ -198,5 +199,24 @@ final class OfferTest extends WebTestCase
 
         $this->assertSame("noindex", $crawler->filter('meta[name=robots]')->attr("content"));
         $this->assertCount(1, $crawler->filter('[data-offer-expired-warning]'));
+    }
+
+    public function test_assinging_offer_auto_renew() : void
+    {
+        $client = static::createClient();
+        $user = $this->offersContext->createUser();
+        $this->offersContext->addOfferAutRenewOffer($user, 10);
+        $this->authenticate($client, $user);
+
+        $this->offersContext->module()->handle(PostOfferMother::random(Uuid::uuid4()->toString(), $user->id(), $this->specialization));
+
+        $offer = $this->offersFacade()->offerQuery()->findAll(OfferFilter::allFor($this->specialization))->first();
+
+        $client->request('GET', $client->getContainer()->get('router')->generate('offer_assign_auto_renew', ['offerSlug' => $offer->slug()]));
+
+        $client->followRedirect();
+
+        $this->assertEquals(1, $client->getCrawler()->filter('[data-alert-success]')->count());
+        $this->assertEquals(1, $this->offersFacade()->offerAutoRenewQuery()->countRenewsLeft($offer->id()->toString()));
     }
 }

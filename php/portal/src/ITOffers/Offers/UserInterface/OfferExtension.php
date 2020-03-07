@@ -17,6 +17,7 @@ use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Location;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Salary;
+use ITOffers\Offers\Offers;
 use ITOffers\Offers\UserInterface\Country\Countries;
 use Stidges\CountryFlags\CountryFlag;
 
@@ -24,9 +25,12 @@ final class OfferExtension
 {
     private string $locale;
 
-    public function __construct(string $locale)
+    private Offers $offers;
+
+    public function __construct(string $locale, Offers $offers)
     {
         $this->locale = $locale;
+        $this->offers = $offers;
     }
 
     public function salaryInteger(int $amount) : string
@@ -132,5 +136,20 @@ final class OfferExtension
     public function olderThan(Offer $offer, int $days) : bool
     {
         return $offer->createdAt()->diff(new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->days >= $days;
+    }
+
+    public function autoRenewsLeft(Offer $offer) : int
+    {
+        return $this->offers->offerAutoRenewQuery()->countRenewsLeft($offer->id()->toString());
+    }
+
+    public function usedAutoRenews(Offer $offer) : int
+    {
+        return $this->offers->offerAutoRenewQuery()->countUsedRenews($offer->id()->toString());
+    }
+
+    public function totalAutoRenews(Offer $offer) : int
+    {
+        return $this->offers->offerAutoRenewQuery()->countTotalRenews($offer->id()->toString());
     }
 }

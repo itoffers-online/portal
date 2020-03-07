@@ -18,6 +18,7 @@ use App\Offers\Form\Type\OfferType;
 use Facebook\Facebook;
 use ITOffers\ITOffersOnline;
 use ITOffers\Offers\Application\Command\Facebook\PagePostOfferAtGroup;
+use ITOffers\Offers\Application\Command\Offer\AssignAutoRenew;
 use ITOffers\Offers\Application\Command\Offer\Offer\Company;
 use ITOffers\Offers\Application\Command\Offer\Offer\Contact;
 use ITOffers\Offers\Application\Command\Offer\Offer\Contract;
@@ -272,6 +273,26 @@ final class OfferController extends AbstractController
         return $this->redirectToRoute('home');
     }
 
+    public function assignAutoRenewAction(Request $request, string $offerSlug) : Response
+    {
+        $offer = $this->itoffers->offers()->offerQuery()->findBySlug($offerSlug);
+        $userId = $request->getSession()->get(SecurityController::USER_SESSION_KEY);
+
+        if (!$userId || !$offer->postedBy($userId)) {
+            return new Response('', Response::HTTP_FORBIDDEN);
+        }
+
+        $this->itoffers->offers()->handle(new AssignAutoRenew(
+            $userId,
+            $offer->id()->toString()
+        ));
+
+        $this->addFlash('success', $this->renderView('@offers/alert/offer_auto_renew_assigned.txt'));
+
+
+        return $this->redirectToRoute('user_profile');
+    }
+
     public function removeConfirmationAction(Request $request, string $offerSlug) : Response
     {
         $offer = $this->itoffers->offers()->offerQuery()->findBySlug($offerSlug);
@@ -281,11 +302,15 @@ final class OfferController extends AbstractController
         }
 
         $facebookPost = $this->itoffers->offers()->facebookPostQuery()->findFacebookPost($offer->id()->toString());
-
+        $tweet = $this->itoffers->offers()->tweetsQuery()->findTweet($offer->id()->toString());
+        $specialization = $this->itoffers->offers()->specializationQuery()->findBySlug($offerSlug);
 
         return $this->render('@offers/offer/remove_confirmation.html.twig', [
+            'offer' => $offer,
+            'specialization' => $specialization,
             'offerSlug' => $offerSlug,
             'facebookPost' => $facebookPost,
+            'tweet' => $tweet,
         ]);
     }
 

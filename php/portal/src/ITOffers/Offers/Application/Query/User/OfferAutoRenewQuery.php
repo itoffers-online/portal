@@ -21,6 +21,10 @@ interface OfferAutoRenewQuery extends Query
 {
     public function countRenewsLeft(string $offerId) : int;
 
+    public function countUsedRenews(string $offerId) : int;
+
+    public function countTotalRenews(string $offerId) : int;
+
     public function countUnassignedNotExpired(string $userId) : int;
 
     public function findUnassignedClosesToExpire(string $userId) : ?UnassignedAutoRenew;

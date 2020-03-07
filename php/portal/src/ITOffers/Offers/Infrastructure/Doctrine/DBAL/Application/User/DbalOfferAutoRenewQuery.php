@@ -42,6 +42,35 @@ final class DbalOfferAutoRenewQuery implements OfferAutoRenewQuery
         ->fetchColumn();
     }
 
+    public function countUsedRenews(string $offerId) : int
+    {
+        return (int) $this->connection->createQueryBuilder()
+            ->select('COUNT(oar.*)')
+            ->from('itof_offer_auto_renew', 'oar')
+            ->where('oar.offer_id = :offerId')
+            ->andWhere('oar.renewed_at IS NOT NULL')
+            ->setParameters(
+                [
+                    'offerId' => $offerId,
+                ]
+            )->execute()
+            ->fetchColumn();
+    }
+
+    public function countTotalRenews(string $offerId) : int
+    {
+        return (int) $this->connection->createQueryBuilder()
+            ->select('COUNT(oar.*)')
+            ->from('itof_offer_auto_renew', 'oar')
+            ->where('oar.offer_id = :offerId')
+            ->setParameters(
+                [
+                    'offerId' => $offerId,
+                ]
+            )->execute()
+            ->fetchColumn();
+    }
+
     public function countUnassignedNotExpired(string $userId) : int
     {
         return (int) $this->connection->createQueryBuilder()

@@ -39,16 +39,16 @@
                                     set regularOffers = "Job Offers you can post here and now. If you don't have any regular offers left, email us at <a target=\"_blank\" href=\"mailto:" ~ contact_email ~ "\">" ~ contact_email ~ "</a> so we can grant you some
                                        <span class=\"font-weight-bold text-blue\">Instant Offers</span>."
                                 %}
-                                <a href="#"
-                                   data-toggle="popover"
-                                   data-trigger="focus"
-                                   title="Regular Offers"
-                                   data-content="{{ regularOffers }}"
-                                   data-placement="right"
+                                <button type="button"
+                                    class="btn btn-link btn-sm"
+                                    data-toggle="popover"
+                                    data-trigger="focus"
+                                    title="Regular Offers"
+                                    data-content="{{ regularOffers }}"
+                                    data-placement="right"
                                 >
-                                    <i class="far fa-question-circle">
-                                    </i>
-                                </a>
+                                    <i class="far fa-question-circle"></i>
+                                </button>
                             </div>
                             <div class="text-center pt-2 pb-4">
                                 <h2><i class="far fa-file"></i></h2>
@@ -60,7 +60,8 @@
                     <div class="col-3">
                         <div class="bg-white border mb-4">
                             <div class="small text-right pt-2 pr-2">
-                                <a href="#"
+                                <button type="button"
+                                        class="btn btn-link btn-sm"
                                    data-toggle="popover"
                                    data-trigger="focus"
                                    title="Instant Offers"
@@ -70,7 +71,7 @@
                                    data-placement="right"
                                 >
                                     <i class="far fa-question-circle"></i>
-                                </a>
+                                </button>
                             </div>
                             <div class="text-center pt-2 pb-4">
                                 <h2><i class="fas fa-redo text-blue"></i></h2>
@@ -87,15 +88,16 @@
                     <div class="col-3">
                         <div class="bg-white border mb-4">
                             <div class="small text-right pt-2 pr-2">
-                                <a href="#"
-                                   data-toggle="popover"
-                                   data-trigger="focus"
-                                   title="Offer Auto Renew"
-                                   data-content="Automatically renew expiring offers in order to extend offer life up to 6 weeks. One offer can be auto renewed maximum 2 times."
-                                   data-placement="right"
+                                <button type="button"
+                                    class="btn btn-link btn-sm"
+                                    data-toggle="popover"
+                                    data-trigger="focus"
+                                    title="Offer Auto Renew"
+                                    data-content="Automatically renew expiring offers in order to extend offer life up to 6 weeks. One offer can be auto renewed maximum 2 times."
+                                    data-placement="right"
                                 >
                                     <i class="far fa-question-circle "></i>
-                                </a>
+                                </button>
                             </div>
                             <div class="text-center pt-2 pb-4">
                                 <h2><i class="fas fa-tachometer-alt text-green"></i></h2>
@@ -112,43 +114,82 @@
 
                 {% for offer in offers %}
                     <div class="row mt-4 mb-2">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             Name: <a href="{{ url('offer', {'offerSlug': offer.slug}) }}" >{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</a>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
                             Company: <a href="{{ offer.company.url }}" target="_blank">{{ offer.company.name }}</a>
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             Specialization: <a href="{{ url('specialization_offers', {specSlug: offer.specializationSlug}) }}">{{ offer.specializationSlug|specialization_name }}</a>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
                             Received applications: {{ offer.applicationsCount }}
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             Salary:
                             {% if offer.salary %}
                                 {{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }}
                             {% else %}
                                 Not defined
                             {% endif %}
-                        </div>
-                        <div class="col-md-6">
                             {% if offer.salary %}
                                 {% if offer.salary.isNet %}net{% else %}gross{% endif %} per {{ offer.salary.periodType }}
                             {% endif %}
                         </div>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                        </div>
                     </div>
                     <div class="row mb-2">
-                        <div class="col-md-6">
-                            Posted: {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
+                        <div class="col-md-4">
+                            <section>
+                                Posted: {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
+                            </section>
+                            <section>
+                                Upcoming auto renews <i class="fas fa-tachometer-alt text-green"></i> : {{ offer|offer_auto_renews_left }}x
+                                <button type="button"
+                                    class="btn btn-link btn-sm"
+                                    data-toggle="popover"
+                                    data-trigger="focus"
+                                    title="Offer Auto Renew"
+                                    data-content="Number of times this offer is going to be automatically renewed after it expires. Extends offer lifetime up to 2 times."
+                                    data-placement="right"
+                                >
+                                    <i class="far fa-question-circle "></i>
+                                </button>
+                            </section>
+                            <section>
+                                Used auto renews: {{ offer|offer_auto_renews_used }}x
+                                <button type="button"
+                                   class="btn btn-link btn-sm"
+                                   data-toggle="popover"
+                                   data-trigger="focus"
+                                   title="Offer Auto Renew"
+                                   data-content="Number of times this offer was already automatically renewed."
+                                   data-placement="right"
+                                >
+                                    <i class="far fa-question-circle "></i>
+                                </button>
+                            </section>
                         </div>
-                        <div class="col-md-6">
-                            <a class="btn btn-primary btn-sm mr-3" href="{{ url('offer_new', {specSlug: offer.specializationSlug, 'offer-slug': offer.slug }) }}">post again</a>
-                            <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger btn-sm"><i class="fas fa-times"></i> remove</a>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            <a class="btn btn-primary btn-sm btn-block" href="{{ url('offer_new', {specSlug: offer.specializationSlug, 'offer-slug': offer.slug }) }}">post again</a>
+                            <a class="btn btn-danger btn-sm btn-block " href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer><i class="fas fa-times"></i> remove</a>
+                            {% if offer|offer_older_than(itof.old_offer_days) == false and offer|offer_auto_renews_total < 2 and offerAutoRenewsCount > 0%}
+                            <a class="btn btn-success btn-sm btn-block" href="{{ url('offer_assign_auto_renew', {offerSlug: offer.slug})  }}"><i class="fas fa-tachometer-alt text-black"></i> Add Auto Renew</a>
+                            {% endif %}
                         </div>
                     </div>
                     <hr />

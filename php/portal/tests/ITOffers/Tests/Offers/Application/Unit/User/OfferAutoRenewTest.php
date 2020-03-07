@@ -33,7 +33,7 @@ final class OfferAutoRenewTest extends TestCase
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Offer renew already expired');
 
-        $expiredAutoRenew->assign(OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), new \DateInterval('P1D'), $calendar);
+        $expiredAutoRenew->assign(OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), 20, $calendar);
     }
 
     public function test_assign_already_assigned_offer_renew() : void
@@ -44,8 +44,8 @@ final class OfferAutoRenewTest extends TestCase
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Offer renew already assigned');
 
-        $expiredAutoRenew->assign(OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), new \DateInterval('P1D'), $calendar);
-        $expiredAutoRenew->assign(OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), new \DateInterval('P1D'), $calendar);
+        $expiredAutoRenew->assign(OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), 20, $calendar);
+        $expiredAutoRenew->assign(OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), 20, $calendar);
     }
 
     public function test_using_offer_renew_with_offer_renew() : void
@@ -53,7 +53,7 @@ final class OfferAutoRenewTest extends TestCase
         $user = UserMother::random();
         $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new CalendarStub());
 
-        $offerAutoRenew->assign(OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), new \DateInterval('P1D'), $calendar);
+        $offerAutoRenew->assign(OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), 20, $calendar);
 
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Offer renew was assigned to different offer');
@@ -66,7 +66,7 @@ final class OfferAutoRenewTest extends TestCase
         $user = UserMother::random();
         $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new CalendarStub());
 
-        $offerAutoRenew->assign($offer = OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), new \DateInterval('P1D'), $calendar);
+        $offerAutoRenew->assign($offer = OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), 20, $calendar);
 
         $offerAutoRenew->renew($offer, $calendar);
 
@@ -88,6 +88,20 @@ final class OfferAutoRenewTest extends TestCase
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('There are already 2 auto renews assigned to that offer.');
 
-        $offerAutoRenew->assign(OfferMother::byUser($user), $offerAutoRenews, new \DateInterval('P1D'), $calendar);
+        $offerAutoRenew->assign(OfferMother::byUser($user), $offerAutoRenews, 20, $calendar);
+    }
+
+    public function test_assigning_auto_renew_to_offer_that_already_expired() : void
+    {
+        $user = UserMother::random();
+        $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 60, $calendar = new CalendarStub());
+        $offer = OfferMother::byUser($user, $calendar);
+
+        $calendar->setCurrentTime($calendar->currentTime()->modify('+20 days'));
+
+        $this->expectException(InvalidAssertionException::class);
+        $this->expectExceptionMessage('Offer already expired');
+
+        $offerAutoRenew->assign($offer, $this->createMock(OfferAutoRenews::class), 20, $calendar);
     }
 }

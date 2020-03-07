@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ITOffers\Tests\Offers\Application\MotherObject\Offer;
 
 use Faker\Factory;
+use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Offer\Company;
 use ITOffers\Offers\Application\Offer\Contact;
 use ITOffers\Offers\Application\Offer\Contract;
@@ -40,12 +41,12 @@ final class OfferMother
         return self::withName('position', 'company');
     }
 
-    public static function byUser(User $user) : Offer
+    public static function byUser(User $user, ?Calendar $calendar = null) : Offer
     {
-        return self::withName('position', 'company', $user);
+        return self::withName('position', 'company', $user, $calendar);
     }
 
-    public static function withName(string $positionName, string $companyName, ?User $user = null) : Offer
+    public static function withName(string $positionName, string $companyName, ?User $user = null, ?Calendar $calendar = null) : Offer
     {
         $faker = Factory::create();
 
@@ -75,7 +76,7 @@ final class OfferMother
                 $faker->name,
                 '+1 333333333'
             ),
-            CalendarMother::utc()
+            $calendar ? $calendar : CalendarMother::utc()
         );
     }
 }

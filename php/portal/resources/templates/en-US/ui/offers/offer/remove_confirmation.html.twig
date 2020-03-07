@@ -12,6 +12,15 @@
                     {% if facebookPost %}
                         <p class="mb-0">Removing offer will not remove it from <a target="_blank" href="{{ facebookPost.id|fb_group_post }}">Facebook</a>.</p>
                     {% endif %}
+                    {% if tweet %}
+                        <p class="mb-0">Removing offer will not remove it from <a target="_blank" href="{{ tweet.url(specialization) }}">Twitter</a>.</p>
+                    {% endif %}
+
+                    {% if offer|offer_auto_renews_left > 0 %}
+                        <p class="mb-0">
+                            This offer still have {{ offer|offer_auto_renews_left }} auto renews left, that will be lost with the offer.
+                        </p>
+                    {% endif %}
                 </div>
                 <div class="text-center">
                     <a href="{{ url('offer', {offerSlug: offerSlug}) }}" class="btn btn-primary">Don't remove</a>
