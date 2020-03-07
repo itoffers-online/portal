@@ -10,3 +10,6 @@ parameters:
     - 'php72'
     - 'php73'
     - 'php74'
+
+services:
+  Rector\CodingStyle\Rector\Namespace_\ImportFullyQualifiedNamesRector: null

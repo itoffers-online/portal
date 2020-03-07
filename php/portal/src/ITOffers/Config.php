@@ -80,7 +80,7 @@ final class Config
 
     public const LINKEDIN_APP_SECRET = 'linkedin_app_secret';
 
-    public const OLD_OFFER_DAYS = 'old_offer_days';
+    public const OFFER_LIFETIME_DAYS = 'offer_lifetime_days';
 
     public const TWITTER_API_KEY = 'twitter_api_key';
 
@@ -138,7 +138,7 @@ final class Config
             self::DB_USER_PASS => getenv('ITOF_DB_USER_PASS'),
             self::DB_NAME => getenv('ITOF_DB_NAME'),
             self::REDIS_DB_DOCTRINE_CACHE => 2,
-            self::OLD_OFFER_DAYS => 20,
+            self::OFFER_LIFETIME_DAYS => 20,
             self::TWITTER_API_KEY => getenv('ITOF_TWITTER_API_KEY'),
             self::TWITTER_API_SECRET_KEY => getenv('ITOF_TWITTER_API_SECRET_KEY'),
             self::TWITTER_ACCESS_TOKEN => getenv('ITOF_TWITTER_ACCESS_TOKEN'),

@@ -22,6 +22,8 @@ use Ramsey\Uuid\Uuid;
 
 final class AssignAutoRenewHandler implements Handler
 {
+    private int $offerLifetimeDays;
+
     private Users $users;
 
     private Offers $offers;
@@ -30,8 +32,9 @@ final class AssignAutoRenewHandler implements Handler
 
     private Calendar $calendar;
 
-    public function __construct(Users $users, Offers $offers, OfferAutoRenews $offerAutoRenews, Calendar $calendar)
+    public function __construct(int $offerLifetimeDays, Users $users, Offers $offers, OfferAutoRenews $offerAutoRenews, Calendar $calendar)
     {
+        $this->offerLifetimeDays = $offerLifetimeDays;
         $this->users = $users;
         $this->offers = $offers;
         $this->offerAutoRenews = $offerAutoRenews;
@@ -50,6 +53,11 @@ final class AssignAutoRenewHandler implements Handler
 
         $offerAutoRenew = $this->offerAutoRenews->getUnassignedClosesToExpire($user);
 
-        $offerAutoRenew->assign($offer, $this->offerAutoRenews, new \DateInterval(\sprintf('P%dD', $command->renewAfterDays())), $this->calendar);
+        $offerAutoRenew->assign(
+            $offer,
+            $this->offerAutoRenews,
+            $this->offerLifetimeDays,
+            $this->calendar
+        );
     }
 }

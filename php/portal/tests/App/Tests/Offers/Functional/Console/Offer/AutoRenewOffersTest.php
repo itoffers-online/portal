@@ -60,8 +60,7 @@ final class AutoRenewOffersTest extends ConsoleTestCase
         $offer = $this->createOffer();
         $this->offersContext->module()->handle(new AssignAutoRenew(
             $offer->userId()->toString(),
-            $offer->id()->toString(),
-            $renewInDays = 20
+            $offer->id()->toString()
         ));
 
         $this->setCurrentTime($currentDate = new \DateTimeImmutable('now'));

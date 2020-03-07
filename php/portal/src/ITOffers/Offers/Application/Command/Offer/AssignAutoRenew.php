@@ -24,13 +24,10 @@ final class AssignAutoRenew implements Command
 
     private string $offerId;
 
-    private int $renewAfterDays;
-
-    public function __construct(string $userId, string $offerId, int $renewAfterDays)
+    public function __construct(string $userId, string $offerId)
     {
         $this->userId = $userId;
         $this->offerId = $offerId;
-        $this->renewAfterDays = $renewAfterDays;
     }
 
     public function userId() : string
@@ -41,10 +38,5 @@ final class AssignAutoRenew implements Command
     public function offerId() : string
     {
         return $this->offerId;
-    }
-
-    public function renewAfterDays() : int
-    {
-        return $this->renewAfterDays;
     }
 }

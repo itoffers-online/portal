@@ -63,11 +63,15 @@ final class AutoRenewOffers extends Command
         $totalRenewedOffers = 0;
 
         foreach ($offersIds as $offerId) {
-            try {
-                $this->offers->handle(new RenewOffer($offerId));
-                $totalRenewedOffers += 1;
-            } catch (\Throwable $e) {
-                $this->io->error(\sprintf('Can\'t renew offer with id %s, please check logs for more details.', $offerId));
+            $offer = $this->offers->offerQuery()->findById($offerId);
+
+            if ($offer) {
+                try {
+                    $this->offers->handle(new RenewOffer($offerId));
+                    $totalRenewedOffers += 1;
+                } catch (\Throwable $e) {
+                    $this->io->error(\sprintf('Can\'t renew offer with id %s, please check logs for more details.', $offerId));
+                }
             }
         }
 

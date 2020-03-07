@@ -248,6 +248,7 @@ function offersFacade(
                     $calendar
                 ),
                 new AssignAutoRenewHandler(
+                    $config->getInt(Config::OFFER_LIFETIME_DAYS),
                     $ormUsers,
                     $ormOffers,
                     $ormOfferAutoRenews,

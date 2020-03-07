@@ -29,29 +29,32 @@ $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$hireInSocial = symfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOnline::class);
+$itOffers = symfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOnline::class);
 
 $application = new Application('itoffers.online - Offers');
 
-$application->add(new Test\PostOffer($hireInSocial->offers(), $hireInSocial->config()->getString(Config::LOCALE)));
-$application->add(new CreateSpecialization($hireInSocial->offers()));
-$application->add(new SetFacebookChannel($hireInSocial->offers()));
-$application->add(new SetTwitterChannel($hireInSocial->offers()));
-$application->add(new RemoveFacebookChannel($hireInSocial->offers()));
-$application->add(new RemoveTwitterChannel($hireInSocial->offers()));
-$application->add(new PerformanceCheckCommand($hireInSocial->offers(), $hireInSocial->config()));
-$application->add(new RemoveOffer($hireInSocial->offers()));
+$application->add(new Test\PostOffer($itOffers->offers(), $itOffers->config()->getString(Config::LOCALE)));
+$application->add(new CreateSpecialization($itOffers->offers()));
+$application->add(new SetFacebookChannel($itOffers->offers()));
+$application->add(new SetTwitterChannel($itOffers->offers()));
+$application->add(new RemoveFacebookChannel($itOffers->offers()));
+$application->add(new RemoveTwitterChannel($itOffers->offers()));
+$application->add(new PerformanceCheckCommand($itOffers->offers(), $itOffers->config()));
+$application->add(new RemoveOffer($itOffers->offers()));
 $application->add(new OfferThumbnailRegenerate(
-    $hireInSocial->offers(),
-    new ImagineOfferThumbnail($hireInSocial->config()->getString(Config::ROOT_PATH), new OfferExtension($hireInSocial->config()->getString(Config::LOCALE)))
+    $itOffers->offers(),
+    new ImagineOfferThumbnail(
+        $itOffers->config()->getString(Config::ROOT_PATH),
+        new OfferExtension($itOffers->config()->getString(Config::LOCALE), $itOffers->offers())
+    )
 ));
-$application->add(new BlockUser($hireInSocial->offers()));
-$application->add(new AddExtraOffers($hireInSocial->offers()));
-$application->add(new AddOfferAutoRenews($hireInSocial->offers()));
+$application->add(new BlockUser($itOffers->offers()));
+$application->add(new AddExtraOffers($itOffers->offers()));
+$application->add(new AddOfferAutoRenews($itOffers->offers()));
 $application->add(new ThumbnailRegenerate(
-    $hireInSocial->offers(),
-    new ImagineSpecializationThumbnail($hireInSocial->config()->getString(Config::ROOT_PATH), new SpecializationExtension($hireInSocial->config()->getString(Config::LOCALE)))
+    $itOffers->offers(),
+    new ImagineSpecializationThumbnail($itOffers->config()->getString(Config::ROOT_PATH), new SpecializationExtension($itOffers->config()->getString(Config::LOCALE)))
 ));
-$application->add(new AutoRenewOffers($hireInSocial->offers()));
+$application->add(new AutoRenewOffers($itOffers->offers()));
 
 $application->run();

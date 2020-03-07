@@ -114,6 +114,7 @@ final class Factory
                 $routes->addRoute(new Route('/offers/{specSlug}', ['_controller' => [SpecializationController::class, 'offersAction']]), 'specialization_offers');
                 $routes->addRoute(new Route('/job-offer/{offerSlug}/remove-confirmation', ['_controller' => [OfferController::class, 'removeConfirmationAction']]), 'offer_remove_confirmation');
                 $routes->addRoute(new Route('/job-offer/{offerSlug}/remove', ['_controller' => [OfferController::class, 'removeAction']]), 'offer_remove');
+                $routes->addRoute(new Route('/job-offer/{offerSlug}/auto-renew', ['_controller' => [OfferController::class, 'assignAutoRenewAction']]), 'offer_assign_auto_renew');
                 $routes->addRoute(new Route('/job-offer/{offerSlug}', ['_controller' => [OfferController::class, 'offerAction']]), 'offer');
                 $routes->addRoute(new Route('/user/blocked', ['_controller' => [SecurityController::class, 'userBlockedAction']]), 'user_blocked');
                 $routes->addRoute(new Route('/user/profile', ['_controller' => [UserController::class, 'profileAction']]), 'user_profile');

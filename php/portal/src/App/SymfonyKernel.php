@@ -33,6 +33,7 @@ use ITOffers\Config;
 use ITOffers\ITOffersOnline;
 use ITOffers\Offers\Infrastructure\Imagine\UserInterface\ImagineOfferThumbnail;
 use ITOffers\Offers\Infrastructure\Imagine\UserInterface\ImagineSpecializationThumbnail;
+use ITOffers\Offers\Offers;
 use ITOffers\Offers\UserInterface\OfferExtension;
 use ITOffers\Offers\UserInterface\OfferThumbnail;
 use ITOffers\Offers\UserInterface\SpecializationExtension;
@@ -126,7 +127,7 @@ final class SymfonyKernel extends Kernel
     {
         $c->setParameter('google_recaptcha_secret', $this->config->getString(Config::RECAPTCHA_SECRET));
         $c->setParameter('apply_email_template', $this->config->getString(Config::APPLY_EMAIL_TEMPLATE));
-        $c->setParameter('itof.old_offer_days', $this->config->getInt(Config::OLD_OFFER_DAYS));
+        $c->setParameter('itof.old_offer_days', $this->config->getInt(Config::OFFER_LIFETIME_DAYS));
     }
 
     protected function setupServices(ContainerBuilder $c) : void
@@ -140,8 +141,14 @@ final class SymfonyKernel extends Kernel
             ->setAutowired(true)
             ->addMethodCall('boot');
 
+        $c->register(Offers::class)
+            ->setPublic(true)
+            ->setAutowired(true)
+            ->setFactory([new Reference(ITOffersOnline::class), 'offers']);
+
         $c->register(OfferExtension::class)
-            ->addArgument($this->config->getString(Config::LOCALE));
+            ->addArgument($this->config->getString(Config::LOCALE))
+            ->addArgument(new Reference(Offers::class));
         $c->register(SpecializationExtension::class)
             ->addArgument($this->config->getString(Config::LOCALE));
 
@@ -251,7 +258,7 @@ final class SymfonyKernel extends Kernel
                     'contact_email' => $this->config->getString(Config::CONTACT_EMAIL),
                     'report_email' => $this->config->getString(Config::REPORT_EMAIL),
                     'itof' => [
-                        'old_offer_days' => $this->config->getInt(Config::OLD_OFFER_DAYS),
+                        'old_offer_days' => $this->config->getInt(Config::OFFER_LIFETIME_DAYS),
                         'domain' => $this->config->getString(Config::DOMAIN),
                     ],
                 ],

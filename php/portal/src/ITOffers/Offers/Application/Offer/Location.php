@@ -25,9 +25,9 @@ final class Location
 
     private ?string $address;
 
-    private float $lat;
+    private ?float $lat;
 
-    private float $lng;
+    private ?float $lng;
 
     private function __construct()
     {
