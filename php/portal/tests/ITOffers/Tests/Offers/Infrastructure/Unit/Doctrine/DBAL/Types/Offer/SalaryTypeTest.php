@@ -29,14 +29,9 @@ final class SalaryTypeTest extends TypeTestCase
         return SalaryType::class;
     }
 
-    /**
-     * @return array<array>
-     */
-    public function dataProvider() : array
+    public function dataProvider() : \Iterator
     {
-        return [
-            [null],
-            [SalaryMother::netPLN(1_000, 5_000)],
-        ];
+        yield [null];
+        yield [SalaryMother::netPLN(1_000, 5_000)];
     }
 }
