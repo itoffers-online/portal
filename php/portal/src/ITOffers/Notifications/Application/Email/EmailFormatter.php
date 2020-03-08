@@ -24,4 +24,8 @@ interface EmailFormatter
     public function extraOffersAddedSubject() : string;
 
     public function extraOffersAddedBody(int $expiresInDays, int $amount) : string;
+
+    public function offerAutoRenewsAddedSubject() : string;
+
+    public function offerAutoRenewsAddedBody(int $expiresInDays, int $amount) : string;
 }

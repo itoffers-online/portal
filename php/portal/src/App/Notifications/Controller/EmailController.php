@@ -53,6 +53,14 @@ final class EmailController extends AbstractController
                         []
                     ),
                 ],
+                [
+                    'name' => 'Offer Auto Renews Added',
+                    'type' => 'offer_auto_renews_added',
+                    'subject' => $this->renderView(
+                        '@notifications/email/user/offer_auto_renews_added_subject.txt.twig',
+                        []
+                    ),
+                ],
             ],
         ]);
     }
@@ -76,6 +84,17 @@ final class EmailController extends AbstractController
                     CssInliner::fromHtml(
                         $this->renderView(
                             '@notifications/email/user/extra_offers_added_body.html.twig',
+                            ['expiresInDays' => \random_int(30, 60), 'amount' => \random_int(1, 10)]
+                        )
+                    )
+                        ->inlineCss()
+                        ->renderBodyContent()
+                );
+            case 'offer_auto_renews_added':
+                return new Response(
+                    CssInliner::fromHtml(
+                        $this->renderView(
+                            '@notifications/email/user/offer_auto_renews_added_body.html.twig',
                             ['expiresInDays' => \random_int(30, 60), 'amount' => \random_int(1, 10)]
                         )
                     )

@@ -20,7 +20,7 @@ use Ramsey\Uuid\Uuid;
 
 final class FacebookConnectHandlerTest extends OffersTestCase
 {
-    public function test_adding_extra_offers() : void
+    public function test_assigning_two_fb_accounts_to_one_user_account() : void
     {
         $this->offers->module()->handle(
             new FacebookConnect(

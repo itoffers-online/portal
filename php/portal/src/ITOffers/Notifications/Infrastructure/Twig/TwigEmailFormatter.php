@@ -54,4 +54,18 @@ final class TwigEmailFormatter implements EmailFormatter
             ->inlineCss()
             ->renderBodyContent();
     }
+
+    public function offerAutoRenewsAddedSubject() : string
+    {
+        return $this->twig->render('@notifications/email/user/offer_auto_renews_added_subject.txt.twig');
+    }
+
+    public function offerAutoRenewsAddedBody(int $expiresInDays, int $amount) : string
+    {
+        return CssInliner::fromHtml(
+            $this->twig->render('@notifications/email/user/offer_auto_renews_added_body.html.twig', ['expiresInDays' => $expiresInDays, 'amount' => $amount])
+        )
+            ->inlineCss()
+            ->renderBodyContent();
+    }
 }

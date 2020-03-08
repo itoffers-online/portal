@@ -52,6 +52,7 @@ use ITOffers\Offers\Application\Offer\Event\OfferPostedEvent;
 use ITOffers\Offers\Application\Offer\Throttling;
 use ITOffers\Offers\Application\Query\Features\FeatureToggleQuery;
 use ITOffers\Offers\Application\User\Event\ExtraOffersAdded;
+use ITOffers\Offers\Application\User\Event\OfferAutoRenewsAdded;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Facebook\DbalFacebookFacebookQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalApplicationQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Offer\DbalOfferQuery;
@@ -121,6 +122,10 @@ function offersFacade(
                         break;
                     case ExtraOffersAdded::class:
                         $name = InMemoryEventBus::OFFERS_EVENT_USER_EXTRA_OFFERS_ADDED;
+
+                        break;
+                    case OfferAutoRenewsAdded::class:
+                        $name = InMemoryEventBus::OFFERS_EVENT_USER_OFFER_AUTO_RENEW_ADDED;
 
                         break;
                     default:
@@ -251,6 +256,7 @@ function offersFacade(
                 new AddOfferAutoRenewsHandler(
                     $ormUsers,
                     $ormOfferAutoRenews,
+                    $eventStream,
                     $calendar
                 ),
                 new AssignAutoRenewHandler(

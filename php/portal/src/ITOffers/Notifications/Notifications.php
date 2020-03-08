@@ -21,6 +21,7 @@ use ITOffers\Component\Mailer\Sender;
 use ITOffers\Notifications\Application\Email\EmailFormatter;
 use ITOffers\Notifications\Application\Event;
 use ITOffers\Notifications\Application\Event\ExtraOffersAdded;
+use ITOffers\Notifications\Application\Event\OfferAutoRenewsAdded;
 use ITOffers\Notifications\Application\Event\OfferPostedEvent;
 use ITOffers\Notifications\Application\Exception\Exception;
 use ITOffers\Notifications\Application\Offers;
@@ -104,6 +105,25 @@ final class Notifications
                     new Email(
                         $this->emailFormatter->extraOffersAddedSubject(),
                         $this->emailFormatter->extraOffersAddedBody($event->expiresInDays(), $event->amount())
+                    ),
+                    new Sender(
+                        $this->contactEmail,
+                        $this->domain,
+                        $this->contactEmail
+                    ),
+                    new Recipients(
+                        new Recipient($user->email())
+                    )
+                );
+
+                break;
+            case OfferAutoRenewsAdded::class:
+                $user = $this->users->getById($event->userId());
+
+                $this->mailer->send(
+                    new Email(
+                        $this->emailFormatter->offerAutoRenewsAddedSubject(),
+                        $this->emailFormatter->offerAutoRenewsAddedBody($event->expiresInDays(), $event->amount())
                     ),
                     new Sender(
                         $this->contactEmail,

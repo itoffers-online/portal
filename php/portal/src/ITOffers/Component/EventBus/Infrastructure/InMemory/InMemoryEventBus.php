@@ -24,6 +24,8 @@ final class InMemoryEventBus
 
     public const OFFERS_EVENT_USER_EXTRA_OFFERS_ADDED = 'extra_offers_added';
 
+    public const OFFERS_EVENT_USER_OFFER_AUTO_RENEW_ADDED = 'offer_auto_renew_added';
+
     /**
      * @var array<array<Subscriber>>
      */
