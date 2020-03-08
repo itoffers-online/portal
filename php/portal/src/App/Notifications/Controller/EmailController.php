@@ -45,6 +45,14 @@ final class EmailController extends AbstractController
                         ['offer' => OfferMother::random()]
                     ),
                 ],
+                [
+                    'name' => 'Extra Offers Added',
+                    'type' => 'user_extra_offers_added',
+                    'subject' => $this->renderView(
+                        '@notifications/email/user/extra_offers_added_subject.txt.twig',
+                        []
+                    ),
+                ],
             ],
         ]);
     }
@@ -62,6 +70,17 @@ final class EmailController extends AbstractController
                     )
                     ->inlineCss()
                     ->renderBodyContent()
+                );
+            case 'user_extra_offers_added':
+                return new Response(
+                    CssInliner::fromHtml(
+                        $this->renderView(
+                            '@notifications/email/user/extra_offers_added_body.html.twig',
+                            ['expiresInDays' => \random_int(30, 60), 'amount' => \random_int(1, 10)]
+                        )
+                    )
+                        ->inlineCss()
+                        ->renderBodyContent()
                 );
             default:
                 $this->createNotFoundException(\sprintf('Email %s does not exist', $emailName));

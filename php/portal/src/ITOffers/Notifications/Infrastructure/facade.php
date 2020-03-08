@@ -18,10 +18,12 @@ use ITOffers\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use ITOffers\Component\EventBus\Subscriber;
 use ITOffers\Component\Mailer\Mailer;
 use ITOffers\Config;
+use ITOffers\Notifications\Application\Event\ExtraOffersAdded;
 use ITOffers\Notifications\Application\Event\OfferPostedEvent;
 use ITOffers\Notifications\Application\Exception\Exception;
 use ITOffers\Notifications\Infrastructure\Offers\ModuleOffers;
 use ITOffers\Notifications\Infrastructure\Twig\TwigEmailFormatter;
+use ITOffers\Notifications\Infrastructure\Users\ModuleOffersUsers;
 use ITOffers\Notifications\Notifications;
 use ITOffers\Offers\Offers;
 use Psr\Log\LoggerInterface;
@@ -33,6 +35,7 @@ function notificationsFacade(Config $config, InMemoryEventBus $eventBus, Offers 
     $notifications = new Notifications(
         $mailer,
         new ModuleOffers($offersModule),
+        new ModuleOffersUsers($offersModule),
         new TwigEmailFormatter($twig),
         $config->getString(Config::CONTACT_EMAIL),
         $config->getString(Config::DOMAIN)
@@ -58,6 +61,19 @@ function notificationsFacade(Config $config, InMemoryEventBus $eventBus, Offers 
                             $event->id(),
                             $event->occurredAt(),
                             Uuid::fromString($event->payload()['offerId'])
+                        )
+                    );
+                    $this->logger->debug('offer_posted event received');
+
+                    break;
+                case InMemoryEventBus::OFFERS_EVENT_USER_EXTRA_OFFERS_ADDED:
+                    $this->notifications->handle(
+                        new ExtraOffersAdded(
+                            $event->id(),
+                            $event->occurredAt(),
+                            Uuid::fromString($event->payload()['userId']),
+                            $event->payload()['expiresInDays'],
+                            $event->payload()['amount']
                         )
                     );
                     $this->logger->debug('offer_posted event received');

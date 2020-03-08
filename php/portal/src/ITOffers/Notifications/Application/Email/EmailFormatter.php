@@ -20,4 +20,8 @@ interface EmailFormatter
     public function offerPostedSubject(Offer $offer) : string;
 
     public function offerPostedBody(Offer $offer) : string;
+
+    public function extraOffersAddedSubject() : string;
+
+    public function extraOffersAddedBody(int $expiresInDays, int $amount) : string;
 }

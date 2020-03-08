@@ -22,6 +22,8 @@ final class InMemoryEventBus
 
     public const OFFERS_EVENT_OFFER_POST = 'offer_posted';
 
+    public const OFFERS_EVENT_USER_EXTRA_OFFERS_ADDED = 'extra_offers_added';
+
     /**
      * @var array<array<Subscriber>>
      */

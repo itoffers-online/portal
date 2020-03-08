@@ -1,0 +1,16 @@
+{% extends '@notifications/email/base.html.twig' %}
+
+{% block body %}
+    <div class="text-center">
+        <h1 class="font-weight-bold">
+            {{ amount }} extra job offers received!
+        </h1>
+
+        <p>
+            You received extra offers, this boost lets you post {{ amount }} job offers immediately, without waiting.
+        </p>
+        <p>
+            Just please remember those extra offers will expire in next {{ expiresInDays }} days, you need to be fast!
+        </p>
+    </div>
+{% endblock %}
