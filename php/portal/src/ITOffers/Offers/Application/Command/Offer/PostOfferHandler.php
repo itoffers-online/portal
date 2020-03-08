@@ -163,8 +163,7 @@ final class PostOfferHandler implements Handler
             ),
             new Position(
                 $command->offer()->position()->seniorityLevel(),
-                $command->offer()->position()->name(),
-                $command->offer()->position()->description()
+                $command->offer()->position()->name()
             ),
             $location,
             $command->offer()->salary()
@@ -180,6 +179,7 @@ final class PostOfferHandler implements Handler
                 $command->offer()->contract()->type()
             ),
             new Description(
+                $command->offer()->description()->technologyStack(),
                 $command->offer()->description()->benefits(),
                 new Requirements(
                     $command->offer()->description()->requirements()->description(),

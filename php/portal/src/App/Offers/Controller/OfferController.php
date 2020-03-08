@@ -149,13 +149,14 @@ final class OfferController extends AbstractController
                     $userId,
                     new Offer(
                         new Company($offerData['company']['name'], $offerData['company']['url'], $offerData['company']['description']),
-                        new Position((int) $offerData['position']['seniorityLevel'], $offerData['position']['name'], $offerData['position']['description']),
+                        new Position((int) $offerData['position']['seniorityLevel'], $offerData['position']['name']),
                         $location,
                         (null === $offerData['salary']['min'] && null === $offerData['salary']['max'])
                             ? null
                             : new Salary($offerData['salary']['min'], $offerData['salary']['max'], $offerData['salary']['currency'], (bool) $offerData['salary']['net'], $offerData['salary']['period_type']),
                         new Contract($offerData['contract']),
                         new Description(
+                            $offerData['description']['technology_stack'],
                             $offerData['description']['benefits'],
                             new Requirements(
                                 $offerData['description']['requirements']['description'],

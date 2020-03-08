@@ -63,7 +63,6 @@ final class OfferToForm
             'position' => [
                 'seniorityLevel' => $offer->position()->seniorityLevel(),
                 'name' => $offer->position()->name(),
-                'description' => $offer->position()->description(),
             ],
             'location' => [
                 'type' => $locationType,
@@ -93,6 +92,7 @@ final class OfferToForm
                             $offer->description()->requirements()->skills()
                         ) : [],
                 ],
+                'technology_stack' => $offer->description()->technologyStack(),
                 'benefits' => $offer->description()->benefits(),
             ],
             'contact'=> [

@@ -3,7 +3,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <embeddable name="ITOffers\Offers\Application\Offer\Description\Requirements">
-        <field name="description" length="1024"/>
+        <field name="description" length="2048"/>
         <field name="skills" type="itof_offer_description_requirements_skill" />
     </embeddable>
 </doctrine-mapping>

@@ -22,17 +22,13 @@ final class Position
 
     private string $name;
 
-    private string $description;
-
-    public function __construct(int $seniorityLevel, string $name, string $description)
+    public function __construct(int $seniorityLevel, string $name)
     {
         Assertion::inArray($seniorityLevel, SeniorityLevels::all());
         Assertion::betweenLength($name, 3, 255);
-        Assertion::betweenLength($description, 50, 2_048);
 
         $this->seniorityLevel = $seniorityLevel;
         $this->name = $name;
-        $this->description = $description;
     }
 
     /**
@@ -46,10 +42,5 @@ final class Position
     public function name() : string
     {
         return $this->name;
-    }
-
-    public function description() : string
-    {
-        return $this->description;
     }
 }

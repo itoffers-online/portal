@@ -34,6 +34,12 @@ final class DescriptionType extends AbstractType
                     new NotContainsEmoji(),
                 ],
             ])
+            ->add('technology_stack', TextareaType::class, [
+                'constraints' => [
+                    new Length(['min' => 100, 'max' => 2_048]),
+                    new NotContainsEmoji(),
+                ],
+            ])
         ;
     }
 }

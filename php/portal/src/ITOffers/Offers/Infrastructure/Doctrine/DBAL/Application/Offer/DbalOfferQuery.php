@@ -329,6 +329,7 @@ final class DbalOfferQuery implements OfferQuery
                 new Contact($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),
                 new Contract($offerData['contract_type']),
                 new Description(
+                    $offerData['description_technology_stack'],
                     $offerData['description_benefits'],
                     new Requirements(
                         $offerData['description_requirements_description'],
@@ -351,7 +352,10 @@ final class DbalOfferQuery implements OfferQuery
                     $offerData['location_lat'] ? (float) $offerData['location_lat'] : null,
                     $offerData['location_lng'] ? (float) $offerData['location_lng'] : null
                 ),
-                new Position($offerData['position_seniority_level'], $offerData['position_name'], $offerData['position_description']),
+                new Position(
+                    $offerData['position_seniority_level'],
+                    $offerData['position_name']
+                ),
                 ($salary)
                     ? new Salary(
                         $salary['min'],
