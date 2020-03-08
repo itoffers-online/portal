@@ -18,7 +18,7 @@ $itoffers = symfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOn
 
 $serverConfig = $itoffers->config()->getJson(Config::APPLY_EMAIL_CONFIG);
 
-$server = new Server($serverConfig['host'], $serverConfig['port']);
+$server = new Server($serverConfig['host'], $serverConfig['port'], $serverConfig['imap_flags']);
 $connection = $server->authenticate($serverConfig['username'], $serverConfig['password']);
 $fs = new Filesystem();
 
