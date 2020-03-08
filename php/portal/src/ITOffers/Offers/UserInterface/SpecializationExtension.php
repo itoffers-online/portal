@@ -45,7 +45,7 @@ final class SpecializationExtension
             case 'ruby':
                 return 'Ruby';
             case 'cpp':
-                return 'ilustrator';
+                return 'C++';
             case 'design':
                 return 'Design';
             case 'ios':
