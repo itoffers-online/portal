@@ -21,6 +21,7 @@ use ITOffers\Component\Mailer\Sender;
 use ITOffers\Notifications\Application\Email\EmailFormatter;
 use ITOffers\Notifications\Application\Event;
 use ITOffers\Notifications\Application\Event\ExtraOffersAdded;
+use ITOffers\Notifications\Application\Event\OfferAutoRenewsAdded;
 use ITOffers\Notifications\Application\Event\OfferPostedEvent;
 use ITOffers\Notifications\Application\Exception\Exception;
 use ITOffers\Notifications\Application\Offers;
@@ -116,7 +117,7 @@ final class Notifications
                 );
 
                 break;
-            case Event\OfferAutoRenewsAdded::class:
+            case OfferAutoRenewsAdded::class:
                 $user = $this->users->getById($event->userId());
 
                 $this->mailer->send(

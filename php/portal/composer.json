@@ -118,13 +118,13 @@
             "SYMFONY_ENV=prod composer install --no-interaction --optimize-autoloader --no-dev"
         ],
         "cs:php:fix": [
-            "php-cs-fixer fix"
+            "php-cs-fixer fix",
+            "./vendor/bin/rector process"
         ],
         "test": [
             "rm -rf ./var/phpunit",
             "@test:md",
             "security-checker security:check",
-            "./vendor/bin/rector process --dry-run",
             "./vendor/bin/deptrac",
             "@test:php:cs",
             "@db:reset:test",
@@ -139,7 +139,8 @@
         ],
         "test:php:cs": [
             "phpstan analyse -c phpstan.neon",
-            "php-cs-fixer fix -v --dry-run --using-cache=no"
+            "php-cs-fixer fix -v --dry-run",
+            "./vendor/bin/rector process --dry-run"
         ],
         "db:reset": [
             "@db:drop",
