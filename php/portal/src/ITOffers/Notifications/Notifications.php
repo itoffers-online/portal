@@ -116,6 +116,25 @@ final class Notifications
                 );
 
                 break;
+            case Event\OfferAutoRenewsAdded::class:
+                $user = $this->users->getById($event->userId());
+
+                $this->mailer->send(
+                    new Email(
+                        $this->emailFormatter->offerAutoRenewsAddedSubject(),
+                        $this->emailFormatter->offerAutoRenewsAddedBody($event->expiresInDays(), $event->amount())
+                    ),
+                    new Sender(
+                        $this->contactEmail,
+                        $this->domain,
+                        $this->contactEmail
+                    ),
+                    new Recipients(
+                        new Recipient($user->email())
+                    )
+                );
+
+                break;
             default:
                 throw new Exception(\sprintf("Unknown event %s", \get_class($event)));
         }

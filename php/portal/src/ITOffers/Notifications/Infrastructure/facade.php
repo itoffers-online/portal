@@ -19,6 +19,7 @@ use ITOffers\Component\EventBus\Subscriber;
 use ITOffers\Component\Mailer\Mailer;
 use ITOffers\Config;
 use ITOffers\Notifications\Application\Event\ExtraOffersAdded;
+use ITOffers\Notifications\Application\Event\OfferAutoRenewsAdded;
 use ITOffers\Notifications\Application\Event\OfferPostedEvent;
 use ITOffers\Notifications\Application\Exception\Exception;
 use ITOffers\Notifications\Infrastructure\Offers\ModuleOffers;
@@ -63,7 +64,7 @@ function notificationsFacade(Config $config, InMemoryEventBus $eventBus, Offers 
                             Uuid::fromString($event->payload()['offerId'])
                         )
                     );
-                    $this->logger->debug('offer_posted event received');
+                    $this->logger->debug(InMemoryEventBus::OFFERS_EVENT_OFFER_POST . ' event received');
 
                     break;
                 case InMemoryEventBus::OFFERS_EVENT_USER_EXTRA_OFFERS_ADDED:
@@ -76,7 +77,20 @@ function notificationsFacade(Config $config, InMemoryEventBus $eventBus, Offers 
                             $event->payload()['amount']
                         )
                     );
-                    $this->logger->debug('offer_posted event received');
+                    $this->logger->debug(InMemoryEventBus::OFFERS_EVENT_USER_EXTRA_OFFERS_ADDED . ' event received');
+
+                    break;
+                case InMemoryEventBus::OFFERS_EVENT_USER_OFFER_AUTO_RENEW_ADDED:
+                    $this->notifications->handle(
+                        new OfferAutoRenewsAdded(
+                            $event->id(),
+                            $event->occurredAt(),
+                            Uuid::fromString($event->payload()['userId']),
+                            $event->payload()['expiresInDays'],
+                            $event->payload()['amount']
+                        )
+                    );
+                    $this->logger->debug(InMemoryEventBus::OFFERS_EVENT_USER_OFFER_AUTO_RENEW_ADDED . ' event received');
 
                     break;
                 default:

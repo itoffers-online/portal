@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Integration\Command\User;
 
+use ITOffers\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use ITOffers\Offers\Application\Command\User\AddOfferAutoRenews;
 use ITOffers\Tests\Offers\Application\Integration\OffersTestCase;
 
@@ -31,5 +32,6 @@ final class AddOfferAutoRenewsTest extends OffersTestCase
         );
 
         $this->assertSame(5, $this->offers->module()->offerAutoRenewQuery()->countUnassignedNotExpired($user->id()));
+        $this->assertSame(InMemoryEventBus::OFFERS_EVENT_USER_OFFER_AUTO_RENEW_ADDED, $this->publishedEvents->lastEvent()->name());
     }
 }
