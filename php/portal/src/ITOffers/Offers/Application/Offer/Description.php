@@ -20,14 +20,24 @@ final class Description
 {
     private string $benefits;
 
+    private string $technologyStack;
+
     private Requirements $requirements;
 
-    public function __construct(string $benefits, Requirements $requirements)
+    public function __construct(string $technologyStack, string $benefits, Requirements $requirements)
     {
+        Assertion::betweenLength($technologyStack, 100, 2_048);
         Assertion::betweenLength($benefits, 100, 2_048);
 
+        $this->technologyStack = $technologyStack;
         $this->benefits = $benefits;
         $this->requirements = $requirements;
+        $this->technologyStack = $technologyStack;
+    }
+
+    public function technologyStack() : string
+    {
+        return $this->technologyStack;
     }
 
     public function benefits() : string

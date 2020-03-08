@@ -5,6 +5,5 @@
     <embeddable name="ITOffers\Offers\Application\Offer\Position">
         <field name="seniorityLevel" type="smallint"/>
         <field name="name"/>
-        <field name="description" length="1024"/>
     </embeddable>
 </doctrine-mapping>

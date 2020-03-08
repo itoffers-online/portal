@@ -125,13 +125,13 @@ final class PostOffer extends Command
                     ),
                     new Position(
                         \random_int(0, 4),
-                        $input->getOption('title'),
-                        'Full stack Software developer position, you will work mostly on web applications with automated and scalable infrastructure.'
+                        $input->getOption('title')
                     ),
                     new Location($faker->boolean, $faker->countryCode, $faker->city, $faker->address, new LatLng(50.16212, 19.9353153)),
                     $noSalary ? null : new Salary($faker->numberBetween(1_000, 5_000), $faker->numberBetween(5_000, 20_000), 'PLN', $faker->boolean, SalaryView::PERIOD_TYPE_MONTH),
                     new Contract('Contract'),
                     new Description(
+                        'PHP 7.4, PostgreSQL 11+, Jenkins CI/CS to executes the test suite and for deployments. Infrastructure as a code managed through Terraform and provision by Ansible. Secrets stored in Hashi Vault.',
                         'We don\'t have strict number of days off, you take as much as you need, you can work remotely or in the office',
                         new Requirements(
                             'Candidate for this position needs to be solid, reliable and meet all our expectations. You need to have at least 5 years of commercial experience.',

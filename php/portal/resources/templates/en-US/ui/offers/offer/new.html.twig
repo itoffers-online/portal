@@ -219,10 +219,12 @@
                         </div>
                         {{ form_errors(form.description.requirements.skills) }}
                         <button data-skill-add type="button" class="btn btn-primary btn-sm mb-2 mt-2"><i class="fas fa-plus"></i> skill</button>
-                        {{ form_row(form.description.requirements.description, {label: "Other requirements", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
                     </div>
                     <div class="col-md-12">
-                        {{ form_row(form.position.description, {label: "Description", attr:{rows: 5, placeholder: "between 50 and 2048 characters..."}}) }}
+                        {{ form_row(form.description.requirements.description, {label: "Description", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_row(form.description.technology_stack, {label: "Technology Stack", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
                     </div>
                     <div class="col-md-12">
                     {{ form_row(form.description.benefits, {label: "Benefits", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}

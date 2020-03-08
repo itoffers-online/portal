@@ -21,11 +21,10 @@ final class Position
 
     private string $description;
 
-    public function __construct(int $seniorityLevel, string $name, string $description)
+    public function __construct(int $seniorityLevel, string $name)
     {
         $this->seniorityLevel = $seniorityLevel;
         $this->name = $name;
-        $this->description = $description;
     }
 
     public function seniorityLevel() : int
@@ -36,10 +35,5 @@ final class Position
     public function name() : string
     {
         return $this->name;
-    }
-
-    public function description() : string
-    {
-        return $this->description;
     }
 }

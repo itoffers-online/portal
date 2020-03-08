@@ -17,12 +17,15 @@ use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements;
 
 final class Description
 {
-    private Requirements $requirements;
+    private string $technologyStack;
 
     private string $benefits;
 
-    public function __construct(string $benefits, Requirements $requirements)
+    private Requirements $requirements;
+
+    public function __construct(string $technologyStack, string $benefits, Requirements $requirements)
     {
+        $this->technologyStack = $technologyStack;
         $this->requirements = $requirements;
         $this->benefits = $benefits;
     }
@@ -35,5 +38,10 @@ final class Description
     public function benefits() : string
     {
         return $this->benefits;
+    }
+
+    public function technologyStack() : string
+    {
+        return $this->technologyStack;
     }
 }

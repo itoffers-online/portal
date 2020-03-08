@@ -19,7 +19,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200222190803 extends AbstractMigration
+final class Version20200308184052 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
@@ -52,7 +52,7 @@ final class Version20200222190803 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN itof_extra_offer.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN itof_extra_offer.expires_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN itof_extra_offer.used_at IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('CREATE TABLE itof_job_offer (id UUID NOT NULL, email_hash VARCHAR(255) NOT NULL, user_id UUID NOT NULL, specialization_id UUID NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, salary JSON DEFAULT NULL, removed_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT NULL, locale_code VARCHAR(12) NOT NULL, company_name VARCHAR(255) NOT NULL, company_url VARCHAR(2083) NOT NULL, company_description VARCHAR(512) NOT NULL, position_seniority_level SMALLINT NOT NULL, position_name VARCHAR(255) NOT NULL, position_description VARCHAR(1024) NOT NULL, location_remote BOOLEAN NOT NULL, location_country_code VARCHAR(2) DEFAULT NULL, location_city VARCHAR(512) DEFAULT NULL, location_address VARCHAR(2048) DEFAULT NULL, location_lat DOUBLE PRECISION DEFAULT NULL, location_lng DOUBLE PRECISION DEFAULT NULL, contract_type VARCHAR(255) NOT NULL, description_benefits VARCHAR(1024) NOT NULL, description_requirements_description VARCHAR(1024) NOT NULL, description_requirements_skills JSON NOT NULL, contact_email VARCHAR(255) NOT NULL, contact_name VARCHAR(255) NOT NULL, contact_phone VARCHAR(16) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE itof_job_offer (id UUID NOT NULL, email_hash VARCHAR(255) NOT NULL, user_id UUID NOT NULL, specialization_id UUID NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, salary JSON DEFAULT NULL, removed_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT NULL, locale_code VARCHAR(12) NOT NULL, company_name VARCHAR(255) NOT NULL, company_url VARCHAR(2083) NOT NULL, company_description VARCHAR(512) NOT NULL, position_seniority_level SMALLINT NOT NULL, position_name VARCHAR(255) NOT NULL, location_remote BOOLEAN NOT NULL, location_country_code VARCHAR(2) DEFAULT NULL, location_city VARCHAR(512) DEFAULT NULL, location_address VARCHAR(2048) DEFAULT NULL, location_lat DOUBLE PRECISION DEFAULT NULL, location_lng DOUBLE PRECISION DEFAULT NULL, contract_type VARCHAR(255) NOT NULL, description_technology_stack VARCHAR(2048) NOT NULL, description_benefits VARCHAR(2048) NOT NULL, description_requirements_description VARCHAR(2048) NOT NULL, description_requirements_skills JSON NOT NULL, contact_email VARCHAR(255) NOT NULL, contact_name VARCHAR(255) NOT NULL, contact_phone VARCHAR(16) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN itof_job_offer.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN itof_job_offer.salary IS \'(DC2Type:itof_offer_salary)\'');
         $this->addSql('COMMENT ON COLUMN itof_job_offer.removed_at IS \'(DC2Type:datetime_immutable)\'');
