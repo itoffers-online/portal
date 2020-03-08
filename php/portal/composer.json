@@ -123,6 +123,8 @@
         ],
         "test": [
             "rm -rf ./var/phpunit",
+            "rm -rf ./var/logs",
+            "rm -rf ./var/cache",
             "@test:md",
             "security-checker security:check",
             "./vendor/bin/deptrac",
