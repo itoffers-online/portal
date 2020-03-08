@@ -300,7 +300,7 @@ final class SymfonyKernel extends Kernel
                         'streamed'  => [
                             'type'  => 'stream',
                             'path'  => '%kernel.logs_dir%/%kernel.environment%_symfony.log',
-                            'level' => 'debug',
+                            'level' => 'error',
                         ],
                         'deduplicated' => [
                             'type'    => 'deduplication',
@@ -311,7 +311,7 @@ final class SymfonyKernel extends Kernel
                             'from_email'   => $this->config->getString(Config::REPORT_EMAIL),
                             'to_email'     => $this->config->getString(Config::REPORT_EMAIL),
                             'subject'      => 'An Error Occurred!',
-                            'level'        => 'debug',
+                            'level'        => 'critical',
                             'formatter'    => 'monolog.formatter.html',
                             'content_type' => 'text/html',
                         ],
