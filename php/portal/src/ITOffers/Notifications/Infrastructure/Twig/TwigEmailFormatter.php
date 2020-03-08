@@ -40,4 +40,18 @@ final class TwigEmailFormatter implements EmailFormatter
             ->inlineCss()
             ->renderBodyContent();
     }
+
+    public function extraOffersAddedSubject() : string
+    {
+        return $this->twig->render('@notifications/email/user/extra_offers_added_subject.txt.twig');
+    }
+
+    public function extraOffersAddedBody(int $expiresInDays, int $amount) : string
+    {
+        return CssInliner::fromHtml(
+            $this->twig->render('@notifications/email/user/extra_offers_added_body.html.twig', ['expiresInDays' => $expiresInDays, 'amount' => $amount])
+        )
+            ->inlineCss()
+            ->renderBodyContent();
+    }
 }

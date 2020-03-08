@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Application\Command\User;
 
 use ITOffers\Component\Calendar\Calendar;
+use ITOffers\Component\CQRS\EventStream;
 use ITOffers\Component\CQRS\System\Handler;
 use ITOffers\Offers\Application\Assertion;
+use ITOffers\Offers\Application\User\Event\ExtraOffersAdded;
 use ITOffers\Offers\Application\User\ExtraOffer;
 use ITOffers\Offers\Application\User\ExtraOffers;
 use ITOffers\Offers\Application\User\Users;
@@ -27,12 +29,15 @@ final class AddExtraOffersHandler implements Handler
 
     private ExtraOffers $extraOffers;
 
+    private EventStream $eventStream;
+
     private Calendar $calendar;
 
-    public function __construct(Users $users, ExtraOffers $extraOffers, Calendar $calendar)
+    public function __construct(Users $users, ExtraOffers $extraOffers, EventStream $eventStream, Calendar $calendar)
     {
         $this->users = $users;
         $this->extraOffers = $extraOffers;
+        $this->eventStream = $eventStream;
         $this->calendar = $calendar;
     }
 
@@ -50,5 +55,7 @@ final class AddExtraOffersHandler implements Handler
             fn () => ExtraOffer::expiresInDays($user->id(), $command->expiresInDays(), $this->calendar),
             \range(1, $command->count())
         ));
+
+        $this->eventStream->record(new ExtraOffersAdded($user, $command->expiresInDays(), $command->count()));
     }
 }

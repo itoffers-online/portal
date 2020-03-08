@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace ITOffers\Offers\Application\Offer\Event;
+namespace ITOffers\Offers\Application\User\Event;
 
 use ITOffers\Component\CQRS\EventStream\Event;
-use ITOffers\Offers\Application\Offer\Offer;
+use ITOffers\Offers\Application\User\User;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-final class OfferPostedEvent implements Event
+final class ExtraOffersAdded implements Event
 {
     private UuidInterface $id;
 
@@ -26,12 +26,14 @@ final class OfferPostedEvent implements Event
 
     private array $payload;
 
-    public function __construct(Offer $offer)
+    public function __construct(User $user, int $expiresInDays, int $amount)
     {
         $this->id = Uuid::uuid4();
         $this->occurredAt = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
         $this->payload = [
-            'offerId' => $offer->id()->toString(),
+            'userId' => $user->id()->toString(),
+            'expiresInDays' => $expiresInDays,
+            'amount' => $amount,
         ];
     }
 

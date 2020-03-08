@@ -16,8 +16,8 @@
                 <div class="col-lg-4"></div>
                 <div class="col-lg-4"></div>
             </div>
-            <div class="row">
-                {% for email in emails %}
+            {% for email in emails %}
+            <div class="row mt-2">
                 <div class="col-lg-3">
                     {{ email.name }}
                 </div>
@@ -27,8 +27,8 @@
                 <div class="col-lg-3 text-right">
                     <a href="{{ url('email_preview', {emailName: email.type}) }}" target="_blank" class="btn btn-sm btn-primary">preview</a>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>

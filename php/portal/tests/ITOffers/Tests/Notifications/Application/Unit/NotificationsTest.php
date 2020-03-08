@@ -15,8 +15,11 @@ namespace ITOffers\Tests\Notifications\Application\Unit;
 
 use ITOffers\Component\Mailer\Mailer;
 use ITOffers\Notifications\Application\Email\EmailFormatter;
+use ITOffers\Notifications\Application\Event\ExtraOffersAdded;
 use ITOffers\Notifications\Application\Event\OfferPostedEvent;
 use ITOffers\Notifications\Application\Offers;
+use ITOffers\Notifications\Application\User\User;
+use ITOffers\Notifications\Application\Users;
 use ITOffers\Notifications\Notifications;
 use ITOffers\Tests\Notifications\Application\MotherObject\OfferMother;
 use PHPUnit\Framework\TestCase;
@@ -31,6 +34,7 @@ final class NotificationsTest extends TestCase
         $module = new Notifications(
             $mailer = $this->createMock(Mailer::class),
             $offers = $this->createMock(Offers::class),
+            $users = $this->createMock(Users::class),
             $emailFormatter = $this->createMock(EmailFormatter::class),
             'contact@itoffers.online',
             'itoffers.online'
@@ -58,6 +62,42 @@ final class NotificationsTest extends TestCase
         ));
     }
 
+    public function test_handle_extra_offers_added_event() : void
+    {
+        $userId = Uuid::uuid4();
+
+        $module = new Notifications(
+            $mailer = $this->createMock(Mailer::class),
+            $offers = $this->createMock(Offers::class),
+            $users = $this->createMock(Users::class),
+            $emailFormatter = $this->createMock(EmailFormatter::class),
+            'contact@itoffers.online',
+            'itoffers.online'
+        );
+
+        $users->method('getById')
+            ->with($userId)
+            ->willReturn($user = new User('user@email.com'));
+
+        $emailFormatter->method('extraOffersAddedSubject')
+            ->willReturn('subject');
+
+        $emailFormatter->method('extraOffersAddedBody')
+            ->with($expiresInDays = 30, $amount = 1)
+            ->willReturn('html body');
+
+        $mailer->expects($this->once())
+            ->method('send');
+
+        $module->handle(new ExtraOffersAdded(
+            $eventId = Uuid::uuid4(),
+            new \DateTimeImmutable(),
+            $userId,
+            $expiresInDays,
+            $amount
+        ));
+    }
+
     public function test_handle_offer_posted_event_when_disabled() : void
     {
         $offerId = Uuid::uuid4();
@@ -65,6 +105,7 @@ final class NotificationsTest extends TestCase
         $module = new Notifications(
             $mailer = $this->createMock(Mailer::class),
             $offers = $this->createMock(Offers::class),
+            $users = $this->createMock(Users::class),
             $emailFormatter = $this->createMock(EmailFormatter::class),
             'contact@itoffers.online',
             'itoffers.online'

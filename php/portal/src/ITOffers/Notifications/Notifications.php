@@ -20,9 +20,11 @@ use ITOffers\Component\Mailer\Recipients;
 use ITOffers\Component\Mailer\Sender;
 use ITOffers\Notifications\Application\Email\EmailFormatter;
 use ITOffers\Notifications\Application\Event;
+use ITOffers\Notifications\Application\Event\ExtraOffersAdded;
 use ITOffers\Notifications\Application\Event\OfferPostedEvent;
 use ITOffers\Notifications\Application\Exception\Exception;
 use ITOffers\Notifications\Application\Offers;
+use ITOffers\Notifications\Application\Users;
 
 /**
  * Module - Notifications
@@ -44,6 +46,8 @@ final class Notifications
 
     private Offers $offers;
 
+    private Users $users;
+
     private EmailFormatter $emailFormatter;
 
     private string $contactEmail;
@@ -53,6 +57,7 @@ final class Notifications
     public function __construct(
         Mailer $mailer,
         Offers $offers,
+        Users $users,
         EmailFormatter $emailFormatter,
         string $contactEmail,
         string $domain
@@ -60,6 +65,7 @@ final class Notifications
         $this->disabled = false;
         $this->mailer = $mailer;
         $this->offers = $offers;
+        $this->users = $users;
         $this->emailFormatter = $emailFormatter;
         $this->contactEmail = $contactEmail;
         $this->domain = $domain;
@@ -87,6 +93,25 @@ final class Notifications
                     ),
                     new Recipients(
                         new Recipient($offer->recruiterEmail(), $offer->recruiterName())
+                    )
+                );
+
+                break;
+            case ExtraOffersAdded::class:
+                $user = $this->users->getById($event->userId());
+
+                $this->mailer->send(
+                    new Email(
+                        $this->emailFormatter->extraOffersAddedSubject(),
+                        $this->emailFormatter->extraOffersAddedBody($event->expiresInDays(), $event->amount())
+                    ),
+                    new Sender(
+                        $this->contactEmail,
+                        $this->domain,
+                        $this->contactEmail
+                    ),
+                    new Recipients(
+                        new Recipient($user->email())
                     )
                 );
 

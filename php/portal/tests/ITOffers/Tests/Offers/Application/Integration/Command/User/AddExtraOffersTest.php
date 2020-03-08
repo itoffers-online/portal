@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Integration\Command\User;
 
+use ITOffers\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use ITOffers\Offers\Application\Command\User\AddExtraOffers;
 use ITOffers\Tests\Offers\Application\Integration\OffersTestCase;
 
@@ -31,5 +32,6 @@ final class AddExtraOffersTest extends OffersTestCase
         );
 
         $this->assertSame(5, $this->offers->module()->extraOffersQuery()->countNotExpired($user->id()));
+        $this->assertSame(InMemoryEventBus::OFFERS_EVENT_USER_EXTRA_OFFERS_ADDED, $this->publishedEvents->lastEvent()->name());
     }
 }
