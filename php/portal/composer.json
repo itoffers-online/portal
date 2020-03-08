@@ -138,8 +138,8 @@
             "mdlinklint ./../../ --exclude=vendor --exclude=node_modules"
         ],
         "test:php:cs": [
-            "phpstan analyse -c phpstan.neon --no-cache",
-            "php-cs-fixer fix -v --dry-run",
+            "phpstan analyse -c phpstan.neon",
+            "php-cs-fixer fix -v --dry-run --using-cache=no",
             "./vendor/bin/rector process --dry-run"
         ],
         "db:reset": [
