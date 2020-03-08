@@ -123,8 +123,6 @@
         ],
         "test": [
             "rm -rf ./var/phpunit",
-            "rm -rf ./var/logs",
-            "rm -rf ./var/cache",
             "@test:md",
             "security-checker security:check",
             "./vendor/bin/deptrac",
@@ -140,7 +138,7 @@
             "mdlinklint ./../../ --exclude=vendor --exclude=node_modules"
         ],
         "test:php:cs": [
-            "phpstan analyse -c phpstan.neon",
+            "phpstan analyse -c phpstan.neon --no-cache",
             "php-cs-fixer fix -v --dry-run",
             "./vendor/bin/rector process --dry-run"
         ],
