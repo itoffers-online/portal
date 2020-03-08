@@ -283,6 +283,43 @@ final class SymfonyKernel extends Kernel
 
     protected function setupMonologBundle(ContainerBuilder $c) : ContainerBuilder
     {
+        if ($this->getEnvironment() === 'prod') {
+            return $c->loadFromExtension(
+                'monolog',
+                [
+                    'handlers' => [
+                        'main' => [
+                            'type'         => 'fingers_crossed',
+                            'action_level' => 'critical',
+                            'handler'      => 'deduplicated',
+                        ],
+                        'grouped' => [
+                            'type'    => 'group',
+                            'members' => ['streamed', 'deduplicated'],
+                        ],
+                        'streamed'  => [
+                            'type'  => 'stream',
+                            'path'  => '%kernel.logs_dir%/%kernel.environment%_symfony.log',
+                            'level' => 'debug',
+                        ],
+                        'deduplicated' => [
+                            'type'    => 'deduplication',
+                            'handler' => 'swift',
+                        ],
+                        'swift' => [
+                            'type'         => 'swift_mailer',
+                            'from_email'   => $this->config->getString(Config::REPORT_EMAIL),
+                            'to_email'     => $this->config->getString(Config::REPORT_EMAIL),
+                            'subject'      => 'An Error Occurred!',
+                            'level'        => 'debug',
+                            'formatter'    => 'monolog.formatter.html',
+                            'content_type' => 'text/html',
+                        ],
+                    ],
+                ]
+            );
+        }
+
         return $c->loadFromExtension(
             'monolog',
             [
