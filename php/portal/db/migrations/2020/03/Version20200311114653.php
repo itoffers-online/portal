@@ -19,14 +19,14 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200308184052 extends AbstractMigration
+final class Version20200311114653 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE TABLE itof_specialization (id UUID NOT NULL, slug VARCHAR(255) NOT NULL, facebook_channel_page_id VARCHAR(255) DEFAULT NULL, facebook_channel_page_access_token VARCHAR(255) DEFAULT NULL, facebook_channel_group_id VARCHAR(255) DEFAULT NULL, twitter_account_id VARCHAR(255) DEFAULT NULL, twitter_screen_name VARCHAR(255) DEFAULT NULL, twittero_auth_token VARCHAR(255) DEFAULT NULL, twittero_auth_token_secret VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE itof_specialization (id UUID NOT NULL, slug VARCHAR(255) NOT NULL, facebook_channel_page_id VARCHAR(255) DEFAULT NULL, facebook_channel_page_access_token VARCHAR(255) DEFAULT NULL, facebook_channel_group_id VARCHAR(255) DEFAULT NULL, facebook_channel_group_name VARCHAR(512) DEFAULT NULL, twitter_account_id VARCHAR(255) DEFAULT NULL, twitter_screen_name VARCHAR(255) DEFAULT NULL, twittero_auth_token VARCHAR(255) DEFAULT NULL, twittero_auth_token_secret VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E7C3A17A989D9B62 ON itof_specialization (slug)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E7C3A17AA719CCF6 ON itof_specialization (facebook_channel_group_id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_E7C3A17A322E56FB ON itof_specialization (twitter_account_id)');
