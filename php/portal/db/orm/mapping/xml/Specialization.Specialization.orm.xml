@@ -11,6 +11,7 @@
         <field name="facebookChannelPageId" nullable="true" />
         <field name="facebookChannelPageAccessToken" nullable="true" />
         <field name="facebookChannelGroupId" nullable="true" />
+        <field name="facebookChannelGroupName" nullable="true" length="512" />
         <field name="twitterAccountId" nullable="true" />
         <field name="twitterScreenName" nullable="true" />
         <field name="twitteroAuthToken" nullable="true" />

@@ -28,19 +28,25 @@ Address: [{{ offer.location.countryCode|offer_location_country_flag }}, {{ offer
 {% endif %}
 
 **Requirements**:
-{% if offer.description.requirements.description|lenght %}
+{% if offer.description.requirements.description|length %}
 {{ offer.description.requirements.description|raw }}
 {% endif %}
 {% if offer.description.requirements.requiredSkills|length %}
+
 **Required:**
-    {% for skill in offer.description.requirements.requiredSkills %}
-    * {{ skill.name }}{% if skill.experienceYears %}, +{{ skill.experienceYears }} years{% endif %}
-    {% endfor %}
+
+{% for skill in offer.description.requirements.requiredSkills %}
+* {{ skill.name }}{% if skill.experienceYears %}, +{{ skill.experienceYears }} years{% endif %}
+
+{% endfor %}
 {% endif %}
 {% if offer.description.requirements.niceToHaveSkills|length %}
+
 **Nice to have:**
+
 {% for skill in offer.description.requirements.niceToHaveSkills %}
-    * {{ skill.name }}{% if skill.experienceYears %}, +{{ skill.experienceYears }} years{% endif %}
+* {{ skill.name }}{% if skill.experienceYears %}, +{{ skill.experienceYears }} years{% endif %}
+
 {% endfor %}
 {% endif %}
 
