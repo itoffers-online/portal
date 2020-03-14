@@ -55,7 +55,7 @@ final class RequirementsType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => false,
                 'constraints' => [
-                    new Length(['min' => 0, 'max' => 2_048]),
+                    new Length(['min' => 100, 'max' => 2_048]),
                     new NotContainsEmoji(),
                 ],
             ])

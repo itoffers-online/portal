@@ -37,11 +37,12 @@ final class CompanyType extends AbstractType
                 'constraints' => [
                     new Url(),
                     new NotBlank(),
+                    new Length(['min' => 3, 'max' => 2_048]),
                 ],
             ])
             ->add('description', TextareaType::class, [
                 'constraints' => [
-                    new Length(['min' => 10, 'max' => 512]),
+                    new Length(['min' => 10, 'max' => 2_048]),
                     new NotContainsEmoji(),
                 ],
             ])

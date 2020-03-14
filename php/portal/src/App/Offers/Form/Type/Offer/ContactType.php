@@ -41,7 +41,7 @@ final class ContactType extends AbstractType
             ->add('phone', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Length(['max' => 16]),
+                    new Length(['min' => 6, 'max' => 16]),
                     new NotContainsEmoji(),
                 ],
             ])
