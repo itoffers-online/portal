@@ -76,6 +76,10 @@ final class Config
 
     public const FB_APP_SECRET = 'facebook_app_secret';
 
+    public const FB_INTERNAL_APP_ID = 'facebook_internal_app_id';
+
+    public const FB_INTERNAL_APP_SECRET = 'facebook_internal_app_secret';
+
     public const LINKEDIN_APP_ID = 'linkedin_app_id';
 
     public const LINKEDIN_APP_SECRET = 'linkedin_app_secret';
@@ -129,6 +133,8 @@ final class Config
             self::MAILER_CONFIG => getenv('ITOF_MAILER_CONFIG'),
             self::FB_APP_ID => getenv('ITOF_FB_APP_ID'),
             self::FB_APP_SECRET => getenv('ITOF_FB_APP_SECRET'),
+            self::FB_INTERNAL_APP_ID => getenv('ITOF_FB_INTERNAL_APP_ID'),
+            self::FB_INTERNAL_APP_SECRET => getenv('ITOF_FB_INTERNAL_APP_SECRET'),
             self::LINKEDIN_APP_ID => getenv('ITOF_LINKEDIN_APP_ID'),
             self::LINKEDIN_APP_SECRET => getenv('ITOF_LINKEDIN_APP_SECRET'),
             self::FILESYSTEM_CONFIG => getenv('ITOF_FILESYSTEM_CONFIG'),
