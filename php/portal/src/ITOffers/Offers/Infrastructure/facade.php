@@ -153,8 +153,8 @@ function offersFacade(
             );
             $facebook = new FacebookGraphSDK(
                 new Facebook([
-                    'app_id' => $config->getString(Config::FB_APP_ID),
-                    'app_secret' => $config->getString(Config::FB_APP_SECRET),
+                    'app_id' => $config->getString(Config::FB_INTERNAL_APP_ID),
+                    'app_secret' => $config->getString(Config::FB_INTERNAL_APP_SECRET),
                 ]),
                 $logger
             );
