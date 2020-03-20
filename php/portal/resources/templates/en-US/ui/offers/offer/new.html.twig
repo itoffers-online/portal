@@ -224,7 +224,12 @@
                         {{ form_row(form.description.requirements.description, {label: "Description", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
                     </div>
                     <div class="col-md-12">
-                        {{ form_row(form.description.technology_stack, {label: "Technology Stack", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
+                        {{ form_row(form.description.technology_stack, {
+                            label: "Technology Stack",
+                            attr:{rows: 5, placeholder: "between 50 and 2048 characters..."},
+                            help: "Technology Stack is one the two most important parts of the offer for 90% of candidates. Use it to explain technologies, tools, methodologies he might expect. "
+                            ~ " Try to be as descriptive as possible, explain typical workflow, share something about CI/CD processes, be creative!"
+                        }) }}
                     </div>
                     <div class="col-md-12">
                     {{ form_row(form.description.benefits, {label: "Benefits", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
