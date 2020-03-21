@@ -18,8 +18,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 final class PositionType extends AbstractType
 {
@@ -35,6 +37,18 @@ final class PositionType extends AbstractType
                 'constraints' => [
                     new Length(['min' => 3, 'max' => 255]),
                     new NotContainsEmoji(),
+                    new Callback([
+                        'callback' => function ($object, ExecutionContextInterface $context, $payload) {
+                            $forbiddenWords = ['senior', 'junior', 'intern', 'mid', 'expert', 'ninja'];
+
+                            foreach ($forbiddenWords as $forbiddenWord) {
+                                if (\mb_strpos(\mb_strtolower($object), $forbiddenWord) !== false) {
+                                    $context->buildViolation('Please don\'t put seniority level "' . \ucfirst($forbiddenWord) . '" into job title, there is separated option for it.')
+                                        ->addViolation();
+                                }
+                            }
+                        },
+                    ]),
                 ],
             ])
         ;

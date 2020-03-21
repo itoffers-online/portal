@@ -2,8 +2,10 @@
 <?php
 
 use App\Offers\Command\Offer\AutoRenewOffers;
+use App\Offers\Command\Offer\PostOfferAtFacebookGroup;
 use App\Offers\Command\Offer\RemoveOffer;
 use App\Offers\Command\Offer\ThumbnailRegenerate as OfferThumbnailRegenerate;
+use App\Offers\Command\Offer\TweetAboutOffer;
 use App\Offers\Command\Specialization\RemoveTwitterChannel;
 use App\Offers\Command\Specialization\SetTwitterChannel;
 use App\Offers\Command\Specialization\ThumbnailRegenerate;
@@ -29,7 +31,8 @@ $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$itOffers = symfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOnline::class);
+$symfony = symfony(bootstrap($projectRootPath));
+$itOffers = $symfony->getContainer()->get(ITOffersOnline::class);
 
 $application = new Application('itoffers.online - Offers');
 
@@ -41,6 +44,8 @@ $application->add(new RemoveFacebookChannel($itOffers->offers()));
 $application->add(new RemoveTwitterChannel($itOffers->offers()));
 $application->add(new PerformanceCheckCommand($itOffers->offers(), $itOffers->config()));
 $application->add(new RemoveOffer($itOffers->offers()));
+$application->add(new PostOfferAtFacebookGroup($itOffers->offers(), $symfony->getContainer()->get('twig')));
+$application->add(new TweetAboutOffer($itOffers->offers(), $symfony->getContainer()->get('twig')));
 $application->add(new OfferThumbnailRegenerate(
     $itOffers->offers(),
     new ImagineOfferThumbnail(

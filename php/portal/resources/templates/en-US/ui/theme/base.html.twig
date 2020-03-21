@@ -54,9 +54,9 @@
     {% endblock %}
 
     {% if app.session is not null and app.session.started %}
-        {% if app.session.flashbag.peek('success')|length or app.session.flashbag.peek('error')|length or app.session.flashbag.peek('warning')|length %}
+        {% if app.session.flashbag.peek('success')|length or app.session.flashbag.peek('danger')|length or app.session.flashbag.peek('warning')|length %}
             <div class="container-fluid pt-2 pb-2 bg-light">
-            {% for label, messages in app.flashes(['warning', 'error', 'success']) %}
+            {% for label, messages in app.flashes(['warning', 'danger', 'success']) %}
                 {% for message in messages %}
                     <div class="container">
                         <div data-alert-{{ label }} class="alert alert-{{ label }} text-center m-0">
