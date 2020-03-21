@@ -177,18 +177,28 @@ final class OfferController extends AbstractController
 
                 $offer = $this->itoffers->offers()->offerQuery()->findById($offerId);
 
-                if ($this->itoffers->offers()->featureQuery()->isEnabled(PostOfferAtFacebookGroupFeature::NAME) && (bool) $offerData['channels']['facebook_group']) {
-                    $this->itoffers->offers()->handle(new PagePostOfferAtGroup(
-                        $offerId,
-                        $this->renderView('@offers/facebook/page/group/offer.txt.twig', ['offer' => $offer]),
-                    ));
+                try {
+                    if ($this->itoffers->offers()->featureQuery()->isEnabled(PostOfferAtFacebookGroupFeature::NAME) && (bool)$offerData['channels']['facebook_group']) {
+                        $this->itoffers->offers()->handle(new PagePostOfferAtGroup(
+                            $offerId,
+                            $this->renderView('@offers/facebook/page/group/offer.txt.twig', ['offer' => $offer]),
+                        ));
+                    }
+                } catch (\Throwable $throwable) {
+                    $this->logger->critical('Could not post offer at Facebook.', ['class' => \get_class($throwable), 'exception' => $throwable]);
+                    $this->addFlash('danger', $this->renderView('@offers/alert/error_post_facebook.txt'));
                 }
 
-                if ($this->itoffers->offers()->featureQuery()->isEnabled(TweetAboutOfferFeature::NAME) && (bool) $offerData['channels']['twitter']) {
-                    $this->itoffers->offers()->handle(new TweetAboutOffer(
-                        $offerId,
-                        $this->renderView('@offers/twitter/offer.txt.twig', ['offer' => $offer]),
-                    ));
+                try {
+                    if ($this->itoffers->offers()->featureQuery()->isEnabled(TweetAboutOfferFeature::NAME) && (bool)$offerData['channels']['twitter']) {
+                        $this->itoffers->offers()->handle(new TweetAboutOffer(
+                            $offerId,
+                            $this->renderView('@offers/twitter/offer.txt.twig', ['offer' => $offer]),
+                        ));
+                    }
+                } catch (\Throwable $throwable) {
+                    $this->logger->critical('Could not post offer at Twitter.', ['class' => \get_class($throwable), 'exception' => $throwable]);
+                    $this->addFlash('danger', $this->renderView('@offers/alert/error_post_twitter.txt'));
                 }
 
                 return $this->redirectToRoute('offer_success', ['specSlug' => $specSlug, 'offer-slug' => $offer->slug()]);

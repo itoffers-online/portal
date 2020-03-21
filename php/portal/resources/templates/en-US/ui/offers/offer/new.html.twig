@@ -127,7 +127,12 @@
                 </div>
                 {{ form_row(form.position.seniorityLevel, {attr: {'value' : 0}}) }}
 
-                {{ form_row(form.position.name, {label: "Job Title", attr:{placeholder: "Developer"}}) }}
+                {{ form_row(
+                    form.position.name,
+                    {label: "Job Title", attr:{placeholder: "Developer"},
+                    help: "Don't put seniority level in Job Title, instead select it from the buttons above the field."
+                })
+                }}
                 {{ form_row(form.contract, {label: "Job Type"}) }}
             </div>
         </div>
