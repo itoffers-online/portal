@@ -188,13 +188,13 @@
                         {% endif %}
                     </div>
                     <div class="col-lg-9 col-12">
-                        <div class="row border-bottom mb-4">
+                        <div class="row mb-4">
                             <div class="col-lg-6 mb-4">
-                                <h6 class="small text-gray-500 font-weight-bold">Job Type</h6>
+                                <h6 class="small text-gray-500">Job Type</h6>
                                 <small><i class="text-green fas fa-file-alt mr-2"></i> {{ offer.contract.type }}</small>
                             </div>
                             <div class="col-lg-6 mb-4">
-                                <h6 class="small text-gray-500 font-weight-bold">Work Type</h6>
+                                <h6 class="small text-gray-500">Work Type</h6>
                                 {% spaceless %}
                                 <small>
                                     <i class="text-green fas fa-laptop-code mr-2"></i>
@@ -209,11 +209,11 @@
                                 {% endspaceless %}
                             </div>
                             <div class="col-lg-6 mb-4">
-                                <h6 class="small text-gray-500 font-weight-bold">Seniority Level</h6>
+                                <h6 class="small text-gray-500">Seniority Level</h6>
                                 <small><i class="text-green fas fa-layer-group mr-2"></i> {{ offer.position.seniorityLevel|offer_seniority_level_name }}</small>
                             </div>
                             <div class="col-lg-6 mb-4">
-                                <h6 class="small text-gray-500 font-weight-bold">Position</h6>
+                                <h6 class="small text-gray-500">Position</h6>
                                 <small>{{ offer.position.name }}</small>
                             </div>
                         </div>
@@ -230,7 +230,7 @@
                                     <h6 class="text-gray-500 small">Must have</h6>
                                     <ul>
                                         {% for skill in offer.description.requirements.requiredSkills %}
-                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-blue">(+{{ skill.experienceYears }} years)</span>{% endif %}</li>
+                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-blue">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -240,7 +240,7 @@
                                     <h6 class="text-gray-500 small">Nice to have</h6>
                                     <ul class="list-unstyled">
                                         {% for skill in offer.description.requirements.niceToHaveSkills %}
-                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-blue">(+{{ skill.experienceYears }} years)</span>{% endif %}</li>
+                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-blue">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
                                         {% endfor %}
                                     </ul>
                                 </div>
