@@ -406,8 +406,6 @@ final class OfferController extends AbstractController
                     $offerFormData['location']['address'],
                     new LatLng((float)$offerFormData['location']['lat'], (float)$offerFormData['location']['lng'])
                 );
-
-                break;
             default:
                 return new Location(true);
         }

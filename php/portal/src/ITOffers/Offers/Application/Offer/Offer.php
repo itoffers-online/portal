@@ -193,7 +193,7 @@ class Offer
         Description $description,
         Contact $contact,
         Calendar $calendar
-    ) {
+    ) : void {
         if (!$user->id()->equals($this->userId())) {
             throw new Exception("User is not allowed to update the offer");
         }
