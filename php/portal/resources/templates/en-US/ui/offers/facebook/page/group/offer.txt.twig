@@ -1,13 +1,13 @@
-# {{ offer.locale|offer_locale_country_flag }} **{{ offer.company.name|raw }}**
-[Homepage]({{ offer.company.url|raw }})
+# {{ offer.locale|offer_locale_country_flag }} **{{ offer.company.name|striptags|raw }}**
+[Homepage]({{ offer.company.url|striptags|raw }})
 
-{{ offer.company.description|raw }}
+{{ offer.company.description|striptags|raw }}
 
-**Position**: {{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name|raw }}
+**Position**: {{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name|striptags|raw }}
 
-{{ offer.position.description|raw }}
+{{ offer.position.description|striptags|raw }}
 
-**Contract type**: {{ offer.contract.type|raw }}
+**Contract type**: {{ offer.contract.type|striptags|raw }}
 
 {% if offer.salary %}
 **Salary**: {{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }} {% if offer.salary.isNet %}net{% else %}gross{% endif %} {% if offer.salary.periodTypeTotal %}in total{% else %}per {{ offer.salary.periodType|lower }}{% endif %}
@@ -21,15 +21,15 @@
 **Location**: Remote
 {% elseif offer.location.isPartiallyRemote %}
 **Location**: Partially Remote
-Address: [{{ offer.location.countryCode|offer_location_country_flag }}, {{ offer.location.city }}]({{ 'https://www.google.com/maps/search/?api=1&query=%s,%s'|format(offer.location.lat, offer.location.lng )|raw }})
+Address: [{{ offer.location.countryCode|offer_location_country_flag }}, {{ offer.location.city }}]({{ 'https://www.google.com/maps/search/?api=1&query=%s,%s'|format(offer.location.lat, offer.location.lng )|striptags|raw }})
 {% else %}
 **Location**: At Office
-Address: [{{ offer.location.countryCode|offer_location_country_flag }}, {{ offer.location.city }}]({{ 'https://www.google.com/maps/search/?api=1&query=%s,%s'|format(offer.location.lat, offer.location.lng )|raw }})
+Address: [{{ offer.location.countryCode|offer_location_country_flag }}, {{ offer.location.city }}]({{ 'https://www.google.com/maps/search/?api=1&query=%s,%s'|format(offer.location.lat, offer.location.lng )|striptags|raw }})
 {% endif %}
 
 **Requirements**:
 {% if offer.description.requirements.description|length %}
-{{ offer.description.requirements.description|raw }}
+{{ offer.description.requirements.description|striptags|raw }}
 {% endif %}
 {% if offer.description.requirements.requiredSkills|length %}
 
@@ -51,11 +51,11 @@ Address: [{{ offer.location.countryCode|offer_location_country_flag }}, {{ offer
 {% endif %}
 
 **Technology Stack**:
-{{ offer.description.technologyStack|raw }}
+{{ offer.description.technologyStack|striptags|raw }}
 
 **Benefits**:
-{{ offer.description.benefits|raw }}
+{{ offer.description.benefits|striptags|raw }}
 
 **[Apply]({{ url('offer', {'offerSlug': offer.slug}) }})**
 
-{{ offer.contact.name|raw }}
+{{ offer.contact.name|striptags|raw }}

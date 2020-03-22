@@ -5,7 +5,7 @@
     <embeddable name="ITOffers\Offers\Application\Offer\Description">
         <embedded name="requirements" class="ITOffers\Offers\Application\Offer\Description\Requirements" />
 
-        <field name="technologyStack" length="2048"/>
-        <field name="benefits" length="2048"/>
+        <field name="technologyStack" type="text"/>
+        <field name="benefits" type="text"/>
     </embeddable>
 </doctrine-mapping>

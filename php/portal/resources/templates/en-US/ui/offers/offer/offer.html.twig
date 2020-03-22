@@ -151,6 +151,11 @@
                 <h4 class="font-weight-light"><a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a></h4>
                 {% if userId and offer.postedBy(userId)%}
                     <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger btn-sm mt-3"><i class="fas fa-times"></i> remove</a>
+                    {% if offer|offer_older_than_hours(constant('ITOffers\\Offers\\Application\\Offer\\Offer::INSTANT_EDIT_TIME_HOURS')) == false %}
+                        <a class="btn btn-primary btn-sm mt-3" href="{{ url('offer_edit', {specSlug: offer.specializationSlug, 'offer-slug': offer.slug })  }}"><i class="far fa-edit"></i> edit</a>
+                    {% else %}
+                        <a class="btn btn-primary btn-sm mt-3 disabled" href="#" disabled="disabled"><i class="far fa-edit"></i> edit</a>
+                    {% endif %}
                 {% endif %}
             </div>
             <div class="col-lg-5"></div>
@@ -230,7 +235,7 @@
                                     <h6 class="text-gray-500 small">Must have</h6>
                                     <ul>
                                         {% for skill in offer.description.requirements.requiredSkills %}
-                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-blue">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
+                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-gray-500">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -240,13 +245,13 @@
                                     <h6 class="text-gray-500 small">Nice to have</h6>
                                     <ul class="list-unstyled">
                                         {% for skill in offer.description.requirements.niceToHaveSkills %}
-                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-blue">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
+                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-gray-500">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
                                         {% endfor %}
                                     </ul>
                                 </div>
                             {% endif %}
                         </div>
-                        {{ offer.description.requirements.description }}
+                        {{ offer.description.requirements.description | striptags('<strong><em><ul><li><ol>') | raw }}
                     </div>
                 </div>
                 <div class="row border-bottom pt-5 pb-4">
@@ -254,7 +259,7 @@
                         <h4 class="offer-description-headline">Technology Stack</h4>
                     </div>
                     <div class="col-lg-9">
-                        {{ offer.description.technologyStack }}
+                        {{ offer.description.technologyStack | striptags('<strong><em><ul><li><ol>') | raw }}
                     </div>
                 </div>
                 <div class="row border-bottom pt-5 pb-4">
@@ -262,7 +267,7 @@
                         <h4 class="offer-description-headline">Benefits</h4>
                     </div>
                     <div class="col-lg-9">
-                        {{ offer.description.benefits }}
+                        {{ offer.description.benefits | striptags('<strong><em><ul><li><ol>') | raw }}
                     </div>
                 </div>
                 <div class="row pt-5 pb-4">
@@ -283,7 +288,7 @@
                         <div class="row {% if offer.location.partiallyRemote or offer.location.atOffice %}border-bottom{% endif %}">
                             <div class="col-lg-12 pb-4 pt-4">
                                 <section>
-                                {{ offer.company.description }}
+                                {{ offer.company.description | striptags('<strong><em><ul><li><ol>') | raw }}
                                 </section>
                             </div>
                         </div>

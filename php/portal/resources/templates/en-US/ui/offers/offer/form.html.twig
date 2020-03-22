@@ -5,6 +5,7 @@
 {% block stylesheets %}
     {{ parent() }}
 
+    <link rel="stylesheet" type="text/css" href="/assets/dist/vendor/trix/trix.css"/>
     <style type="text/css">
         #location-map {
             height: 25rem;
@@ -20,7 +21,6 @@
     {{ render_esi(controller('App\\Offers\\Controller\\LayoutController::headerAction', {specialization: specialization.slug})) }}
 {% endblock %}
 
-
 {%  block _offer_description_requirements_skills_entry_row %}
     <fieldset id="{{ form.vars.id }}">
         {{ form_widget(form) }}
@@ -32,7 +32,7 @@
     <div class="row">
         <div class="col-md-4">{{ form_row(form.skill, {label: "Skill/Technology"}) }}</div>
         <div class="col-md-4">{{ form_row(form.required, {label: "Requirement"}) }}</div>
-        <div class="col-md-2">{{ form_row(form.experience, {label: "Years of experience"}) }}</div>
+        <div class="col-md-2">{{ form_row(form.experience, {label: "Years of experience", help: "(optional)"}) }}</div>
         <div class="col-md-2 pt-4" data-remove></div>
     </div>
 {% endblock %}
@@ -62,7 +62,18 @@
                     {{ form_row(form.company.url, {label: "Homepage", attr:{placeholder:"Company hompate url"}}) }}
                 </div>
             </div>
-            {{ form_row(form.company.description, {label: "Description", attr:{rows: 5, placeholder: "Description between 10 and 2048 characters..."}}) }}
+            {{
+                form_row(
+                    form.company.description,
+                    {
+                        label: "Description",
+                        help: "Between 10 and 2048 characters...",
+                        attr: {
+                            rows: 5
+                        }
+                    }
+                )
+            }}
         </div>
     </div>
     <div class="row mt-4 border-bottom">
@@ -178,18 +189,40 @@
                     <button data-skill-add type="button" class="btn btn-primary btn-sm mb-2 mt-2"><i class="fas fa-plus"></i> skill</button>
                 </div>
                 <div class="col-md-12">
-                    {{ form_row(form.description.requirements.description, {label: "Description", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
+
+                    {{
+                        form_row(
+                            form.description.requirements.description,
+                            {
+                                label: "Description",
+                                help: "Between 100 and 2048 characters...",
+                                attr:{
+                                    rows: 5,
+                                }
+                            }
+                        )
+                    }}
                 </div>
                 <div class="col-md-12">
                     {{ form_row(form.description.technology_stack, {
                         label: "Technology Stack",
-                        attr:{rows: 5, placeholder: "between 50 and 2048 characters..."},
-                        help: "Technology Stack is one the two most important parts of the offer for 90% of candidates. Use it to explain technologies, tools, methodologies he might expect. "
+                        attr:{rows: 5},
+                        help: "Between 50 and 2048 characters. Technology Stack is one the two most important parts of the offer for 90% of candidates. Use it to explain technologies, tools, methodologies he might expect. "
                         ~ " Try to be as descriptive as possible, explain typical workflow, share something about CI/CD processes, be creative!"
                     }) }}
                 </div>
                 <div class="col-md-12">
-                    {{ form_row(form.description.benefits, {label: "Benefits", attr:{rows: 5, placeholder: "between 100 and 2048 characters..."}}) }}
+                    {{ form_row(
+                        form.description.benefits,
+                        {
+                            label: "Benefits",
+                            help: "Between 100 and 2048 characters.",
+                            attr:{
+                                rows: 5,
+                            }
+                        }
+                    )
+                    }}
                 </div>
             </div>
         </div>
@@ -314,304 +347,303 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript">
-           $(window).on('beforeunload', function(){
-               return 'Are you sure you want to leave?';
-           });
+<script type="text/javascript">
+    $(window).on('beforeunload', function(){
+       return 'Are you sure you want to leave?';
+    });
 
-        $(function () {
-            {% if previousOfferData %}
-            $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
-            {% endif %}
-            $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").saveMyForm();
-            $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").submit(function() {
-                $(window).unbind('beforeunload');
-            });
+    $(function () {
+        {% if previousOfferData %}
+        $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
+        {% endif %}
+        $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").saveMyForm();
+        $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").submit(function() {
+            $(window).unbind('beforeunload');
         });
+    });
 
-        $('#{{ form.reset.vars.id }}').on('click', function() {
-            $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
+    $('#{{ form.reset.vars.id }}').on('click', function() {
+        $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
+    });
+
+    $('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+    });
+
+    $('[data-skill-add]').on('click', function(e) {
+        var list = $('[data-skills]');
+        var counter = list.data('widget-counter') || list.children().length;
+        var newWidget = list.attr('data-prototype');
+
+        newWidget = newWidget.replace(/__name__/g, counter);
+        counter++;
+        list.data('widget-counter', counter);
+
+        var newElem = $(list.attr('data-widget-tags')).html(newWidget);
+        newElem.appendTo(list);
+        addSkillFormDeleteLink($(newElem));
+    });
+
+    $('[data-skills]').find('fieldset').each(function() {
+        addSkillFormDeleteLink($(this));
+    });
+
+    function addSkillFormDeleteLink($skillElement) {
+        var $removeFormButton = $('<button type="button" class="btn btn-secondary btn-sm mt-2"><i class="fas fa-minus-circle"></i> delete</button>');
+        $skillElement.find('[data-remove]').append($removeFormButton);
+
+        $removeFormButton.on('click', function(e) {
+            // remove the li for the tag form
+            $skillElement.remove();
         });
+    }
 
-        $('input[type="file"]').change(function(e){
-            var fileName = e.target.files[0].name;
-            $('.custom-file-label').html(fileName);
-        });
+    function changeSeniority(value, element) {
+        $('[data-seniority-level]').removeClass('active');
+        $('#{{ form.position.seniorityLevel.vars.id }}').val(value);
+        $('#{{ form.position.seniorityLevel.vars.id }}').change();
+        $(element).addClass('active');
+    }
 
-        $('[data-skill-add]').on('click', function(e) {
-            var list = $('[data-skills]');
-            var counter = list.data('widget-counter') || list.children().length;
-            var newWidget = list.attr('data-prototype');
+    function setActiveSeniority(element) {
+        $('[data-seniority-level]').removeClass('active');
+        $(element).addClass('active');
+    }
 
-            newWidget = newWidget.replace(/__name__/g, counter);
-            counter++;
-            list.data('widget-counter', counter);
+    $('[data-seniority-level]').click(function (e) {
+        e.preventDefault();
 
-            var newElem = $(list.attr('data-widget-tags')).html(newWidget);
-            newElem.appendTo(list);
-            addSkillFormDeleteLink($(newElem));
-        });
+        changeSeniority(parseInt($(this).data('seniority-level'), 10), e.currentTarget);
+    });
 
-        $('[data-skills]').find('fieldset').each(function() {
-            addSkillFormDeleteLink($(this));
-        });
-
-        function addSkillFormDeleteLink($skillElement) {
-            var $removeFormButton = $('<button type="button" class="btn btn-secondary btn-sm mt-2"><i class="fas fa-minus-circle"></i> delete</button>');
-            $skillElement.find('[data-remove]').append($removeFormButton);
-
-            $removeFormButton.on('click', function(e) {
-                // remove the li for the tag form
-                $skillElement.remove();
-            });
+    $('#{{ form.position.seniorityLevel.vars.id }}').on('change', function(e) {
+        console.log();
+        switch ($(this).val()) {
+            case 0:
+                setActiveSeniority('#seniority-intern');
+                break;
+            case 1:
+                setActiveSeniority('#seniority-junior');
+                break;
+            case 2:
+                setActiveSeniority('#seniority-mid');
+                break;
+            case 3:
+                setActiveSeniority('#seniority-senior');
+                break;
+            case 4:
+                setActiveSeniority('#seniority-expert');
+                break;
         }
+    });
 
-        function changeSeniority(value, element) {
-            $('[data-seniority-level]').removeClass('active');
-            $('#{{ form.position.seniorityLevel.vars.id }}').val(value);
-            $('#{{ form.position.seniorityLevel.vars.id }}').change();
-            $(element).addClass('active');
-        }
+    function fullyRemote() {
+        $('#location-fully-remote').addClass('active');
+        $('#location-partially-remote').removeClass('active');
+        $('#location-at-office').removeClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', true);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
+        $('#location-group').addClass('d-none');
+    }
 
-        function setActiveSeniority(element) {
-            $('[data-seniority-level]').removeClass('active');
-            $(element).addClass('active');
-        }
+    function partiallyRemote() {
+        $('#location-fully-remote').removeClass('active');
+        $('#location-partially-remote').addClass('active');
+        $('#location-at-office').removeClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', true);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
+        $('#location-group').removeClass('d-none');
+    }
 
-        $('[data-seniority-level]').click(function (e) {
-            e.preventDefault();
+    function atOffice() {
+        $('#location-fully-remote').removeClass('active');
+        $('#location-partially-remote').removeClass('active');
+        $('#location-at-office').addClass('active');
+        $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
+        $('#{{ form.location.type.vars.id }}_2').prop('checked', true);
+        $('#location-group').removeClass('d-none');
+    }
 
-            changeSeniority(parseInt($(this).data('seniority-level'), 10), e.currentTarget);
-        });
+    $('#location-fully-remote').click((e => {
+        e.preventDefault();
 
-        $('#{{ form.position.seniorityLevel.vars.id }}').on('change', function(e) {
-            console.log();
-            switch ($(this).val()) {
-                case 0:
-                    setActiveSeniority('#seniority-intern');
-                    break;
-                case 1:
-                    setActiveSeniority('#seniority-junior');
-                    break;
-                case 2:
-                    setActiveSeniority('#seniority-mid');
-                    break;
-                case 3:
-                    setActiveSeniority('#seniority-senior');
-                    break;
-                case 4:
-                    setActiveSeniority('#seniority-expert');
-                    break;
+        $('#{{ form.location.type.vars.id }}_0').change();
+        fullyRemote();
+    }));
+    $('#location-partially-remote').click((e => {
+        e.preventDefault();
+
+        $('#{{ form.location.type.vars.id }}_1').change();
+        partiallyRemote();
+    }));
+    $('#location-at-office').click((e => {
+        e.preventDefault();
+
+        $('#{{ form.location.type.vars.id }}_2').change();
+        atOffice();
+    }));
+
+    {% if form.location.type.vars.value == 0 %}
+    fullyRemote();
+    {% elseif form.location.type.vars.value == 1 %}
+    partiallyRemote();
+    {% else %}
+    atOffice();
+    {% endif %}
+
+    $('#{{ form.location.type.vars.id }}_0').on('change', function() {
+        fullyRemote();
+    });
+    $('#{{ form.location.type.vars.id }}_1').on('change', function() {
+        partiallyRemote();
+    });
+    $('#{{ form.location.type.vars.id }}_2').on('change', function() {
+        atOffice();
+    });
+
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('location-map'), {
+            zoom: 14,
+            center: {
+                lat: $('#{{ form.location.lat.vars.id }}').val() ? parseFloat($('#{{ form.location.lat.vars.id }}').val()) : 50.06212,
+                lng: $('#{{ form.location.lng.vars.id }}').val() ? parseFloat($('#{{ form.location.lng.vars.id }}').val()) : 19.9353153
             }
         });
+        var geocoder = new google.maps.Geocoder;
 
-        function fullyRemote() {
-            $('#location-fully-remote').addClass('active');
-            $('#location-partially-remote').removeClass('active');
-            $('#location-at-office').removeClass('active');
-            $('#{{ form.location.type.vars.id }}_0').prop('checked', true);
-            $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
-            $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
-            $('#location-group').addClass('d-none');
-        }
+        let searchInput = document.getElementById('{{ form.location.address.vars.id }}');
+        let countryInput = document.getElementById('{{ form.location.country.vars.id }}');
+        let cityInput = document.getElementById('{{ form.location.city.vars.id }}');
 
-        function partiallyRemote() {
-            $('#location-fully-remote').removeClass('active');
-            $('#location-partially-remote').addClass('active');
-            $('#location-at-office').removeClass('active');
-            $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
-            $('#{{ form.location.type.vars.id }}_1').prop('checked', true);
-            $('#{{ form.location.type.vars.id }}_2').prop('checked', false);
-            $('#location-group').removeClass('d-none');
-        }
+        var autocomplete = new google.maps.places.Autocomplete(searchInput);
 
-        function atOffice() {
-            $('#location-fully-remote').removeClass('active');
-            $('#location-partially-remote').removeClass('active');
-            $('#location-at-office').addClass('active');
-            $('#{{ form.location.type.vars.id }}_0').prop('checked', false);
-            $('#{{ form.location.type.vars.id }}_1').prop('checked', false);
-            $('#{{ form.location.type.vars.id }}_2').prop('checked', true);
-            $('#location-group').removeClass('d-none');
-        }
-
-        $('#location-fully-remote').click((e => {
-            e.preventDefault();
-
-            $('#{{ form.location.type.vars.id }}_0').change();
-            fullyRemote();
-        }));
-        $('#location-partially-remote').click((e => {
-            e.preventDefault();
-
-            $('#{{ form.location.type.vars.id }}_1').change();
-            partiallyRemote();
-        }));
-        $('#location-at-office').click((e => {
-            e.preventDefault();
-
-            $('#{{ form.location.type.vars.id }}_2').change();
-            atOffice();
-        }));
-
-        {% if form.location.type.vars.value == 0 %}
-        fullyRemote();
-        {% elseif form.location.type.vars.value == 1 %}
-        partiallyRemote();
-        {% else %}
-        atOffice();
-        {% endif %}
-
-        $('#{{ form.location.type.vars.id }}_0').on('change', function() {
-            fullyRemote();
-        });
-        $('#{{ form.location.type.vars.id }}_1').on('change', function() {
-            partiallyRemote();
-        });
-        $('#{{ form.location.type.vars.id }}_2').on('change', function() {
-            atOffice();
-        });
-
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('location-map'), {
-                zoom: 14,
+        if ($('#{{ form.location.lat.vars.id }}').val() && $('#{{ form.location.lng.vars.id }}').val()) {
+            var marker = new google.maps.Marker({
+                map: map,
                 center: {
-                    lat: $('#{{ form.location.lat.vars.id }}').val() ? parseFloat($('#{{ form.location.lat.vars.id }}').val()) : 50.06212,
-                    lng: $('#{{ form.location.lng.vars.id }}').val() ? parseFloat($('#{{ form.location.lng.vars.id }}').val()) : 19.9353153
+                    lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()),
+                    lng: parseFloat($('#{{ form.location.lng.vars.id }}').val()),
+                },
+                position: {
+                    lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()),
+                    lng: parseFloat($('#{{ form.location.lng.vars.id }}').val()),
                 }
             });
-            var geocoder = new google.maps.Geocoder;
-
-            let searchInput = document.getElementById('{{ form.location.address.vars.id }}');
-            let countryInput = document.getElementById('{{ form.location.country.vars.id }}');
-            let cityInput = document.getElementById('{{ form.location.city.vars.id }}');
-
-            var autocomplete = new google.maps.places.Autocomplete(searchInput);
-
-            if ($('#{{ form.location.lat.vars.id }}').val() && $('#{{ form.location.lng.vars.id }}').val()) {
-                var marker = new google.maps.Marker({
-                    map: map,
-                    center: {
-                        lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()),
-                        lng: parseFloat($('#{{ form.location.lng.vars.id }}').val()),
-                    },
-                    position: {
-                        lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()),
-                        lng: parseFloat($('#{{ form.location.lng.vars.id }}').val()),
-                    }
-                });
-            } else {
-                var marker = new google.maps.Marker({
-                    map: map,
-                    center: {
-                        lat: 50.06212,
-                        lng: 19.9353153
-                    },
-                });
-            }
-
-            marker.addListener('position_changed', function(e) {
-                $('#{{ form.location.lat.vars.id }}').val(this.getPosition().lat()).change();
-                $('#{{ form.location.lng.vars.id }}').val(this.getPosition().lng()).change();
+        } else {
+            var marker = new google.maps.Marker({
+                map: map,
+                center: {
+                    lat: 50.06212,
+                    lng: 19.9353153
+                },
             });
+        }
 
-            function geocode(location) {
-                geocoder.geocode(
-                    {'location' : location},
-                    function (results, status) {
-                        if (status === 'OK') {
-                            if (results[0]) {
-                                searchInput.value = results[0].formatted_address;
+        marker.addListener('position_changed', function(e) {
+            $('#{{ form.location.lat.vars.id }}').val(this.getPosition().lat()).change();
+            $('#{{ form.location.lng.vars.id }}').val(this.getPosition().lng()).change();
+        });
 
-                                countryInput.value = Array.from(results[0].address_components)
-                                    .find(component => component.types[0] === 'country' && component.types[1] === "political")['short_name'];
+        function geocode(location) {
+            geocoder.geocode(
+                {'location' : location},
+                function (results, status) {
+                    if (status === 'OK') {
+                        if (results[0]) {
+                            searchInput.value = results[0].formatted_address;
 
-                                let city = false;
+                            countryInput.value = Array.from(results[0].address_components)
+                                .find(component => component.types[0] === 'country' && component.types[1] === "political")['short_name'];
 
-                                if (!city) {
-                                    city = Array.from(results[0].address_components).find(component => component.types.includes('locality') && component.types.includes("political"));
-                                }
-                                if (!city) {
-                                    city = Array.from(results[0].address_components).find(component => component.types.includes('sublocality') && component.types.includes("political"));
-                                }
-                                if (!city) {
-                                    city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_3') && component.types.includes("political"));
-                                }
-                                if (!city) {
-                                    city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_2') && component.types.includes("political"));
-                                }
-                                if (!city) {
-                                    city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_1') && component.types.includes("political"));
-                                }
+                            let city = false;
 
-                                cityInput.value = city ? city['short_name'] : '';
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('locality') && component.types.includes("political"));
                             }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('sublocality') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_3') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_2') && component.types.includes("political"));
+                            }
+                            if (!city) {
+                                city = Array.from(results[0].address_components).find(component => component.types.includes('administrative_area_level_1') && component.types.includes("political"));
+                            }
+
+                            cityInput.value = city ? city['short_name'] : '';
                         }
                     }
-                );
-            }
-
-            if ($('#{{ form.location.lat.vars.id }}').val() && $('#{{ form.location.lng.vars.id }}').val()) {
-                geocode({lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()), lng: parseFloat($('#{{ form.location.lng.vars.id }}').val())});
-            }
-
-            map.addListener('click', function(e) {
-                marker.setPosition(e.latLng);
-                marker.setVisible(true);
-
-                geocode(e.latLng);
-
-                map.panTo(e.latLng);
-            });
-
-            autocomplete.bindTo('bounds', map);
-
-            autocomplete.addListener('place_changed', function() {
-                var place = autocomplete.getPlace();
-                if (!place.geometry) {
-                    searchInput.value = "";
-                    document.getElementById('{{ form.location.lat.vars.id }}').value = "";
-                    document.getElementById('{{ form.location.lng.vars.id }}').value = "";
-
-                    return;
                 }
-
-                countryInput.value = Array.from(place.address_components)
-                    .find(component => component.types[0] === 'country' && component.types[1] === "political")['short_name'];
-
-                let city = false;
-
-                if (!city) {
-                    city = Array.from(place.address_components).find(component => component.types.includes('locality') && component.types.includes("political"));
-                }
-                if (!city) {
-                    city = Array.from(place.address_components).find(component => component.types.includes('sublocality') && component.types.includes("political"));
-                }
-                if (!city) {
-                    city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_3') && component.types.includes("political"));
-                }
-                if (!city) {
-                    city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_2') && component.types.includes("political"));
-                }
-                if (!city) {
-                    city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_1') && component.types.includes("political"));
-                }
-
-                cityInput.value = city ? city['short_name'] : '';
-
-                marker.setPosition(place.geometry.location);
-                map.panTo(place.geometry.location);
-                marker.setVisible(true);
-            });
-
-            searchInput.addEventListener('keypress', (event) => {
-                if (event.keyCode === 13) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-            });
+            );
         }
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google.maps.key }}&libraries=places&&callback=initMap">
-    </script>
+
+        if ($('#{{ form.location.lat.vars.id }}').val() && $('#{{ form.location.lng.vars.id }}').val()) {
+            geocode({lat: parseFloat($('#{{ form.location.lat.vars.id }}').val()), lng: parseFloat($('#{{ form.location.lng.vars.id }}').val())});
+        }
+
+        map.addListener('click', function(e) {
+            marker.setPosition(e.latLng);
+            marker.setVisible(true);
+
+            geocode(e.latLng);
+
+            map.panTo(e.latLng);
+        });
+
+        autocomplete.bindTo('bounds', map);
+
+        autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place.geometry) {
+                searchInput.value = "";
+                document.getElementById('{{ form.location.lat.vars.id }}').value = "";
+                document.getElementById('{{ form.location.lng.vars.id }}').value = "";
+
+                return;
+            }
+
+            countryInput.value = Array.from(place.address_components)
+                .find(component => component.types[0] === 'country' && component.types[1] === "political")['short_name'];
+
+            let city = false;
+
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('locality') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('sublocality') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_3') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_2') && component.types.includes("political"));
+            }
+            if (!city) {
+                city = Array.from(place.address_components).find(component => component.types.includes('administrative_area_level_1') && component.types.includes("political"));
+            }
+
+            cityInput.value = city ? city['short_name'] : '';
+
+            marker.setPosition(place.geometry.location);
+            map.panTo(place.geometry.location);
+            marker.setVisible(true);
+        });
+
+        searchInput.addEventListener('keypress', (event) => {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
+    }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google.maps.key }}&libraries=places&&callback=initMap"></script>
 {% endblock %}
