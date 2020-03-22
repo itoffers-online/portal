@@ -8,7 +8,7 @@
             {% include '@offers/home/faq/_question.html.twig' with {
                 number: 1,
                 question: "Can I edit my job offer?",
-                answer: "No, job offer can't be updated after you post it however it can be removed and added once again."
+                answer: "Yes, but only for the first " ~ constant('ITOffers\\Offers\\Application\\Offer\\Offer::INSTANT_EDIT_TIME_HOURS') ~ " hours, after that time it can be removed and added once again. Please also remember that offer url can\'t be changed."
             } only %}
             {% include '@offers/home/faq/_question.html.twig' with {
                 number: 2,

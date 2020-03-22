@@ -36,6 +36,7 @@ final class TwigOfferExtension extends AbstractExtension
             new TwigFilter('offer_location_country_flag', [$this->extension, 'locationCountryFlag']),
             new TwigFilter('offer_location_country_name', [$this->extension, 'locationCountryName']),
             new TwigFilter('offer_older_than', [$this->extension, 'olderThan']),
+            new TwigFilter('offer_older_than_hours', [$this->extension, 'olderThanHours']),
             new TwigFilter('offer_auto_renews_left', [$this->extension, 'autoRenewsLeft']),
             new TwigFilter('offer_auto_renews_used', [$this->extension, 'usedAutoRenews']),
             new TwigFilter('offer_auto_renews_total', [$this->extension, 'totalAutoRenews']),

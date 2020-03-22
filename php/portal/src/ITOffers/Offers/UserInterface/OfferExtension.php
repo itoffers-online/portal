@@ -138,6 +138,11 @@ final class OfferExtension
         return $offer->createdAt()->diff(new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->days >= $days;
     }
 
+    public function olderThanHours(Offer $offer, int $hours) : bool
+    {
+        return $offer->createdAt()->modify(\sprintf('+%d hours', $hours)) < new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+    }
+
     public function autoRenewsLeft(Offer $offer) : int
     {
         return $this->offers->offerAutoRenewQuery()->countRenewsLeft($offer->id()->toString());

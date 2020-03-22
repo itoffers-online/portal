@@ -1,0 +1,18 @@
+{% extends '@theme/base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="offset-2 col-lg-8">
+            <div class="alert alert-success text-center" role="alert">
+                <h4 class="alert-heading">Offer Updated!</h4>
+                <p>Your offer was just updated but offer url will stay the same.</p>
+                <p>
+                    <a class="btn btn-primary" href="{{ url('offer', {offerSlug: offer.slug}) }}">See it</a>
+                </p>
+                <p class="mb-0">If you have any questions please check our <a href="{{ url('faq') }}">FAQ</a> section.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

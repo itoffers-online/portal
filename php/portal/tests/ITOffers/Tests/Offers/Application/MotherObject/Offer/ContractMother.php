@@ -11,13 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace ITOffers\Offers\Application\Offer;
+namespace ITOffers\Tests\Offers\Application\MotherObject\Offer;
 
-use Ramsey\Uuid\UuidInterface;
+use ITOffers\Offers\Application\Offer\Contract;
 
-interface OfferPDFs
+final class ContractMother
 {
-    public function add(OfferPDF $offerPDF) : void;
-
-    public function removeFor(UuidInterface $offerId) : void;
+    public static function random() : Contract
+    {
+        return new Contract('B2B');
+    }
 }

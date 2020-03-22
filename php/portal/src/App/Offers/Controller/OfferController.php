@@ -32,6 +32,7 @@ use ITOffers\Offers\Application\Command\Offer\Offer\Position;
 use ITOffers\Offers\Application\Command\Offer\Offer\Salary;
 use ITOffers\Offers\Application\Command\Offer\PostOffer;
 use ITOffers\Offers\Application\Command\Offer\RemoveOffer;
+use ITOffers\Offers\Application\Command\Offer\UpdateOffer;
 use ITOffers\Offers\Application\Command\Twitter\TweetAboutOffer;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\FeatureToggle\PostNewOffersFeature;
@@ -124,54 +125,14 @@ final class OfferController extends AbstractController
             $offerData = $form->getData();
 
             try {
-                switch ($offerData['location']['type']) {
-                    case 1:
-                    case 2:
-                        $location = new Location(
-                            true,
-                            $offerData['location']['country'],
-                            $offerData['location']['city'],
-                            $offerData['location']['address'],
-                            new LatLng((float) $offerData['location']['lat'], (float) $offerData['location']['lng'])
-                        );
-
-                        break;
-                    default:
-                        $location = new Location(true);
-
-                        break;
-                }
+                $location = $this->convertOfferDataToLocation($offerData);
 
                 $this->itoffers->offers()->handle(new PostOffer(
                     $offerId = Uuid::uuid4()->toString(),
                     $specSlug,
                     $offerData['locale'],
                     $userId,
-                    new Offer(
-                        new Company($offerData['company']['name'], $offerData['company']['url'], $offerData['company']['description']),
-                        new Position((int) $offerData['position']['seniorityLevel'], $offerData['position']['name']),
-                        $location,
-                        (null === $offerData['salary']['min'] && null === $offerData['salary']['max'])
-                            ? null
-                            : new Salary($offerData['salary']['min'], $offerData['salary']['max'], $offerData['salary']['currency'], (bool) $offerData['salary']['net'], $offerData['salary']['period_type']),
-                        new Contract($offerData['contract']),
-                        new Description(
-                            $offerData['description']['technology_stack'],
-                            $offerData['description']['benefits'],
-                            new Requirements(
-                                $offerData['description']['requirements']['description'],
-                                ...\array_map(
-                                    fn (array $skillData) => new Skill(
-                                        $skillData['skill'],
-                                        (bool) $skillData['required'],
-                                        $skillData['experience'],
-                                    ),
-                                    $offerData['description']['requirements']['skills']
-                                )
-                            )
-                        ),
-                        new Contact($offerData['contact']['email'], $offerData['contact']['name'], $offerData['contact']['phone']),
-                    ),
+                    $this->createCommandOffer($offerData, $location),
                     $offerData['offer_pdf'] ? $offerData['offer_pdf']->getPathname() : null
                 ));
 
@@ -203,7 +164,6 @@ final class OfferController extends AbstractController
 
                 return $this->redirectToRoute('offer_success', ['specSlug' => $specSlug, 'offer-slug' => $offer->slug()]);
             } catch (Exception $exception) {
-                // TODO: Show some user friendly error message in UI.
                 throw $exception;
             }
         }
@@ -222,6 +182,68 @@ final class OfferController extends AbstractController
         ]);
     }
 
+    public function editAction(string $specSlug, Request $request) : Response
+    {
+        if ($this->itoffers->offers()->featureQuery()->isDisabled(PostNewOffersFeature::NAME)) {
+            return $this->render('@offers/offer/posting_disabled.html.twig');
+        }
+
+        if (!$request->getSession()->has(SecurityController::USER_SESSION_KEY)) {
+            $this->logger->debug('Not authenticated, redirecting to facebook login.');
+
+            $this->redirectAfterLogin($request->getSession(), 'offer_new', ['specSlug' => $specSlug]);
+
+            return $this->redirectToRoute('login');
+        }
+
+        $userId = $request->getSession()->get(SecurityController::USER_SESSION_KEY);
+
+        if (!$specialization = $this->itoffers->offers()->specializationQuery()->findBySlug($specSlug)) {
+            throw $this->createNotFoundException();
+        }
+
+        if (!$request->query->has('offer-slug')) {
+            throw $this->createNotFoundException();
+        }
+
+        try {
+            $offerData = (new OfferToForm($offerSlug = $request->query->get('offer-slug'), $userId))($this->itoffers->offers());
+        } catch (AccessDeniedException $accessDeniedException) {
+            return new Response($accessDeniedException->getMessage(), 403);
+        }
+        $offer = $this->itoffers->offers()->offerQuery()->findBySlug($offerSlug);
+
+        $form = $this->createForm(OfferType::class, $offerData);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $offerData = $form->getData();
+
+            try {
+                $location = $this->convertOfferDataToLocation($offerData);
+
+                $this->itoffers->offers()->handle(new UpdateOffer(
+                    $offer->id()->toString(),
+                    $offerData['locale'],
+                    $userId,
+                    $this->createCommandOffer($offerData, $location),
+                    $offerData['offer_pdf'] ? $offerData['offer_pdf']->getPathname() : null
+                ));
+
+                return $this->redirectToRoute('offer_updated', ['specSlug' => $specSlug, 'offer-slug' => $offer->slug()]);
+            } catch (Exception $exception) {
+                throw $exception;
+            }
+        }
+
+        return $this->render('@offers/offer/edit.html.twig', [
+            'specialization' => $specialization,
+            'form' => $form->createView(),
+            'offer' => $offer,
+        ]);
+    }
+
     public function successAction(Request $request, string $specSlug) : Response
     {
         $offer = $this->itoffers->offers()->offerQuery()->findBySlug($request->query->get('offer-slug'));
@@ -237,6 +259,26 @@ final class OfferController extends AbstractController
         }
 
         return $this->render('@offers/offer/success.html.twig', [
+            'specialization' => $specSlug,
+            'offer' => $offer,
+        ]);
+    }
+
+    public function updatedAction(Request $request, string $specSlug) : Response
+    {
+        $offer = $this->itoffers->offers()->offerQuery()->findBySlug($request->query->get('offer-slug'));
+
+        if (!$offer) {
+            throw $this->createNotFoundException();
+        }
+
+        $specSlug = $this->itoffers->offers()->specializationQuery()->findBySlug($specSlug);
+
+        if (!$specSlug) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('@offers/offer/offer_updated.html.twig', [
             'specialization' => $specSlug,
             'offer' => $offer,
         ]);
@@ -350,5 +392,53 @@ final class OfferController extends AbstractController
         $response->setContent(\file_get_contents($thumbnailPath));
 
         return $response;
+    }
+
+    private function convertOfferDataToLocation(array $offerFormData) : Location
+    {
+        switch ($offerFormData['location']['type']) {
+            case 1:
+            case 2:
+                return new Location(
+                    true,
+                    $offerFormData['location']['country'],
+                    $offerFormData['location']['city'],
+                    $offerFormData['location']['address'],
+                    new LatLng((float)$offerFormData['location']['lat'], (float)$offerFormData['location']['lng'])
+                );
+
+                break;
+            default:
+                return new Location(true);
+        }
+    }
+
+    private function createCommandOffer(array $offerFormData, Location $location) : Offer
+    {
+        return new Offer(
+            new Company($offerFormData['company']['name'], $offerFormData['company']['url'], $offerFormData['company']['description']),
+            new Position((int)$offerFormData['position']['seniorityLevel'], $offerFormData['position']['name']),
+            $location,
+            (null === $offerFormData['salary']['min'] && null === $offerFormData['salary']['max'])
+                ? null
+                : new Salary($offerFormData['salary']['min'], $offerFormData['salary']['max'], $offerFormData['salary']['currency'], (bool)$offerFormData['salary']['net'], $offerFormData['salary']['period_type']),
+            new Contract($offerFormData['contract']),
+            new Description(
+                $offerFormData['description']['technology_stack'],
+                $offerFormData['description']['benefits'],
+                new Requirements(
+                    $offerFormData['description']['requirements']['description'],
+                    ...\array_map(
+                        fn (array $skillData) => new Skill(
+                            $skillData['skill'],
+                            (bool)$skillData['required'],
+                            $skillData['experience'],
+                        ),
+                        $offerFormData['description']['requirements']['skills']
+                    )
+                )
+            ),
+            new Contact($offerFormData['contact']['email'], $offerFormData['contact']['name'], $offerFormData['contact']['phone']),
+        );
     }
 }

@@ -52,7 +52,7 @@ final class ExtraOfferTest extends TestCase
     {
         $offer = OfferMother::random();
         $extraOffer = new ExtraOffer(
-            $offer->getUserId(),
+            $offer->userId(),
             $expiresIn = new \DateInterval("P1D"),
             $calendar = new CalendarStub()
         );

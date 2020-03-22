@@ -57,7 +57,7 @@ class OfferAutoRenew
     {
         Assertion::null($this->offerId, "Offer renew already assigned");
         Assertion::greaterThan($offerLifetimeDays, 0, "Offer lifetime days can't be negative");
-        Assertion::true($offer->getUserId()->equals(Uuid::fromString($this->userId)), 'Offer doesn\'t belong to auto renew owner.');
+        Assertion::true($offer->userId()->equals(Uuid::fromString($this->userId)), 'Offer doesn\'t belong to auto renew owner.');
         Assertion::true($this->expiresAt >= $calendar->currentTime(), "Offer renew already expired");
         Assertion::lessThan($offerAutoRenews->countAssignedTo($offer), self::MAX_OFFER_AUTO_RENEWS, "There are already 2 auto renews assigned to that offer.");
 

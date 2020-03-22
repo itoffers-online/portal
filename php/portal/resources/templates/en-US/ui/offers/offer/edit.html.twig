@@ -1,0 +1,78 @@
+{% extends '@offers/offer/form.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid bg-dark text-white">
+        <div class="container">
+            <div class="row align-items-center pt-2 pb-2 pt-lg-5 pb-lg-5">
+                <div class="col-lg-3 d-none d-lg-flex spec-logo">
+                    {% include '@offers/specialization/_logo.html.twig' with {specialization: specialization.slug} only %}
+                </div>
+                <div class="col-lg-6 text-center">
+                    <h1 class="font-weight-light">
+                        Post
+                        <span class="text-green">{{ specialization.slug|specialization_name }}</span>
+                        Offer
+                    </h1>
+                </div>
+                <div class="col-lg-3 d-none d-lg-flex">
+                    {% if throttled and extraOffersCount <= 0 %}
+                        <small><i class="fas fa-pen-square text-danger mr-2"></i> 0 immediate offers left</small>
+                    {% else %}
+                        <small><i class="fas fa-pen-square text-green mr-2"></i> {{ offersLeft + extraOffersCount }} Offers you can post immediately</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if not form.vars.valid %}
+            <div class="container mt-4 border-bottom">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger text-center" role="alert">
+                            Your offer has errors, please scroll down and fix them before posting offer.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="container mt-4 border-bottom">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-warning text-center small text-dark">
+                        <strong>You are currently editing offer</strong><br/>
+                        <a class="btn btn-link" href="{{ url('offer', {'offerSlug' : offer.slug }) }}" target="_blank">{{ url('offer', {'offerSlug' : offer.slug }) }}</a><br/>
+                        Offer url is the only thing you can't change.<br/>
+                        <small>If you really need to generate a new offer url please  post offer once again and then remove the old one.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ parent() }}
+    </div>
+{% endblock %}
+
+
+{% block offer_social_media %}{% endblock %}
+
+{% block offer_submit %}
+    <div class="mt-4">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-10">
+                        {{ form_row(form.submit, {label: "Update", attr: {class: 'btn btn-primary btn-lg btn-block'}}) }}
+                    </div>
+                    <div class="col-md-2">
+                        {{ form_row(form.reset, {label: "Reset", attr: {class: 'btn btn-danger btn-lg btn-block'}}) }}
+                    </div>
+                </div>
+                <p class="small text-muted">
+                    We keep your work safe in your browser local storage, this means that if you accidentally refresh this page you won't lose your work, it's going to be loaded from the storage.
+                    <strong>Your work is important for us!</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

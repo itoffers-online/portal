@@ -75,7 +75,7 @@ final class OfferType extends AbstractType
     public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
-            'csrf_token_id' => 'new_offer',
+            'csrf_token_id' => 'offer',
         ]);
     }
 }

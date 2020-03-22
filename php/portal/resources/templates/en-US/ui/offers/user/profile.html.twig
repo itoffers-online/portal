@@ -28,6 +28,7 @@
                     find for you few instant offers.
                 </div>
                 {% endif %}
+                <p class="mt-4">If you have any questions please check our <a href="{{ url('faq') }}">FAQ</a> section.</p>
             </div>
             <div class="col-md-9">
                 <h2 class="mb-4">Features</h2>
@@ -186,9 +187,14 @@
                         </div>
                         <div class="col-md-4">
                             <a class="btn btn-primary btn-sm btn-block" href="{{ url('offer_new', {specSlug: offer.specializationSlug, 'offer-slug': offer.slug }) }}">post again</a>
+                            {% if offer|offer_older_than_hours(constant('ITOffers\\Offers\\Application\\Offer\\Offer::INSTANT_EDIT_TIME_HOURS')) == false %}
+                                <a class="btn btn-primary btn-sm btn-block" href="{{ url('offer_edit', {specSlug: offer.specializationSlug, 'offer-slug': offer.slug })  }}"><i class="far fa-edit"></i> edit</a>
+                            {% else %}
+                                <a class="btn btn-primary btn-sm btn-block disabled" href="#" disabled="disabled"><i class="far fa-edit"></i> edit</a>
+                            {% endif %}
                             <a class="btn btn-danger btn-sm btn-block " href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer><i class="fas fa-times"></i> remove</a>
                             {% if offer|offer_older_than(itof.old_offer_days) == false and offer|offer_auto_renews_total < 2 and offerAutoRenewsCount > 0%}
-                            <a class="btn btn-success btn-sm btn-block" href="{{ url('offer_assign_auto_renew', {offerSlug: offer.slug})  }}"><i class="fas fa-tachometer-alt text-black"></i> Add Auto Renew</a>
+                                <a class="btn btn-success btn-sm btn-block" href="{{ url('offer_assign_auto_renew', {offerSlug: offer.slug})  }}"><i class="fas fa-tachometer-alt text-black"></i> Add Auto Renew</a>
                             {% endif %}
                         </div>
                     </div>
