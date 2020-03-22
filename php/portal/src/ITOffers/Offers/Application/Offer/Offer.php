@@ -17,6 +17,7 @@ use DateTimeImmutable;
 use Hashids\Hashids;
 use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Assertion;
+use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Specialization\Specialization;
 use ITOffers\Offers\Application\User\OfferAutoRenews;
 use ITOffers\Offers\Application\User\User;
@@ -25,6 +26,8 @@ use Ramsey\Uuid\UuidInterface;
 
 class Offer
 {
+    public const INSTANT_EDIT_TIME_HOURS = 4;
+
     private string $id;
 
     private string $emailHash;
@@ -52,6 +55,8 @@ class Offer
     private Contact $contact;
 
     private ?\DateTimeImmutable $removedAt = null;
+
+    private ?DateTimeImmutable $updatedAt = null;
 
     private function __construct(
         UuidInterface $id,
@@ -117,7 +122,7 @@ class Offer
         return Uuid::fromString($this->id);
     }
 
-    public function getUserId() : UuidInterface
+    public function userId() : UuidInterface
     {
         return Uuid::fromString($this->userId);
     }
@@ -175,6 +180,37 @@ class Offer
     public function contact() : Contact
     {
         return $this->contact;
+    }
+
+    public function update(
+        User $user,
+        Locale $locale,
+        Company $company,
+        Position $position,
+        Location $location,
+        ?Salary $salary,
+        Contract $contract,
+        Description $description,
+        Contact $contact,
+        Calendar $calendar
+    ) : void {
+        if (!$user->id()->equals($this->userId())) {
+            throw new Exception("User is not allowed to update the offer");
+        }
+
+        if ($this->createdAt->modify(\sprintf('+%d hours', self::INSTANT_EDIT_TIME_HOURS)) < $calendar->currentTime()) {
+            throw new Exception("This offer can't be updated anymore");
+        }
+
+        $this->locale = $locale;
+        $this->company = $company;
+        $this->position = $position;
+        $this->location = $location;
+        $this->salary = $salary;
+        $this->contract = $contract;
+        $this->description = $description;
+        $this->contact = $contact;
+        $this->updatedAt = $calendar->currentTime();
     }
 
     public function remove(User $user, Calendar $calendar) : void

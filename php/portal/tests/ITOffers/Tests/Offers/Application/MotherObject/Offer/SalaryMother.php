@@ -18,6 +18,11 @@ use ITOffers\Offers\Application\Offer\Salary\Period;
 
 final class SalaryMother
 {
+    public static function random() : Salary
+    {
+        return new Salary(\random_int(1_000, 5_000), \random_int(5_001, 10_000), 'PLN', true, Period::perMonth());
+    }
+
     public static function netPLN(int $min, int $max) : Salary
     {
         return new Salary($min, $max, 'PLN', true, Period::perMonth());

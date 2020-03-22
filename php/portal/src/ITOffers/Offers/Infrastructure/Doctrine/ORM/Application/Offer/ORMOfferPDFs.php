@@ -16,6 +16,7 @@ namespace ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Offer;
 use Doctrine\ORM\EntityManager;
 use ITOffers\Offers\Application\Offer\OfferPDF;
 use ITOffers\Offers\Application\Offer\OfferPDFs;
+use Ramsey\Uuid\UuidInterface;
 
 final class ORMOfferPDFs implements OfferPDFs
 {
@@ -29,5 +30,14 @@ final class ORMOfferPDFs implements OfferPDFs
     public function add(OfferPDF $offerPDF) : void
     {
         $this->entityManager->persist($offerPDF);
+    }
+
+    public function removeFor(UuidInterface $offerId) : void
+    {
+        $offerPDF = $this->entityManager->getRepository(OfferPDF::class)->findOneBy(['offerId' => $offerId->toString()]);
+
+        if ($offerPDF) {
+            $this->entityManager->remove($offerPDF);
+        }
     }
 }

@@ -31,6 +31,7 @@ use ITOffers\Offers\Application\Command\Offer\AssignAutoRenewHandler;
 use ITOffers\Offers\Application\Command\Offer\PostOfferHandler;
 use ITOffers\Offers\Application\Command\Offer\RemoveOfferHandler;
 use ITOffers\Offers\Application\Command\Offer\RenewOfferHandler;
+use ITOffers\Offers\Application\Command\Offer\UpdateOfferHandler;
 use ITOffers\Offers\Application\Command\Specialization\CreateSpecializationHandler;
 use ITOffers\Offers\Application\Command\Specialization\RemoveFacebookChannelHandler;
 use ITOffers\Offers\Application\Command\Specialization\RemoveTwitterChannelHandler;
@@ -214,9 +215,16 @@ function offersFacade(
                     $throttling,
                     $ormSpecializations,
                     new ORMSlugs($entityManager),
-                    new ORMOfferPDFs($entityManager),
-                    FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG)),
+                    $ormOfferPDFs = new ORMOfferPDFs($entityManager),
+                    $fileStorage = FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG)),
                     $eventStream
+                ),
+                new UpdateOfferHandler(
+                    $calendar,
+                    $ormOffers,
+                    $ormUsers,
+                    $ormOfferPDFs,
+                    $fileStorage
                 ),
                 new RemoveOfferHandler(
                     $ormUsers,

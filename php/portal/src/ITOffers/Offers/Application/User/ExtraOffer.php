@@ -53,7 +53,7 @@ class ExtraOffer
     {
         Assertion::null($this->usedAt, "Extra offer already used");
         Assertion::true($this->expiresAt >= $calendar->currentTime(), "Extra offer expired");
-        Assertion::true($offer->getUserId()->equals($this->userId()), "Offer does not belongs to owner of extra offer");
+        Assertion::true($offer->userId()->equals($this->userId()), "Offer does not belongs to owner of extra offer");
 
         $this->usedAt = $calendar->currentTime();
         $this->offerId = $offer->id()->toString();
