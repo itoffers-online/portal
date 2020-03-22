@@ -5,6 +5,6 @@
     <embeddable name="ITOffers\Offers\Application\Offer\Company">
         <field name="name"/>
         <field name="url" length="2083"/>
-        <field name="description" length="2048"/>
+        <field name="description" type="text"/>
     </embeddable>
 </doctrine-mapping>

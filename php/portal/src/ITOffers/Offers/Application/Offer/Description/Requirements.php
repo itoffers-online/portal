@@ -27,7 +27,7 @@ final class Requirements
 
     public function __construct(string $description, Skill ...$skills)
     {
-        Assertion::betweenLength($description, 100, 2_048);
+        Assertion::betweenLength(\strip_tags($description), 100, 2_048);
 
         Assertion::count(
             \array_unique(\array_map(fn (Skill $skill) => \mb_strtolower($skill->name()), $skills)),

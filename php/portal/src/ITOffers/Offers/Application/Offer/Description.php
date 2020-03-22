@@ -26,8 +26,8 @@ final class Description
 
     public function __construct(string $technologyStack, string $benefits, Requirements $requirements)
     {
-        Assertion::betweenLength($technologyStack, 50, 2_048);
-        Assertion::betweenLength($benefits, 100, 2_048);
+        Assertion::betweenLength(\strip_tags($technologyStack), 50, 2_048);
+        Assertion::betweenLength(\strip_tags($benefits), 100, 2_048);
 
         $this->technologyStack = $technologyStack;
         $this->benefits = $benefits;

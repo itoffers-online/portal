@@ -1,5 +1,11 @@
 {% use 'bootstrap_4_layout.html.twig' %}
 
+{% block textarea_widget %}
+    {% set attr = attr | merge({class: 'd-none'}) %}
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+    <trix-editor class="mb-3" input="{{ form.vars.id }}"></trix-editor>
+{% endblock textarea_widget %}
+
 {% block form_row -%}
     {%- if compound is defined and compound -%}
         {%- set element = 'fieldset' -%}

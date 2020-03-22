@@ -1,3 +1,5 @@
+const CopyPlugin = require('copy-webpack-plugin');
+
 require('dotenv').config();
 
 module.exports = {
@@ -33,4 +35,9 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new CopyPlugin([
+            { from: './public/assets/vendor', to: __dirname + "/public/assets/dist/vendor" }
+        ]),
+    ],
 };
