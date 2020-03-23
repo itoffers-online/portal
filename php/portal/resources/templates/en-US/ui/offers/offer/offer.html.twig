@@ -193,7 +193,7 @@
                         {% endif %}
                     </div>
                     <div class="col-lg-9 col-12">
-                        <div class="row mb-4">
+                        <div class="row">
                             <div class="col-lg-6 mb-4">
                                 <h6 class="small text-gray-500">Job Type</h6>
                                 <small><i class="text-green fas fa-file-alt mr-2"></i> {{ offer.contract.type }}</small>
@@ -229,29 +229,72 @@
                         <h4 class="offer-description-headline">Requirements</h4>
                     </div>
                     <div class="col-lg-8">
+                        {% if offer.description.requirements.requiredSkills|length %}
                         <div class="row">
-                            {% if offer.description.requirements.requiredSkills|length %}
+                            <div class="col-lg-12">
+                                <h6 class="text-gray-500 small">Must have</h6>
+                            </div>
+                            {% if offer.description.requirements.requiredSkills|length > 1  %}
                                 <div class="col-lg-6">
-                                    <h6 class="text-gray-500 small">Must have</h6>
                                     <ul>
-                                        {% for skill in offer.description.requirements.requiredSkills %}
+                                        {% for skill in offer.description.requirements.requiredSkills | slice(0, offer.description.requirements.requiredSkills|length / 2) %}
                                             <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-gray-500">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
                                         {% endfor %}
                                     </ul>
                                 </div>
-                            {% endif %}
-                            {% if offer.description.requirements.niceToHaveSkills|length %}
                                 <div class="col-lg-6">
-                                    <h6 class="text-gray-500 small">Nice to have</h6>
-                                    <ul class="list-unstyled">
-                                        {% for skill in offer.description.requirements.niceToHaveSkills %}
+                                    <ul>
+                                        {% for skill in offer.description.requirements.requiredSkills | slice(offer.description.requirements.requiredSkills|length / 2) %}
                                             <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-gray-500">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
                                         {% endfor %}
                                     </ul>
                                 </div>
+                            {% else %}
+                            <div class="col-lg-12">
+                                <ul>
+                                    {% for skill in offer.description.requirements.requiredSkills %}
+                                        <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-gray-500">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                             {% endif %}
                         </div>
-                        {{ offer.description.requirements.description | striptags('<strong><em><ul><li><ol>') | raw }}
+                        {% endif %}
+                        {% if offer.description.requirements.niceToHaveSkills|length %}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h6 class="text-gray-500 small">Nice to have</h6>
+                            </div>
+                            {% if offer.description.requirements.niceToHaveSkills|length > 1 %}
+                                <div class="col-lg-6">
+                                    <ul>
+                                        {% for skill in offer.description.requirements.niceToHaveSkills | slice(0, offer.description.requirements.niceToHaveSkills|length / 2) %}
+                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-gray-500">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6">
+                                    <ul>
+                                        {% for skill in offer.description.requirements.niceToHaveSkills | slice(offer.description.requirements.niceToHaveSkills|length / 2) %}
+                                            <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-gray-500">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% else %}
+                            <div class="col-lg-12">
+                                <ul>
+                                    {% for skill in offer.description.requirements.niceToHaveSkills %}
+                                        <li>{{ skill.name }}{% if skill.experienceYears %} <span class="text-gray-500">({{ skill.experienceYears }}+ years)</span>{% endif %}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% if offer.description.requirements.requiredSkills|length or offer.description.requirements.niceToHaveSkills|length  %}
+                        <hr />
+                        {% endif %}
+                        {{ offer.description.requirements.description | striptags('<strong><em><ul><li><ol><br>') | raw }}
                     </div>
                 </div>
                 <div class="row border-bottom pt-5 pb-4">
@@ -259,7 +302,7 @@
                         <h4 class="offer-description-headline">Technology Stack</h4>
                     </div>
                     <div class="col-lg-9">
-                        {{ offer.description.technologyStack | striptags('<strong><em><ul><li><ol>') | raw }}
+                        {{ offer.description.technologyStack | striptags('<strong><em><ul><li><ol><br>') | raw }}
                     </div>
                 </div>
                 <div class="row border-bottom pt-5 pb-4">
@@ -267,7 +310,7 @@
                         <h4 class="offer-description-headline">Benefits</h4>
                     </div>
                     <div class="col-lg-9">
-                        {{ offer.description.benefits | striptags('<strong><em><ul><li><ol>') | raw }}
+                        {{ offer.description.benefits | striptags('<strong><em><ul><li><ol><br>') | raw }}
                     </div>
                 </div>
                 <div class="row pt-5 pb-4">
@@ -288,7 +331,7 @@
                         <div class="row {% if offer.location.partiallyRemote or offer.location.atOffice %}border-bottom{% endif %}">
                             <div class="col-lg-12 pb-4 pt-4">
                                 <section>
-                                {{ offer.company.description | striptags('<strong><em><ul><li><ol>') | raw }}
+                                {{ offer.company.description | striptags('<strong><em><ul><li><ol><br>') | raw }}
                                 </section>
                             </div>
                         </div>

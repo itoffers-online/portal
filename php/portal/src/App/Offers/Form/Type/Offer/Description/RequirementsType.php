@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Form\Type\Offer\Description;
 
+use App\Offers\Validator\Constraints\HtmlTextLength;
 use App\Offers\Validator\Constraints\NotContainsEmoji;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -20,7 +21,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Count;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 final class RequirementsType extends AbstractType
@@ -55,7 +55,7 @@ final class RequirementsType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => false,
                 'constraints' => [
-                    new Length(['min' => 100, 'max' => 2_048]),
+                    new HtmlTextLength(['min' => 20, 'max' => 2_048]),
                     new NotContainsEmoji(),
                 ],
             ])

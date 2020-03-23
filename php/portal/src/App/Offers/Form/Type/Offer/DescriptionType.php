@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace App\Offers\Form\Type\Offer;
 
 use App\Offers\Form\Type\Offer\Description\RequirementsType;
+use App\Offers\Validator\Constraints\HtmlTextLength;
 use App\Offers\Validator\Constraints\NotContainsEmoji;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Length;
 
 final class DescriptionType extends AbstractType
 {
@@ -30,13 +30,13 @@ final class DescriptionType extends AbstractType
             ])
             ->add('benefits', TextareaType::class, [
                 'constraints' => [
-                    new Length(['min' => 100, 'max' => 2_048]),
+                    new HtmlTextLength(['min' => 20, 'max' => 2_048]),
                     new NotContainsEmoji(),
                 ],
             ])
             ->add('technology_stack', TextareaType::class, [
                 'constraints' => [
-                    new Length(['min' => 100, 'max' => 2_048]),
+                    new HtmlTextLength(['min' => 50, 'max' => 2_048]),
                     new NotContainsEmoji(),
                 ],
             ])

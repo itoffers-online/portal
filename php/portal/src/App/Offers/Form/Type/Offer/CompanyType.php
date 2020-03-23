@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Form\Type\Offer;
 
+use App\Offers\Validator\Constraints\HtmlTextLength;
 use App\Offers\Validator\Constraints\NotContainsEmoji;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -42,7 +43,7 @@ final class CompanyType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'constraints' => [
-                    new Length(['min' => 10, 'max' => 2_048]),
+                    new HtmlTextLength(['min' => 20, 'max' => 2_048]),
                     new NotContainsEmoji(),
                 ],
             ])
