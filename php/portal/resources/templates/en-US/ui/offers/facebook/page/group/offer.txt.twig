@@ -50,8 +50,10 @@ Address: [{{ offer.location.countryCode|offer_location_country_flag }}, {{ offer
 {% endfor %}
 {% endif %}
 
+{% if offer.description.technologyStack|length %}
 **Technology Stack**:
 {{ offer.description.technologyStack|striptags|raw }}
+{% endif %}
 
 **Benefits**:
 {{ offer.description.benefits|striptags|raw }}

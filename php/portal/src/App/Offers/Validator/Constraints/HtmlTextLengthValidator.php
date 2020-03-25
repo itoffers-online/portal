@@ -20,6 +20,6 @@ final class HtmlTextLengthValidator extends LengthValidator
 {
     public function validate($value, Constraint $constraint) : void
     {
-        parent::validate(\strip_tags($value), $constraint);
+        parent::validate(\strip_tags((string) $value), $constraint);
     }
 }

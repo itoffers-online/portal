@@ -322,6 +322,7 @@
                         {{ offer.description.requirements.description | striptags('<strong><em><ul><li><ol><br>') | raw }}
                     </div>
                 </div>
+                {% if offer.description.technologyStack|length %}
                 <div class="row border-bottom pt-5 pb-4">
                     <div class="col-lg-3">
                         <h4 class="offer-description-headline">Technology Stack</h4>
@@ -330,6 +331,7 @@
                         {{ offer.description.technologyStack | striptags('<strong><em><ul><li><ol><br>') | raw }}
                     </div>
                 </div>
+                {% endif %}
                 <div class="row border-bottom pt-5 pb-4">
                     <div class="col-lg-3">
                         <h4 class="offer-description-headline">Benefits</h4>

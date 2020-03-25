@@ -35,8 +35,9 @@ final class DescriptionType extends AbstractType
                 ],
             ])
             ->add('technology_stack', TextareaType::class, [
+                'required' => false,
                 'constraints' => [
-                    new HtmlTextLength(['min' => 50, 'max' => 2_048]),
+                    new HtmlTextLength(['max' => 2_048]),
                     new NotContainsEmoji(),
                 ],
             ])
