@@ -447,7 +447,7 @@ final class OfferController extends AbstractController
                 : new Salary($offerFormData['salary']['min'], $offerFormData['salary']['max'], $offerFormData['salary']['currency'], (bool)$offerFormData['salary']['net'], $offerFormData['salary']['period_type']),
             new Contract($offerFormData['contract']),
             new Description(
-                $offerFormData['description']['technology_stack'],
+                (string) $offerFormData['description']['technology_stack'],
                 $offerFormData['description']['benefits'],
                 new Requirements(
                     $offerFormData['description']['requirements']['description'],
