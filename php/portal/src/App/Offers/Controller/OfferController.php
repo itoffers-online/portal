@@ -183,6 +183,7 @@ final class OfferController extends AbstractController
             'previousOfferData' => $previousOfferData,
             'postOfferAtFacebookGroupEnabled' => $this->itoffers->offers()->featureQuery()->isEnabled(PostOfferAtFacebookGroupFeature::NAME),
             'tweetAboutOfferEnabled' => $this->itoffers->offers()->featureQuery()->isEnabled(TweetAboutOfferFeature::NAME),
+            'newOffer' => true,
         ]);
     }
 
@@ -247,6 +248,7 @@ final class OfferController extends AbstractController
             'specialization' => $specialization,
             'form' => $form->createView(),
             'offer' => $offer,
+            'editOffer' => true,
         ]);
     }
 

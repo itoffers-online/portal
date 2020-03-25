@@ -367,17 +367,24 @@
 
     $(function () {
         {% if previousOfferData %}
-        $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
+            $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
+            $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").saveMyForm();
         {% endif %}
-        $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").saveMyForm();
+
+        {% if newOffer %}
+            $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").saveMyForm();
+        {% endif %}
+
         $("#{{ form.vars.id ~ '-' ~ specialization.slug }}").submit(function() {
             $(window).unbind('beforeunload');
         });
     });
 
-    $('#{{ form.reset.vars.id }}').on('click', function() {
-        $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
-    });
+    {% if newOffer %}
+        $('#{{ form.reset.vars.id }}').on('click', function() {
+            $.saveMyForm.clearStorage('{{ form.vars.id ~ '-' ~ specialization.slug }}');
+        });
+    {% endif %}
 
     $('input[type="file"]').change(function(e){
         var fileName = e.target.files[0].name;
