@@ -138,7 +138,7 @@ final class PostOffer extends Command
                             ...$this->generateSkills()
                         )
                     ),
-                    new Contact(
+                    Contact::recruiter(
                         'contact@itoffers.online',
                         'Hire Manager',
                         '+1 333333333'

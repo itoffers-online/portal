@@ -42,6 +42,11 @@ final class ReCaptchaController extends AbstractController
             ->verify($request->request->get('google-recaptcha-token'), $request->getClientIp());
 
         $offer = $this->itoffers->offers()->offerQuery()->findById($request->request->get('offer-id'));
+
+        if ($offer->contact()->isExternalSource()) {
+            return new JsonResponse(['url' => $offer->contact()->url()]);
+        }
+
         $email = sprintf($this->parameterBag->get('apply_email_template'), $offer->emailHash());
 
         if ($resp->isSuccess()) {

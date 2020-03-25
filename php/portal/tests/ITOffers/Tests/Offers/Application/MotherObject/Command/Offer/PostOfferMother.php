@@ -54,7 +54,7 @@ final class PostOfferMother
                         new Skill('php', true, 5)
                     )
                 ),
-                new Contact(
+                Contact::recruiter(
                     $faker->email,
                     $faker->name,
                     '+1 333333333'
@@ -86,7 +86,7 @@ final class PostOfferMother
                         new Skill('php', true, 5)
                     )
                 ),
-                new Contact(
+                Contact::recruiter(
                     $faker->email,
                     $faker->name,
                     '+1 333333333'
@@ -119,7 +119,7 @@ final class PostOfferMother
                         new Skill('php', true, 5)
                     )
                 ),
-                new Contact(
+                Contact::recruiter(
                     $faker->email,
                     $faker->name,
                     '+1 333333333'
@@ -151,7 +151,7 @@ final class PostOfferMother
                         new Skill('php', true, 5)
                     )
                 ),
-                new Contact(
+                Contact::recruiter(
                     $faker->email,
                     $faker->name,
                     '+1 333333333'
@@ -183,7 +183,7 @@ final class PostOfferMother
                         new Skill('php', true, 5)
                     )
                 ),
-                new Contact(
+                Contact::recruiter(
                     $faker->email,
                     $faker->name,
                     '+1 333333333'
@@ -215,7 +215,7 @@ final class PostOfferMother
                         new Skill('php', true, 5)
                     )
                 ),
-                new Contact(
+                Contact::recruiter(
                     $faker->email,
                     $faker->name,
                     '+1 333333333'
@@ -247,7 +247,7 @@ final class PostOfferMother
                         new Skill('php', true, 5)
                     )
                 ),
-                new Contact(
+                Contact::recruiter(
                     $faker->email,
                     $faker->name,
                     '+1 333333333'

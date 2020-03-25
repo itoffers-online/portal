@@ -22,7 +22,7 @@ final class ContactMother
     {
         $faker = Factory::create();
 
-        return new Contact(
+        return Contact::recruiter(
             $faker->email,
             $faker->name,
             '+1 333333333'

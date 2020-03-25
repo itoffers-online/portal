@@ -111,11 +111,13 @@ final class UpdateOfferHandler implements Handler
                     )
                 )
             ),
-            new Contact(
-                $command->offer()->contact()->email(),
-                $command->offer()->contact()->name(),
-                $command->offer()->contact()->phone()
-            ),
+            $command->offer()->contact()->url()
+                ? Contact::externalSource($command->offer()->contact()->url())
+                : Contact::recruiter(
+                    $command->offer()->contact()->email(),
+                    $command->offer()->contact()->name(),
+                    $command->offer()->contact()->phone()
+                ),
             $this->calendar
         );
 

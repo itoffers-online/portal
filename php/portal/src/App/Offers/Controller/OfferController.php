@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace App\Offers\Controller;
 
 use App\Offers\Controller\Offer\OfferToForm;
+use App\Offers\Form\Type\Offer\ContactType;
+use App\Offers\Form\Type\Offer\LocationType;
 use App\Offers\Form\Type\OfferType;
 use Facebook\Facebook;
 use ITOffers\ITOffersOnline;
@@ -125,14 +127,16 @@ final class OfferController extends AbstractController
             $offerData = $form->getData();
 
             try {
-                $location = $this->convertOfferDataToLocation($offerData);
-
                 $this->itoffers->offers()->handle(new PostOffer(
                     $offerId = Uuid::uuid4()->toString(),
                     $specSlug,
                     $offerData['locale'],
                     $userId,
-                    $this->createCommandOffer($offerData, $location),
+                    $this->createCommandOffer(
+                        $offerData,
+                        $this->convertOfferDataToLocation($offerData),
+                        $this->convertOfferDataToContact($offerData)
+                    ),
                     $offerData['offer_pdf'] ? $offerData['offer_pdf']->getPathname() : null
                 ));
 
@@ -221,13 +225,15 @@ final class OfferController extends AbstractController
             $offerData = $form->getData();
 
             try {
-                $location = $this->convertOfferDataToLocation($offerData);
-
                 $this->itoffers->offers()->handle(new UpdateOffer(
                     $offer->id()->toString(),
                     $offerData['locale'],
                     $userId,
-                    $this->createCommandOffer($offerData, $location),
+                    $this->createCommandOffer(
+                        $offerData,
+                        $this->convertOfferDataToLocation($offerData),
+                        $this->convertOfferDataToContact($offerData)
+                    ),
                     $offerData['offer_pdf'] ? $offerData['offer_pdf']->getPathname() : null
                 ));
 
@@ -370,6 +376,11 @@ final class OfferController extends AbstractController
     public function applyAction(Request $request) : Response
     {
         $offer = $this->itoffers->offers()->offerQuery()->findById($request->request->get('offer-id'));
+
+        if ($offer->contact()->isExternalSource()) {
+            return new JsonResponse(['url' => $offer->contact()->url()]);
+        }
+
         $email = sprintf($this->parameterBag->get('apply_email_template'), $offer->emailHash());
 
         return new JsonResponse(['email' => $email]);
@@ -397,8 +408,8 @@ final class OfferController extends AbstractController
     private function convertOfferDataToLocation(array $offerFormData) : Location
     {
         switch ($offerFormData['location']['type']) {
-            case 1:
-            case 2:
+            case LocationType::LOCATION_PARTIALLY_REMOTE:
+            case LocationType::LOCATION_AT_OFFICE:
                 return new Location(
                     true,
                     $offerFormData['location']['country'],
@@ -411,7 +422,19 @@ final class OfferController extends AbstractController
         }
     }
 
-    private function createCommandOffer(array $offerFormData, Location $location) : Offer
+    private function convertOfferDataToContact(array $offerFormData) : Contact
+    {
+        switch ($offerFormData['contact']['type']) {
+            case ContactType::RECRUITER_TYPE:
+                return Contact::recruiter($offerFormData['contact']['email'], $offerFormData['contact']['name'], $offerFormData['contact']['phone']);
+            case ContactType::EXTERNAL_SOURCE_TYPE:
+                return Contact::externalSource($offerFormData['contact']['url']);
+            default:
+                throw new \RuntimeException("Unknown contact type");
+        }
+    }
+
+    private function createCommandOffer(array $offerFormData, Location $location, Contact $contact) : Offer
     {
         return new Offer(
             new Company($offerFormData['company']['name'], $offerFormData['company']['url'], $offerFormData['company']['description']),
@@ -436,7 +459,7 @@ final class OfferController extends AbstractController
                     )
                 )
             ),
-            new Contact($offerFormData['contact']['email'], $offerFormData['contact']['name'], $offerFormData['contact']['phone']),
+            $contact
         );
     }
 }

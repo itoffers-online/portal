@@ -72,7 +72,7 @@ final class OfferMother
                     )
                 ),
             ),
-            new Contact(
+            Contact::recruiter(
                 $faker->email,
                 $faker->name,
                 '+1 333333333'

@@ -232,7 +232,12 @@
             <h3 class="text-gray-500">Contact</h3>
         </div>
         <div class="col-md-10">
-            <div class="row">
+            <div class="row mb-4">
+                <div class="col"><a id="switch-contact-recruiter" class="btn btn-block btn-outline-primary active" href="#">Recruiter</a></div>
+                <div class="col"><a id="switch-contact-external-source" class="btn btn-block btn-outline-primary" href="#">External Source</a></div>
+                {{ form_row(form.contact.type, {attr:{class:"d-none"}, label: false}) }}
+            </div>
+            <div class="row" id="contact-recruiter">
                 <div class="col-md-6">
                     {{ form_row(form.contact.name, {label: "Recruiter name"}) }}
                 </div>
@@ -241,6 +246,14 @@
                 </div>
                 <div class="col-md-12">
                     {{ form_row(form.contact.phone, {label: "Phone number (optional)"}) }}
+                </div>
+            </div>
+            <div class="row d-none" id="contact-external-source">
+                <div class="col-md-12">
+                    <div class="alert alert-warning text-center text-dark small" role="alert">
+                        In order to apply the candidate will need to visit url provided below.
+                    </div>
+                    {{ form_row(form.contact.url, {label: "Offer url"}) }}
                 </div>
             </div>
         </div>
@@ -503,6 +516,50 @@
     });
     $('#{{ form.location.type.vars.id }}_2').on('change', function() {
         atOffice();
+    });
+
+    function contactRecruiter() {
+        $('#switch-contact-recruiter').addClass('active');
+        $('#switch-contact-external-source').removeClass('active');
+        $('#{{ form.contact.type.vars.id }}_0').prop('checked', true);
+        $('#{{ form.contact.type.vars.id }}_1').prop('checked', false);
+
+        $('#contact-recruiter').removeClass('d-none');
+        $('#contact-external-source').addClass('d-none');
+    }
+
+    function contactExternalSource() {
+        $('#switch-contact-recruiter').removeClass('active');
+        $('#switch-contact-external-source').addClass('active');
+        $('#{{ form.contact.type.vars.id }}_0').prop('checked', false);
+        $('#{{ form.contact.type.vars.id }}_1').prop('checked', true);
+
+        $('#contact-recruiter').addClass('d-none');
+        $('#contact-external-source').removeClass('d-none');
+    }
+
+    $('#switch-contact-recruiter').click((e => {
+        e.preventDefault();
+        contactRecruiter();
+    }));
+
+    $('#switch-contact-external-source').click((e => {
+        e.preventDefault();
+
+        contactExternalSource();
+    }));
+
+    {% if form.contact.type.vars.value == 0 %}
+        contactRecruiter();
+    {% else %}
+        contactExternalSource();
+    {% endif %}
+
+    $('#{{ form.contact.type.vars.id }}_0').on('change', function() {
+        contactRecruiter();
+    });
+    $('#{{ form.location.type.vars.id }}_1').on('change', function() {
+        contactExternalSource();
     });
 
     function initMap() {
