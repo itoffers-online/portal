@@ -15,25 +15,48 @@ namespace ITOffers\Offers\Application\Query\Offer\Model\Offer;
 
 final class Contact
 {
-    private string $email;
+    private ?string $email = null;
 
-    private string $name;
+    private ?string $name = null;
 
-    private ?string $phone;
+    private ?string $phone = null;
 
-    public function __construct(string $email, string $name, ?string $phone = null)
+    private ?string $url = null;
+
+    public function __construct()
     {
-        $this->email = $email;
-        $this->name = $name;
-        $this->phone = $phone;
     }
 
-    public function email() : string
+    public static function recruiter(string $email, string $name, ?string $phone = null) : self
+    {
+        $contact = new self();
+
+        $contact->email = $email;
+        $contact->name = $name;
+        $contact->phone = $phone;
+
+        return $contact;
+    }
+
+    public static function externalSource(string $url) : self
+    {
+        $contact = new self();
+        $contact->url = $url;
+
+        return $contact;
+    }
+
+    public function url() : ?string
+    {
+        return $this->url;
+    }
+
+    public function email() : ?string
     {
         return $this->email;
     }
 
-    public function name() : string
+    public function name() : ?string
     {
         return $this->name;
     }
@@ -41,5 +64,15 @@ final class Contact
     public function phone() : ?string
     {
         return $this->phone;
+    }
+
+    public function isRecruiter() : bool
+    {
+        return $this->email !== null;
+    }
+
+    public function isExternalSource() : bool
+    {
+        return $this->url !== null;
     }
 }

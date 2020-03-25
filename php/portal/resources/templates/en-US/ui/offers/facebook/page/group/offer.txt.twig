@@ -57,5 +57,3 @@ Address: [{{ offer.location.countryCode|offer_location_country_flag }}, {{ offer
 {{ offer.description.benefits|striptags|raw }}
 
 **[Apply]({{ url('offer', {'offerSlug': offer.slug}) }})**
-
-{{ offer.contact.name|striptags|raw }}

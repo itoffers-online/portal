@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace ITOffers\Offers\Application\Command\Offer\Offer;
+namespace ITOffers\Notifications\Application\Offer\Offer;
 
 final class Contact
 {
@@ -19,21 +19,17 @@ final class Contact
 
     private ?string $name = null;
 
-    private ?string $phone = null;
-
     private ?string $url = null;
 
-    public function __construct()
+    private function __construct()
     {
     }
 
-    public static function recruiter(string $email, string $name, ?string $phone = null) : self
+    public static function recruiter(string $email, string $name) : self
     {
         $contact = new self();
-
         $contact->email = $email;
         $contact->name = $name;
-        $contact->phone = $phone;
 
         return $contact;
     }
@@ -46,23 +42,23 @@ final class Contact
         return $contact;
     }
 
-    public function url() : ?string
-    {
-        return $this->url;
-    }
-
-    public function email() : ?string
+    public function email() : string
     {
         return $this->email;
     }
 
-    public function name() : ?string
+    public function name() : string
     {
         return $this->name;
     }
 
-    public function phone() : ?string
+    public function isRecruiter() : bool
     {
-        return $this->phone;
+        return $this->email !== null;
+    }
+
+    public function isExternalSource() : bool
+    {
+        return $this->url !== null;
     }
 }

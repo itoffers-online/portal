@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Offers\Functional\Web;
 
+use App\Offers\Form\Type\Offer\ContactType;
 use App\Tests\Functional\Web\WebTestCase;
 use Faker\Factory;
 use ITOffers\Config;
@@ -48,7 +49,7 @@ final class OfferTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('a[data-post-offer]')->count());
     }
 
-    public function test_success_page_after_posting_offer() : void
+    public function test_success_page_after_posting_offer_as_a_recruiter() : void
     {
         $user = $this->offersContext->createUser();
 
@@ -83,9 +84,63 @@ final class OfferTest extends WebTestCase
             'offer[description][requirements][description]' => $faker->text(1_024),
             'offer[description][benefits]' => $faker->text(1_024),
             'offer[description][technology_stack]' => $faker->text(1_024),
+            'offer[contact][type]' => ContactType::RECRUITER_TYPE,
             'offer[contact][email]' => $faker->email,
             'offer[contact][name]' => $faker->name,
             'offer[contact][phone]' => '+12123123123',
+            'offer[_token]' => $client->getContainer()->get('security.csrf.token_manager')->getToken('offer'),
+        ]);
+
+        $client->submit($form);
+
+        $crawler = $client->followRedirect();
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), $client->getResponse()->getContent());
+        $this->assertEquals(1, $crawler->filter('.alert-success')->count());
+
+        $this->assertSAme(
+            1,
+            $this->offersContext->module()->offerQuery()->count(OfferFilter::all())
+        );
+    }
+
+    public function test_success_page_after_posting_offer_from_external_source() : void
+    {
+        $user = $this->offersContext->createUser();
+
+        $client = static::createClient();
+        $this->authenticate($client, $user);
+
+        $crawler = $client->request(
+            'GET',
+            $client->getContainer()->get('router')->generate('offer_new', ['specSlug' => $this->specialization])
+        );
+
+        $faker = Factory::create();
+        $form = $crawler->filter('form[name="offer"]')->form([
+            'offer[locale]' => 'en_US',
+            'offer[company][name]' => 'Company name',
+            'offer[company][url]' => 'http://company.com',
+            'offer[company][description]' => $faker->text(512),
+            'offer[position][seniorityLevel]' => \random_int(0, 4),
+            'offer[position][name]' => 'Software Developer',
+            'offer[salary][min]' => 1_000,
+            'offer[salary][max]' => 5_000,
+            'offer[salary][currency]' => 'USD',
+            'offer[salary][net]' => 1,
+            'offer[salary][period_type]' => Salary::PERIOD_TYPE_MONTH,
+            'offer[contract]' => 'Contract (B2B)',
+            'offer[location][type]' => "1",
+            'offer[location][address]' => 'Kraków, Plac Szczepański 15',
+            'offer[location][country]' => 'PL',
+            'offer[location][city]' => 'Cracow',
+            'offer[location][lat]' => '50.06212',
+            'offer[location][lng]' => '19.9353153',
+            'offer[description][requirements][description]' => $faker->text(1_024),
+            'offer[description][benefits]' => $faker->text(1_024),
+            'offer[description][technology_stack]' => $faker->text(1_024),
+            'offer[contact][type]' => ContactType::EXTERNAL_SOURCE_TYPE,
+            'offer[contact][url]' => $faker->url,
             'offer[_token]' => $client->getContainer()->get('security.csrf.token_manager')->getToken('offer'),
         ]);
 

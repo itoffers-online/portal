@@ -131,7 +131,11 @@
                         <div class="col-md-4">
                         </div>
                         <div class="col-md-4">
-                            Received applications: {{ offer.applicationsCount }}
+                            {% if offer.contact.isExternalSource %}
+                                <a href="{{ offer.contact.url }}" target="_blank">External Source</a>
+                            {% else %}
+                                Received applications: {{ offer.applicationsCount }}
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row mb-2">

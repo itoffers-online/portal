@@ -51,7 +51,7 @@
                 'theme' : 'light',
                 'callback' : function(token) {
                     $('#google-recaptcha').hide();
-
+                    $('#job-apply-info').removeClass('d-none');
                     $.post({
                         url: "{{ url('recaptcha_verify') }}",
                         data: {
@@ -59,8 +59,14 @@
                             'offer-id': '{{ offer.id }}'
                         }
                     }).then(function(response) {
-                        $('#job-apply-email').html('<a target="_blank" href="mailto:' + response.email + '">' + response.email + '</a>');
-                        $('#job-apply-info').removeClass('d-none');
+                        if (response.email) {
+                            $('#job-apply-info').html('<p>Please send you resume on address: </p> <a target="_blank" href="mailto:' + response.email + '">' + response.email + '</a>');
+
+                        }
+
+                        if (response.url) {
+                            $('#job-apply-info').html('<p>Click the button to apply: </p> <a class="btn btn-primary btn-small" target="_blank" href="' + response.url + '">Apply Here</a>');
+                        }
                     }).catch(function() {
                         grecaptcha.reset(recaptcha);
                         $('#google-recaptcha').show();
@@ -74,15 +80,34 @@
 
             $(this).hide();
 
-            $.post({
-                url: "{{ url('offer_apply') }}",
-                data: {
-                    'offer-id': '{{ offer.id }}'
+            var recaptcha = grecaptcha.render('google-recaptcha-mobile', {
+                'sitekey' : '{{ google.recaptcha.key }}',
+                'theme' : 'light',
+                'callback' : function(token) {
+                    $('#google-recaptcha-mobile').hide();
+
+                    $('#job-apply-info-mobile').removeClass('d-none');
+
+                    $.post({
+                        url: "{{ url('recaptcha_verify') }}",
+                        data: {
+                            'google-recaptcha-token': token,
+                            'offer-id': '{{ offer.id }}'
+                        }
+                    }).then(function(response) {
+                        if (response.email) {
+                            $('#job-apply-email-mobile').html('<div class="col-12"> <p>Please send you resume on address: </p> <a target="_blank" href="mailto:' + response.email + '">' + response.email + '</a> </div>');
+                            $('#job-apply-mobile').addClass('d-none');
+                        }
+
+                        if (response.url) {
+                            $('#job-apply-info-mobile').html('<div class="col-12"> <p>Click the button to apply: </p> <a class="btn btn-primary btn-small" target="_blank" href="' + response.url + '">Apply Here</a> </div>');
+                        }
+                    }).catch(function() {
+                        grecaptcha.reset(recaptcha);
+                        $('#google-recaptcha-mobile').show();
+                    });
                 }
-            }).then(function(response) {
-                $('#job-apply-email-mobile').html('<a target="_blank" href="mailto:' + response.email + '">' + response.email + '</a>');
-                $('#job-apply-mobile').addClass('d-none')
-                $('#job-apply-info-mobile').removeClass('d-none');
             });
         });
 
@@ -367,8 +392,7 @@
 
                         <section class="text-center mt-5">
                             <div id="job-apply-info" class="d-none">
-                                <p>Please send you resume on address: </p>
-                                <div id="job-apply-email"></div>
+                                Loading...
                             </div>
                             <section id="google-recaptcha"></section>
                             <button class="btn btn-primary btn-block btn-lg p-3" id="job-apply">Apply</button>
@@ -422,7 +446,10 @@
     </div>
 </div>
 <div class="fixed-bottom d-md-none bg-light p-4">
-    <div class="row align-content-center" id="job-apply-mobile">
+    <div class="row align-content-center" id="job-apply-mobile-info">
+        <div class="col-12">
+            <section id="google-recaptcha-mobile"></section>
+        </div>
         <div class="col-6">
             {% if offer.salary %}
                 <strong>{{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer_short }} - {{ offer.salary.max|offer_salary_integer_short }}</strong>
@@ -433,10 +460,7 @@
         </div>
     </div>
     <div class="row d-none text-center" id="job-apply-info-mobile">
-        <div class="col-12">
-            <p>Please send you resume on address: </p>
-            <div id="job-apply-email-mobile"></div>
-        </div>
+
     </div>
 </div>
 {% endblock %}

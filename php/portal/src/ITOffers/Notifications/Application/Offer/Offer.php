@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace ITOffers\Notifications\Application\Offer;
 
+use ITOffers\Notifications\Application\Offer\Offer\Contact;
 use Ramsey\Uuid\UuidInterface;
 
 final class Offer
 {
     private UuidInterface $id;
-
-    private string $recruiterEmail;
-
-    private string $recruiterName;
 
     private string $offerSlug;
 
@@ -35,41 +32,31 @@ final class Offer
 
     private string $companyUrl;
 
+    private Contact $contact;
+
     public function __construct(
         UuidInterface $id,
-        string $recruiterEmail,
-        string $recruiterName,
         string $offerSlug,
         string $specializationSlug,
         int $seniorityLevel,
         string $position,
         string $companyName,
-        string $companyUrl
+        string $companyUrl,
+        Contact $contact
     ) {
         $this->id = $id;
-        $this->recruiterEmail = $recruiterEmail;
-        $this->recruiterName = $recruiterName;
         $this->offerSlug = $offerSlug;
         $this->specializationSlug = $specializationSlug;
         $this->seniorityLevel = $seniorityLevel;
         $this->companyName = $companyName;
         $this->companyUrl = $companyUrl;
         $this->position = $position;
+        $this->contact = $contact;
     }
 
     public function id() : UuidInterface
     {
         return $this->id;
-    }
-
-    public function recruiterEmail() : string
-    {
-        return $this->recruiterEmail;
-    }
-
-    public function recruiterName() : string
-    {
-        return $this->recruiterName;
     }
 
     public function offerSlug() : string
@@ -100,5 +87,10 @@ final class Offer
     public function companyUrl() : string
     {
         return $this->companyUrl;
+    }
+
+    public function contact() : Contact
+    {
+        return $this->contact;
     }
 }

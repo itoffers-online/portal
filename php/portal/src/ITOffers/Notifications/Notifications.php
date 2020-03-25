@@ -82,20 +82,22 @@ final class Notifications
             case OfferPostedEvent::class:
 
                 $offer = $this->offers->getById($event->offerId());
-                $this->mailer->send(
-                    new Email(
-                        $this->emailFormatter->offerPostedSubject($offer),
-                        $this->emailFormatter->offerPostedBody($offer)
-                    ),
-                    new Sender(
-                        $this->contactEmail,
-                        $this->domain,
-                        $this->contactEmail
-                    ),
-                    new Recipients(
-                        new Recipient($offer->recruiterEmail(), $offer->recruiterName())
-                    )
-                );
+                if ($offer->contact()->isRecruiter()) {
+                    $this->mailer->send(
+                        new Email(
+                            $this->emailFormatter->offerPostedSubject($offer),
+                            $this->emailFormatter->offerPostedBody($offer)
+                        ),
+                        new Sender(
+                            $this->contactEmail,
+                            $this->domain,
+                            $this->contactEmail
+                        ),
+                        new Recipients(
+                            new Recipient($offer->contact()->email(), $offer->contact()->name())
+                        )
+                    );
+                }
 
                 break;
             case ExtraOffersAdded::class:

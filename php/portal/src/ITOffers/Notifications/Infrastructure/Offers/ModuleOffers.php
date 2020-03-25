@@ -15,6 +15,7 @@ namespace ITOffers\Notifications\Infrastructure\Offers;
 
 use ITOffers\Notifications\Application\Exception\Exception;
 use ITOffers\Notifications\Application\Offer\Offer;
+use ITOffers\Notifications\Application\Offer\Offer\Contact;
 use ITOffers\Notifications\Application\Offers;
 use ITOffers\Offers\Offers as OffersModule;
 use Ramsey\Uuid\UuidInterface;
@@ -38,14 +39,15 @@ final class ModuleOffers implements Offers
 
         return new Offer(
             $offer->id(),
-            $offer->contact()->email(),
-            $offer->contact()->name(),
             $offer->slug(),
             $offer->specializationSlug(),
             $offer->position()->seniorityLevel(),
             $offer->position()->name(),
             $offer->company()->name(),
-            $offer->company()->url()
+            $offer->company()->url(),
+            $offer->contact()->isExternalSource()
+                ? Contact::externalSource($offer->contact()->url())
+                : Contact::recruiter($offer->contact()->email(), $offer->contact()->name())
         );
     }
 }

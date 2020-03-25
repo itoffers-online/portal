@@ -326,7 +326,9 @@ final class DbalOfferQuery implements OfferQuery
             new \DateTimeImmutable($offerData['created_at']),
             new Parameters(
                 new Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),
-                new Contact($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),
+                isset($offerData['contact_url'])
+                    ? Contact::externalSource($offerData['contact_url'])
+                    : Contact::recruiter($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),
                 new Contract($offerData['contract_type']),
                 new Description(
                     $offerData['description_technology_stack'],

@@ -17,13 +17,19 @@ use ITOffers\Offers\Application\Assertion;
 
 final class Contact
 {
-    private string $email;
+    private ?string $email = null;
 
-    private string $name;
+    private ?string $name = null;
 
-    private ?string $phone;
+    private ?string $phone = null;
 
-    public function __construct(string $email, string $name, ?string $phone = null)
+    private ?string $url = null;
+
+    private function __construct()
+    {
+    }
+
+    public static function recruiter(string $email, string $name, ?string $phone = null) : self
     {
         Assertion::email($email);
         Assertion::betweenLength($name, 3, 255);
@@ -32,9 +38,24 @@ final class Contact
             Assertion::betweenLength($phone, 6, 16);
         }
 
-        $this->email = $email;
-        $this->name = $name;
-        $this->phone = $phone;
+        $contact = new self();
+
+        $contact->email = $email;
+        $contact->name = $name;
+        $contact->phone = $phone;
+
+        return $contact;
+    }
+
+    public static function externalSource(string $url) : self
+    {
+        Assertion::url($url);
+        Assertion::betweenLength($url, 3, 2_083);
+
+        $contact = new self();
+        $contact->url = $url;
+
+        return $contact;
     }
 
     public function email() : string

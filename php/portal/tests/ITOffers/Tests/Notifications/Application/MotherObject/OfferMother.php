@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ITOffers\Tests\Notifications\Application\MotherObject;
 
 use ITOffers\Notifications\Application\Offer\Offer;
+use ITOffers\Notifications\Application\Offer\Offer\Contact;
 use Ramsey\Uuid\Uuid;
 
 final class OfferMother
@@ -23,13 +24,12 @@ final class OfferMother
         return new Offer(
             Uuid::uuid4(),
             'recruiter@itoffers.online',
-            'Recruiter',
-            'some-offer-slug',
             'php',
             4,
             'Software Developer',
             'Company',
-            'https://itoffers.online'
+            'https://itoffers.online',
+            Contact::externalSource('https://itoffers.online')
         );
     }
 }

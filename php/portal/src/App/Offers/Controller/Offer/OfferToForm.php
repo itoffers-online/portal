@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Controller\Offer;
 
+use App\Offers\Form\Type\Offer\ContactType;
 use App\Offers\Form\Type\Offer\LocationType;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Offers;
@@ -96,9 +97,11 @@ final class OfferToForm
                 'benefits' => $offer->description()->benefits(),
             ],
             'contact'=> [
+                'type' => $offer->contact()->isRecruiter() ? ContactType::RECRUITER_TYPE : ContactType::EXTERNAL_SOURCE_TYPE,
                 'name' => $offer->contact()->name(),
                 'email' => $offer->contact()->email(),
                 'phone' => $offer->contact()->phone(),
+                'url' => $offer->contact()->url(),
             ],
         ];
     }
