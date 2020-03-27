@@ -411,9 +411,16 @@ final class OfferController extends AbstractController
     {
         switch ($offerFormData['location']['type']) {
             case LocationType::LOCATION_PARTIALLY_REMOTE:
-            case LocationType::LOCATION_AT_OFFICE:
                 return new Location(
                     true,
+                    $offerFormData['location']['country'],
+                    $offerFormData['location']['city'],
+                    $offerFormData['location']['address'],
+                    new LatLng((float)$offerFormData['location']['lat'], (float)$offerFormData['location']['lng'])
+                );
+            case LocationType::LOCATION_AT_OFFICE:
+                return new Location(
+                    false,
                     $offerFormData['location']['country'],
                     $offerFormData['location']['city'],
                     $offerFormData['location']['address'],
