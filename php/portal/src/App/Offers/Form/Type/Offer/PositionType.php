@@ -29,6 +29,7 @@ final class PositionType extends AbstractType
     {
         $builder
             ->add('seniorityLevel', HiddenType::class, [
+                'empty_data' => 0,
                 'constraints' => [
                     new NotBlank(),
                 ],
