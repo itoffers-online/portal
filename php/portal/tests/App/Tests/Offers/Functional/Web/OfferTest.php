@@ -114,7 +114,7 @@ final class OfferTest extends WebTestCase
         $this->assertSame($salaryMin, $offer->salary()->min());
         $this->assertSame($salaryMax, $offer->salary()->max());
         $this->assertSame($salaryCurrency, $offer->salary()->currencyCode());
-        $this->assertSame((bool) $salaryIsNet, $offer->salary()->isNet());
+        $this->assertTrue($offer->salary()->isNet());
         $this->assertSame($salaryPeriodType, \mb_strtoupper($offer->salary()->periodType()));
         $this->assertFalse($offer->salary()->periodTypeTotal());
         $this->assertSame($locationAddress, $offer->location()->address());
@@ -190,7 +190,7 @@ final class OfferTest extends WebTestCase
         $this->assertSame($salaryMin, $offer->salary()->min());
         $this->assertSame($salaryMax, $offer->salary()->max());
         $this->assertSame($salaryCurrency, $offer->salary()->currencyCode());
-        $this->assertSame((bool) $salaryIsNet, $offer->salary()->isNet());
+        $this->assertTrue($offer->salary()->isNet());
         $this->assertSame($salaryPeriodType, \mb_strtoupper($offer->salary()->periodType()));
         $this->assertFalse($offer->salary()->periodTypeTotal());
         $this->assertSame($locationAddress, $offer->location()->address());
