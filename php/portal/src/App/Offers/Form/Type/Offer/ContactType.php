@@ -54,30 +54,30 @@ final class ContactType extends AbstractType
             ->add('name', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new NotBlank(['groups' => self::RECRUITER_GROUP]),
-                    new Length(['min' => 3, 'max' => 255, 'groups' => self::RECRUITER_GROUP]),
-                    new NotContainsEmoji(['groups' => self::RECRUITER_GROUP]),
+                    new NotBlank(['groups' => [self::RECRUITER_GROUP]]),
+                    new Length(['min' => 3, 'max' => 255, 'groups' => [self::RECRUITER_GROUP]]),
+                    new NotContainsEmoji(['groups' => [self::RECRUITER_GROUP]]),
                 ],
             ])
             ->add('email', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new NotBlank(['groups' => self::RECRUITER_GROUP]),
-                    new Email(['groups' => self::RECRUITER_GROUP]),
+                    new NotBlank(['groups' => [self::RECRUITER_GROUP]]),
+                    new Email(['groups' => [self::RECRUITER_GROUP]]),
                 ],
             ])
             ->add('phone', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Length(['min' => 6, 'max' => 16]),
-                    new NotContainsEmoji(['groups' => self::RECRUITER_GROUP]),
+                    new Length(['min' => 6, 'max' => 16, 'groups' => [self::RECRUITER_GROUP]]),
+                    new NotContainsEmoji(['groups' => [self::RECRUITER_GROUP]]),
                 ],
             ])
             ->add('url', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new NotBlank(['groups' => self::EXTERNAL_SOURCE_GROUP]),
-                    new Url(['groups' => self::EXTERNAL_SOURCE_GROUP]),
+                    new NotBlank(['groups' => [self::EXTERNAL_SOURCE_GROUP]]),
+                    new Url(['groups' => [self::EXTERNAL_SOURCE_GROUP]]),
                 ],
             ])
         ;
@@ -89,7 +89,11 @@ final class ContactType extends AbstractType
             'validation_groups' => static function (FormInterface $form) {
                 $data = $form->getData();
 
-                switch ($data['url']) {
+                if (!isset($data['type'])) {
+                    return [];
+                }
+
+                switch ($data['type']) {
                     case self::EXTERNAL_SOURCE_TYPE:
                         return [self::EXTERNAL_SOURCE_GROUP];
                     case self::RECRUITER_TYPE:

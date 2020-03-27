@@ -63,31 +63,31 @@ final class OfferTest extends WebTestCase
 
         $faker = Factory::create();
         $form = $crawler->filter('form[name="offer"]')->form([
-            'offer[locale]' => 'en_US',
-            'offer[company][name]' => 'Company name',
-            'offer[company][url]' => 'http://company.com',
-            'offer[company][description]' => $faker->text(512),
-            'offer[position][seniorityLevel]' => \random_int(0, 4),
-            'offer[position][name]' => 'Software Developer',
-            'offer[salary][min]' => 1_000,
-            'offer[salary][max]' => 5_000,
-            'offer[salary][currency]' => 'USD',
-            'offer[salary][net]' => 1,
-            'offer[salary][period_type]' => Salary::PERIOD_TYPE_MONTH,
-            'offer[contract]' => 'Contract (B2B)',
+            'offer[locale]' => $locale = 'en_US',
+            'offer[company][name]' => $companyName = 'Company name',
+            'offer[company][url]' => $companyUrl = 'http://company.com',
+            'offer[company][description]' => $companyDescription = $faker->text(512),
+            'offer[position][seniorityLevel]' => $positionSeniorityLevel = \random_int(0, 4),
+            'offer[position][name]' => $positionName = 'Software Developer',
+            'offer[salary][min]' => $salaryMin = 1_000,
+            'offer[salary][max]' => $salaryMax = 5_000,
+            'offer[salary][currency]' => $salaryCurrency = 'USD',
+            'offer[salary][net]' => $salaryIsNet = 1,
+            'offer[salary][period_type]' => $salaryPeriodType = Salary::PERIOD_TYPE_MONTH,
+            'offer[contract]' => $contract = 'Contract (B2B)',
             'offer[location][type]' => "1",
-            'offer[location][address]' => 'Kraków, Plac Szczepański 15',
-            'offer[location][country]' => 'PL',
-            'offer[location][city]' => 'Cracow',
-            'offer[location][lat]' => '50.06212',
-            'offer[location][lng]' => '19.9353153',
-            'offer[description][requirements][description]' => $faker->text(1_024),
-            'offer[description][benefits]' => $faker->text(1_024),
-            'offer[description][technology_stack]' => $faker->text(1_024),
+            'offer[location][address]' => $locationAddress = 'Kraków, Plac Szczepański 15',
+            'offer[location][country]' => $locationCountry = 'PL',
+            'offer[location][city]' => $locationCity = 'Cracow',
+            'offer[location][lat]' => $locationLat = '50.06212',
+            'offer[location][lng]' => $locationLng = '19.9353153',
+            'offer[description][requirements][description]' => $descriptionRequirementsDescription = $faker->text(1_024),
+            'offer[description][benefits]' => $descriptionRequirementsBenefits = $faker->text(1_024),
+            'offer[description][technology_stack]' => $descriptionRequirementsTechStack = $faker->text(1_024),
             'offer[contact][type]' => ContactType::RECRUITER_TYPE,
-            'offer[contact][email]' => $faker->email,
-            'offer[contact][name]' => $faker->name,
-            'offer[contact][phone]' => '+12123123123',
+            'offer[contact][email]' => $contactEmail = $faker->email,
+            'offer[contact][name]' => $contactName = $faker->name,
+            'offer[contact][phone]' => $contactPhone = '+12123123123',
             'offer[_token]' => $client->getContainer()->get('security.csrf.token_manager')->getToken('offer'),
         ]);
 
@@ -102,6 +102,34 @@ final class OfferTest extends WebTestCase
             1,
             $this->offersContext->module()->offerQuery()->count(OfferFilter::all())
         );
+
+        $offer = $this->offersContext->module()->offerQuery()->findAll(OfferFilter::all())->first();
+
+        $this->assertSAme(1, $this->offersContext->module()->offerQuery()->count(OfferFilter::all()));
+        $this->assertSame($locale, $offer->locale());
+        $this->assertSame($companyName, $offer->company()->name());
+        $this->assertSame($companyUrl, $offer->company()->url());
+        $this->assertSame($positionName, $offer->position()->name());
+        $this->assertSame($positionSeniorityLevel, $offer->position()->seniorityLevel());
+        $this->assertSame($salaryMin, $offer->salary()->min());
+        $this->assertSame($salaryMax, $offer->salary()->max());
+        $this->assertSame($salaryCurrency, $offer->salary()->currencyCode());
+        $this->assertSame((bool) $salaryIsNet, $offer->salary()->isNet());
+        $this->assertSame($salaryPeriodType, \mb_strtoupper($offer->salary()->periodType()));
+        $this->assertFalse($offer->salary()->periodTypeTotal());
+        $this->assertSame($locationAddress, $offer->location()->address());
+        $this->assertSame($locationCity, $offer->location()->city());
+        $this->assertSame($locationCountry, $offer->location()->countryCode());
+        $this->assertSame((float) $locationLat, $offer->location()->lat());
+        $this->assertSame((float) $locationLng, $offer->location()->lng());
+        $this->assertSame($descriptionRequirementsDescription, $offer->description()->requirements()->description());
+        $this->assertSame($descriptionRequirementsBenefits, $offer->description()->benefits());
+        $this->assertSame($descriptionRequirementsTechStack, $offer->description()->technologyStack());
+        $this->assertSame($contract, $offer->contract()->type());
+        $this->assertTrue($offer->contact()->isRecruiter());
+        $this->assertSame($contactEmail, $offer->contact()->email());
+        $this->assertSame($contactName, $offer->contact()->name());
+        $this->assertSame($contactPhone, $offer->contact()->phone());
     }
 
     public function test_success_page_after_posting_offer_from_external_source() : void
@@ -118,29 +146,29 @@ final class OfferTest extends WebTestCase
 
         $faker = Factory::create();
         $form = $crawler->filter('form[name="offer"]')->form([
-            'offer[locale]' => 'en_US',
-            'offer[company][name]' => 'Company name',
-            'offer[company][url]' => 'http://company.com',
-            'offer[company][description]' => $faker->text(512),
-            'offer[position][seniorityLevel]' => \random_int(0, 4),
-            'offer[position][name]' => 'Software Developer',
-            'offer[salary][min]' => 1_000,
-            'offer[salary][max]' => 5_000,
-            'offer[salary][currency]' => 'USD',
-            'offer[salary][net]' => 1,
-            'offer[salary][period_type]' => Salary::PERIOD_TYPE_MONTH,
-            'offer[contract]' => 'Contract (B2B)',
+            'offer[locale]' => $locale = 'en_US',
+            'offer[company][name]' => $companyName = 'Company name',
+            'offer[company][url]' => $companyUrl = 'http://company.com',
+            'offer[company][description]' => $companyDescription = $faker->text(512),
+            'offer[position][seniorityLevel]' => $positionSeniorityLevel = \random_int(0, 4),
+            'offer[position][name]' => $positionName = 'Software Developer',
+            'offer[salary][min]' => $salaryMin = 1_000,
+            'offer[salary][max]' => $salaryMax = 5_000,
+            'offer[salary][currency]' => $salaryCurrency = 'USD',
+            'offer[salary][net]' => $salaryIsNet = 1,
+            'offer[salary][period_type]' => $salaryPeriodType = Salary::PERIOD_TYPE_MONTH,
+            'offer[contract]' => $contract = 'Contract (B2B)',
             'offer[location][type]' => "1",
-            'offer[location][address]' => 'Kraków, Plac Szczepański 15',
-            'offer[location][country]' => 'PL',
-            'offer[location][city]' => 'Cracow',
-            'offer[location][lat]' => '50.06212',
-            'offer[location][lng]' => '19.9353153',
-            'offer[description][requirements][description]' => $faker->text(1_024),
-            'offer[description][benefits]' => $faker->text(1_024),
-            'offer[description][technology_stack]' => $faker->text(1_024),
+            'offer[location][address]' => $locationAddress = 'Kraków, Plac Szczepański 15',
+            'offer[location][country]' => $locationCountry = 'PL',
+            'offer[location][city]' => $locationCity = 'Cracow',
+            'offer[location][lat]' => $locationLat = '50.06212',
+            'offer[location][lng]' => $locationLng = '19.9353153',
+            'offer[description][requirements][description]' => $descriptionRequirementsDescription = $faker->text(1_024),
+            'offer[description][benefits]' => $descriptionRequirementsBenefits = $faker->text(1_024),
+            'offer[description][technology_stack]' => $descriptionRequirementsTechStack = $faker->text(1_024),
             'offer[contact][type]' => ContactType::EXTERNAL_SOURCE_TYPE,
-            'offer[contact][url]' => $faker->url,
+            'offer[contact][url]' => $contactUrl = $faker->url,
             'offer[_token]' => $client->getContainer()->get('security.csrf.token_manager')->getToken('offer'),
         ]);
 
@@ -151,10 +179,31 @@ final class OfferTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $client->getResponse()->getContent());
         $this->assertEquals(1, $crawler->filter('.alert-success')->count());
 
-        $this->assertSAme(
-            1,
-            $this->offersContext->module()->offerQuery()->count(OfferFilter::all())
-        );
+        $offer = $this->offersContext->module()->offerQuery()->findAll(OfferFilter::all())->first();
+
+        $this->assertSAme(1, $this->offersContext->module()->offerQuery()->count(OfferFilter::all()));
+        $this->assertSame($locale, $offer->locale());
+        $this->assertSame($companyName, $offer->company()->name());
+        $this->assertSame($companyUrl, $offer->company()->url());
+        $this->assertSame($positionName, $offer->position()->name());
+        $this->assertSame($positionSeniorityLevel, $offer->position()->seniorityLevel());
+        $this->assertSame($salaryMin, $offer->salary()->min());
+        $this->assertSame($salaryMax, $offer->salary()->max());
+        $this->assertSame($salaryCurrency, $offer->salary()->currencyCode());
+        $this->assertSame((bool) $salaryIsNet, $offer->salary()->isNet());
+        $this->assertSame($salaryPeriodType, \mb_strtoupper($offer->salary()->periodType()));
+        $this->assertFalse($offer->salary()->periodTypeTotal());
+        $this->assertSame($locationAddress, $offer->location()->address());
+        $this->assertSame($locationCity, $offer->location()->city());
+        $this->assertSame($locationCountry, $offer->location()->countryCode());
+        $this->assertSame((float) $locationLat, $offer->location()->lat());
+        $this->assertSame((float) $locationLng, $offer->location()->lng());
+        $this->assertSame($descriptionRequirementsDescription, $offer->description()->requirements()->description());
+        $this->assertSame($descriptionRequirementsBenefits, $offer->description()->benefits());
+        $this->assertSame($descriptionRequirementsTechStack, $offer->description()->technologyStack());
+        $this->assertSame($contract, $offer->contract()->type());
+        $this->assertTrue($offer->contact()->isExternalSource());
+        $this->assertSame($contactUrl, $offer->contact()->url());
     }
 
     public function test_success_page_after_editing_offer() : void

@@ -96,4 +96,40 @@ final class ContactTypeTest extends TypeTestCase
 
         $this->assertFalse($form->get('type')->isValid());
     }
+
+    public function test_invalid_recruiter() : void
+    {
+        $formData = [
+            'type' => ContactType::RECRUITER_TYPE,
+            'name' => null,
+            'email' => null,
+            'phone' => null,
+            'url' => 'https://onet.pl',
+        ];
+
+        $form = $this->factory->create(ContactType::class, null, []);
+        $form->submit($formData);
+        $this->assertTrue($form->isSynchronized());
+        $this->assertFalse($form->isValid());
+
+        $this->assertTrue($form->get('type')->isValid());
+    }
+
+    public function test_invalid_external_source() : void
+    {
+        $formData = [
+            'type' => ContactType::EXTERNAL_SOURCE_TYPE,
+            'name' => 'Norbert',
+            'email' => 'contact@itoffers.online',
+            'phone' => null,
+            'url' => null,
+        ];
+
+        $form = $this->factory->create(ContactType::class, null, []);
+        $form->submit($formData);
+        $this->assertTrue($form->isSynchronized());
+        $this->assertFalse($form->isValid());
+
+        $this->assertTrue($form->get('type')->isValid());
+    }
 }

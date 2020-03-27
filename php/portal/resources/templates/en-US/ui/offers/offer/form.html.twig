@@ -88,7 +88,7 @@
                 <div class="col"><a id="seniority-senior" data-seniority-level="3" class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 3 %} active{% endif %}" href="#">Senior</a></div>
                 <div class="col"><a id="seniority-expert" data-seniority-level="4" class="mb-2 btn btn-block btn-outline-primary{% if form.position.seniorityLevel.vars.value == 4 %} active{% endif %}" href="#">Expert</a></div>
             </div>
-            {{ form_row(form.position.seniorityLevel, {attr: {'value' : 0}}) }}
+            {{ form_row(form.position.seniorityLevel) }}
 
             {{ form_row(
                 form.position.name,
