@@ -242,7 +242,7 @@ final class SymfonyKernel extends Kernel
                         'page_url' => $this->config->getString(Config::FB_PAGE_URL),
                     ],
                     'map_tiler' => [
-                        'key' => $this->config->getString(Config::MAP_TILER_API_KEY)
+                        'key' => $this->config->getString(Config::MAP_TILER_API_KEY),
                     ],
                     'google' => [
                         'recaptcha' => [
