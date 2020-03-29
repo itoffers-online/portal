@@ -39,7 +39,7 @@ final class PostOfferTest extends OffersTestCase
 
         $this->assertEquals(1, $this->offers->module()->offerQuery()->total());
         $this->assertEquals(
-            sprintf('/offer/%s/offer.pdf', $offer->id()->toString()),
+            sprintf('/offer/%s/offer.pdf', $offer->slug()),
             $offer->offerPDF()
         );
         $this->assertTrue($offer->postedBy($user->id()));

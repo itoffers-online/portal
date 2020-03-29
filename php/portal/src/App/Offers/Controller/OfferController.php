@@ -446,7 +446,12 @@ final class OfferController extends AbstractController
     private function createCommandOffer(array $offerFormData, Location $location, Contact $contact) : Offer
     {
         return new Offer(
-            new Company($offerFormData['company']['name'], $offerFormData['company']['url'], $offerFormData['company']['description']),
+            new Company(
+                $offerFormData['company']['name'],
+                $offerFormData['company']['url'],
+                $offerFormData['company']['description'],
+                $offerFormData['company']['logo'] ? $offerFormData['company']['logo']->getPathname() : null
+            ),
             new Position((int)$offerFormData['position']['seniorityLevel'], $offerFormData['position']['name']),
             $location,
             (null === $offerFormData['salary']['min'] && null === $offerFormData['salary']['max'])

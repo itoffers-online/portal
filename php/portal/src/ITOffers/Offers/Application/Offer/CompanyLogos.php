@@ -15,9 +15,9 @@ namespace ITOffers\Offers\Application\Offer;
 
 use Ramsey\Uuid\UuidInterface;
 
-interface Slugs
+interface CompanyLogos
 {
-    public function add(Slug $slug) : void;
+    public function add(CompanyLogo $companyLogo) : void;
 
-    public function getById(UuidInterface $offerId) : Slug;
+    public function removeFor(UuidInterface $offerId) : void;
 }

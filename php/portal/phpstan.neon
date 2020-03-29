@@ -32,6 +32,7 @@ services:
                     - ITOffers\Offers\Application\Offer\Offer
                     - ITOffers\Offers\Application\Offer\Slug
                     - ITOffers\Offers\Application\Offer\OfferPDF
+                    - ITOffers\Offers\Application\Offer\CompanyLogo
                     - ITOffers\Offers\Application\Offer\Application
                     - ITOffers\Offers\Application\User\ExtraOffer
                     - ITOffers\Offers\Application\User\OfferAutoRenew

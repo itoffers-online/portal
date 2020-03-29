@@ -35,5 +35,6 @@ final class FileTest extends TestCase
         $this->expectExceptionMessage('Expected application/pdf file got text/plain');
 
         File::pdf('/destination/file.pdf', __DIR__ . '/fixtures/text.txt');
+        $this->assertSame('pdf', File::extension(__DIR__ . '/fixtures/text.txt'));
     }
 }

@@ -19,6 +19,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Company;
+use ITOffers\Offers\Application\Query\Offer\Model\Offer\CompanyLogo;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Contact;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Contract;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Description;
@@ -59,6 +60,7 @@ final class DbalOfferQuery implements OfferQuery
             ->select('
                 o.*, 
                 op.path as offer_pdf, 
+                ocl.path as offer_company_logo, 
                 os.slug, 
                 s.slug as specialization_slug, 
                 CAST(o.salary->>\'max\' as INTEGER) as salary_max,
@@ -157,6 +159,7 @@ final class DbalOfferQuery implements OfferQuery
             ->select('
                 o.*, 
                 op.path as offer_pdf, 
+                ocl.path as offer_company_logo,
                 os.slug, 
                 s.slug as specialization_slug,
                 (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
@@ -164,6 +167,7 @@ final class DbalOfferQuery implements OfferQuery
             ->from('itof_job_offer_slug', 'os')
             ->leftJoin('os', 'itof_job_offer', 'o', 'os.offer_id = o.id')
             ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_company_logo', 'ocl', 'ocl.offer_id = o.id')
             ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
             ->where('o.id = :id')
             ->andWhere('o.removed_at IS NULL')
@@ -186,6 +190,8 @@ final class DbalOfferQuery implements OfferQuery
         $offerData = $this->connection->createQueryBuilder()
             ->select('
                 o.*, 
+                op.path as offer_pdf, 
+                ocl.path as offer_company_logo,
                 os.slug, 
                 s.slug as specialization_slug,
                 (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
@@ -193,6 +199,7 @@ final class DbalOfferQuery implements OfferQuery
             ->from('itof_job_offer_slug', 'os')
             ->leftJoin('os', 'itof_job_offer', 'o', 'os.offer_id = o.id')
             ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_company_logo', 'ocl', 'ocl.offer_id = o.id')
             ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
             ->where('o.email_hash = :emailHash')
             ->andWhere('o.removed_at IS NULL')
@@ -216,6 +223,7 @@ final class DbalOfferQuery implements OfferQuery
             ->select('
                 o.*, 
                 op.path as offer_pdf, 
+                ocl.path as offer_company_logo,
                 os.slug, 
                 s.slug as specialization_slug,
                 (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
@@ -223,6 +231,7 @@ final class DbalOfferQuery implements OfferQuery
             ->from('itof_job_offer_slug', 'os')
             ->leftJoin('os', 'itof_job_offer', 'o', 'os.offer_id = o.id')
             ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_company_logo', 'ocl', 'ocl.offer_id = o.id')
             ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
             ->where('os.slug = :offerSlug')
             ->andWhere('o.removed_at IS NULL')
@@ -246,6 +255,7 @@ final class DbalOfferQuery implements OfferQuery
             ->select('
                 o.*, 
                 op.path as offer_pdf, 
+                ocl.path as offer_company_logo,
                 os.slug, 
                 s.slug as specialization_slug,
                 (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
@@ -253,6 +263,7 @@ final class DbalOfferQuery implements OfferQuery
             ->from('itof_job_offer', 'o')
             ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'itof_job_offer_slug', 'os', 'os.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_company_logo', 'ocl', 'ocl.offer_id = o.id')
             ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
             ->where('s.slug = :specializationSlug')
             ->andWhere('o.created_at < (SELECT created_at FROM itof_job_offer WHERE id = :previousOfferId)')
@@ -281,6 +292,7 @@ final class DbalOfferQuery implements OfferQuery
             ->select('
                 o.*, 
                 op.path as offer_pdf,
+                ocl.path as offer_company_logo,
                 os.slug, 
                 s.slug as specialization_slug,
                 (SELECT COUNT(a.*) FROM itof_job_offer_application a WHERE o.id = a.offer_id) as applications_count
@@ -288,6 +300,7 @@ final class DbalOfferQuery implements OfferQuery
             ->from('itof_job_offer', 'o')
             ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'itof_job_offer_slug', 'os', 'os.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_company_logo', 'ocl', 'ocl.offer_id = o.id')
             ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
             ->where('s.slug = :specializationSlug')
             ->andWhere('o.created_at > (SELECT created_at FROM itof_job_offer WHERE id = :previousOfferId)')
@@ -315,6 +328,7 @@ final class DbalOfferQuery implements OfferQuery
         $salary = isset($offerData['salary']) ? \json_decode($offerData['salary'], true, 512, JSON_THROW_ON_ERROR) : null;
         $skills = isset($offerData['description_requirements_skills']) ? \json_decode($offerData['description_requirements_skills'], true, 512, JSON_THROW_ON_ERROR) : null;
         $offerPDF = isset($offerData['offer_pdf']) ? new OfferPDF($offerData['offer_pdf']) : null;
+        $companyLogo = isset($offerData['offer_company_logo']) ? new CompanyLogo($offerData['offer_company_logo']) : null;
 
         return new Offer(
             Uuid::fromString($offerData['id']),
@@ -325,7 +339,12 @@ final class DbalOfferQuery implements OfferQuery
             $offerData['specialization_slug'],
             new \DateTimeImmutable($offerData['created_at']),
             new Parameters(
-                new Company($offerData['company_name'], $offerData['company_url'], $offerData['company_description']),
+                new Company(
+                    $offerData['company_name'],
+                    $offerData['company_url'],
+                    $offerData['company_description'],
+                    $companyLogo
+                ),
                 isset($offerData['contact_url'])
                     ? Contact::externalSource($offerData['contact_url'])
                     : Contact::recruiter($offerData['contact_email'], $offerData['contact_name'], $offerData['contact_phone']),
@@ -385,6 +404,7 @@ final class DbalOfferQuery implements OfferQuery
             ->leftJoin('o', 'itof_specialization', 's', 'o.specialization_id = s.id')
             ->leftJoin('o', 'itof_job_offer_slug', 'os', 'os.offer_id = o.id')
             ->leftJoin('o', 'itof_job_offer_pdf', 'op', 'op.offer_id = o.id')
+            ->leftJoin('o', 'itof_job_offer_company_logo', 'ocl', 'ocl.offer_id = o.id')
             ->where('o.removed_at IS NULL');
 
         if ($filter->specialization()) {

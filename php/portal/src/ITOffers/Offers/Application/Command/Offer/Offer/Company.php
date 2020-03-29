@@ -21,11 +21,14 @@ final class Company
 
     private string $description;
 
-    public function __construct(string $name, string $url, string $description)
+    private ?string $logoPath;
+
+    public function __construct(string $name, string $url, string $description, ?string $logoPath = null)
     {
         $this->name = $name;
         $this->url = $url;
         $this->description = $description;
+        $this->logoPath = $logoPath;
     }
 
     public function name() : string
@@ -41,5 +44,10 @@ final class Company
     public function description() : string
     {
         return $this->description;
+    }
+
+    public function logoPath() : ?string
+    {
+        return $this->logoPath;
     }
 }

@@ -65,6 +65,7 @@ use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalOfferAutoR
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\User\DbalUserQuery;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Facebook\ORMPosts;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMApplications;
+use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMCompanyLogos;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMOfferPDFs;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMOffers;
 use ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Offer\ORMSlugs;
@@ -214,16 +215,19 @@ function offersFacade(
                     $ormUsers,
                     $throttling,
                     $ormSpecializations,
-                    new ORMSlugs($entityManager),
+                    $ormSlugs = new ORMSlugs($entityManager),
                     $ormOfferPDFs = new ORMOfferPDFs($entityManager),
+                    $ormCompanyLogos = new ORMCompanyLogos($entityManager),
                     $fileStorage = FlysystemStorage::create($config->getJson(Config::FILESYSTEM_CONFIG)),
                     $eventStream
                 ),
                 new UpdateOfferHandler(
                     $calendar,
                     $ormOffers,
+                    $ormSlugs,
                     $ormUsers,
                     $ormOfferPDFs,
+                    $ormCompanyLogos,
                     $fileStorage
                 ),
                 new RemoveOfferHandler(

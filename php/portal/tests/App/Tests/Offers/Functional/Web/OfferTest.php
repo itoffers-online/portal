@@ -17,10 +17,13 @@ use App\Offers\Form\Type\Offer\ContactType;
 use App\Tests\Functional\Web\WebTestCase;
 use Faker\Factory;
 use ITOffers\Config;
+use ITOffers\Offers\Application\Query\Offer\Model\Offer\CompanyLogo;
+use ITOffers\Offers\Application\Query\Offer\Model\Offer\OfferPDF;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Salary;
 use ITOffers\Offers\Application\Query\Offer\OfferFilter;
 use ITOffers\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
 final class OfferTest extends WebTestCase
@@ -144,12 +147,22 @@ final class OfferTest extends WebTestCase
             $client->getContainer()->get('router')->generate('offer_new', ['specSlug' => $this->specialization])
         );
 
+        $logoFile = new UploadedFile(
+            __DIR__ . '/fixtures/logo.png',
+            'logo.png'
+        );
+        $offerPDF = new UploadedFile(
+            __DIR__ . '/fixtures/offer.pdf',
+            'offer.pdf'
+        );
+
         $faker = Factory::create();
         $form = $crawler->filter('form[name="offer"]')->form([
             'offer[locale]' => $locale = 'en_US',
             'offer[company][name]' => $companyName = 'Company name',
             'offer[company][url]' => $companyUrl = 'http://company.com',
             'offer[company][description]' => $companyDescription = $faker->text(512),
+            'offer[company][logo]' => $logoFile,
             'offer[position][seniorityLevel]' => $positionSeniorityLevel = \random_int(0, 4),
             'offer[position][name]' => $positionName = 'Software Developer',
             'offer[salary][min]' => $salaryMin = 1_000,
@@ -169,6 +182,7 @@ final class OfferTest extends WebTestCase
             'offer[description][technology_stack]' => $descriptionRequirementsTechStack = $faker->text(1_024),
             'offer[contact][type]' => ContactType::EXTERNAL_SOURCE_TYPE,
             'offer[contact][url]' => $contactUrl = $faker->url,
+            'offer[offer_pdf]' => $offerPDF,
             'offer[_token]' => $client->getContainer()->get('security.csrf.token_manager')->getToken('offer'),
         ]);
 
@@ -204,6 +218,8 @@ final class OfferTest extends WebTestCase
         $this->assertSame($contract, $offer->contract()->type());
         $this->assertTrue($offer->contact()->isExternalSource());
         $this->assertSame($contactUrl, $offer->contact()->url());
+        $this->assertInstanceOf(CompanyLogo::class, $offer->company()->logo());
+        $this->assertInstanceOf(OfferPDF::class, $offer->offerPDF());
     }
 
     public function test_success_page_after_editing_offer() : void
@@ -220,12 +236,22 @@ final class OfferTest extends WebTestCase
             $client->getContainer()->get('router')->generate('offer_edit', ['specSlug' => $this->specialization, 'offer-slug' => $offer->slug()])
         );
 
+        $logoFile = new UploadedFile(
+            __DIR__ . '/fixtures/logo.png',
+            'logo.png'
+        );
+        $offerPDF = new UploadedFile(
+            __DIR__ . '/fixtures/offer.pdf',
+            'offer.pdf'
+        );
+
         $faker = Factory::create();
         $form = $crawler->filter('form[name="offer"]')->form([
             'offer[locale]' => 'en_US',
             'offer[company][name]' => 'Updated Company Name',
             'offer[company][url]' => 'http://company.com',
             'offer[company][description]' => $faker->text(512),
+            'offer[company][logo]' => $logoFile,
             'offer[position][seniorityLevel]' => \random_int(0, 4),
             'offer[position][name]' => 'Software Developer',
             'offer[salary][min]' => 1_000,
@@ -246,6 +272,7 @@ final class OfferTest extends WebTestCase
             'offer[contact][email]' => $faker->email,
             'offer[contact][name]' => $faker->name,
             'offer[contact][phone]' => '+12123123123',
+            'offer[offer_pdf]' => $offerPDF,
             'offer[_token]' => $client->getContainer()->get('security.csrf.token_manager')->getToken('offer'),
         ]);
 
@@ -256,14 +283,18 @@ final class OfferTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $client->getResponse()->getContent());
         $this->assertEquals(1, $crawler->filter('.alert-success')->count());
 
+        $offer = $this->offersContext->module()->offerQuery()->findAll(OfferFilter::all())->first();
+
         $this->assertSAme(
             1,
             $this->offersContext->module()->offerQuery()->count(OfferFilter::all())
         );
         $this->assertSAme(
             'Updated Company Name',
-            $this->offersContext->module()->offerQuery()->findBySlug($offer->slug())->company()->name()
+            $offer->company()->name()
         );
+        $this->assertInstanceOf(CompanyLogo::class, $offer->company()->logo());
+        $this->assertInstanceOf(OfferPDF::class, $offer->offerPDF());
     }
 
     public function test_offer_details_page() : void
