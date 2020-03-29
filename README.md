@@ -19,7 +19,6 @@ This is a technical documentation of the project.
   * [Requirements](/docs/requirements.md)
   * [Vagrant](/vagrant/README.md)
   * [Local SSL](/ssl/README.md)
-  * [Terraform](/terraform/README.md)
   * [Architecture](/docs/architecture/README.md)
   * [System Setup](/php/portal/README.md)
   * [Emails](/docs/emails.md)

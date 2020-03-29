@@ -104,10 +104,5 @@ Cleans symfony cache (twig, routing, translation etc)
 $ bin/symfony cache:clear
 ```
 
-### Azure blob storage
-
-In order to use azure blob storage in development you can set it up manually or through terraform
-like described in [dev terraform readme](../../terraform/README.md).
-
 ---
 [↩️ back](/README.md)

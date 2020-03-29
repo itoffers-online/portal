@@ -12,7 +12,6 @@ you as a developer might need. Please find an explanation about how to navigate 
 ├── LICENSE.md
 ├── README.md
 ├── ansible
-│   ├── deploy
 │   └── vagrant
 ├── docs
 │   ├── architecture
@@ -23,9 +22,6 @@ you as a developer might need. Please find an explanation about how to navigate 
 ├── ssl
 │   ├── README.md
 │   └── ca.crt
-├── terraform
-│   ├── README.md
-│   └── dev
 └── vagrant
     ├── README.md
     ├── Vagrantfile
@@ -55,10 +51,6 @@ PHP part of the project source code.
 
 This is where Local Root CA is going to be generated after `vagrant provision`, it's used to generated SSL certicate
 for local development and can be used to make that certificate trusted in your browser. 
-
-### terraform
-
-[Terraform](https://www.terraform.io/) configuration used to create/manage cloud resources.
 
 ### vagrant
 
