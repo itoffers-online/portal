@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Offer;
 
 use Doctrine\ORM\EntityManager;
-use ITOffers\Offers\Application\Offer\Slug;
-use ITOffers\Offers\Application\Offer\Slugs;
+use ITOffers\Offers\Application\Offer\CompanyLogo;
+use ITOffers\Offers\Application\Offer\CompanyLogos;
 use Ramsey\Uuid\UuidInterface;
 
-final class ORMSlugs implements Slugs
+final class ORMCompanyLogos implements CompanyLogos
 {
     private EntityManager $entityManager;
 
@@ -27,13 +27,17 @@ final class ORMSlugs implements Slugs
         $this->entityManager = $entityManager;
     }
 
-    public function add(Slug $slug) : void
+    public function add(CompanyLogo $companyLogo) : void
     {
-        $this->entityManager->persist($slug);
+        $this->entityManager->persist($companyLogo);
     }
 
-    public function getById(UuidInterface $offerId) : Slug
+    public function removeFor(UuidInterface $offerId) : void
     {
-        return $this->entityManager->getRepository(Slug::class)->findOneBy(['offerId' => $offerId->toString()]);
+        $companyLogo = $this->entityManager->getRepository(CompanyLogo::class)->findOneBy(['offerId' => $offerId->toString()]);
+
+        if ($companyLogo) {
+            $this->entityManager->remove($companyLogo);
+        }
     }
 }

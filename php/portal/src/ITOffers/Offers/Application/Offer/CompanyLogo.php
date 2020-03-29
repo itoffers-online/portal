@@ -14,42 +14,44 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Application\Offer;
 
 use Cocur\Slugify\Slugify;
-use DateTimeImmutable;
-use Hashids\Hashids;
 use ITOffers\Component\Calendar\Calendar;
-use ITOffers\Offers\Application\Offer\Position\SeniorityLevels;
+use ITOffers\Offers\Application\Assertion;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use function random_int;
 
-class Slug
+class CompanyLogo
 {
-    private string $slug;
+    private string $id;
+
+    private string $path;
 
     private string $offerId;
 
     private \DateTimeImmutable $createdAt;
 
-    private function __construct(string $value, UuidInterface $offerId, DateTimeImmutable $createdAt)
+    private function __construct(string $path, UuidInterface $offerId, \DateTimeImmutable $createdAt)
     {
-        $this->slug = $value;
+        $this->id = Uuid::uuid4()->toString();
         $this->offerId = $offerId->toString();
+        $this->path = $path;
         $this->createdAt = $createdAt;
     }
 
-    public static function from(Offer $offer, Calendar $calendar) : self
+    public static function forOffer(string $format, Offer $offer, Slug $slug, Calendar $calendar) : self
     {
-        $hashids = new Hashids();
+        Assertion::inArray(\mb_strtolower($format), ['jpg', 'jpeg', 'png']);
+
         $slugify = new Slugify();
 
         return new self(
-            sprintf('%s-%s', $slugify->slugify(SeniorityLevels::toString($offer->position()->seniorityLevel()) . ' ' . $offer->position()->name() . ' ' . $offer->company()->name()), $hashids->encode(time() + random_int(0, 5_000))),
+            sprintf('/offer/%s/%s.%s', (string) $slug, $slugify->slugify(\mb_strtolower($offer->company()->name())), \mb_strtolower($format)),
             $offer->id(),
             $calendar->currentTime()
         );
     }
 
-    public function __toString() : string
+    public function path() : string
     {
-        return $this->slug;
+        return $this->path;
     }
 }

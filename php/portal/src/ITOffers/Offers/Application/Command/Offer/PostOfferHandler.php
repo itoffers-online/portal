@@ -21,6 +21,8 @@ use ITOffers\Component\Storage\FileStorage\File;
 use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Offer\Company;
+use ITOffers\Offers\Application\Offer\CompanyLogo;
+use ITOffers\Offers\Application\Offer\CompanyLogos;
 use ITOffers\Offers\Application\Offer\Contact;
 use ITOffers\Offers\Application\Offer\Contract;
 use ITOffers\Offers\Application\Offer\Description;
@@ -59,6 +61,8 @@ final class PostOfferHandler implements Handler
 
     private Slugs $slugs;
 
+    private CompanyLogos $companyLogos;
+
     private OfferPDFs $offerPDFs;
 
     private FileStorage $fileStorage;
@@ -76,6 +80,7 @@ final class PostOfferHandler implements Handler
         Specializations $specializations,
         Slugs $slugs,
         OfferPDFs $offerPDFs,
+        CompanyLogos $companyLogos,
         FileStorage $fileStorage,
         EventStream $eventStream
     ) {
@@ -89,6 +94,7 @@ final class PostOfferHandler implements Handler
         $this->fileStorage = $fileStorage;
         $this->extraOffers = $extraOffers;
         $this->eventStream = $eventStream;
+        $this->companyLogos = $companyLogos;
     }
 
     public function handles() : string
@@ -115,8 +121,14 @@ final class PostOfferHandler implements Handler
             }
         }
 
+        if ($command->offer()->company()->logoPath()) {
+            $companyLogo = CompanyLogo::forOffer(File::extension($command->offer()->company()->logoPath()), $offer, $slug, $this->calendar);
+            $this->fileStorage->upload(File::image($companyLogo->path(), $command->offer()->company()->logoPath()));
+            $this->companyLogos->add($companyLogo);
+        }
+
         if ($command->offerPDFPath()) {
-            $offerPDF = OfferPDF::forOffer($offer, $this->calendar);
+            $offerPDF = OfferPDF::forOffer($offer, $slug, $this->calendar);
             $this->fileStorage->upload(File::pdf($offerPDF->path(), $command->offerPDFPath()));
             $this->offerPDFs->add($offerPDF);
         }

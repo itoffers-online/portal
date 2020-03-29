@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "614490c079fa70c1a4dfc1f76335e715",
+    "content-hash": "ecd17c309c4a9b4622be561e6c095380",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -2060,54 +2060,6 @@
             "time": "2020-02-05T18:14:17+00:00"
         },
         {
-            "name": "league/flysystem-azure",
-            "version": "1.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/flysystem-azure.git",
-                "reference": "0b9838c4f75ee41bc390357b0350e9a62e3b3a1f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-azure/zipball/0b9838c4f75ee41bc390357b0350e9a62e3b3a1f",
-                "reference": "0b9838c4f75ee41bc390357b0350e9a62e3b3a1f",
-                "shasum": ""
-            },
-            "require": {
-                "league/flysystem": "~1.0",
-                "microsoft/azure-storage": "~0.10.1",
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Flysystem\\Azure\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Frank de Jonge",
-                    "email": "info@frenky.net"
-                }
-            ],
-            "description": "Flysystem adapter for Windows Azure",
-            "abandoned": "league/flysystem-azure-blob-storage",
-            "time": "2016-07-10T19:08:39+00:00"
-        },
-        {
             "name": "league/oauth2-client",
             "version": "2.4.1",
             "source": {
@@ -2229,65 +2181,6 @@
                 "oauth2"
             ],
             "time": "2019-11-11T16:54:51+00:00"
-        },
-        {
-            "name": "microsoft/azure-storage",
-            "version": "v0.10.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Azure/azure-storage-php.git",
-                "reference": "27de05b00c1858d6e1c6adbc489efa90e0342f82"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Azure/azure-storage-php/zipball/27de05b00c1858d6e1c6adbc489efa90e0342f82",
-                "reference": "27de05b00c1858d6e1c6adbc489efa90e0342f82",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "~6.0",
-                "php": ">=5.5.0"
-            },
-            "require-dev": {
-                "mikey179/vfsstream": "~1.6",
-                "pdepend/pdepend": "~2.2",
-                "phploc/phploc": "~2.1",
-                "phpmd/phpmd": "@stable",
-                "phpunit/phpunit": "~4.0",
-                "sebastian/phpcpd": "~2.0",
-                "squizlabs/php_codesniffer": "2.*",
-                "theseer/phpdox": "~0.8"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.10.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "MicrosoftAzure\\Storage\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Azure Storage PHP SDK",
-                    "email": "dmsh@microsoft.com"
-                }
-            ],
-            "description": "This project provides a set of PHP client libraries that make it easy to access Microsoft Azure storage APIs.",
-            "keywords": [
-                "azure",
-                "php",
-                "sdk",
-                "storage"
-            ],
-            "abandoned": "microsoft/azure-storage-blob;microsoft/azure-storage-queue;microsoft/azure-storage-table;microsoft/azure-storage-file",
-            "time": "2016-08-19T08:32:57+00:00"
         },
         {
             "name": "monolog/monolog",

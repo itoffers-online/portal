@@ -19,6 +19,8 @@ use ITOffers\Component\Storage\FileStorage;
 use ITOffers\Component\Storage\FileStorage\File;
 use ITOffers\Offers\Application\Command\Offer\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Application\Offer\Company;
+use ITOffers\Offers\Application\Offer\CompanyLogo;
+use ITOffers\Offers\Application\Offer\CompanyLogos;
 use ITOffers\Offers\Application\Offer\Contact;
 use ITOffers\Offers\Application\Offer\Contract;
 use ITOffers\Offers\Application\Offer\Description;
@@ -31,6 +33,7 @@ use ITOffers\Offers\Application\Offer\Offers;
 use ITOffers\Offers\Application\Offer\Position;
 use ITOffers\Offers\Application\Offer\Salary;
 use ITOffers\Offers\Application\Offer\Salary\Period;
+use ITOffers\Offers\Application\Offer\Slugs;
 use ITOffers\Offers\Application\User\Users;
 use Ramsey\Uuid\Uuid;
 
@@ -40,17 +43,23 @@ final class UpdateOfferHandler implements Handler
 
     private Offers $offers;
 
+    private Slugs $slugs;
+
     private Users $users;
 
     private OfferPDFs $offerPDFs;
+
+    private CompanyLogos $companyLogos;
 
     private FileStorage $fileStorage;
 
     public function __construct(
         Calendar $calendar,
         Offers $offers,
+        Slugs $slugs,
         Users $users,
         OfferPDFs $offerPDFs,
+        CompanyLogos $companyLogos,
         FileStorage $fileStorage
     ) {
         $this->calendar = $calendar;
@@ -58,6 +67,8 @@ final class UpdateOfferHandler implements Handler
         $this->users = $users;
         $this->offerPDFs = $offerPDFs;
         $this->fileStorage = $fileStorage;
+        $this->companyLogos = $companyLogos;
+        $this->slugs = $slugs;
     }
 
     public function handles() : string
@@ -68,8 +79,8 @@ final class UpdateOfferHandler implements Handler
     public function __invoke(UpdateOffer $command) : void
     {
         $user = $this->users->getById(Uuid::fromString($command->userId()));
-
         $offer = $this->offers->getById(Uuid::fromString($command->offerId()));
+        $slug = $this->slugs->getById($offer->id());
 
         $offer->update(
             $user,
@@ -121,10 +132,18 @@ final class UpdateOfferHandler implements Handler
             $this->calendar
         );
 
+        if ($command->offer()->company()->logoPath()) {
+            $this->companyLogos->removeFor($offer->id());
+
+            $companyLogo = CompanyLogo::forOffer(File::extension($command->offer()->company()->logoPath()), $offer, $slug, $this->calendar);
+            $this->fileStorage->upload(File::image($companyLogo->path(), $command->offer()->company()->logoPath()));
+            $this->companyLogos->add($companyLogo);
+        }
+
         if ($command->offerPDFPath()) {
             $this->offerPDFs->removeFor($offer->id());
 
-            $offerPDF = OfferPDF::forOffer($offer, $this->calendar);
+            $offerPDF = OfferPDF::forOffer($offer, $slug, $this->calendar);
             $this->fileStorage->upload(File::pdf($offerPDF->path(), $command->offerPDFPath()));
             $this->offerPDFs->add($offerPDF);
         }

@@ -145,9 +145,12 @@ final class ImagineOfferThumbnail implements OfferThumbnail
             ),
         );
 
-        // Specialization
-        $specLogo = $imagine->open($this->specializationLogoPath($offer->specializationSlug()))
-            ->resize(new Box($specializationSizeX, $specializationSizeY));
+        // Company Logo
+        $companyLogo = $offer->company()->logo()
+            ? $imagine->open($this->offerLogoPath($offer->company()->logo()->path()))
+            : $imagine->open($this->specializationLogoPath($offer->specializationSlug()));
+
+        $companyLogo->resize(new Box($specializationSizeX, $specializationSizeY));
 
         $image->draw()
             ->rectangle(
@@ -158,7 +161,7 @@ final class ImagineOfferThumbnail implements OfferThumbnail
             );
 
         $image->paste(
-            $specLogo,
+            $companyLogo,
             new Point($paddingLeft, $paddingTop),
         );
 
@@ -455,5 +458,10 @@ final class ImagineOfferThumbnail implements OfferThumbnail
     private function specializationLogoPath(string $specializationSlug) : string
     {
         return $this->projectRootDir . '/public/assets/img/specialization/jpg/' . $specializationSlug . '.jpg';
+    }
+
+    private function offerLogoPath(string $logoLocalPath) : string
+    {
+        return $this->projectRootDir . '/public/upload/' .  \ltrim($logoLocalPath, '/');
     }
 }

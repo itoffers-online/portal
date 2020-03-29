@@ -21,10 +21,7 @@ use ITOffers\Component\Storage\FileStorage\File;
 use ITOffers\Offers\Application\Assertion;
 use ITOffers\Offers\Application\Exception\Exception;
 use League\Flysystem\Adapter\Local;
-use League\Flysystem\Azure\AzureAdapter;
 use League\Flysystem\Filesystem;
-use MicrosoftAzure\Storage\Blob\Internal\IBlob;
-use MicrosoftAzure\Storage\Common\ServicesBuilder;
 use function sprintf;
 
 final class FlysystemStorage implements FileStorage
@@ -58,34 +55,6 @@ final class FlysystemStorage implements FileStorage
                     new Filesystem(
                         new Local(
                             $config['local_storage_path']
-                        )
-                    )
-                );
-
-                break;
-            case 'azure':
-                Assertion::allInArray(
-                    [
-                        'azure_storage_account_name',
-                        'azure_storage_account_key',
-                        'azure_storage_container',
-                    ],
-                    array_keys($config)
-                );
-
-                /** @var IBlob $blobService */
-                $blobService = ServicesBuilder::getInstance()->createBlobService(
-                    sprintf(
-                        'DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s',
-                        $config['azure_storage_account_name'],
-                        $config['azure_storage_account_key']
-                    )
-                );
-                $storage = new self(
-                    new Filesystem(
-                        new AzureAdapter(
-                            $blobService,
-                            $config['azure_storage_container']
                         )
                     )
                 );

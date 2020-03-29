@@ -35,10 +35,10 @@ class OfferPDF
         $this->createdAt = $createdAt;
     }
 
-    public static function forOffer(Offer $offer, Calendar $calendar) : self
+    public static function forOffer(Offer $offer, Slug $slug, Calendar $calendar) : self
     {
         return new self(
-            sprintf('/offer/%s/offer.pdf', $offer->id()->toString()),
+            sprintf('/offer/%s/offer.pdf', (string) $slug),
             $offer->id(),
             $calendar->currentTime()
         );

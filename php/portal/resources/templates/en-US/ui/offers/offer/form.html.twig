@@ -61,6 +61,9 @@
                 <div class="col-md-6 mb-3">
                     {{ form_row(form.company.url, {label: "Homepage", attr:{placeholder:"Company hompate url"}}) }}
                 </div>
+                <div class="col-md-12">
+                    {{ form_row(form.company.logo, {label: 'Logo', help: "Select File, square PNG/JPG logo on transparent or white background is the best choice."}) }}
+                </div>
             </div>
             {{
                 form_row(
@@ -263,10 +266,7 @@
             <h3 class="text-gray-500">PDF</h3>
         </div>
         <div class="col-md-10">
-            <p class="alert alert-success text-center small text-dark">
-                Remember, offer in PDF must be 100% accurate with the one described above.
-            </p>
-            {{ form_row(form.offer_pdf, {label: false, help: "Select File", attr: {class: "disable-save"}}) }}
+            {{ form_row(form.offer_pdf, {label: 'PDF File', help: "Select file, offer in PDF must be 100% accurate with the one described above."}) }}
         </div>
     </div>
     {% block offer_social_media %}
