@@ -113,10 +113,13 @@
 
         {% if offer.location.partiallyRemote or offer.location.atOffice %}
             var offerLocationMap = L.map('offer-location-map')
-                .setView([{{ offer.location.lat|raw }}, {{ offer.location.lng|raw }}], 16);
+                .setView([{{ offer.location.lat|raw }}, {{ offer.location.lng|raw }}], 15);
 
-            L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+            L.tileLayer('https://api.maptiler.com/maps/bright/{z}/{x}/{y}.png?key={{ map_tiler.key }}', {
+                tileSize: 512,
+                zoomOffset: -1,
+                minZoom: 1,
+                crossOrigin: true
             }).addTo(offerLocationMap);
 
             L.marker([{{ offer.location.lat|raw }}, {{ offer.location.lng|raw }}])
