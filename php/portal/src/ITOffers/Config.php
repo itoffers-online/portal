@@ -56,6 +56,8 @@ final class Config
 
     public const GOOGLE_ANALYTICS_CODE = 'google_analytics_code';
 
+    public const MAP_TILER_API_KEY = 'map_tiler_key';
+
     public const DB_HOST = 'db_host';
 
     public const DB_PORT = 'db_port';
@@ -130,6 +132,7 @@ final class Config
             self::RECAPTCHA_SECRET => getenv('ITOF_RECAPTCHA_SECRET'),
             self::GOOGLE_MAPS_KEY => getenv('ITOF_GOOGLE_MAPS_API_KEY'),
             self::GOOGLE_ANALYTICS_CODE => getenv('ITOF_GOOGLE_ANALYTICS_CODE'),
+            self::MAP_TILER_API_KEY => getenv('ITOF_MAP_TILER_API_KEY'),
             self::MAILER_CONFIG => getenv('ITOF_MAILER_CONFIG'),
             self::FB_APP_ID => getenv('ITOF_FB_APP_ID'),
             self::FB_APP_SECRET => getenv('ITOF_FB_APP_SECRET'),
