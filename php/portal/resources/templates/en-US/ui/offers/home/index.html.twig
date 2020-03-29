@@ -26,7 +26,7 @@
         <div class="row mt-4">
             {% for specialization in specializations %}
             <div class="col-md-2 mb-4">
-                <div class="card specialization" data-href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
+                <div class="card specialization border-0" data-href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">
                     <div class="card-title text-center mt-2 pb-2">
                         <h4 class="font-weight-light">
                             <a class="text-decoration-none" href="{{ url('specialization_offers', {specSlug: specialization.slug}) }}">

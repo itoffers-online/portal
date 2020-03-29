@@ -124,9 +124,9 @@
         <div class="row offers">
             {% for offer in offers %}
                 <div data-href="{{ url('offer', {'offerSlug': offer.slug}) }}" data-offer-id="{{ offer.id }}" class="col-lg-4 mb-4">
-                    <div class="card h-100 offer">
+                    <div class="card h-100 offer border-0">
                         <div class="card-body pl-lg-5 pr-lg-5 pt-lg-4 border-bottom h-70">
-                            <div class="card-title mb-6">
+                            <div class="card-title mb-4">
                                 <h4 class="font-weight-light">
                                     <a class="text-dark text-decoration-none" href="{{ url('offer', {'offerSlug': offer.slug}) }}">
                                         {{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}
@@ -134,19 +134,48 @@
                                 </h4>
                                 <h6 class="font-weight-light">Offer language: {{ offer.locale|offer_locale_country_flag }}</h6>
                             </div>
+                            <section class="mb-4">
+                                <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">{{ offer.position.seniorityLevel|offer_seniority_level_name }}</span>
+                                <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">{{ offer.contract.type }}</span>
+                                {% if offer.location.partiallyRemote %}
+                                    <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">Partially Remote</span>
+                                {% elseif offer.location.atOffice %}
+                                    <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">At Office</span>
+                                {% else %}
+                                    <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">Remote</span>
+                                {% endif %}
+                            </section>
                             <p>
                                 <a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a>
                             </p>
                             {% if offer.salary %}
                                 <section>
                                     <strong>{{ offer.salary.currencyCode }} <span data-salary-min="{{ offer.salary.min }}">{{ offer.salary.min|offer_salary_integer }}</span> - <span data-salary-max="{{ offer.salary.max }}">{{ offer.salary.max|offer_salary_integer }}</span></strong>
-                                    <small><strong>{% if offer.salary.isNet %}net{% else %}gross{% endif %} per {{ offer.salary.periodType }}</strong></small>
+                                    <small>{% if offer.salary.isNet %}net{% else %}gross{% endif %} per {{ offer.salary.periodType }}</small>
                                 </section>
                             {% endif %}
 
                         </div>
                         <div class="card-body border-bottom small pl-lg-5 pr-lg-5">
-                            <i class="text-green fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}<span data-toggle="tooltip" data-placement="top" title="{{ offer.location.countryCode|offer_location_country_name }}">{{ offer.location.countryCode|offer_location_country_flag }}</span> {{ offer.location.city }}{% else %}Remote{% endif %}
+                            <div class="row">
+                                <div class="col-lg-11">
+                                    <i class="text-green fas fa-map-marker-alt mr-2"></i>
+                                    {% if offer.location.partiallyRemote or offer.location.atOffice %}
+                                        {{ offer.location.countryCode|offer_location_country_name }}, {{ offer.location.city }}
+                                    {% else %}
+                                        Remote
+                                    {% endif %}
+                                </div>
+                                <div class="col-lg-1">
+                                    {% if offer.location.partiallyRemote %}
+                                        <img src="/assets/img/icon/png/partially-remote.png" class="location-icon" />
+                                    {% elseif offer.location.atOffice %}
+                                        <img src="/assets/img/icon/png/at-office.png" class="location-icon" />
+                                    {% else %}
+                                        <img src="/assets/img/icon/png/fully-remote.png" class="location-icon" />
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body small font-weight-light pl-lg-5 pr-lg-5">
                             <div class="row">
@@ -154,7 +183,9 @@
                                     {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
                                 </div>
                                 <div class="col-6 col-lg-6 text-right">
-                                    <a class="btn btn-outline-primary btn-sm" href="{{ url('offer', {'offerSlug': offer.slug}) }}">more <i class="fas fa-long-arrow-alt-right"></i> </a>
+                                    <a class="btn btn-link p-0" href="{{ url('offer', {'offerSlug': offer.slug}) }}">
+                                        <img class="offer-read-more" src="/assets/img/icon/svg/arrow-right-blue.svg" alt="Read more about the offer"/>
+                                    </a>
                                 </div>
                             </div>
                         </div>

@@ -3,5 +3,5 @@
 {% elseif offer|offer_older_than(itof.old_offer_days - 5) %}
     <span class="text-warning" data-toggle="tooltip" data-placement="top" title="This offer is around few days already."><i class="text-gray-500 fas fa-clock mr-2"></i> {{ offer.createdAt|time_diff }}</span>
 {% else %}
-    <span data-toggle="tooltip" data-placement="top" title="Brand new!"><i class="text-gray-500 fas fa-clock mr-2"></i> {{ offer.createdAt|time_diff }}</span>
+    <span data-toggle="tooltip" data-placement="top" title="Brand new!"><i class="text-gray-500 far fa-clock mr-2"></i> {{ offer.createdAt|time_diff }}</span>
 {% endif %}
