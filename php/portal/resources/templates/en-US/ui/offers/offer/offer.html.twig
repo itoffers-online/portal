@@ -149,14 +149,12 @@
         <div class="row pb-4 d-none d-lg-flex">
             <div class="col-lg-6 text-left">
                 {% if previousOffer %}
-                    <a href="{{ url('offer', {'offerSlug': previousOffer.slug}) }}" class="btn btn-link">Prev</a>
-                {% else %}
-                    <a href="#" class="btn btn-link disabled">Prev</a>
+                    <a href="{{ url('offer', {'offerSlug': previousOffer.slug}) }}" class="btn btn-link"><img class="offer-previous mr-2" src="/assets/img/icon/svg/arrow-left-blue.svg" alt="Open previous offer"/> Prev</a>
                 {% endif %}
             </div>
             <div class="col-lg-6 text-right">
                 {% if nextOffer %}
-                    <a href="{{ url('offer', {'offerSlug': nextOffer.slug}) }}" class="btn btn-link">Next</a>
+                    <a href="{{ url('offer', {'offerSlug': nextOffer.slug}) }}" class="btn btn-link">Next <img class="offer-next ml-2" src="/assets/img/icon/svg/arrow-right-blue.svg" alt="Open next offer"/></a>
                 {% endif %}
             </div>
         </div>
@@ -190,10 +188,15 @@
         </div>
         <div class="row offer-header d-lg-none text-center">
             <div class="col-12">
-                <h1 class="font-weight-light mb-4">{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</h1>
+                <h1 class="font-weight-light mb-2">{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</h1>
                 <h4 class="font-weight-light"><a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a></h4>
                 {% if userId and offer.postedBy(userId)%}
-                    <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger btn-sm mt-3"><i class="fas fa-times"></i> remove</a>
+                    <a href="{{ url('offer_remove_confirmation', {offerSlug: offer.slug}) }}" data-remove-offer class="btn btn-danger btn-sm mt-3 mb-3"><i class="fas fa-times"></i> remove</a>
+                    {% if offer|offer_older_than_hours(constant('ITOffers\\Offers\\Application\\Offer\\Offer::INSTANT_EDIT_TIME_HOURS')) == false %}
+                        <a class="btn btn-primary btn-sm mt-3 mb-3" href="{{ url('offer_edit', {specSlug: offer.specializationSlug, 'offer-slug': offer.slug })  }}"><i class="far fa-edit"></i> edit</a>
+                    {% else %}
+                        <a class="btn btn-primary btn-sm mt-3 mb-3 disabled" href="#" disabled="disabled"><i class="far fa-edit"></i> edit</a>
+                    {% endif %}
                 {% endif %}
             </div>
             <div class="col-12">
@@ -369,7 +372,7 @@
                         <div class="row">
                             <div class="col-lg-12 pb-4 pt-4">
                                 <h6 class="small text-gray-500 font-weight-bold">Location</h6>
-                                <small><i class="text-green fas fa-map-marker-alt mr-2"></i> <span data-toggle="tooltip" data-placement="top" title="{{ offer.location.countryCode|offer_location_country_name }}">{{ offer.location.countryCode|offer_location_country_flag }}</span> {{ offer.location.city }}</small>
+                                <small><i class="text-green fas fa-map-marker-alt mr-2"></i> {{ offer.location.countryCode|offer_location_country_name }}, {{ offer.location.city }}</small>
                                 <section class="mt-4 d-none d-lg-block">
                                     <div id="offer-location-map"></div>
                                 </section>
@@ -380,72 +383,70 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div id="offer-apply" class="card d-none d-lg-block">
-                    <div class="card-body pl-5 pr-5 pt-4 border-bottom">
-                        <div class="card-title text-center">
-                            <h5 class="font-weight-light">{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</h5>
-                        </div>
-                        <p class="text-center">
-                            <a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a>
-                        </p>
-                        {% if offer.salary %}
-                            <section class="text-center">
-                                <h5 class="font-weight-bold">{{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }}</h5>
-                                <h5>{% if offer.salary.isNet %}net{% else %}gross{% endif %} per {{ offer.salary.periodType }}</h5>
-                            </section>
-                        {% endif %}
-
-                        <section class="text-center mt-5">
-                            <div id="job-apply-info" class="d-none">
-                                Loading...
+                <section id="offer-sticky">
+                    <div class="card d-none d-lg-block">
+                        <div class="card-body pl-5 pr-5 pt-4 border-bottom">
+                            <div class="card-title text-center">
+                                <h5 class="font-weight-light">{{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}</h5>
                             </div>
-                            <section id="google-recaptcha"></section>
-                            <button class="btn btn-primary btn-block btn-lg p-3" id="job-apply">Apply</button>
+                            <p class="text-center">
+                                <a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a>
+                            </p>
+                            {% if offer.salary %}
+                                <section class="text-center">
+                                    <h5 class="font-weight-bold">{{ offer.salary.currencyCode }} {{ offer.salary.min|offer_salary_integer }} - {{ offer.salary.max|offer_salary_integer }}</h5>
+                                    <h5>{% if offer.salary.isNet %}net{% else %}gross{% endif %} per {{ offer.salary.periodType }}</h5>
+                                </section>
+                            {% endif %}
+
+                            <section class="text-center mt-5">
+                                <div id="job-apply-info" class="d-none">
+                                    Loading...
+                                </div>
+                                <section id="google-recaptcha"></section>
+                                <button class="btn btn-primary btn-block btn-lg p-3" id="job-apply">Apply</button>
+                            </section>
+                        </div>
+                        <div class="card-body border-bottom small pl-5 pr-5">
+                            <i class="text-green fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}{{ offer.location.countryCode|offer_location_country_name }}, {{ offer.location.city }}{% else %}Remote{% endif %}
+                        </div>
+                        <div class="card-body small font-weight-light pl-5 pr-5">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
+                                </div>
+                                <div class="col-lg-6 text-right">
+                                    {% if facebookPost %}
+                                        <a href="{{ facebookPost.id|fb_group_post }}" class="d-block"><i class="fab fa-facebook"></i> group/{{ offer.specializationSlug }}</a>
+                                    {% endif %}
+
+                                    {% if tweet %}
+                                        <a href="{{ tweet.url(specialization) }}" class="d-block"><i class="fab fa-twitter"></i> @{{ specialization.twitterChannel.screenName }}</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tags" class="pt-4 text-right d-none d-lg-block">
+                        <section>
+                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">{{ offer.specializationSlug|specialization_name }}</span>
+                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">{{ offer.position.seniorityLevel|offer_seniority_level_name }}</span>
+                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">{{ offer.contract.type }}</span>
+                            {% if offer.location.partiallyRemote %}
+                                <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">Partially Remote</span>
+                            {% elseif offer.location.atOffice %}
+                                <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">At Office</span>
+                            {% else %}
+                                <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">Remote</span>
+                            {% endif %}
+                            {% if offer.salary %}
+                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">{{ offer.salary.currencyCode }}</span>
+                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">Per {{ offer.salary.periodType|capitalize }}</span>
+                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">{% if offer.salary.net %}Net{% else %}Gross{% endif %}</span>
+                            {% endif %}
                         </section>
                     </div>
-                    <div class="card-body border-bottom small pl-5 pr-5">
-                        <i class="text-green fas fa-map-marker-alt mr-2"></i> {% if offer.location.partiallyRemote or offer.location.atOffice %}<span data-toggle="tooltip" data-placement="top" title="{{ offer.location.countryCode|offer_location_country_name }}">{{ offer.location.countryCode|offer_location_country_flag }}</span> {{ offer.location.city }}{% else %}Remote{% endif %}
-                    </div>
-                    <div class="card-body small font-weight-light pl-5 pr-5">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
-                            </div>
-                            <div class="col-lg-6 text-right">
-                                {% if facebookPost %}
-                                    <a href="{{ facebookPost.id|fb_group_post }}" class="d-block"><i class="fab fa-facebook"></i> group/{{ offer.specializationSlug }}</a>
-                                {% endif %}
-
-                                {% if tweet %}
-                                    <a href="{{ tweet.url(specialization) }}" class="d-block"><i class="fab fa-twitter"></i> @{{ specialization.twitterChannel.screenName }}</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="tags" class="pt-4 text-right d-none d-lg-block">
-                    <section class="mb-2">
-                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted mr-2">{{ offer.specializationSlug|specialization_name }}</span>
-                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">{{ offer.position.seniorityLevel|offer_seniority_level_name }}</span>
-                    </section>
-                    <section class="mb-2">
-                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted mr-2">{{ offer.contract.type }}</span>
-                        {% if offer.location.partiallyRemote %}
-                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">Partially Remote</span>
-                        {% elseif offer.location.atOffice %}
-                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">At Office</span>
-                        {% else %}
-                            <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">Remote</span>
-                        {% endif %}
-                    </section>
-                    <section class="mb-2">
-                        {% if offer.salary is defined %}
-                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted mr-2">{{ offer.salary.currencyCode }}</span>
-                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted mr-2">Per {{ offer.salary.periodType|capitalize }}</span>
-                        <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-muted">{% if offer.salary.net %}Net{% else %}Gross{% endif %}</span>
-                        {% endif %}
-                    </section>
-                </div>
+                </section>
             </div>
         </div>
     </div>
