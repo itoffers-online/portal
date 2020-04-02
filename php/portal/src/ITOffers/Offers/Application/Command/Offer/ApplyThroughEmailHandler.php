@@ -16,6 +16,7 @@ namespace ITOffers\Offers\Application\Command\Offer;
 use function array_map;
 use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Component\CQRS\System\Handler;
+use ITOffers\Component\Mailer\Attachment as EmailAttachment;
 use ITOffers\Component\Mailer\Attachments;
 use ITOffers\Component\Mailer\Email;
 use ITOffers\Component\Mailer\Mailer;
@@ -90,7 +91,7 @@ final class ApplyThroughEmailHandler implements Handler
             new Recipients(new Recipient($offer->contact()->email(), $offer->contact()->name())),
             new Attachments(
                 ...array_map(
-                    fn (Attachment $attachment) => new Attachment($attachment->filePath()),
+                    fn (Attachment $attachment) => new EmailAttachment($attachment->filePath()),
                     $command->attachments()
                 )
             )

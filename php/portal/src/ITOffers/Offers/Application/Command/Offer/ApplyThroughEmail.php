@@ -68,6 +68,9 @@ final class ApplyThroughEmail implements Command
         return $this->htmlBody;
     }
 
+    /**
+     * @return Attachment[]
+     */
     public function attachments() : array
     {
         return $this->attachments;
