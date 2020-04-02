@@ -125,18 +125,17 @@
             {% for offer in offers %}
                 <div data-href="{{ url('offer', {'offerSlug': offer.slug}) }}" data-offer-id="{{ offer.id }}" class="col-lg-4 mb-4">
                     <div class="card h-100 offer border-0">
-                        <div class="card-body pl-lg-5 pr-lg-5 pt-lg-4 border-bottom h-70">
+                        <div class="card-body pl-lg-4 pr-lg-4 pt-lg-4 border-bottom h-70">
                             <div class="card-title mb-4">
-                                <h4 class="font-weight-light">
+                                <h4 class="font-weight-light offer-title">
                                     <a class="text-dark text-decoration-none" href="{{ url('offer', {'offerSlug': offer.slug}) }}">
                                         {{ offer.position.seniorityLevel|offer_seniority_level_name }} {{ offer.position.name }}
                                     </a>
                                 </h4>
-                                <h6 class="font-weight-light">Offer language: {{ offer.locale|offer_locale_country_flag }}</h6>
+                                <h6 class="font-weight-light"><a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a></h6>
                             </div>
                             <section class="mb-4">
                                 <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">{{ offer.position.seniorityLevel|offer_seniority_level_name }}</span>
-                                <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">{{ offer.contract.type }}</span>
                                 {% if offer.location.partiallyRemote %}
                                     <span class="badge badge-pill pt-2 pb-2 pl-3 pr-3 border text-gray-800 font-weight-light mb-2 mr-1">Partially Remote</span>
                                 {% elseif offer.location.atOffice %}
@@ -146,17 +145,18 @@
                                 {% endif %}
                             </section>
                             <p>
-                                <a target="_blank" href="{{ offer.company.url }}">{{ offer.company.name }}</a>
+                                Offer language: {{ offer.locale|offer_locale_country_flag }}
                             </p>
                             {% if offer.salary %}
                                 <section>
+                                    <small>{{ offer.contract.type }}</small>
                                     <strong>{{ offer.salary.currencyCode }} <span data-salary-min="{{ offer.salary.min }}">{{ offer.salary.min|offer_salary_integer }}</span> - <span data-salary-max="{{ offer.salary.max }}">{{ offer.salary.max|offer_salary_integer }}</span></strong>
                                     <small>{% if offer.salary.isNet %}net{% else %}gross{% endif %} per {{ offer.salary.periodType }}</small>
                                 </section>
                             {% endif %}
 
                         </div>
-                        <div class="card-body border-bottom small pl-lg-5 pr-lg-5">
+                        <div class="card-body border-bottom small pl-lg-4 pr-lg-4">
                             <div class="row">
                                 <div class="col-lg-11">
                                     <i class="text-green fas fa-map-marker-alt mr-2"></i>
@@ -177,7 +177,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body small font-weight-light pl-lg-5 pr-lg-5">
+                        <div class="card-body small font-weight-light pl-lg-4 pr-lg-4">
                             <div class="row">
                                 <div class="col-6 col-lg-6">
                                     {% include '@offers/offer/offer/_created_at.html.twig' with {offer: offer} only %}
