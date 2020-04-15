@@ -19,7 +19,7 @@ final class Skill
 
     private bool $required;
 
-    private ?int $experienceYears;
+    private ?int $experienceYears = null;
 
     public function __construct(string $name, bool $required, ?int $experienceYears = null)
     {

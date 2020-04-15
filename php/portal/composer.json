@@ -74,13 +74,12 @@
         "symfony/twig-bundle": "^4.4",
         "symfony/validator": "^4.4",
         "symfony/yaml": "^4.4",
-        "thecodingmachine/safe": "^0.1.13",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.6"
     },
     "require-dev": {
         "ergebnis/phpstan-rules": "^0.14.2",
-        "friendsofphp/php-cs-fixer": "dev-master#70e0c017afd31ad66c1171c0f6343c13a9a387b5",
+        "friendsofphp/php-cs-fixer": "^2.16",
         "infection/infection": "^0.15.0",
         "norberttech/md-link-linter": "^0.0.8",
         "nyholm/psr7": "^1.2",

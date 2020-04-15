@@ -17,15 +17,15 @@ final class Location
 {
     private bool $remote;
 
-    private ?string $countryCode;
+    private ?string $countryCode = null;
 
-    private ?string $city;
+    private ?string $city = null;
 
-    private ?string $address;
+    private ?string $address = null;
 
-    private ?float $lat;
+    private ?float $lat = null;
 
-    private ?float $lng;
+    private ?float $lng = null;
 
     public function __construct(bool $remote, ?string $countryCode = null, ?string $city = null, ?string $address = null, ?float $lat = null, ?float $lng = null)
     {

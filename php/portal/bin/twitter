@@ -7,14 +7,14 @@ use App\Twitter\Command\StatusUpdate;
 use App\Twitter\Command\VerifyCredentials;
 use ITOffers\ITOffersOnline;
 use Symfony\Component\Console\Application;
-use function App\symfony;
+use function App\initializeSymfony;
 use function ITOffers\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$hireInSocial = symfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOnline::class);
+$hireInSocial = initializeSymfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOnline::class);
 
 $application = new Application('itoffers.online - Twitter');
 

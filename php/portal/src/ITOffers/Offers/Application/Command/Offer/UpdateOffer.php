@@ -29,7 +29,7 @@ final class UpdateOffer implements Command
 
     private Offer $offer;
 
-    private ?string $offerPDFPath;
+    private ?string $offerPDFPath = null;
 
     public function __construct(
         string $offerId,

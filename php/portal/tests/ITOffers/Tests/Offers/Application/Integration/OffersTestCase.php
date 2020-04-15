@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Integration;
 
-use function App\symfony;
+use function App\initializeSymfony;
 use ITOffers\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use ITOffers\Config;
 use ITOffers\ITOffersOnline;
@@ -45,7 +45,7 @@ abstract class OffersTestCase extends TestCase
          * and to itoffers.online when needed but it would increase the complexity of the project,
          * in this case it's justified to keep this dependency here.
          */
-        $symfony = symfony(bootstrap(ROOT_DIR));
+        $symfony = initializeSymfony(bootstrap(ROOT_DIR));
         $hireInSocial = $symfony->getContainer()->get(ITOffersOnline::class);
 
         // So we can assert that event was published to the topic

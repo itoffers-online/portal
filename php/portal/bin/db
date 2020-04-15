@@ -15,14 +15,14 @@ use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Schema\ITOffersSchemaProvider;
 use ITOffers\Config;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use function App\symfony;
+use function App\initializeSymfony;
 use function ITOffers\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$itoffers = symfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOnline::class);
+$itoffers = initializeSymfony(bootstrap($projectRootPath))->getContainer()->get(ITOffersOnline::class);
 
 $connection = $itoffers->dbal();
 $entityManager = $itoffers->orm();

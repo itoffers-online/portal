@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers;
 
-use function \Safe\json_decode;
 use function array_key_exists;
 use RuntimeException;
-use Safe\Exceptions\JsonException;
 
 final class Config
 {
@@ -177,12 +175,9 @@ final class Config
         return (bool) $this->config[$key];
     }
 
-    /**
-     * @throws JsonException
-     */
     public function getJson(string $key) : array
     {
-        return json_decode($this->getString($key), true);
+        return json_decode($this->getString($key), true, 512, JSON_THROW_ON_ERROR);
     }
 
     public function getInt(string $key) : int

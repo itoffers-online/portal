@@ -17,7 +17,7 @@ final class Offers
 {
     private int $count;
 
-    private ?\DateTimeImmutable $latestOfferDate;
+    private ?\DateTimeImmutable $latestOfferDate = null;
 
     private function __construct()
     {

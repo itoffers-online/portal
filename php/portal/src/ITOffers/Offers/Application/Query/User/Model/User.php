@@ -19,9 +19,9 @@ final class User
 
     private string $email;
 
-    private ?string $fbAppId;
+    private ?string $fbAppId = null;
 
-    private ?string $linkedInAppId;
+    private ?string $linkedInAppId = null;
 
     private bool $isBlocked;
 

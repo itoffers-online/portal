@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Web;
 
-use function App\symfony;
+use function App\initializeSymfony;
 use App\SymfonyKernel;
 use ITOffers\Config;
 use ITOffers\ITOffersOnline;
@@ -39,7 +39,7 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
 
     protected static function createKernel(array $options = [])
     {
-        return symfony(bootstrap(ROOT_DIR));
+        return initializeSymfony(bootstrap(ROOT_DIR));
     }
 
     public function setUp() : void

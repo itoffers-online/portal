@@ -27,7 +27,7 @@ final class Parameters
 
     private Position $position;
 
-    private ?Salary $salary;
+    private ?Salary $salary = null;
 
     public function __construct(
         Company $company,
