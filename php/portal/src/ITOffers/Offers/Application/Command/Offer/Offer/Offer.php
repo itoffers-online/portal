@@ -21,7 +21,7 @@ final class Offer
 
     private Location $location;
 
-    private ?Salary $salary;
+    private ?Salary $salary = null;
 
     private Contract $contract;
 

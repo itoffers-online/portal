@@ -35,7 +35,7 @@ final class Offer
 
     private string $locale;
 
-    private ?UuidInterface $userId;
+    private ?UuidInterface $userId = null;
 
     private string $specializationSlug;
 
@@ -45,7 +45,7 @@ final class Offer
 
     private int $applicationsCount;
 
-    private ?OfferPDF $offerPDF;
+    private ?OfferPDF $offerPDF = null;
 
     public function __construct(
         UuidInterface $id,

@@ -31,7 +31,7 @@ final class PostOffer implements Command
 
     private Offer $offer;
 
-    private ?string $offerPDFPath;
+    private ?string $offerPDFPath = null;
 
     public function __construct(
         string $offerId,

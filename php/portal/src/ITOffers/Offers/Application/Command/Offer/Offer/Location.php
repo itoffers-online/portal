@@ -19,13 +19,13 @@ final class Location
 {
     private bool $remote;
 
-    private ?string $countryCode;
+    private ?string $countryCode = null;
 
-    private ?string $city;
+    private ?string $city = null;
 
-    private ?string $address;
+    private ?string $address = null;
 
-    private ?LatLng $latLng;
+    private ?LatLng $latLng = null;
 
     public function __construct(bool $remote, ?string $countryCode = null, ?string $city = null, ?string $address = null, ?LatLng $latLng = null)
     {

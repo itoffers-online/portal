@@ -13,6 +13,3 @@ parameters:
     - 'phpunit80'
     - 'phpunit-yield-data-provider'
     - 'twig-underscore-to-namespace'
-
-services:
-  Rector\CodingStyle\Rector\Namespace_\ImportFullyQualifiedNamesRector: null

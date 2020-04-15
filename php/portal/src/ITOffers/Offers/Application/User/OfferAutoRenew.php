@@ -31,7 +31,7 @@ class OfferAutoRenew
 
     private \DateTimeImmutable $createdAt;
 
-    private ?\DateTimeImmutable $renewAfter;
+    private ?\DateTimeImmutable $renewAfter = null;
 
     private ?string $offerId = null;
 

@@ -24,14 +24,14 @@ use ITOffers\Offers\UserInterface\OfferExtension;
 use ITOffers\Offers\UserInterface\SpecializationExtension;
 use Symfony\Component\Console\Application;
 use App\Offers\Command\Offer\Test;
-use function App\symfony;
+use function App\initializeSymfony;
 use function ITOffers\Offers\Infrastructure\bootstrap;
 
 $projectRootPath = dirname(__DIR__);
 
 require $projectRootPath . '/src/autoload.php';
 
-$symfony = symfony(bootstrap($projectRootPath));
+$symfony = initializeSymfony(bootstrap($projectRootPath));
 $itOffers = $symfony->getContainer()->get(ITOffersOnline::class);
 
 $application = new Application('itoffers.online - Offers');

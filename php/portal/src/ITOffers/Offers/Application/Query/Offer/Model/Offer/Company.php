@@ -21,7 +21,7 @@ final class Company
 
     private string $description;
 
-    private ?CompanyLogo $companyLogo;
+    private ?CompanyLogo $companyLogo = null;
 
     public function __construct(string $name, string $url, string $description, ?CompanyLogo $companyLogo)
     {

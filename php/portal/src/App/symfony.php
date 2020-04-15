@@ -15,7 +15,7 @@ namespace App;
 
 use ITOffers\Config;
 
-function symfony(Config $config) : SymfonyKernel
+function initializeSymfony(Config $config) : SymfonyKernel
 {
     $kernel = new SymfonyKernel($config);
     $kernel->boot();

@@ -21,7 +21,7 @@ final class Company
 
     private string $description;
 
-    private ?string $logoPath;
+    private ?string $logoPath = null;
 
     public function __construct(string $name, string $url, string $description, ?string $logoPath = null)
     {

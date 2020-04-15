@@ -17,7 +17,7 @@ final class Recipient
 {
     private string $email;
 
-    private ?string $name;
+    private ?string $name = null;
 
     private bool $bcc;
 
