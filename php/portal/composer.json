@@ -35,7 +35,7 @@
         "ext-pdo_pgsql": "*",
         "abraham/twitteroauth": "^1.1",
         "aeon-php/calendar": "dev-master",
-        "aeon-php/calendar-doctrine": "master-dev",
+        "aeon-php/calendar-doctrine": "dev-master",
         "beberlei/assert": "^3.2",
         "cocur/slugify": "^3.2",
         "ddeboer/imap": "^1.7",
@@ -86,14 +86,14 @@
         "infection/infection": "^0.15.0",
         "norberttech/md-link-linter": "^0.0.8",
         "nyholm/psr7": "^1.2",
-        "phpstan/phpdoc-parser": "0.4.2",
+        "phpstan/phpdoc-parser": "0.4.7",
         "phpstan/phpstan": "^0.12.3",
         "phpstan/phpstan-doctrine": "^0.12.6",
         "phpstan/phpstan-phpunit": "^0.12.3",
         "phpstan/phpstan-symfony": "^0.12.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.0",
         "phpunit/phpunit": "^8.0",
-        "rector/rector": "^0.7.2",
+        "rector/rector": "^0.7.31",
         "sensiolabs-de/deptrac-shim": "^0.6.0",
         "structurizr-php/structurizr-php": "@dev",
         "symfony/browser-kit": "^4.4",
@@ -119,7 +119,8 @@
             "SYMFONY_ENV=prod composer install --no-interaction --optimize-autoloader --no-dev"
         ],
         "cs:php:fix": [
-            "php-cs-fixer fix"
+            "php-cs-fixer fix",
+            "./vendor/bin/rector process"
         ],
         "test": [
             "rm -rf ./var/phpunit",
@@ -139,7 +140,8 @@
         ],
         "test:php:cs": [
             "phpstan analyse -c phpstan.neon",
-            "php-cs-fixer fix -v --dry-run --using-cache=no"
+            "php-cs-fixer fix -v --dry-run --using-cache=no",
+            "./vendor/bin/rector process --dry-run"
         ],
         "db:reset": [
             "@db:drop",
