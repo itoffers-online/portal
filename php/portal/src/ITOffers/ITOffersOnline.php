@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers;
 
+use Aeon\Calendar\Doctrine\Gregorian\DateTimeType;
 use Aeon\Calendar\Gregorian\Calendar;
 use Aeon\Calendar\Gregorian\GregorianCalendar;
 use Aeon\Calendar\Gregorian\GregorianCalendarStub;
@@ -146,6 +147,10 @@ final class ITOffersOnline
     {
         if (null !== $this->connection) {
             return $this->connection;
+        }
+
+        if (!Type::hasType(DateTimeType::NAME)) {
+            Type::addType(DateTimeType::NAME, DateTimeType::class);
         }
 
         if (!Type::hasType(SalaryType::NAME)) {

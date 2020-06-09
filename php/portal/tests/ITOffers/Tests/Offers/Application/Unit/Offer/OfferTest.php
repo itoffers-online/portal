@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Unit\Offer;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Offer\Locale;
@@ -58,7 +59,7 @@ final class OfferTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('This offer can\'t be updated anymore');
 
-        $calendar->setNow(\Aeon\Calendar\Gregorian\DateTime::fromString('+5 hours'));
+        $calendar->setNow(DateTime::fromString('+5 hours'));
 
         $offer->update(
             $user,

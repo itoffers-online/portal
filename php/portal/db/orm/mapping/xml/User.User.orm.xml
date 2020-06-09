@@ -8,8 +8,8 @@
             <generator strategy="NONE" />
         </id>
         <field name="email" column="email_address" type="text" length="512" />
-        <field name="createdAt" type="datetime_immutable" />
-        <field name="blockedAt" type="datetime_immutable" nullable="true"/>
+        <field name="createdAt" type="aeon_datetime" />
+        <field name="blockedAt" type="aeon_datetime" nullable="true"/>
         <field name="fbUserAppId" nullable="true" />
         <field name="linkedInUserAppId" nullable="true" />
 

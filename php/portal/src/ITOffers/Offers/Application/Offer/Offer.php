@@ -198,7 +198,7 @@ class Offer
             throw new Exception("User is not allowed to update the offer");
         }
 
-        if ($this->createdAt->modify(\sprintf('+%d hours', self::INSTANT_EDIT_TIME_HOURS)) < $calendar->now()) {
+        if ($this->createdAt->modify(\sprintf('+%d hours', self::INSTANT_EDIT_TIME_HOURS))->isBeforeOrEqual($calendar->now())) {
             throw new Exception("This offer can't be updated anymore");
         }
 

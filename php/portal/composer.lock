@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c4f681b26a12a15cde2eed799309000",
+    "content-hash": "02627aa9409945ccafa80986570e10d3",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -113,6 +113,61 @@
                 "sleep"
             ],
             "time": "2020-06-08T21:07:15+00:00"
+        },
+        {
+            "name": "aeon-php/calendar-doctrine",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aeon-php/calendar-doctrine.git",
+                "reference": "2463062229005be960327c5a90251cf3475c38d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aeon-php/calendar-doctrine/zipball/2463062229005be960327c5a90251cf3475c38d8",
+                "reference": "2463062229005be960327c5a90251cf3475c38d8",
+                "shasum": ""
+            },
+            "require": {
+                "aeon-php/calendar": "master-dev",
+                "php": ">=7.4.2",
+                "webmozart/assert": "^1.8"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^2.6",
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "infection/infection": "^0.16.3",
+                "phpstan/phpstan": "^0.12.25",
+                "phpstan/phpstan-phpunit": "^0.12.8",
+                "phpstan/phpstan-webmozart-assert": "^0.12.4",
+                "phpunit/phpunit": "^9.1",
+                "psalm/plugin-phpunit": "^0.10.1",
+                "vimeo/psalm": "^3.11"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Aeon\\": [
+                        "src/Aeon"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Aeaon PHP Framework integration with Doctrine",
+            "keywords": [
+                "calendar",
+                "doctrine",
+                "immutable"
+            ],
+            "time": "2020-06-08T20:45:11+00:00"
         },
         {
             "name": "beberlei/assert",
@@ -11074,6 +11129,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "aeon-php/calendar": 20,
+        "aeon-php/calendar-doctrine": 20,
         "structurizr-php/structurizr-php": 20
     },
     "prefer-stable": false,

@@ -35,6 +35,7 @@
         "ext-pdo_pgsql": "*",
         "abraham/twitteroauth": "^1.1",
         "aeon-php/calendar": "dev-master",
+        "aeon-php/calendar-doctrine": "master-dev",
         "beberlei/assert": "^3.2",
         "cocur/slugify": "^3.2",
         "ddeboer/imap": "^1.7",
