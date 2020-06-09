@@ -47,7 +47,7 @@ final class InMemoryOffers implements Offers
         ));
     }
 
-    public function postedBy(User $user, \DateTimeImmutable $since) : UserOffers
+    public function postedBy(User $user, \Aeon\Calendar\Gregorian\DateTime $since) : UserOffers
     {
         return new UserOffers(
             $user,

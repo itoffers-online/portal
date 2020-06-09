@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer\Event;
 
+use Aeon\Calendar\Gregorian\DateTime;
+use Aeon\Calendar\Gregorian\GregorianCalendar;
 use ITOffers\Component\CQRS\EventStream\Event;
 use ITOffers\Offers\Application\Offer\Offer;
 use Ramsey\Uuid\Uuid;
@@ -22,14 +24,14 @@ final class OfferPostedEvent implements Event
 {
     private UuidInterface $id;
 
-    private \DateTimeImmutable $occurredAt;
+    private DateTime $occurredAt;
 
     private array $payload;
 
     public function __construct(Offer $offer)
     {
         $this->id = Uuid::uuid4();
-        $this->occurredAt = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $this->occurredAt = GregorianCalendar::UTC()->now();
         $this->payload = [
             'offerId' => $offer->id()->toString(),
         ];
@@ -40,7 +42,7 @@ final class OfferPostedEvent implements Event
         return $this->id;
     }
 
-    public function occurredAt() : \DateTimeImmutable
+    public function occurredAt() : DateTime
     {
         return $this->occurredAt;
     }

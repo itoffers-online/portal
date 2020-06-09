@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\MotherObject\User;
 
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use ITOffers\Component\Reflection\PrivateFields;
 use ITOffers\Offers\Application\User\User;
-use ITOffers\Tests\Offers\Application\MotherObject\Facebook\CalendarMother;
 use Ramsey\Uuid\UuidInterface;
 
 final class UserMother
@@ -24,7 +24,7 @@ final class UserMother
 
     public static function withId(UuidInterface $id) : User
     {
-        $user = User::fromFacebook('facebook_id', 'user@itoffers.online', CalendarMother::utc());
+        $user = User::fromFacebook('facebook_id', 'user@itoffers.online', new GregorianCalendarStub());
         self::setPrivatePropertyValue($user, 'id', $id);
 
         return $user;
@@ -32,6 +32,6 @@ final class UserMother
 
     public static function random() : User
     {
-        return User::fromFacebook('facebook_id', 'user@itoffers.online', CalendarMother::utc());
+        return User::fromFacebook('facebook_id', 'user@itoffers.online', new GregorianCalendarStub());
     }
 }

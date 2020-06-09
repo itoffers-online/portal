@@ -17,14 +17,14 @@ final class Offers
 {
     private int $count;
 
-    private ?\DateTimeImmutable $latestOfferDate = null;
+    private ?\Aeon\Calendar\Gregorian\DateTime $latestOfferDate = null;
 
     private function __construct()
     {
         $this->count = 0;
     }
 
-    public static function create(int $count, \DateTimeImmutable $latestOfferDate) : self
+    public static function create(int $count, \Aeon\Calendar\Gregorian\DateTime $latestOfferDate) : self
     {
         $specialization = new self();
         $specialization->count = $count;
@@ -43,7 +43,7 @@ final class Offers
         return $this->count;
     }
 
-    public function latestOfferDate() : ?\DateTimeImmutable
+    public function latestOfferDate() : ?\Aeon\Calendar\Gregorian\DateTime
     {
         return $this->latestOfferDate;
     }

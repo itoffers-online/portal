@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Application\Offer;
 
 use Cocur\Slugify\Slugify;
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Offers\Application\Assertion;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -27,9 +27,9 @@ class CompanyLogo
 
     private string $offerId;
 
-    private \DateTimeImmutable $createdAt;
+    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
 
-    private function __construct(string $path, UuidInterface $offerId, \DateTimeImmutable $createdAt)
+    private function __construct(string $path, UuidInterface $offerId, \Aeon\Calendar\Gregorian\DateTime $createdAt)
     {
         $this->id = Uuid::uuid4()->toString();
         $this->offerId = $offerId->toString();
@@ -46,7 +46,7 @@ class CompanyLogo
         return new self(
             sprintf('/offer/%s/%s.%s', (string) $slug, $slugify->slugify(\mb_strtolower($offer->company()->name())), \mb_strtolower($format)),
             $offer->id(),
-            $calendar->currentTime()
+            $calendar->now()
         );
     }
 

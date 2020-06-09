@@ -114,7 +114,7 @@ final class DbalOfferAutoRenewQuery implements OfferAutoRenewQuery
 
         return new UnassignedAutoRenew(
             $firstExtraOffer['user_id'],
-            new \DateTimeImmutable($firstExtraOffer['expires_at'])
+            \Aeon\Calendar\Gregorian\DateTime::fromString($firstExtraOffer['expires_at'])
         );
     }
 

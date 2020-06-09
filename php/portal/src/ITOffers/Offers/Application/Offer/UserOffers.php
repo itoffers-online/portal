@@ -19,14 +19,14 @@ final class UserOffers implements \Countable
 {
     private User $user;
 
-    private \DateTimeImmutable $since;
+    private \Aeon\Calendar\Gregorian\DateTime $since;
 
     /**
      * @var Offer[]
      */
     private array $offers;
 
-    public function __construct(User $user, \DateTimeImmutable $since, Offer ...$offers)
+    public function __construct(User $user, \Aeon\Calendar\Gregorian\DateTime $since, Offer ...$offers)
     {
         $this->user = $user;
         $this->since = $since;

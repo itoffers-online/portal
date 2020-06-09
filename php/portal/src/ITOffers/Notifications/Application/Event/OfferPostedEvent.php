@@ -20,11 +20,11 @@ final class OfferPostedEvent implements Event
 {
     private UuidInterface $eventId;
 
-    private \DateTimeImmutable $occurredAt;
+    private \Aeon\Calendar\Gregorian\DateTime $occurredAt;
 
     private UuidInterface $offerId;
 
-    public function __construct(UuidInterface $eventId, \DateTimeImmutable $occurredAt, UuidInterface $offerId)
+    public function __construct(UuidInterface $eventId, \Aeon\Calendar\Gregorian\DateTime $occurredAt, UuidInterface $offerId)
     {
         $this->eventId = $eventId;
         $this->occurredAt = $occurredAt;
@@ -36,7 +36,7 @@ final class OfferPostedEvent implements Event
         return $this->eventId;
     }
 
-    public function occurredAt() : \DateTimeImmutable
+    public function occurredAt() : \Aeon\Calendar\Gregorian\DateTime
     {
         return $this->occurredAt;
     }

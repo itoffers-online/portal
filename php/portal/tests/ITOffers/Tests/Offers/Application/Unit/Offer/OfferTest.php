@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Unit\Offer;
 
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Offer\Locale;
 use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
@@ -46,19 +47,19 @@ final class OfferTest extends TestCase
             ContractMother::random(),
             DescriptionMother::random(),
             ContactMother::random(),
-            new CalendarStub()
+            new GregorianCalendarStub()
         );
     }
 
     public function test_update_offer_after_allowed_time() : void
     {
-        $calendar = new CalendarStub();
+        $calendar = new GregorianCalendarStub();
         $offer = OfferMother::byUser($user = UserMother::random(), $calendar);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('This offer can\'t be updated anymore');
 
-        $calendar->setCurrentTime(new \DateTimeImmutable('+5 hours'));
+        $calendar->setNow(\Aeon\Calendar\Gregorian\DateTime::fromString('+5 hours'));
 
         $offer->update(
             $user,

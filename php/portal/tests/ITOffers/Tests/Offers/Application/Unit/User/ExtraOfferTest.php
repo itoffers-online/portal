@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Unit\User;
 
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
+use Aeon\Calendar\TimeUnit;
 use ITOffers\Offers\Application\Exception\InvalidAssertionException;
 use ITOffers\Offers\Application\User\ExtraOffer;
-use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Offers\Application\MotherObject\Offer\OfferMother;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -30,7 +31,7 @@ final class ExtraOfferTest extends TestCase
         $interval = new \DateInterval("P1D");
         $interval->invert = 1;
 
-        new ExtraOffer(Uuid::uuid4(), $interval, new CalendarStub());
+        new ExtraOffer(Uuid::uuid4(), TimeUnit::fromDateInterval($interval), new GregorianCalendarStub());
     }
 
     public function test_using_expired_extra_offer() : void
@@ -40,11 +41,11 @@ final class ExtraOfferTest extends TestCase
 
         $extraOffer = new ExtraOffer(
             Uuid::uuid4(),
-            $expiresIn = new \DateInterval("P1D"),
-            $calendar = new CalendarStub()
+            $expiresIn = TimeUnit::fromDateInterval(new \DateInterval("P1D")),
+            $calendar = new GregorianCalendarStub()
         );
 
-        $calendar->addDays(2);
+        $calendar->setNow($calendar->now()->addDays(2));
         $extraOffer->useFor(OfferMother::random(), $calendar);
     }
 
@@ -53,8 +54,8 @@ final class ExtraOfferTest extends TestCase
         $offer = OfferMother::random();
         $extraOffer = new ExtraOffer(
             $offer->userId(),
-            $expiresIn = new \DateInterval("P1D"),
-            $calendar = new CalendarStub()
+            $expiresIn = TimeUnit::fromDateInterval(new \DateInterval("P1D")),
+            $calendar = new GregorianCalendarStub()
         );
 
         $extraOffer->useFor($offer, $calendar);

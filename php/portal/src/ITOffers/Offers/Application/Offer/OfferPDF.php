@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\Gregorian\Calendar;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -25,9 +25,9 @@ class OfferPDF
 
     private string $offerId;
 
-    private \DateTimeImmutable $createdAt;
+    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
 
-    private function __construct(string $path, UuidInterface $offerId, \DateTimeImmutable $createdAt)
+    private function __construct(string $path, UuidInterface $offerId, \Aeon\Calendar\Gregorian\DateTime $createdAt)
     {
         $this->id = Uuid::uuid4()->toString();
         $this->offerId = $offerId->toString();
@@ -40,7 +40,7 @@ class OfferPDF
         return new self(
             sprintf('/offer/%s/offer.pdf', (string) $slug),
             $offer->id(),
-            $calendar->currentTime()
+            $calendar->now()
         );
     }
 

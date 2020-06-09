@@ -39,7 +39,7 @@ final class Offer
 
     private string $specializationSlug;
 
-    private \DateTimeImmutable $createdAt;
+    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
 
     private Parameters $parameters;
 
@@ -54,7 +54,7 @@ final class Offer
         string $locale,
         UuidInterface $userId,
         string $specializationSlug,
-        \DateTimeImmutable $createdAt,
+        \Aeon\Calendar\Gregorian\DateTime $createdAt,
         Parameters $parameters,
         int $applicationsCount,
         ?OfferPDF $offerPDF
@@ -101,7 +101,7 @@ final class Offer
         return $this->specializationSlug;
     }
 
-    public function createdAt() : \DateTimeImmutable
+    public function createdAt() : \Aeon\Calendar\Gregorian\DateTime
     {
         return $this->createdAt;
     }

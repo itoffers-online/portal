@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Unit\Offer;
 
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use ITOffers\Offers\Application\Offer\Slug;
-use ITOffers\Tests\Offers\Application\MotherObject\Facebook\CalendarMother;
 use ITOffers\Tests\Offers\Application\MotherObject\Offer\OfferMother;
 use PHPStan\Testing\TestCase;
 
@@ -26,7 +26,7 @@ final class SlugTest extends TestCase
 
         $this->assertRegExp(
             '/^(intern|junior|mid|senior|expert)-php-developer-super-company-(.)+/',
-            (string) Slug::from($order, CalendarMother::utc())
+            (string) Slug::from($order, new GregorianCalendarStub())
         );
     }
 }

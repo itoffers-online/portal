@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\User;
 
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\TimeUnit;
 use ITOffers\Offers\Application\Assertion;
 use ITOffers\Offers\Application\Offer\Offer;
 use Ramsey\Uuid\Uuid;
@@ -25,37 +26,37 @@ class ExtraOffer
 
     private string $userId;
 
-    private \DateTimeImmutable $createdAt;
+    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
 
-    private \DateTimeImmutable $expiresAt;
+    private \Aeon\Calendar\Gregorian\DateTime $expiresAt;
 
-    private ?\DateTimeImmutable $usedAt = null;
+    private ?\Aeon\Calendar\Gregorian\DateTime $usedAt = null;
 
     private ?string $offerId = null;
 
-    public function __construct(UuidInterface $userId, \DateInterval $expiresIn, Calendar $calendar)
+    public function __construct(UuidInterface $userId, TimeUnit $expiresIn, Calendar $calendar)
     {
-        Assertion::same($expiresIn->invert, 0, "Expires in interval can't be negative");
+        Assertion::false($expiresIn->isNegative(), "Expires in interval can't be negative");
 
         $this->id = Uuid::uuid4()->toString();
         $this->userId = $userId->toString();
-        $this->expiresAt = $calendar->currentTime()->add($expiresIn);
+        $this->expiresAt = $calendar->now()->add($expiresIn);
 
-        $this->createdAt = $calendar->currentTime();
+        $this->createdAt = $calendar->now();
     }
 
     public static function expiresInDays(UuidInterface $userId, int $days, Calendar $calendar) : self
     {
-        return new self($userId, new \DateInterval(\sprintf('P%dD', $days)), $calendar);
+        return new self($userId, TimeUnit::days($days), $calendar);
     }
 
     public function useFor(Offer $offer, Calendar $calendar) : void
     {
         Assertion::null($this->usedAt, "Extra offer already used");
-        Assertion::true($this->expiresAt >= $calendar->currentTime(), "Extra offer expired");
+        Assertion::true($this->expiresAt->isAfterOrEqual($calendar->now()), "Extra offer expired");
         Assertion::true($offer->userId()->equals($this->userId()), "Offer does not belongs to owner of extra offer");
 
-        $this->usedAt = $calendar->currentTime();
+        $this->usedAt = $calendar->now();
         $this->offerId = $offer->id()->toString();
     }
 

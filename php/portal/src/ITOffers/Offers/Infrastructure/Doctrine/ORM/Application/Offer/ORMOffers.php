@@ -40,7 +40,7 @@ final class ORMOffers implements Offers
         return $this->entityManager->getRepository(Offer::class)->findOneBy(['id' => $offerId->toString()]);
     }
 
-    public function postedBy(User $user, \DateTimeImmutable $since) : UserOffers
+    public function postedBy(User $user, \Aeon\Calendar\Gregorian\DateTime $since) : UserOffers
     {
         $criteria = new Criteria();
         $criteria

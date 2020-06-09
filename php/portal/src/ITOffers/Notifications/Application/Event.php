@@ -19,5 +19,5 @@ interface Event
 {
     public function id() : UuidInterface;
 
-    public function occurredAt() : \DateTimeImmutable;
+    public function occurredAt() : \Aeon\Calendar\Gregorian\DateTime;
 }

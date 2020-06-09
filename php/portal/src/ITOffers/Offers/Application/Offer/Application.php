@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Offers\Application\Offer\Application\EmailHash;
 use Ramsey\Uuid\Uuid;
 
@@ -25,7 +25,7 @@ class Application
 
     private string $emailHash;
 
-    private \DateTimeImmutable $createdAt;
+    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
 
     private function __construct()
     {
@@ -37,7 +37,7 @@ class Application
         $application->id = Uuid::uuid4()->toString();
         $application->offerId = $offer->id()->toString();
         $application->emailHash = $email->toString();
-        $application->createdAt = $calendar->currentTime();
+        $application->createdAt = $calendar->now();
 
         return $application;
     }

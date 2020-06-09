@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Command\User;
 
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Component\CQRS\System\Handler;
 use ITOffers\Offers\Application\User\Users;
 use Ramsey\Uuid\Uuid;

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Unit\User;
 
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use ITOffers\Offers\Application\Exception\InvalidAssertionException;
 use ITOffers\Offers\Application\User\OfferAutoRenew;
 use ITOffers\Offers\Application\User\OfferAutoRenews;
-use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Offers\Application\MotherObject\Offer\OfferMother;
 use ITOffers\Tests\Offers\Application\MotherObject\User\UserMother;
 use PHPUnit\Framework\TestCase;
@@ -26,9 +26,9 @@ final class OfferAutoRenewTest extends TestCase
     public function test_assign_expired_auto_renew() : void
     {
         $user = UserMother::random();
-        $expiredAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new CalendarStub());
+        $expiredAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new GregorianCalendarStub());
 
-        $calendar->addDays(5);
+        $calendar->setNow($calendar->now()->addDays(5));
 
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Offer renew already expired');
@@ -39,7 +39,7 @@ final class OfferAutoRenewTest extends TestCase
     public function test_assign_already_assigned_offer_renew() : void
     {
         $user = UserMother::random();
-        $expiredAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new CalendarStub());
+        $expiredAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new GregorianCalendarStub());
 
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Offer renew already assigned');
@@ -51,7 +51,7 @@ final class OfferAutoRenewTest extends TestCase
     public function test_using_offer_renew_with_offer_renew() : void
     {
         $user = UserMother::random();
-        $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new CalendarStub());
+        $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new GregorianCalendarStub());
 
         $offerAutoRenew->assign(OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), 20, $calendar);
 
@@ -64,7 +64,7 @@ final class OfferAutoRenewTest extends TestCase
     public function test_using_already_used_offer_auto_renew() : void
     {
         $user = UserMother::random();
-        $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new CalendarStub());
+        $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new GregorianCalendarStub());
 
         $offerAutoRenew->assign($offer = OfferMother::byUser($user), $this->createMock(OfferAutoRenews::class), 20, $calendar);
 
@@ -79,7 +79,7 @@ final class OfferAutoRenewTest extends TestCase
     public function test_assigning_auto_renew_to_offer_with_already_assigned_auto_renews() : void
     {
         $user = UserMother::random();
-        $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new CalendarStub());
+        $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 1, $calendar = new GregorianCalendarStub());
 
         $offerAutoRenews = $this->createMock(OfferAutoRenews::class);
         $offerAutoRenews->method('countAssignedTo')
@@ -94,10 +94,10 @@ final class OfferAutoRenewTest extends TestCase
     public function test_assigning_auto_renew_to_offer_that_already_expired() : void
     {
         $user = UserMother::random();
-        $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 60, $calendar = new CalendarStub());
+        $offerAutoRenew = OfferAutoRenew::expiresInDays($user->id(), 60, $calendar = new GregorianCalendarStub());
         $offer = OfferMother::byUser($user, $calendar);
 
-        $calendar->setCurrentTime($calendar->currentTime()->modify('+20 days'));
+        $calendar->setNow($calendar->now()->modify('+20 days'));
 
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Offer already expired');

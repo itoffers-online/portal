@@ -13,23 +13,23 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
-use DateInterval;
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\TimeUnit;
+use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Offers\Application\User\User;
 
 final class Throttling
 {
     public const LIMIT = 2;
 
-    public const SINCE = 'P14D';
+    public const SINCE_DAYS = 14;
 
     private int $limit;
 
-    private \DateInterval $since;
+    private TimeUnit $since;
 
     private Calendar $calendar;
 
-    public function __construct(int $defaultLimit, DateInterval $since, Calendar $calendar)
+    public function __construct(int $defaultLimit, TimeUnit $since, Calendar $calendar)
     {
         $this->limit = $defaultLimit;
         $this->since = $since;
@@ -40,7 +40,7 @@ final class Throttling
     {
         return new Throttling(
             self::LIMIT,
-            new DateInterval(self::SINCE),
+            TimeUnit::days(self::SINCE_DAYS),
             $calendar
         );
     }
@@ -50,14 +50,14 @@ final class Throttling
         return $this->limit;
     }
 
-    public function since() : DateInterval
+    public function since() : TimeUnit
     {
         return $this->since;
     }
 
     public function isThrottled(User $user, Offers $offers) : bool
     {
-        if ($offers->postedBy($user, $this->calendar->currentTime()->sub($this->since))->count() >= $this->limit) {
+        if ($offers->postedBy($user, $this->calendar->now()->sub($this->since))->count() >= $this->limit) {
             return true;
         }
 

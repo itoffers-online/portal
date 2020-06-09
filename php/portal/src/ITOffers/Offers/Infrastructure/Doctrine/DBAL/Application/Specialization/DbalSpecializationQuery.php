@@ -113,7 +113,7 @@ SQL
         $offers = $offersData
             ?  Offers::create(
                 $offersData['total_count'],
-                new \DateTimeImmutable($offersData['created_at'])
+                \Aeon\Calendar\Gregorian\DateTime::fromString($offersData['created_at'])
             )
             : Offers::noOffers();
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Notifications\Application\Unit;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use ITOffers\Component\Mailer\Mailer;
 use ITOffers\Notifications\Application\Email\EmailFormatter;
 use ITOffers\Notifications\Application\Event\ExtraOffersAdded;
@@ -57,7 +58,7 @@ final class NotificationsTest extends TestCase
 
         $module->handle(new OfferPostedEvent(
             $eventId = Uuid::uuid4(),
-            new \DateTimeImmutable(),
+            DateTime::fromString('now'),
             $offerId
         ));
     }
@@ -91,7 +92,7 @@ final class NotificationsTest extends TestCase
 
         $module->handle(new ExtraOffersAdded(
             $eventId = Uuid::uuid4(),
-            new \DateTimeImmutable(),
+            DateTime::fromString('now'),
             $userId,
             $expiresInDays,
             $amount
@@ -118,7 +119,7 @@ final class NotificationsTest extends TestCase
 
         $module->handle(new OfferPostedEvent(
             $eventId = Uuid::uuid4(),
-            new \DateTimeImmutable(),
+            DateTime::fromString('now'),
             $offerId
         ));
     }

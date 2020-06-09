@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers;
 
+use Aeon\Calendar\Gregorian\GregorianCalendar;
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
+use Aeon\Calendar\Gregorian\TimeZone;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\PredisCache;
 use Doctrine\DBAL\Configuration;
@@ -23,8 +26,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Proxy\ProxyFactory;
-use ITOffers\Component\Calendar\Calendar;
-use ITOffers\Component\Calendar\Infrastructure\PHP\SystemCalendar\SystemCalendar;
+use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use ITOffers\Component\Mailer\Infrastructure\SwiftMailer\SwiftMailer;
 use ITOffers\Component\Mailer\Mailer;
@@ -35,7 +37,6 @@ use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\Description\Require
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\SalaryType;
 use function ITOffers\Offers\Infrastructure\offersFacade;
 use ITOffers\Offers\Offers;
-use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
 use Twig\Environment;
@@ -215,9 +216,9 @@ final class ITOffersOnline
         }
 
         if ($this->isTestEnvironment()) {
-            $this->calendar = new CalendarStub();
+            $this->calendar = new GregorianCalendarStub();
         } else {
-            $this->calendar = new SystemCalendar(new \DateTimeZone($this->config->getString(Config::TIMEZONE)));
+            $this->calendar = new GregorianCalendar(new TimeZone($this->config->getString(Config::TIMEZONE)));
         }
 
         return $this->calendar;

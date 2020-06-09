@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\User;
 
+use Aeon\Calendar\Gregorian\GregorianCalendar;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use ITOffers\Offers\Application\User\ExtraOffer;
@@ -40,7 +41,7 @@ final class ORMExtraOffers implements ExtraOffers
         $criteria = new Criteria();
         $criteria
             ->where($criteria->expr()->eq('userId', $userId->toString()))
-            ->andWhere($criteria->expr()->gt('expiresAt', new \DateTimeImmutable('now', new \DateTimeZone('UTC'))))
+            ->andWhere($criteria->expr()->gt('expiresAt', GregorianCalendar::UTC()->now()))
             ->andWhere($criteria->expr()->isNull('usedAt'))
             ->orderBy(['expiresAt' => 'ASC']);
 
@@ -54,7 +55,7 @@ final class ORMExtraOffers implements ExtraOffers
         $criteria = new Criteria();
         $criteria
             ->where($criteria->expr()->eq('userId', $userId->toString()))
-            ->andWhere($criteria->expr()->gt('expiresAt', new \DateTimeImmutable('now', new \DateTimeZone('UTC'))))
+            ->andWhere($criteria->expr()->gt('expiresAt', GregorianCalendar::UTC()->now()))
             ->andWhere($criteria->expr()->isNull('usedAt'));
 
         return $this->entityManager->getRepository(ExtraOffer::class)->matching($criteria)->count();

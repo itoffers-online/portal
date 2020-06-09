@@ -67,7 +67,7 @@ final class DbalExtraOffersQuery implements ExtraOffersQuery
 
         return new ExtraOffer(
             $firstExtraOffer['user_id'],
-            new \DateTimeImmutable($firstExtraOffer['expires_at'])
+            \Aeon\Calendar\Gregorian\DateTime::fromString($firstExtraOffer['expires_at'])
         );
     }
 }

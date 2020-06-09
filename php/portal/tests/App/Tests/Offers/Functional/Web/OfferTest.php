@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Offers\Functional\Web;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use App\Offers\Form\Type\Offer\ContactType;
 use App\Tests\Functional\Web\WebTestCase;
 use Faker\Factory;
@@ -389,7 +390,7 @@ final class OfferTest extends WebTestCase
 
         $this->authenticate($client, $user);
 
-        $this->setCurrentTime(new \DateTimeImmutable(\sprintf('-%d days', $this->config()->getInt(Config::OFFER_LIFETIME_DAYS) + 1)));
+        $this->setCurrentTime(DateTime::fromString(\sprintf('-%d days', $this->config()->getInt(Config::OFFER_LIFETIME_DAYS) + 1)));
 
         $offer = $this->offersContext->createOffer($authorOffer->id(), $this->specialization);
 

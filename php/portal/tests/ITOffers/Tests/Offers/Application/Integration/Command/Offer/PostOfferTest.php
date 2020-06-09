@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\Integration\Command\Offer;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use ITOffers\Component\CQRS\Exception\Exception;
 use ITOffers\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use ITOffers\Offers\Application\Offer\Throttling;
@@ -83,7 +84,8 @@ final class PostOfferTest extends OffersTestCase
         $this->assertSame(1, $this->offers->module()->extraOffersQuery()->countNotExpired($user->id()));
         $this->assertGreaterThanOrEqual(
             2,
-            $this->offers->module()->extraOffersQuery()->findClosesToExpire($user->id())->expiresAt()->diff(new \DateTimeImmutable())->days
+            $this->offers->module()->extraOffersQuery()->findClosesToExpire($user->id())
+                ->expiresAt()->distanceTo(DateTime::fromString('now'))->inDays()
         );
     }
 }

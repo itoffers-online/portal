@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\MotherObject\Offer;
 
+use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use Faker\Factory;
-use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Offer\Company;
 use ITOffers\Offers\Application\Offer\Contact;
 use ITOffers\Offers\Application\Offer\Contract;
@@ -77,7 +78,7 @@ final class OfferMother
                 $faker->name,
                 '+1 333333333'
             ),
-            $calendar ? $calendar : CalendarMother::utc()
+            $calendar ? $calendar : new GregorianCalendarStub()
         );
     }
 }

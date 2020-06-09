@@ -21,11 +21,11 @@ final class Event
 
     private UuidInterface $eventId;
 
-    private \DateTimeImmutable $occurredAt;
+    private \Aeon\Calendar\Gregorian\DateTime $occurredAt;
 
     private array $payload;
 
-    public function __construct(UuidInterface $id, \DateTimeImmutable $occurredAt, string $name, array $payload)
+    public function __construct(UuidInterface $id, \Aeon\Calendar\Gregorian\DateTime $occurredAt, string $name, array $payload)
     {
         $this->eventId = $id;
         $this->occurredAt = $occurredAt;
@@ -38,7 +38,7 @@ final class Event
         return $this->eventId;
     }
 
-    public function occurredAt() : \DateTimeImmutable
+    public function occurredAt() : \Aeon\Calendar\Gregorian\DateTime
     {
         return $this->occurredAt;
     }

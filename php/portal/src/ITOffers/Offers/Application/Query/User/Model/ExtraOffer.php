@@ -17,15 +17,15 @@ final class ExtraOffer
 {
     private string $userId;
 
-    private \DateTimeImmutable $expiresAt;
+    private \Aeon\Calendar\Gregorian\DateTime $expiresAt;
 
-    public function __construct(string $userId, \DateTimeImmutable $expiresAt)
+    public function __construct(string $userId, \Aeon\Calendar\Gregorian\DateTime $expiresAt)
     {
         $this->userId = $userId;
         $this->expiresAt = $expiresAt;
     }
 
-    public function expiresAt() : \DateTimeImmutable
+    public function expiresAt() : \Aeon\Calendar\Gregorian\DateTime
     {
         return $this->expiresAt;
     }

@@ -15,7 +15,7 @@ namespace ITOffers\Offers\Infrastructure;
 
 use Doctrine\ORM\EntityManager;
 use Facebook\Facebook;
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Component\CQRS\EventStream;
 use ITOffers\Component\CQRS\EventStream\Event;
 use ITOffers\Component\CQRS\System;
