@@ -50,7 +50,9 @@ final class SalaryType extends AbstractType
                         [
                             'callback' => function ($value, ExecutionContextInterface $context, $payload) {
                                 /** @var Form $form */
-                                $form = $context->getObject()->getParent();
+                                $form = $context->getObject()->getName() === "offer"
+                                    ? $context->getObject()->get('salary')
+                                    : $context->getObject();
 
                                 $min = $form->get('min')->getData();
 

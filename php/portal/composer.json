@@ -65,6 +65,7 @@
         "symfony/http-kernel": "^4.4",
         "symfony/intl": "^4.4",
         "symfony/lock": "^4.4",
+        "symfony/mime": "^5.1",
         "symfony/monolog-bundle": "^3.3",
         "symfony/security-csrf": "^4.4",
         "symfony/stopwatch": "^4.4",
