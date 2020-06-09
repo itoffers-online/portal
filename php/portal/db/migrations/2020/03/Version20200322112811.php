@@ -27,7 +27,7 @@ final class Version20200322112811 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('ALTER TABLE itof_job_offer ADD updated_at TIMESTAMP(6) WITHOUT TIME ZONE DEFAULT NULL');
-        $this->addSql('COMMENT ON COLUMN itof_job_offer.updated_at IS \'(DC2Type:aeon_datetime)\'');
+        $this->addSql('COMMENT ON COLUMN itof_job_offer.updated_at IS \'(DC2Type:datetime_immutable)\'');
     }
 
     public function down(Schema $schema) : void

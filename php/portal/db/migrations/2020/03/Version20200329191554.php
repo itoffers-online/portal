@@ -27,7 +27,7 @@ final class Version20200329191554 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE TABLE itof_job_offer_company_logo (id UUID NOT NULL, offer_id UUID NOT NULL, path VARCHAR(255) NOT NULL, created_at TIMESTAMP(6) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('COMMENT ON COLUMN itof_job_offer_company_logo.created_at IS \'(DC2Type:aeon_datetime)\'');
+        $this->addSql('COMMENT ON COLUMN itof_job_offer_company_logo.created_at IS \'(DC2Type:datetime_immutable)\'');
     }
 
     public function down(Schema $schema) : void
