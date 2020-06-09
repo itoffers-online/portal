@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\User;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use Doctrine\DBAL\Connection;
 use ITOffers\Offers\Application\Query\User\Model\OfferAutoRenew;
 use ITOffers\Offers\Application\Query\User\Model\UnassignedAutoRenew;
@@ -114,7 +115,7 @@ final class DbalOfferAutoRenewQuery implements OfferAutoRenewQuery
 
         return new UnassignedAutoRenew(
             $firstExtraOffer['user_id'],
-            \Aeon\Calendar\Gregorian\DateTime::fromString($firstExtraOffer['expires_at'])
+            DateTime::fromString($firstExtraOffer['expires_at'])
         );
     }
 

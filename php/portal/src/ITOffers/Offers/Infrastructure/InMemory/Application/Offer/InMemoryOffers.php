@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\InMemory\Application\Offer;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use ITOffers\Component\Reflection\PrivateFields;
 use ITOffers\Offers\Application\Offer\Offer;
 use ITOffers\Offers\Application\Offer\Offers;
@@ -47,7 +48,7 @@ final class InMemoryOffers implements Offers
         ));
     }
 
-    public function postedBy(User $user, \Aeon\Calendar\Gregorian\DateTime $since) : UserOffers
+    public function postedBy(User $user, DateTime $since) : UserOffers
     {
         return new UserOffers(
             $user,

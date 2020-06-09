@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Component\EventBus;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use Ramsey\Uuid\UuidInterface;
 
 final class Event
@@ -21,11 +22,11 @@ final class Event
 
     private UuidInterface $eventId;
 
-    private \Aeon\Calendar\Gregorian\DateTime $occurredAt;
+    private DateTime $occurredAt;
 
     private array $payload;
 
-    public function __construct(UuidInterface $id, \Aeon\Calendar\Gregorian\DateTime $occurredAt, string $name, array $payload)
+    public function __construct(UuidInterface $id, DateTime $occurredAt, string $name, array $payload)
     {
         $this->eventId = $id;
         $this->occurredAt = $occurredAt;
@@ -38,7 +39,7 @@ final class Event
         return $this->eventId;
     }
 
-    public function occurredAt() : \Aeon\Calendar\Gregorian\DateTime
+    public function occurredAt() : DateTime
     {
         return $this->occurredAt;
     }

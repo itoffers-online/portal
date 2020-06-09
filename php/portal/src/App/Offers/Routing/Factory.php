@@ -23,6 +23,7 @@ use App\Offers\Controller\SecurityController;
 use App\Offers\Controller\SpecializationController;
 use App\Offers\Controller\StaticController;
 use App\Offers\Controller\UserController;
+use RuntimeException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
@@ -135,7 +136,7 @@ final class Factory
 
                 break;
             default:
-                throw new \RuntimeException(sprintf('Unrecognized locale %s', $locale));
+                throw new RuntimeException(sprintf('Unrecognized locale %s', $locale));
         }
     }
 }

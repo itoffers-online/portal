@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Application\User;
 
 use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
 use ITOffers\Offers\Application\Assertion;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -24,15 +25,15 @@ class User
 
     private string $email;
 
-    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
+    private DateTime $createdAt;
 
     private ?string $fbUserAppId = null;
 
     private ?string $linkedInUserAppId = null;
 
-    private ?\Aeon\Calendar\Gregorian\DateTime $blockedAt = null;
+    private ?DateTime $blockedAt = null;
 
-    private function __construct(\Aeon\Calendar\Gregorian\DateTime $createdAt, string $email)
+    private function __construct(DateTime $createdAt, string $email)
     {
         Assertion::email($email);
 

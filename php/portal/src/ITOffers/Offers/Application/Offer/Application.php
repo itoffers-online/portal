@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Application\Offer;
 
 use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
 use ITOffers\Offers\Application\Offer\Application\EmailHash;
 use Ramsey\Uuid\Uuid;
 
@@ -25,7 +26,7 @@ class Application
 
     private string $emailHash;
 
-    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
+    private DateTime $createdAt;
 
     private function __construct()
     {

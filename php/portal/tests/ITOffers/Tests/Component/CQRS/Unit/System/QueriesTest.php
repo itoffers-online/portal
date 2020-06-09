@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Component\CQRS\Unit\System;
 
+use DateTime;
 use ITOffers\Component\CQRS\System\Queries;
 use ITOffers\Component\CQRS\System\Query;
 use ITOffers\Offers\Application\Exception\Exception;
@@ -50,7 +51,7 @@ final class QueriesTest extends TestCase
         $queries = new Queries();
         $queries->register(new DummyQuery());
 
-        $queries->get(\DateTime::class);
+        $queries->get(DateTime::class);
     }
 
     public function test_registering_two_implementations_of_the_same_query() : void

@@ -43,6 +43,7 @@ use ITOffers\Offers\Application\FeatureToggle\TweetAboutOfferFeature;
 use ITOffers\Offers\UserInterface\OfferThumbnail;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,6 +51,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Throwable;
 
 final class OfferController extends AbstractController
 {
@@ -149,7 +151,7 @@ final class OfferController extends AbstractController
                             $this->renderView('@offers/facebook/page/group/offer.txt.twig', ['offer' => $offer]),
                         ));
                     }
-                } catch (\Throwable $throwable) {
+                } catch (Throwable $throwable) {
                     $this->logger->critical('Could not post offer at Facebook.', ['class' => \get_class($throwable), 'exception' => $throwable]);
                     $this->addFlash('danger', $this->renderView('@offers/alert/error_post_facebook.txt'));
                 }
@@ -161,7 +163,7 @@ final class OfferController extends AbstractController
                             $this->renderView('@offers/twitter/offer.txt.twig', ['offer' => $offer]),
                         ));
                     }
-                } catch (\Throwable $throwable) {
+                } catch (Throwable $throwable) {
                     $this->logger->critical('Could not post offer at Twitter.', ['class' => \get_class($throwable), 'exception' => $throwable]);
                     $this->addFlash('danger', $this->renderView('@offers/alert/error_post_twitter.txt'));
                 }
@@ -439,7 +441,7 @@ final class OfferController extends AbstractController
             case ContactType::EXTERNAL_SOURCE_TYPE:
                 return Contact::externalSource($offerFormData['contact']['url']);
             default:
-                throw new \RuntimeException("Unknown contact type");
+                throw new RuntimeException("Unknown contact type");
         }
     }
 

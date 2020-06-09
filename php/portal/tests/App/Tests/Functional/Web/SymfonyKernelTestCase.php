@@ -23,6 +23,7 @@ use function ITOffers\Offers\Infrastructure\bootstrap;
 use ITOffers\Offers\Offers;
 use ITOffers\Tests\Offers\Application\Context\DatabaseContext;
 use ITOffers\Tests\Offers\Application\Context\OffersContext;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class SymfonyKernelTestCase extends KernelTestCase
@@ -64,7 +65,7 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
         }
 
         if (static::$itoffers->config()->getString(Config::ENV) !== 'test') {
-            throw new \RuntimeException(sprintf('Expected environment "test" but got "%s"', static::$itoffers->config()->getString(Config::ENV)));
+            throw new RuntimeException(sprintf('Expected environment "test" but got "%s"', static::$itoffers->config()->getString(Config::ENV)));
         }
 
         return static::$itoffers;

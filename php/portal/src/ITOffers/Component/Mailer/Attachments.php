@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Component\Mailer;
 
-final class Attachments extends \ArrayObject
+use ArrayObject;
+
+final class Attachments extends ArrayObject
 {
     public function __construct(Attachment ...$attachments)
     {

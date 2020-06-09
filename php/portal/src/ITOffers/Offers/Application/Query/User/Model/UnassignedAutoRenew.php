@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Query\User\Model;
 
+use Aeon\Calendar\Gregorian\DateTime;
+
 final class UnassignedAutoRenew
 {
     private string $userId;
 
-    private \Aeon\Calendar\Gregorian\DateTime $expiresAt;
+    private DateTime $expiresAt;
 
-    public function __construct(string $userId, \Aeon\Calendar\Gregorian\DateTime $expiresAt)
+    public function __construct(string $userId, DateTime $expiresAt)
     {
         $this->userId = $userId;
         $this->expiresAt = $expiresAt;
     }
 
-    public function expiresAt() : \Aeon\Calendar\Gregorian\DateTime
+    public function expiresAt() : DateTime
     {
         return $this->expiresAt;
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use ITOffers\Offers\Application\User\User;
 use Ramsey\Uuid\UuidInterface;
 
@@ -22,5 +23,5 @@ interface Offers
 
     public function getById(UuidInterface $offerId) : Offer;
 
-    public function postedBy(User $user, \Aeon\Calendar\Gregorian\DateTime $since) : UserOffers;
+    public function postedBy(User $user, DateTime $since) : UserOffers;
 }

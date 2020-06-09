@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace ITOffers\Component\Reflection;
 
 use Doctrine\Instantiator\Instantiator;
+use ReflectionException;
+use ReflectionProperty;
 
 trait PrivateFields
 {
@@ -25,12 +27,12 @@ trait PrivateFields
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      * @return mixed
      */
     private static function getPrivatePropertyValue(object $object, string $property)
     {
-        $reflectionProperty = new \ReflectionProperty($object, $property);
+        $reflectionProperty = new ReflectionProperty($object, $property);
         $reflectionProperty->setAccessible(true);
 
         return $reflectionProperty->getValue($object);
@@ -40,11 +42,11 @@ trait PrivateFields
      * @param object $object
      * @param string $property
      * @param mixed $value
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private static function setPrivatePropertyValue(object $object, string $property, $value) : void
     {
-        $reflectionProperty = new \ReflectionProperty($object, $property);
+        $reflectionProperty = new ReflectionProperty($object, $property);
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($object, $value);
     }

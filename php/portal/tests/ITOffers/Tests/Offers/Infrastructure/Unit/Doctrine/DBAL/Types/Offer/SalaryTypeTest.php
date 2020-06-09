@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Infrastructure\Unit\Doctrine\DBAL\Types\Offer;
 
+use Iterator;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\SalaryType;
 use ITOffers\Tests\Offers\Application\MotherObject\Offer\SalaryMother;
 use ITOffers\Tests\Offers\Infrastructure\Unit\Doctrine\DBAL\Types\TypeTestCase;
@@ -29,7 +30,7 @@ final class SalaryTypeTest extends TypeTestCase
         return SalaryType::class;
     }
 
-    public function dataProvider() : \Iterator
+    public function dataProvider() : Iterator
     {
         yield [null];
         yield [SalaryMother::netPLN(1_000, 5_000)];

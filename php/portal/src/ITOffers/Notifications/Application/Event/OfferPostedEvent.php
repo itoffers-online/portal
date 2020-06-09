@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Notifications\Application\Event;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use ITOffers\Notifications\Application\Event;
 use Ramsey\Uuid\UuidInterface;
 
@@ -20,11 +21,11 @@ final class OfferPostedEvent implements Event
 {
     private UuidInterface $eventId;
 
-    private \Aeon\Calendar\Gregorian\DateTime $occurredAt;
+    private DateTime $occurredAt;
 
     private UuidInterface $offerId;
 
-    public function __construct(UuidInterface $eventId, \Aeon\Calendar\Gregorian\DateTime $occurredAt, UuidInterface $offerId)
+    public function __construct(UuidInterface $eventId, DateTime $occurredAt, UuidInterface $offerId)
     {
         $this->eventId = $eventId;
         $this->occurredAt = $occurredAt;
@@ -36,7 +37,7 @@ final class OfferPostedEvent implements Event
         return $this->eventId;
     }
 
-    public function occurredAt() : \Aeon\Calendar\Gregorian\DateTime
+    public function occurredAt() : DateTime
     {
         return $this->occurredAt;
     }

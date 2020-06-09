@@ -17,6 +17,7 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 use ITOffers\Offers\Application\Assertion;
 use ITOffers\Offers\Application\Specialization\TwitterChannel;
 use ITOffers\Offers\Application\Twitter\Twitter;
+use stdClass;
 
 final class OAuthTwitter implements Twitter
 {
@@ -42,7 +43,7 @@ final class OAuthTwitter implements Twitter
             $account->oauthTokenSecret()
         );
 
-        /** @var \stdClass $result */
+        /** @var stdClass $result */
         $result = $connection->post('statuses/update', [
             'status' => $message,
         ]);

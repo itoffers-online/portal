@@ -38,7 +38,7 @@ class Offer
 
     private Locale $locale;
 
-    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
+    private DateTime $createdAt;
 
     private Company $company;
 
@@ -54,7 +54,7 @@ class Offer
 
     private Contact $contact;
 
-    private ?\Aeon\Calendar\Gregorian\DateTime $removedAt = null;
+    private ?DateTime $removedAt = null;
 
     private ?DateTime $updatedAt = null;
 

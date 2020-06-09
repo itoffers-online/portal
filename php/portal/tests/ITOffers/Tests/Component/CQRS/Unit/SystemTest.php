@@ -31,6 +31,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use RuntimeException;
 
 final class SystemTest extends TestCase
 {
@@ -120,7 +121,7 @@ final class SystemTest extends TestCase
             ->method('record');
 
         $eventStream->method('flush')
-            ->willThrowException(new \RuntimeException('Can\'t Flush'));
+            ->willThrowException(new RuntimeException('Can\'t Flush'));
 
         $system = new System(
             new CommandBus(

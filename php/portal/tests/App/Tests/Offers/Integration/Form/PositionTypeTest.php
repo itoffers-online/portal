@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Tests\Offers\Integration\Form;
 
 use App\Offers\Form\Type\Offer\PositionType;
+use Generator;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Validator\Validation;
@@ -58,7 +59,7 @@ final class PositionTypeTest extends TypeTestCase
         $this->assertFalse($form->get('name')->isValid());
     }
 
-    public function seniorityLevels() : \Generator
+    public function seniorityLevels() : Generator
     {
         yield [
             'ninja',

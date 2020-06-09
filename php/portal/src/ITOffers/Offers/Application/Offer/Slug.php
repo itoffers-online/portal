@@ -27,7 +27,7 @@ class Slug
 
     private string $offerId;
 
-    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
+    private DateTime $createdAt;
 
     private function __construct(string $value, UuidInterface $offerId, DateTime $createdAt)
     {

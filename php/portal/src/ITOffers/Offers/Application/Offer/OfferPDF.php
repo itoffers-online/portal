@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Application\Offer;
 
 use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -25,9 +26,9 @@ class OfferPDF
 
     private string $offerId;
 
-    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
+    private DateTime $createdAt;
 
-    private function __construct(string $path, UuidInterface $offerId, \Aeon\Calendar\Gregorian\DateTime $createdAt)
+    private function __construct(string $path, UuidInterface $offerId, DateTime $createdAt)
     {
         $this->id = Uuid::uuid4()->toString();
         $this->offerId = $offerId->toString();

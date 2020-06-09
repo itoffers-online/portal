@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Offers\Command\Offer\Test;
 
+use Exception;
 use Faker\Factory;
 use ITOffers\Notifications\Notifications;
 use ITOffers\Offers\Application\Command\Offer\Offer\Company;
@@ -158,7 +159,7 @@ final class PostOffer extends Command
 
     /**
      * @return Description\Requirements\Skill[]
-     * @throws \Exception
+     * @throws Exception
      */
     protected function generateSkills() : array
     {

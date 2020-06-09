@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 
 use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -337,7 +338,7 @@ final class DbalOfferQuery implements OfferQuery
             $offerData['locale_code'],
             Uuid::fromString($offerData['user_id']),
             $offerData['specialization_slug'],
-            \Aeon\Calendar\Gregorian\DateTime::fromString($offerData['created_at']),
+            DateTime::fromString($offerData['created_at']),
             new Parameters(
                 new Company(
                     $offerData['company_name'],

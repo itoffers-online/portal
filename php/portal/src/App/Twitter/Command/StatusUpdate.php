@@ -15,6 +15,7 @@ namespace App\Twitter\Command;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use ITOffers\Config;
+use stdClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -65,7 +66,7 @@ final class StatusUpdate extends Command
             $input->getArgument('oauth_secret')
         );
 
-        /** @var \stdClass $result */
+        /** @var stdClass $result */
         $result = $connection->post('statuses/update', [
             'status' => $input->getArgument('message'),
         ]);

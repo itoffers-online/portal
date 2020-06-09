@@ -16,6 +16,7 @@ namespace App\Tests\Offers\Functional\Web;
 use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use Aeon\Calendar\TimeUnit;
 use App\Tests\Functional\Web\WebTestCase;
+use DOMElement;
 use ITOffers\Offers\Application\Query\Offer\OfferFilter;
 use ITOffers\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
 use Ramsey\Uuid\Uuid;
@@ -118,7 +119,7 @@ final class SpecializationTest extends WebTestCase
 
 
         $salaries = \array_map(
-            fn (\DOMElement $node) => (int) $node->getAttribute('data-salary-max'),
+            fn (DOMElement $node) => (int) $node->getAttribute('data-salary-max'),
             (array) $crawler->filter('[data-salary-max]')->getIterator()
         );
 
@@ -154,7 +155,7 @@ final class SpecializationTest extends WebTestCase
 
 
         $salaries = \array_map(
-            fn (\DOMElement $node) => (int) $node->getAttribute('data-salary-max'),
+            fn (DOMElement $node) => (int) $node->getAttribute('data-salary-max'),
             (array) $crawler->filter('[data-salary-max]')->getIterator()
         );
 

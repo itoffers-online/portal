@@ -40,6 +40,7 @@ use function ITOffers\Offers\Infrastructure\offersFacade;
 use ITOffers\Offers\Offers;
 use Predis\Client;
 use Psr\Log\LoggerInterface;
+use Swift_Mailer;
 use Twig\Environment;
 
 final class ITOffersOnline
@@ -52,7 +53,7 @@ final class ITOffersOnline
 
     private Environment $templatingEngine;
 
-    private \Swift_Mailer $mailer;
+    private Swift_Mailer $mailer;
 
     private ?Offers $offers = null;
 
@@ -66,7 +67,7 @@ final class ITOffersOnline
 
     private ?InMemoryEventBus $eventBus = null;
 
-    public function __construct(Config $config, LoggerInterface $logger, Environment $twig, \Swift_Mailer $mailer)
+    public function __construct(Config $config, LoggerInterface $logger, Environment $twig, Swift_Mailer $mailer)
     {
         $this->config = $config;
         $this->logger = $logger;

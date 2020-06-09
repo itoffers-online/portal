@@ -15,6 +15,7 @@ namespace App\Twitter\Command;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use ITOffers\Config;
+use stdClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,7 +65,7 @@ final class VerifyCredentials extends Command
             $input->getArgument('oauth_secret')
         );
 
-        /** @var \stdClass $result */
+        /** @var stdClass $result */
         $result = $connection->get('account/verify_credentials', ['include_email' => true]);
 
         $this->io->table(

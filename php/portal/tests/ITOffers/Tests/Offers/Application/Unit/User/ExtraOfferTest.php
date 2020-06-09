@@ -15,6 +15,7 @@ namespace ITOffers\Tests\Offers\Application\Unit\User;
 
 use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use Aeon\Calendar\TimeUnit;
+use DateInterval;
 use ITOffers\Offers\Application\Exception\InvalidAssertionException;
 use ITOffers\Offers\Application\User\ExtraOffer;
 use ITOffers\Tests\Offers\Application\MotherObject\Offer\OfferMother;
@@ -28,7 +29,7 @@ final class ExtraOfferTest extends TestCase
         $this->expectException(InvalidAssertionException::class);
         $this->expectExceptionMessage('Expires in interval can\'t be negative');
 
-        $interval = new \DateInterval("P1D");
+        $interval = new DateInterval("P1D");
         $interval->invert = 1;
 
         new ExtraOffer(Uuid::uuid4(), TimeUnit::fromDateInterval($interval), new GregorianCalendarStub());
@@ -41,7 +42,7 @@ final class ExtraOfferTest extends TestCase
 
         $extraOffer = new ExtraOffer(
             Uuid::uuid4(),
-            $expiresIn = TimeUnit::fromDateInterval(new \DateInterval("P1D")),
+            $expiresIn = TimeUnit::fromDateInterval(new DateInterval("P1D")),
             $calendar = new GregorianCalendarStub()
         );
 
@@ -54,7 +55,7 @@ final class ExtraOfferTest extends TestCase
         $offer = OfferMother::random();
         $extraOffer = new ExtraOffer(
             $offer->userId(),
-            $expiresIn = TimeUnit::fromDateInterval(new \DateInterval("P1D")),
+            $expiresIn = TimeUnit::fromDateInterval(new DateInterval("P1D")),
             $calendar = new GregorianCalendarStub()
         );
 

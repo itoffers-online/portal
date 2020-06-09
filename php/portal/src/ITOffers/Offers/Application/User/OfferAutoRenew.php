@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace ITOffers\Offers\Application\User;
 
 use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
 use Aeon\Calendar\TimeUnit;
 use ITOffers\Offers\Application\Assertion;
 use ITOffers\Offers\Application\Offer\Offer;
@@ -28,15 +29,15 @@ class OfferAutoRenew
 
     private string $userId;
 
-    private \Aeon\Calendar\Gregorian\DateTime $expiresAt;
+    private DateTime $expiresAt;
 
-    private \Aeon\Calendar\Gregorian\DateTime $createdAt;
+    private DateTime $createdAt;
 
-    private ?\Aeon\Calendar\Gregorian\DateTime $renewAfter = null;
+    private ?DateTime $renewAfter = null;
 
     private ?string $offerId = null;
 
-    private ?\Aeon\Calendar\Gregorian\DateTime $renewedAt = null;
+    private ?DateTime $renewedAt = null;
 
     private function __construct(UuidInterface $userId, TimeUnit $expiresIn, Calendar $calendar)
     {
