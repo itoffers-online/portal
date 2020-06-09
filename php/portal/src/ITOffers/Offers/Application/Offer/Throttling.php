@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
-use Aeon\Calendar\TimeUnit;
 use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\TimeUnit;
 use ITOffers\Offers\Application\User\User;
 
 final class Throttling

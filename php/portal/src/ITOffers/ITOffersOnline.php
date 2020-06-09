@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers;
 
+use Aeon\Calendar\Gregorian\Calendar;
 use Aeon\Calendar\Gregorian\GregorianCalendar;
 use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use Aeon\Calendar\Gregorian\TimeZone;
@@ -26,7 +27,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Doctrine\ORM\Proxy\ProxyFactory;
-use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Component\EventBus\Infrastructure\InMemory\InMemoryEventBus;
 use ITOffers\Component\Mailer\Infrastructure\SwiftMailer\SwiftMailer;
 use ITOffers\Component\Mailer\Mailer;

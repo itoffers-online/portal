@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 
+use Aeon\Calendar\Gregorian\Calendar;
 use Aeon\Calendar\TimeUnit;
 use function array_key_exists;
 use Doctrine\DBAL\Connection;
-use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Offers\Application\Query\Offer\OfferThrottleQuery;
 
 final class DbalOfferThrottleQuery implements OfferThrottleQuery

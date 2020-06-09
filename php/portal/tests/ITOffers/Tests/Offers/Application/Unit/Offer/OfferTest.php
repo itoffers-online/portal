@@ -16,7 +16,6 @@ namespace ITOffers\Tests\Offers\Application\Unit\Offer;
 use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Offer\Locale;
-use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Offers\Application\MotherObject\Offer\CompanyMother;
 use ITOffers\Tests\Offers\Application\MotherObject\Offer\ContactMother;
 use ITOffers\Tests\Offers\Application\MotherObject\Offer\ContractMother;

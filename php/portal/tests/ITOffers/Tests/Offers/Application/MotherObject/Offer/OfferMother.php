@@ -30,7 +30,6 @@ use ITOffers\Offers\Application\Offer\Position\SeniorityLevels;
 use ITOffers\Offers\Application\Offer\Salary;
 use ITOffers\Offers\Application\Offer\Salary\Period;
 use ITOffers\Offers\Application\User\User;
-use ITOffers\Tests\Offers\Application\MotherObject\Facebook\CalendarMother;
 use ITOffers\Tests\Offers\Application\MotherObject\Specialization\SpecializationMother;
 use ITOffers\Tests\Offers\Application\MotherObject\User\UserMother;
 use Ramsey\Uuid\Uuid;

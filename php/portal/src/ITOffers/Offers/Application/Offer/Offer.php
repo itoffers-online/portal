@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
+use Aeon\Calendar\Gregorian\Calendar;
 use Aeon\Calendar\Gregorian\DateTime;
 use Hashids\Hashids;
-use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Offers\Application\Assertion;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Specialization\Specialization;

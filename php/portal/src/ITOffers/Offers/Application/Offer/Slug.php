@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
-use Cocur\Slugify\Slugify;
-use Aeon\Calendar\Gregorian\DateTime;
-use Hashids\Hashids;
 use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
+use Cocur\Slugify\Slugify;
+use Hashids\Hashids;
 use ITOffers\Offers\Application\Offer\Position\SeniorityLevels;
 use Ramsey\Uuid\UuidInterface;
 use function random_int;

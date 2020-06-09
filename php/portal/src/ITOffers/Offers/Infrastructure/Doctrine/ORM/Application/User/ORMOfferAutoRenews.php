@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\User;
 
+use Aeon\Calendar\Gregorian\Calendar;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
-use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Offer\Offer;
 use ITOffers\Offers\Application\User\OfferAutoRenew;

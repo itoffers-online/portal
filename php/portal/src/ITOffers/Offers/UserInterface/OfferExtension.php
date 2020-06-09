@@ -20,12 +20,12 @@ use ITOffers\Offers\Application\Query\Offer\Model\Offer\Location;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Salary;
 use ITOffers\Offers\Offers;
 use ITOffers\Offers\UserInterface\Country\Countries;
-use NumberFormatter;
-use Stidges\CountryFlags\CountryFlag;
-use Throwable;
 use function mb_strtolower;
 use function mb_substr;
+use NumberFormatter;
 use function sprintf;
+use Stidges\CountryFlags\CountryFlag;
+use Throwable;
 
 final class OfferExtension
 {

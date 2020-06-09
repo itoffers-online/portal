@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
-use Cocur\Slugify\Slugify;
 use Aeon\Calendar\Gregorian\Calendar;
+use Cocur\Slugify\Slugify;
 use ITOffers\Offers\Application\Assertion;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
