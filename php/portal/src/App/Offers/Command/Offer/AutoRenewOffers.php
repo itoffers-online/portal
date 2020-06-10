@@ -20,6 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 final class AutoRenewOffers extends Command
 {
@@ -69,7 +70,7 @@ final class AutoRenewOffers extends Command
                 try {
                     $this->offers->handle(new RenewOffer($offerId));
                     $totalRenewedOffers += 1;
-                } catch (\Throwable $e) {
+                } catch (Throwable $e) {
                     $this->io->error(\sprintf('Can\'t renew offer with id %s, please check logs for more details.', $offerId));
                 }
             }

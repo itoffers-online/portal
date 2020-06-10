@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Component\Storage\FileStorage;
 
+use finfo;
 use ITOffers\Offers\Application\Assertion;
 
 final class File
@@ -32,7 +33,7 @@ final class File
 
     public static function pdf(string $dstPath, string $tmpPath) : self
     {
-        $mimeType = (new \finfo(FILEINFO_MIME_TYPE))->file($tmpPath);
+        $mimeType = (new finfo(FILEINFO_MIME_TYPE))->file($tmpPath);
         Assertion::inArray($mimeType, ['application/pdf', 'application/x-pdf'], sprintf('Expected application/pdf file got %s', $mimeType));
 
         return new self($dstPath, $tmpPath);
@@ -40,7 +41,7 @@ final class File
 
     public static function image(string $dstPath, string $tmpPath) : self
     {
-        $mimeType = (new \finfo(FILEINFO_MIME_TYPE))->file($tmpPath);
+        $mimeType = (new finfo(FILEINFO_MIME_TYPE))->file($tmpPath);
         Assertion::inArray($mimeType, ['image/jpeg', 'image/png'], sprintf('Expected png or jpeg file got %s', $mimeType));
 
         return new self($dstPath, $tmpPath);
@@ -48,7 +49,7 @@ final class File
 
     public static function extension(string $path) : string
     {
-        return (new \finfo(FILEINFO_EXTENSION))->file($path);
+        return (new finfo(FILEINFO_EXTENSION))->file($path);
     }
 
     public function destinationPath() : string

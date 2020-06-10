@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\UserInterface;
 
+use InvalidArgumentException;
+use NumberFormatter;
+use RuntimeException;
+
 final class MetricSuffix
 {
     const CONVERT_THRESHOLD = 1_000;
@@ -34,12 +38,12 @@ final class MetricSuffix
      * @param int $number
      * @param string $locale
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(int $number, string $locale = 'en')
     {
         if (!\class_exists('NumberFormatter')) {
-            throw new \RuntimeException('Metric suffix converter requires intl extension!');
+            throw new RuntimeException('Metric suffix converter requires intl extension!');
         }
 
         $this->number = $number;
@@ -54,7 +58,7 @@ final class MetricSuffix
 
     public function convert() : string
     {
-        $formatter = new \NumberFormatter($this->locale, \NumberFormatter::PATTERN_DECIMAL);
+        $formatter = new NumberFormatter($this->locale, NumberFormatter::PATTERN_DECIMAL);
 
         foreach ($this->binaryPrefixes as $size => $unitPattern) {
             if ($size <= $this->number) {

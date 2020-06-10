@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Query\Specialization\Model;
 
+use ArrayObject;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer;
 
-final class Specializations extends \ArrayObject
+final class Specializations extends ArrayObject
 {
     public function __construct(Specialization ...$specializations)
     {

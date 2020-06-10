@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Query\Offer\Model;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Company;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Contact;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Contract;
@@ -39,7 +40,7 @@ final class Offer
 
     private string $specializationSlug;
 
-    private \DateTimeImmutable $createdAt;
+    private DateTime $createdAt;
 
     private Parameters $parameters;
 
@@ -54,7 +55,7 @@ final class Offer
         string $locale,
         UuidInterface $userId,
         string $specializationSlug,
-        \DateTimeImmutable $createdAt,
+        DateTime $createdAt,
         Parameters $parameters,
         int $applicationsCount,
         ?OfferPDF $offerPDF
@@ -101,7 +102,7 @@ final class Offer
         return $this->specializationSlug;
     }
 
-    public function createdAt() : \DateTimeImmutable
+    public function createdAt() : DateTime
     {
         return $this->createdAt;
     }

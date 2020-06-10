@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Command\Offer;
 
+use Aeon\Calendar\Gregorian\Calendar;
 use function array_map;
-use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Component\CQRS\System\Handler;
 use ITOffers\Component\Mailer\Attachment as EmailAttachment;
 use ITOffers\Component\Mailer\Attachments;

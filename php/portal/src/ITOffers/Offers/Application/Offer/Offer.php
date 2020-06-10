@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
-use DateTimeImmutable;
+use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
 use Hashids\Hashids;
-use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Assertion;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Specialization\Specialization;
@@ -38,7 +38,7 @@ class Offer
 
     private Locale $locale;
 
-    private \DateTimeImmutable $createdAt;
+    private DateTime $createdAt;
 
     private Company $company;
 
@@ -54,9 +54,9 @@ class Offer
 
     private Contact $contact;
 
-    private ?\DateTimeImmutable $removedAt = null;
+    private ?DateTime $removedAt = null;
 
-    private ?DateTimeImmutable $updatedAt = null;
+    private ?DateTime $updatedAt = null;
 
     private function __construct(
         UuidInterface $id,
@@ -70,7 +70,7 @@ class Offer
         Contract $contract,
         Description $description,
         Contact $contact,
-        DateTimeImmutable $createdAt
+        DateTime $createdAt
     ) {
         $this->id = $id->toString();
         $this->userId = $userId->toString();
@@ -113,7 +113,7 @@ class Offer
             $contract,
             $description,
             $contact,
-            $calendar->currentTime()
+            $calendar->now()
         );
     }
 
@@ -142,7 +142,7 @@ class Offer
         return $this->emailHash;
     }
 
-    public function createdAt() : DateTimeImmutable
+    public function createdAt() : DateTime
     {
         return $this->createdAt;
     }
@@ -198,7 +198,7 @@ class Offer
             throw new Exception("User is not allowed to update the offer");
         }
 
-        if ($this->createdAt->modify(\sprintf('+%d hours', self::INSTANT_EDIT_TIME_HOURS)) < $calendar->currentTime()) {
+        if ($this->createdAt->modify(\sprintf('+%d hours', self::INSTANT_EDIT_TIME_HOURS))->isBeforeOrEqual($calendar->now())) {
             throw new Exception("This offer can't be updated anymore");
         }
 
@@ -210,20 +210,20 @@ class Offer
         $this->contract = $contract;
         $this->description = $description;
         $this->contact = $contact;
-        $this->updatedAt = $calendar->currentTime();
+        $this->updatedAt = $calendar->now();
     }
 
     public function remove(User $user, Calendar $calendar) : void
     {
         Assertion::true(Uuid::fromString($this->userId)->equals($user->id()));
 
-        $this->removedAt = $calendar->currentTime();
+        $this->removedAt = $calendar->now();
     }
 
     public function renew(OfferAutoRenews $offerAutoRenews, Calendar $calendar) : void
     {
         $offerAutoRenews->getUnusedFor($this->id())
             ->renew($this, $calendar);
-        $this->createdAt = $calendar->currentTime();
+        $this->createdAt = $calendar->now();
     }
 }

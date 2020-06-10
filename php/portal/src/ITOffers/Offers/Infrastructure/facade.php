@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure;
 
+use Aeon\Calendar\Gregorian\Calendar;
 use Doctrine\ORM\EntityManager;
 use Facebook\Facebook;
-use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Component\CQRS\EventStream;
 use ITOffers\Component\CQRS\EventStream\Event;
 use ITOffers\Component\CQRS\System;
@@ -83,6 +83,7 @@ use ITOffers\Offers\Offers;
 use ITOffers\Tests\Offers\Application\Double\Dummy\DummyFacebook;
 use ITOffers\Tests\Offers\Application\Double\Dummy\DummyTwitter;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Twig\Environment;
 
 function offersFacade(
@@ -168,7 +169,7 @@ function offersFacade(
 
             break;
         default:
-            throw new \RuntimeException(sprintf('Unknown environment %s', $config->getString(Config::ENV)));
+            throw new RuntimeException(sprintf('Unknown environment %s', $config->getString(Config::ENV)));
     }
 
     $ormSpecializations = new ORMSpecializations($entityManager);

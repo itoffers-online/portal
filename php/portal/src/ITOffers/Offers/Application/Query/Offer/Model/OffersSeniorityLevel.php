@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Query\Offer\Model;
 
-final class OffersSeniorityLevel extends \ArrayObject
+use ArrayObject;
+
+final class OffersSeniorityLevel extends ArrayObject
 {
     public function __construct(OfferSeniorityLevel ...$offerSeniorityLevels)
     {

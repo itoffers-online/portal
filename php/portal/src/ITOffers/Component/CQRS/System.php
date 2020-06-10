@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Component\CQRS;
 
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Component\CQRS\Exception\Exception;
 use ITOffers\Component\CQRS\System\Command;
 use ITOffers\Component\CQRS\System\CommandBus;
@@ -63,7 +63,7 @@ final class System
             $this->commandBus->handle($command);
         } catch (Throwable $exception) {
             $this->logger->error(sprintf('Failed to handle command %s', \get_class($command)), [
-                'system_time' => $this->calendar->currentTime()->format('c'),
+                'system_time' => $this->calendar->now()->format('c'),
                 'exception' => \get_class($exception),
                 'message' => $exception->getMessage(),
                 'code' => $exception->getCode(),
@@ -77,7 +77,7 @@ final class System
             $this->eventStream->flush();
         } catch (Throwable $exception) {
             $this->logger->error(sprintf('Failed to flush event stream after command %s', \get_class($command)), [
-                'system_time' => $this->calendar->currentTime()->format('c'),
+                'system_time' => $this->calendar->now()->format('c'),
                 'exception' => \get_class($exception),
                 'message' => $exception->getMessage(),
                 'code' => $exception->getCode(),

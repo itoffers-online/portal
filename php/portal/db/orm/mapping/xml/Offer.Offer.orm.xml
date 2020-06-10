@@ -10,10 +10,10 @@
         <field name="emailHash" />
         <field name="userId" type="guid" />
         <field name="specializationId" type="guid" />
-        <field name="createdAt" type="datetime_immutable" />
+        <field name="createdAt" type="aeon_datetime" />
         <field name="salary" type="itof_offer_salary" nullable="true"/>
-        <field name="removedAt" type="datetime_immutable" nullable="true"/>
-        <field name="updatedAt" type="datetime_immutable" nullable="true"/>
+        <field name="removedAt" type="aeon_datetime" nullable="true"/>
+        <field name="updatedAt" type="aeon_datetime" nullable="true"/>
 
         <embedded name="locale" class="ITOffers\Offers\Application\Offer\Locale" />
         <embedded name="company" class="ITOffers\Offers\Application\Offer\Company" />

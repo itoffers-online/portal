@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
+use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
 use Cocur\Slugify\Slugify;
-use DateTimeImmutable;
 use Hashids\Hashids;
-use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Offer\Position\SeniorityLevels;
 use Ramsey\Uuid\UuidInterface;
 use function random_int;
@@ -27,9 +27,9 @@ class Slug
 
     private string $offerId;
 
-    private \DateTimeImmutable $createdAt;
+    private DateTime $createdAt;
 
-    private function __construct(string $value, UuidInterface $offerId, DateTimeImmutable $createdAt)
+    private function __construct(string $value, UuidInterface $offerId, DateTime $createdAt)
     {
         $this->slug = $value;
         $this->offerId = $offerId->toString();
@@ -44,7 +44,7 @@ class Slug
         return new self(
             sprintf('%s-%s', $slugify->slugify(SeniorityLevels::toString($offer->position()->seniorityLevel()) . ' ' . $offer->position()->name() . ' ' . $offer->company()->name()), $hashids->encode(time() + random_int(0, 5_000))),
             $offer->id(),
-            $calendar->currentTime()
+            $calendar->now()
         );
     }
 

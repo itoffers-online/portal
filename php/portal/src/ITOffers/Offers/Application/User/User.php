@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\User;
 
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
 use ITOffers\Offers\Application\Assertion;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -24,15 +25,15 @@ class User
 
     private string $email;
 
-    private \DateTimeImmutable $createdAt;
+    private DateTime $createdAt;
 
     private ?string $fbUserAppId = null;
 
     private ?string $linkedInUserAppId = null;
 
-    private ?\DateTimeImmutable $blockedAt = null;
+    private ?DateTime $blockedAt = null;
 
-    private function __construct(\DateTimeImmutable $createdAt, string $email)
+    private function __construct(DateTime $createdAt, string $email)
     {
         Assertion::email($email);
 
@@ -45,7 +46,7 @@ class User
     {
         Assertion::betweenLength($userAppId, 0, 255);
 
-        $user = new self($calendar->currentTime(), $email);
+        $user = new self($calendar->now(), $email);
         $user->fbUserAppId = $userAppId;
 
         return $user;
@@ -55,7 +56,7 @@ class User
     {
         Assertion::betweenLength($userAppId, 0, 255);
 
-        $user = new self($calendar->currentTime(), $email);
+        $user = new self($calendar->now(), $email);
         $user->linkedInUserAppId = $userAppId;
 
         return $user;
@@ -68,7 +69,7 @@ class User
 
     public function block(Calendar $calendar) : void
     {
-        $this->blockedAt = $calendar->currentTime();
+        $this->blockedAt = $calendar->now();
     }
 
     public function email() : string

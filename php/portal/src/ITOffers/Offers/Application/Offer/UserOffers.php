@@ -13,20 +13,22 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Offer;
 
+use Aeon\Calendar\Gregorian\DateTime;
+use Countable;
 use ITOffers\Offers\Application\User\User;
 
-final class UserOffers implements \Countable
+final class UserOffers implements Countable
 {
     private User $user;
 
-    private \DateTimeImmutable $since;
+    private DateTime $since;
 
     /**
      * @var Offer[]
      */
     private array $offers;
 
-    public function __construct(User $user, \DateTimeImmutable $since, Offer ...$offers)
+    public function __construct(User $user, DateTime $since, Offer ...$offers)
     {
         $this->user = $user;
         $this->since = $since;
@@ -35,6 +37,6 @@ final class UserOffers implements \Countable
 
     public function count() : int
     {
-        return is_countable($this->offers) ? \count($this->offers) : 0;
+        return \count($this->offers);
     }
 }

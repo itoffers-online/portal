@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\User;
 
+use Aeon\Calendar\Gregorian\Calendar;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
-use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Offer\Offer;
 use ITOffers\Offers\Application\User\OfferAutoRenew;
@@ -47,7 +47,7 @@ final class ORMOfferAutoRenews implements OfferAutoRenews
         $criteria = new Criteria();
         $criteria
             ->where($criteria->expr()->eq('userId', $user->id()->toString()))
-            ->andWhere($criteria->expr()->gt('expiresAt', $this->calendar->currentTime()))
+            ->andWhere($criteria->expr()->gt('expiresAt', $this->calendar->now()))
             ->andWhere($criteria->expr()->isNull('renewedAt'))
             ->andWhere($criteria->expr()->isNull('offerId'))
             ->orderBy(['expiresAt' => 'ASC']);
@@ -58,7 +58,7 @@ final class ORMOfferAutoRenews implements OfferAutoRenews
             throw new Exception(\sprintf("User %s does not have any offer auto renews.", $user->email()));
         }
 
-        return ($offerAutoRenew) ? $offerAutoRenew : null;
+        return $offerAutoRenew;
     }
 
     public function getUnusedFor(UuidInterface $offerId) : OfferAutoRenew
@@ -75,7 +75,7 @@ final class ORMOfferAutoRenews implements OfferAutoRenews
             throw new Exception(\sprintf("Offer %s does not have any offer auto renews.", $offerId->toString()));
         }
 
-        return ($offerAutoRenew) ? $offerAutoRenew : null;
+        return $offerAutoRenew;
     }
 
     public function countUnassignedNotExpired(UuidInterface $userId) : int
@@ -83,7 +83,7 @@ final class ORMOfferAutoRenews implements OfferAutoRenews
         $criteria = new Criteria();
         $criteria
             ->where($criteria->expr()->eq('userId', $userId->toString()))
-            ->andWhere($criteria->expr()->gt('expiresAt', $this->calendar->currentTime()))
+            ->andWhere($criteria->expr()->gt('expiresAt', $this->calendar->now()))
             ->andWhere($criteria->expr()->isNull('renewedAt'))
             ->andWhere($criteria->expr()->isNull('offerId'));
 

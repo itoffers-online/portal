@@ -13,13 +13,19 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\UserInterface;
 
+use Aeon\Calendar\Gregorian\GregorianCalendar;
 use ITOffers\Offers\Application\Exception\Exception;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Location;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Salary;
 use ITOffers\Offers\Offers;
 use ITOffers\Offers\UserInterface\Country\Countries;
+use function mb_strtolower;
+use function mb_substr;
+use NumberFormatter;
+use function sprintf;
 use Stidges\CountryFlags\CountryFlag;
+use Throwable;
 
 final class OfferExtension
 {
@@ -35,16 +41,16 @@ final class OfferExtension
 
     public function salaryInteger(int $amount) : string
     {
-        return (\NumberFormatter::create($this->locale, \NumberFormatter::DEFAULT_STYLE))->format($amount);
+        return (NumberFormatter::create($this->locale, NumberFormatter::DEFAULT_STYLE))->format($amount);
     }
 
     public function salaryType(Salary $salary) : string
     {
         if ($salary->isNet()) {
-            return 'net ' . ($salary->periodTypeTotal() ? ' in total' : 'per ' . \mb_strtolower($salary->periodType()));
+            return 'net ' . ($salary->periodTypeTotal() ? ' in total' : 'per ' . mb_strtolower($salary->periodType()));
         }
 
-        return 'gross ' . ($salary->periodTypeTotal() ? ' in total' : 'per ' . \mb_strtolower($salary->periodType()));
+        return 'gross ' . ($salary->periodTypeTotal() ? ' in total' : 'per ' . mb_strtolower($salary->periodType()));
     }
 
     public function locationText(Location $location) : string
@@ -53,7 +59,7 @@ final class OfferExtension
             return 'Remote';
         }
 
-        return \sprintf("%s, %s", $this->locationCountryName($location->countryCode()), $location->city());
+        return sprintf("%s, %s", $this->locationCountryName($location->countryCode()), $location->city());
     }
 
     public function salaryIntegerShort(int $amount) : string
@@ -94,7 +100,7 @@ final class OfferExtension
 
     public static function seniorityLevelFromName(string $name) : int
     {
-        switch (\mb_strtolower($name)) {
+        switch (mb_strtolower($name)) {
             case 'intern':
                 return 0;
             case 'junior':
@@ -114,7 +120,7 @@ final class OfferExtension
     {
         try {
             return (new CountryFlag)->get($countryCode);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return $countryCode;
         }
     }
@@ -122,8 +128,8 @@ final class OfferExtension
     public function localeCountryFlag(string $locale) : string
     {
         try {
-            return (new CountryFlag)->get(\mb_substr($locale, 3, 5));
-        } catch (\Throwable $e) {
+            return (new CountryFlag)->get(mb_substr($locale, 3, 5));
+        } catch (Throwable $e) {
             return $locale;
         }
     }
@@ -135,12 +141,14 @@ final class OfferExtension
 
     public function olderThan(Offer $offer, int $days) : bool
     {
-        return $offer->createdAt()->diff(new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->days >= $days;
+        return $offer->createdAt()->distanceTo(GregorianCalendar::UTC()->now())->inDays() >= $days;
     }
 
     public function olderThanHours(Offer $offer, int $hours) : bool
     {
-        return $offer->createdAt()->modify(\sprintf('+%d hours', $hours)) < new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        return $offer->createdAt()->modify(sprintf('+%d hours', $hours))->isBefore(
+            GregorianCalendar::UTC()->now()
+        );
     }
 
     public function autoRenewsLeft(Offer $offer) : int

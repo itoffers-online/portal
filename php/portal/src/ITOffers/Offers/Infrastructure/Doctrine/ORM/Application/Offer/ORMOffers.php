@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\Doctrine\ORM\Application\Offer;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use ITOffers\Offers\Application\Offer\Offer;
@@ -40,7 +41,7 @@ final class ORMOffers implements Offers
         return $this->entityManager->getRepository(Offer::class)->findOneBy(['id' => $offerId->toString()]);
     }
 
-    public function postedBy(User $user, \DateTimeImmutable $since) : UserOffers
+    public function postedBy(User $user, DateTime $since) : UserOffers
     {
         $criteria = new Criteria();
         $criteria

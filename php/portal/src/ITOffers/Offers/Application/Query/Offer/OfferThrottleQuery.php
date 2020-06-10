@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Query\Offer;
 
+use Aeon\Calendar\TimeUnit;
 use ITOffers\Component\CQRS\System\Query;
 
 interface OfferThrottleQuery extends Query
 {
     public function limit() : int;
 
-    public function since() : \DateInterval;
+    public function since() : TimeUnit;
 
     public function isThrottled(string $userId) : bool;
 

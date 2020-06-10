@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\User\Event;
 
+use Aeon\Calendar\Gregorian\DateTime;
+use Aeon\Calendar\Gregorian\GregorianCalendar;
 use ITOffers\Component\CQRS\EventStream\Event;
 use ITOffers\Offers\Application\User\User;
 use Ramsey\Uuid\Uuid;
@@ -22,14 +24,14 @@ final class ExtraOffersAdded implements Event
 {
     private UuidInterface $id;
 
-    private \DateTimeImmutable $occurredAt;
+    private DateTime $occurredAt;
 
     private array $payload;
 
     public function __construct(User $user, int $expiresInDays, int $amount)
     {
         $this->id = Uuid::uuid4();
-        $this->occurredAt = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+        $this->occurredAt = GregorianCalendar::UTC()->now();
         $this->payload = [
             'userId' => $user->id()->toString(),
             'expiresInDays' => $expiresInDays,
@@ -42,7 +44,7 @@ final class ExtraOffersAdded implements Event
         return $this->id;
     }
 
-    public function occurredAt() : \DateTimeImmutable
+    public function occurredAt() : DateTime
     {
         return $this->occurredAt;
     }

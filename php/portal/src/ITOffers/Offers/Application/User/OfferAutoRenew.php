@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\User;
 
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
+use Aeon\Calendar\TimeUnit;
 use ITOffers\Offers\Application\Assertion;
 use ITOffers\Offers\Application\Offer\Offer;
 use Ramsey\Uuid\Uuid;
@@ -27,30 +29,30 @@ class OfferAutoRenew
 
     private string $userId;
 
-    private \DateTimeImmutable $expiresAt;
+    private DateTime $expiresAt;
 
-    private \DateTimeImmutable $createdAt;
+    private DateTime $createdAt;
 
-    private ?\DateTimeImmutable $renewAfter = null;
+    private ?DateTime $renewAfter = null;
 
     private ?string $offerId = null;
 
-    private ?\DateTimeImmutable $renewedAt = null;
+    private ?DateTime $renewedAt = null;
 
-    private function __construct(UuidInterface $userId, \DateInterval $expiresIn, Calendar $calendar)
+    private function __construct(UuidInterface $userId, TimeUnit $expiresIn, Calendar $calendar)
     {
-        Assertion::same($expiresIn->invert, 0, "Expires in interval can't be negative");
+        Assertion::false($expiresIn->isNegative(), "Expires in interval can't be negative");
 
         $this->id = Uuid::uuid4()->toString();
         $this->userId = $userId->toString();
-        $this->expiresAt = $calendar->currentTime()->add($expiresIn);
+        $this->expiresAt = $calendar->now()->add($expiresIn);
 
-        $this->createdAt = $calendar->currentTime();
+        $this->createdAt = $calendar->now();
     }
 
     public static function expiresInDays(UuidInterface $userId, int $days, Calendar $calendar) : self
     {
-        return new self($userId, new \DateInterval(\sprintf('P%dD', $days)), $calendar);
+        return new self($userId, TimeUnit::days($days), $calendar);
     }
 
     public function assign(Offer $offer, OfferAutoRenews $offerAutoRenews, int $offerLifetimeDays, Calendar $calendar) : void
@@ -58,15 +60,15 @@ class OfferAutoRenew
         Assertion::null($this->offerId, "Offer renew already assigned");
         Assertion::greaterThan($offerLifetimeDays, 0, "Offer lifetime days can't be negative");
         Assertion::true($offer->userId()->equals(Uuid::fromString($this->userId)), 'Offer doesn\'t belong to auto renew owner.');
-        Assertion::true($this->expiresAt >= $calendar->currentTime(), "Offer renew already expired");
+        Assertion::true($this->expiresAt->isAfterOrEqual($calendar->now()), "Offer renew already expired");
         Assertion::lessThan($offerAutoRenews->countAssignedTo($offer), self::MAX_OFFER_AUTO_RENEWS, "There are already 2 auto renews assigned to that offer.");
 
-        $renewAfterDays = $offerLifetimeDays - $calendar->currentTime()->diff($offer->createdAt())->d;
+        $renewAfterDays = $offerLifetimeDays - $calendar->now()->distanceFrom($offer->createdAt())->inDays();
 
         Assertion::greaterThan($renewAfterDays, 0, 'Offer already expired');
 
         $this->offerId = $offer->id()->toString();
-        $this->renewAfter = $calendar->currentTime()->add(new \DateInterval(\sprintf('P%dD', $renewAfterDays)));
+        $this->renewAfter = $calendar->now()->add(TimeUnit::days($renewAfterDays));
     }
 
     public function renew(Offer $offer, Calendar $calendar) : void
@@ -74,6 +76,6 @@ class OfferAutoRenew
         Assertion::true(Uuid::fromString($this->offerId)->equals($offer->id()), "Offer renew was assigned to different offer");
         Assertion::null($this->renewedAt, "Offer renew already used");
 
-        $this->renewedAt = $calendar->currentTime();
+        $this->renewedAt = $calendar->now();
     }
 }

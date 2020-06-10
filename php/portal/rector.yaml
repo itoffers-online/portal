@@ -4,12 +4,5 @@ parameters:
     - 'src'
     - 'tests'
   auto_import_names: true
-  import_short_classes: false
   sets:
-    - 'php71'
-    - 'php72'
-    - 'php73'
     - 'php74'
-    - 'phpunit80'
-    - 'phpunit-yield-data-provider'
-    - 'twig-underscore-to-namespace'

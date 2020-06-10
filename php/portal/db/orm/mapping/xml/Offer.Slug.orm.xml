@@ -8,6 +8,6 @@
             <generator strategy="NONE" />
         </id>
         <field name="offerId" type="guid" />
-        <field name="createdAt" type="datetime_immutable" />
+        <field name="createdAt" type="aeon_datetime" />
     </entity>
 </doctrine-mapping>

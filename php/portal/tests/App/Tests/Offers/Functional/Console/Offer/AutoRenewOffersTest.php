@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Offers\Functional\Console\Offer;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use App\Offers\Command\Offer\AutoRenewOffers;
 use App\Tests\Functional\Console\ConsoleTestCase;
 use ITOffers\Offers\Application\Command\Offer\AssignAutoRenew;
@@ -55,7 +56,7 @@ final class AutoRenewOffersTest extends ConsoleTestCase
         $application->add($command);
 
 
-        $this->setCurrentTime(new \DateTimeImmutable('-30 days'));
+        $this->setCurrentTime(DateTime::fromString('-30 days'));
 
         $offer = $this->createOffer();
         $this->offersContext->module()->handle(new AssignAutoRenew(
@@ -63,7 +64,7 @@ final class AutoRenewOffersTest extends ConsoleTestCase
             $offer->id()->toString()
         ));
 
-        $this->setCurrentTime($currentDate = new \DateTimeImmutable('now'));
+        $this->setCurrentTime($currentDate = DateTime::fromString('now'));
 
         $commandTester = new CommandTester($application->find(AutoRenewOffers::NAME));
         $commandTester->execute(

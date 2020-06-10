@@ -8,10 +8,10 @@
             <generator strategy="NONE" />
         </id>
         <field name="userId" type="guid"/>
-        <field name="expiresAt" type="datetime_immutable"/>
-        <field name="createdAt" type="datetime_immutable" />
-        <field name="renewAfter" type="datetime_immutable" nullable="true" />
+        <field name="expiresAt" type="aeon_datetime"/>
+        <field name="createdAt" type="aeon_datetime" />
+        <field name="renewAfter" type="aeon_datetime" nullable="true" />
         <field name="offerId" type="guid" nullable="true"/>
-        <field name="renewedAt" type="datetime_immutable" nullable="true"/>
+        <field name="renewedAt" type="aeon_datetime" nullable="true"/>
     </entity>
 </doctrine-mapping>

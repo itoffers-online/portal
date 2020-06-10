@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace ITOffers\Notifications\Application;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use Ramsey\Uuid\UuidInterface;
 
 interface Event
 {
     public function id() : UuidInterface;
 
-    public function occurredAt() : \DateTimeImmutable;
+    public function occurredAt() : DateTime;
 }

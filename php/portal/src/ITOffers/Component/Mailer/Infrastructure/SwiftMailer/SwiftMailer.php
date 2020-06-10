@@ -20,14 +20,17 @@ use ITOffers\Component\Mailer\Mailer;
 use ITOffers\Component\Mailer\Recipient;
 use ITOffers\Component\Mailer\Recipients;
 use ITOffers\Component\Mailer\Sender;
+use Swift_Attachment;
+use Swift_Mailer;
+use Swift_Message;
 
 final class SwiftMailer implements Mailer
 {
     private string $domain;
 
-    private \Swift_Mailer $swiftMailer;
+    private Swift_Mailer $swiftMailer;
 
-    public function __construct(string $domain, \Swift_Mailer $swiftMailer)
+    public function __construct(string $domain, Swift_Mailer $swiftMailer)
     {
         $this->domain = $domain;
         $this->swiftMailer = $swiftMailer;
@@ -43,7 +46,7 @@ final class SwiftMailer implements Mailer
      */
     public function send(Email $email, Sender $sender, Recipients $recipients, Attachments $attachments = null) : void
     {
-        $message = (new \Swift_Message($email->subject()))
+        $message = (new Swift_Message($email->subject()))
             ->setFrom([$sender->email() => $sender->name()])
             ->setBody($email->htmlBody(), 'text/html')
             ->setReplyTo($sender->replyEmail())
@@ -58,7 +61,7 @@ final class SwiftMailer implements Mailer
 
         if ($attachments) {
             foreach ($attachments as $attachment) {
-                $message->attach(\Swift_Attachment::fromPath($attachment->filePath()));
+                $message->attach(Swift_Attachment::fromPath($attachment->filePath()));
             }
         }
 

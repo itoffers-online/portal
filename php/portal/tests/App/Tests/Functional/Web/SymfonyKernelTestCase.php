@@ -13,15 +13,17 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Web;
 
+use Aeon\Calendar\Gregorian\DateTime;
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use function App\initializeSymfony;
 use App\SymfonyKernel;
 use ITOffers\Config;
 use ITOffers\ITOffersOnline;
 use function ITOffers\Offers\Infrastructure\bootstrap;
 use ITOffers\Offers\Offers;
-use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Offers\Application\Context\DatabaseContext;
 use ITOffers\Tests\Offers\Application\Context\OffersContext;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class SymfonyKernelTestCase extends KernelTestCase
@@ -50,10 +52,10 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
         $this->databaseContext = new DatabaseContext(static::itoffers()->dbal());
 
         $this->databaseContext->purgeDatabase();
-        /** @var CalendarStub $calendar */
+        /** @var GregorianCalendarStub $calendar */
         $calendar = static::itoffers()->calendar();
 
-        $calendar->setCurrentTime(new \DateTimeImmutable());
+        $calendar->setNow(DateTime::fromString('now'));
     }
 
     protected static function itoffers() : ITOffersOnline
@@ -63,7 +65,7 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
         }
 
         if (static::$itoffers->config()->getString(Config::ENV) !== 'test') {
-            throw new \RuntimeException(sprintf('Expected environment "test" but got "%s"', static::$itoffers->config()->getString(Config::ENV)));
+            throw new RuntimeException(sprintf('Expected environment "test" but got "%s"', static::$itoffers->config()->getString(Config::ENV)));
         }
 
         return static::$itoffers;
@@ -79,11 +81,11 @@ abstract class SymfonyKernelTestCase extends KernelTestCase
         return static::itoffers()->config();
     }
 
-    public function setCurrentTime(\DateTimeImmutable $currentTime) : void
+    public function setCurrentTime(DateTime $currentTime) : void
     {
-        /** @var CalendarStub $calendar */
+        /** @var GregorianCalendarStub $calendar */
         $calendar = static::itoffers()->calendar();
 
-        $calendar->setCurrentTime($currentTime);
+        $calendar->setNow($currentTime);
     }
 }

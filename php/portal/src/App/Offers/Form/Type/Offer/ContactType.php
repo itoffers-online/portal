@@ -90,7 +90,7 @@ final class ContactType extends AbstractType
                 $data = $form->getData();
 
                 if (!isset($data['type'])) {
-                    return [];
+                    return [self::RECRUITER_GROUP];
                 }
 
                 switch ($data['type']) {

@@ -7,10 +7,10 @@
         <id name="id" type="guid">
             <generator strategy="NONE" />
         </id>
-        <field name="createdAt" type="datetime_immutable" />
-        <field name="expiresAt" type="datetime_immutable"/>
+        <field name="createdAt" type="aeon_datetime" />
+        <field name="expiresAt" type="aeon_datetime"/>
         <field name="userId" type="guid"/>
-        <field name="usedAt" type="datetime_immutable" nullable="true"/>
+        <field name="usedAt" type="aeon_datetime" nullable="true"/>
         <field name="offerId" type="guid" nullable="true"/>
     </entity>
 </doctrine-mapping>

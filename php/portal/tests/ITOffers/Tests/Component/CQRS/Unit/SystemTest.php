@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Component\CQRS\Unit;
 
+use Aeon\Calendar\Gregorian\DateTime;
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use ITOffers\Component\CQRS\EventStream;
 use ITOffers\Component\CQRS\EventStream\Event;
 use ITOffers\Component\CQRS\Exception\Exception;
@@ -21,7 +23,6 @@ use ITOffers\Component\CQRS\System\CommandBus;
 use ITOffers\Component\CQRS\System\Handler;
 use ITOffers\Component\CQRS\System\Queries;
 use ITOffers\Component\FeatureToggle\FeatureToggle;
-use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Component\CQRS\Double\Stub\EventStreamStub;
 use ITOffers\Tests\Component\FeatureToggle\Double\Stub\DisabledFeatureStub;
 use ITOffers\Tests\Offers\Application\Double\Dummy\DummyCommand;
@@ -30,6 +31,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use RuntimeException;
 
 final class SystemTest extends TestCase
 {
@@ -43,7 +45,7 @@ final class SystemTest extends TestCase
             new FeatureToggle(
                 new DisabledFeatureStub(DummyCommand::class)
             ),
-            new CalendarStub(),
+            new GregorianCalendarStub(),
             new EventStreamStub(),
             new NullLogger(),
         );
@@ -88,9 +90,9 @@ final class SystemTest extends TestCase
                                 return Uuid::uuid4();
                             }
 
-                            public function occurredAt() : \DateTimeImmutable
+                            public function occurredAt() : DateTime
                             {
-                                return new \DateTimeImmutable();
+                                return DateTime::fromString('now');
                             }
 
                             public function payload() : array
@@ -103,7 +105,7 @@ final class SystemTest extends TestCase
             ),
             new Queries(),
             new FeatureToggle(),
-            new CalendarStub(),
+            new GregorianCalendarStub(),
             $eventStream,
             new NullLogger(),
         );
@@ -119,7 +121,7 @@ final class SystemTest extends TestCase
             ->method('record');
 
         $eventStream->method('flush')
-            ->willThrowException(new \RuntimeException('Can\'t Flush'));
+            ->willThrowException(new RuntimeException('Can\'t Flush'));
 
         $system = new System(
             new CommandBus(
@@ -145,9 +147,9 @@ final class SystemTest extends TestCase
                                 return Uuid::uuid4();
                             }
 
-                            public function occurredAt() : \DateTimeImmutable
+                            public function occurredAt() : DateTime
                             {
-                                return new \DateTimeImmutable();
+                                return DateTime::fromString('now');
                             }
 
                             public function payload() : array
@@ -160,7 +162,7 @@ final class SystemTest extends TestCase
             ),
             new Queries(),
             new FeatureToggle(),
-            new CalendarStub(),
+            new GregorianCalendarStub(),
             $eventStream,
             new NullLogger()
         );

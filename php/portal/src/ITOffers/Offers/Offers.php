@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers;
 
-use ITOffers\Component\Calendar\Calendar;
+use Aeon\Calendar\Gregorian\Calendar;
 use ITOffers\Component\CQRS\System;
 use ITOffers\Component\CQRS\System\Command;
 use ITOffers\Offers\Application\Exception\Exception;

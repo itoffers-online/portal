@@ -13,18 +13,20 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Application\Query\Specialization\Model\Specialization;
 
+use Aeon\Calendar\Gregorian\DateTime;
+
 final class Offers
 {
     private int $count;
 
-    private ?\DateTimeImmutable $latestOfferDate = null;
+    private ?DateTime $latestOfferDate = null;
 
     private function __construct()
     {
         $this->count = 0;
     }
 
-    public static function create(int $count, \DateTimeImmutable $latestOfferDate) : self
+    public static function create(int $count, DateTime $latestOfferDate) : self
     {
         $specialization = new self();
         $specialization->count = $count;
@@ -43,7 +45,7 @@ final class Offers
         return $this->count;
     }
 
-    public function latestOfferDate() : ?\DateTimeImmutable
+    public function latestOfferDate() : ?DateTime
     {
         return $this->latestOfferDate;
     }

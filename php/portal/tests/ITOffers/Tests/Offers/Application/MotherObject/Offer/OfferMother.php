@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Application\MotherObject\Offer;
 
+use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
 use Faker\Factory;
-use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Offer\Company;
 use ITOffers\Offers\Application\Offer\Contact;
 use ITOffers\Offers\Application\Offer\Contract;
@@ -29,7 +30,6 @@ use ITOffers\Offers\Application\Offer\Position\SeniorityLevels;
 use ITOffers\Offers\Application\Offer\Salary;
 use ITOffers\Offers\Application\Offer\Salary\Period;
 use ITOffers\Offers\Application\User\User;
-use ITOffers\Tests\Offers\Application\MotherObject\Facebook\CalendarMother;
 use ITOffers\Tests\Offers\Application\MotherObject\Specialization\SpecializationMother;
 use ITOffers\Tests\Offers\Application\MotherObject\User\UserMother;
 use Ramsey\Uuid\Uuid;
@@ -77,7 +77,7 @@ final class OfferMother
                 $faker->name,
                 '+1 333333333'
             ),
-            $calendar ? $calendar : CalendarMother::utc()
+            $calendar ? $calendar : new GregorianCalendarStub()
         );
     }
 }

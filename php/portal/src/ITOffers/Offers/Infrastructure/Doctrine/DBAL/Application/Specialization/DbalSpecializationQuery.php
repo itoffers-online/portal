@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Specialization;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use Doctrine\DBAL\Connection;
 use ITOffers\Offers\Application\Query\Specialization\Model\Specialization;
 use ITOffers\Offers\Application\Query\Specialization\Model\Specialization\FacebookChannel;
@@ -113,7 +114,7 @@ SQL
         $offers = $offersData
             ?  Offers::create(
                 $offersData['total_count'],
-                new \DateTimeImmutable($offersData['created_at'])
+                DateTime::fromString($offersData['created_at'])
             )
             : Offers::noOffers();
 

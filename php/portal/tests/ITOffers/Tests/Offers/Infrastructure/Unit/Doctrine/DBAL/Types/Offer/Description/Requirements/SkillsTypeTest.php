@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Tests\Offers\Infrastructure\Unit\Doctrine\DBAL\Types\Offer\Description\Requirements;
 
+use Iterator;
 use ITOffers\Offers\Application\Offer\Description\Requirements\Skill;
 use ITOffers\Offers\Infrastructure\Doctrine\DBAL\Types\Offer\Description\Requirements\SkillsType;
 use ITOffers\Tests\Offers\Infrastructure\Unit\Doctrine\DBAL\Types\TypeTestCase;
@@ -29,7 +30,7 @@ final class SkillsTypeTest extends TypeTestCase
         return SkillsType::class;
     }
 
-    public function dataProvider() : \Iterator
+    public function dataProvider() : Iterator
     {
         yield [
             [],

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace ITOffers\Notifications\Application\Event;
 
+use Aeon\Calendar\Gregorian\DateTime;
 use ITOffers\Notifications\Application\Event;
 use Ramsey\Uuid\UuidInterface;
 
@@ -20,7 +21,7 @@ final class OfferAutoRenewsAdded implements Event
 {
     private UuidInterface $eventId;
 
-    private \DateTimeImmutable $occurredAt;
+    private DateTime $occurredAt;
 
     private UuidInterface $userId;
 
@@ -28,7 +29,7 @@ final class OfferAutoRenewsAdded implements Event
 
     private int $amount;
 
-    public function __construct(UuidInterface $eventId, \DateTimeImmutable $occurredAt, UuidInterface $userId, int $expiresInDays, int $amount)
+    public function __construct(UuidInterface $eventId, DateTime $occurredAt, UuidInterface $userId, int $expiresInDays, int $amount)
     {
         $this->eventId = $eventId;
         $this->occurredAt = $occurredAt;
@@ -42,7 +43,7 @@ final class OfferAutoRenewsAdded implements Event
         return $this->eventId;
     }
 
-    public function occurredAt() : \DateTimeImmutable
+    public function occurredAt() : DateTime
     {
         return $this->occurredAt;
     }

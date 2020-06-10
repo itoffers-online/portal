@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Offers\Functional\Web;
 
+use Aeon\Calendar\Gregorian\GregorianCalendarStub;
+use Aeon\Calendar\TimeUnit;
 use App\Tests\Functional\Web\WebTestCase;
+use DOMElement;
 use ITOffers\Offers\Application\Query\Offer\OfferFilter;
-use ITOffers\Tests\Component\Calendar\Double\Stub\CalendarStub;
 use ITOffers\Tests\Offers\Application\MotherObject\Command\Offer\PostOfferMother;
 use Ramsey\Uuid\Uuid;
 
@@ -92,13 +94,13 @@ final class SpecializationTest extends WebTestCase
 
     public function test_sort_by_salary__asc() : void
     {
-        /** @var CalendarStub $calendar */
+        /** @var GregorianCalendarStub $calendar */
         $calendar = $this->offersFacade()->calendar();
-        $calendar->goBack($seconds = 15);
+        $calendar->setNow($calendar->now()->sub(TimeUnit::seconds($seconds = 15)));
         $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 5_000));
-        $calendar->goBack($seconds = 10);
+        $calendar->setNow($calendar->now()->sub(TimeUnit::seconds($seconds = 10)));
         $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 3_000));
-        $calendar->goBack($seconds = 5);
+        $calendar->setNow($calendar->now()->sub(TimeUnit::seconds($seconds = 5)));
         $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 7_000));
 
 
@@ -117,7 +119,7 @@ final class SpecializationTest extends WebTestCase
 
 
         $salaries = \array_map(
-            fn (\DOMElement $node) => (int) $node->getAttribute('data-salary-max'),
+            fn (DOMElement $node) => (int) $node->getAttribute('data-salary-max'),
             (array) $crawler->filter('[data-salary-max]')->getIterator()
         );
 
@@ -128,13 +130,13 @@ final class SpecializationTest extends WebTestCase
 
     public function test_sort_by_created_at__asc() : void
     {
-        /** @var CalendarStub $calendar */
+        /** @var GregorianCalendarStub $calendar */
         $calendar = $this->offersFacade()->calendar();
-        $calendar->goBack($seconds = 15);
+        $calendar->setNow($calendar->now()->sub(TimeUnit::seconds($seconds = 15)));
         $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 5_000));
-        $calendar->goBack($seconds = 10);
+        $calendar->setNow($calendar->now()->sub(TimeUnit::seconds($seconds = 10)));
         $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 3_000));
-        $calendar->goBack($seconds = 5);
+        $calendar->setNow($calendar->now()->sub(TimeUnit::seconds($seconds = 5)));
         $this->offersFacade()->handle(PostOfferMother::withSalary(Uuid::uuid4()->toString(), $this->offersContext->createUser()->id(), $this->specialization, $min = 1_000, $max = 7_000));
 
 
@@ -153,7 +155,7 @@ final class SpecializationTest extends WebTestCase
 
 
         $salaries = \array_map(
-            fn (\DOMElement $node) => (int) $node->getAttribute('data-salary-max'),
+            fn (DOMElement $node) => (int) $node->getAttribute('data-salary-max'),
             (array) $crawler->filter('[data-salary-max]')->getIterator()
         );
 

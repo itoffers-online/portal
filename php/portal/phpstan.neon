@@ -14,7 +14,7 @@ parameters:
         - bin
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
-    autoload_files:
+    bootstrapFiles:
         - tests/bootstrap.php
     ignoreErrors:
         -

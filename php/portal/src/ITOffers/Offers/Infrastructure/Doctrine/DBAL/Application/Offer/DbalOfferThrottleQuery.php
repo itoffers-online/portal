@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 
+use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\TimeUnit;
 use function array_key_exists;
-use DateInterval;
 use Doctrine\DBAL\Connection;
-use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Query\Offer\OfferThrottleQuery;
 
 final class DbalOfferThrottleQuery implements OfferThrottleQuery
@@ -28,13 +28,13 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
 
     private int $limit;
 
-    private \DateInterval $since;
+    private TimeUnit $since;
 
     private Connection $connection;
 
     private Calendar $calendar;
 
-    public function __construct(int $limit, DateInterval $since, Connection $connection, Calendar $calendar)
+    public function __construct(int $limit, TimeUnit $since, Connection $connection, Calendar $calendar)
     {
         $this->limit = $limit;
         $this->since = $since;
@@ -48,7 +48,7 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
         return $this->limit;
     }
 
-    public function since() : DateInterval
+    public function since() : TimeUnit
     {
         return $this->since;
     }
@@ -92,7 +92,10 @@ final class DbalOfferThrottleQuery implements OfferThrottleQuery
             ->andWhere('o.created_at >= :since')
             ->setParameters([
                 'userId' => $userId,
-                'since' => $this->calendar->currentTime()->sub($this->since)->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()),
+                'since' => $this->calendar
+                    ->now()
+                    ->sub($this->since)
+                    ->format($this->connection->getDatabasePlatform()->getDateTimeFormatString()),
             ])
             ->execute()
             ->fetchColumn();

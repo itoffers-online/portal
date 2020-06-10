@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace ITOffers\Offers\Infrastructure\Doctrine\DBAL\Application\Offer;
 
+use Aeon\Calendar\Gregorian\Calendar;
+use Aeon\Calendar\Gregorian\DateTime;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Query\QueryBuilder;
-use ITOffers\Component\Calendar\Calendar;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\Company;
 use ITOffers\Offers\Application\Query\Offer\Model\Offer\CompanyLogo;
@@ -140,7 +141,7 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->andWhere('o.created_at >= :sinceDate')
                 ->setParameter(
                     'sinceDate',
-                    $this->calendar->currentTime()
+                    $this->calendar->now()
                         ->modify(\sprintf('-%d days', $filter->createdInLastDays()))
                         ->format($this->connection->getDatabasePlatform()->getDateTimeFormatString())
                 );
@@ -337,7 +338,7 @@ final class DbalOfferQuery implements OfferQuery
             $offerData['locale_code'],
             Uuid::fromString($offerData['user_id']),
             $offerData['specialization_slug'],
-            new \DateTimeImmutable($offerData['created_at']),
+            DateTime::fromString($offerData['created_at']),
             new Parameters(
                 new Company(
                     $offerData['company_name'],
@@ -439,7 +440,7 @@ final class DbalOfferQuery implements OfferQuery
             $queryBuilder->andWhere('o.created_at >= :sinceDate')
                 ->setParameter(
                     'sinceDate',
-                    $this->calendar->currentTime()
+                    $this->calendar->now()
                         ->modify(\sprintf('-%d days', $filter->createdInLastDays()))
                         ->format($this->connection->getDatabasePlatform()->getDateTimeFormatString())
                 );
