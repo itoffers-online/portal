@@ -63,7 +63,7 @@ class OfferAutoRenew
         Assertion::true($this->expiresAt->isAfterOrEqual($calendar->now()), "Offer renew already expired");
         Assertion::lessThan($offerAutoRenews->countAssignedTo($offer), self::MAX_OFFER_AUTO_RENEWS, "There are already 2 auto renews assigned to that offer.");
 
-        $renewAfterDays = $offerLifetimeDays - $calendar->now()->distanceFrom($offer->createdAt())->inDays();
+        $renewAfterDays = $offerLifetimeDays - $calendar->now()->distanceSince($offer->createdAt())->inDaysAbs();
 
         Assertion::greaterThan($renewAfterDays, 0, 'Offer already expired');
 

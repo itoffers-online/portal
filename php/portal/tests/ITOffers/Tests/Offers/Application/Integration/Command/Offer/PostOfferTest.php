@@ -85,7 +85,7 @@ final class PostOfferTest extends OffersTestCase
         $this->assertGreaterThanOrEqual(
             2,
             $this->offers->module()->extraOffersQuery()->findClosesToExpire($user->id())
-                ->expiresAt()->distanceFrom(DateTime::fromString('now'))->inDays()
+                ->expiresAt()->distanceUntil(DateTime::fromString('now'))->inDays()
         );
     }
 }

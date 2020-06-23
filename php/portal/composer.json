@@ -27,6 +27,8 @@
             "ITOffers\\Tests\\" : "tests/ITOffers/Tests"
         }
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": "^7.4",
         "ext-json": "*",
@@ -34,8 +36,7 @@
         "ext-mbstring": "*",
         "ext-pdo_pgsql": "*",
         "abraham/twitteroauth": "^1.1",
-        "aeon-php/calendar": "dev-master",
-        "aeon-php/calendar-doctrine": "dev-master",
+        "aeon-php/calendar-doctrine": "1.x-dev",
         "beberlei/assert": "^3.2",
         "cocur/slugify": "^3.2",
         "ddeboer/imap": "^1.7",

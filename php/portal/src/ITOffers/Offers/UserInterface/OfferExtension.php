@@ -141,7 +141,7 @@ final class OfferExtension
 
     public function olderThan(Offer $offer, int $days) : bool
     {
-        return $offer->createdAt()->distanceTo(GregorianCalendar::UTC()->now())->inDays() >= $days;
+        return $offer->createdAt()->distanceSince(GregorianCalendar::UTC()->now())->inDays() >= $days;
     }
 
     public function olderThanHours(Offer $offer, int $hours) : bool
