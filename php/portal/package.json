@@ -19,7 +19,7 @@
     "css-loader": "^3.4.0",
     "dotenv": "^8.2.0",
     "jquery": "^3.5.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "popper.js": "^1.16.0",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^8.0.0",
