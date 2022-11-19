@@ -26,7 +26,7 @@
     "savemyform.jquery": "^1.5.0",
     "style-loader": "^1.1.2",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "trix": "^1.2.3"
